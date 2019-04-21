@@ -19,11 +19,9 @@ class LoginPage extends BasePage {
   Widget buildMainContainer(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/bg_login.jpg'),
-          fit: BoxFit.fill
-        )
-      ),
+          image: DecorationImage(
+              image: AssetImage('assets/images/bg_login.jpg'),
+              fit: BoxFit.fill)),
       child: InkWell(
         child: Text("LOGIN"),
         onTap: () => print("click"),
