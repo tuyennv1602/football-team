@@ -12,7 +12,7 @@ class LoginPage extends BasePage {
 
   @override
   Widget buildLoading(BuildContext context) => LoadingWidget(
-        show: true,
+        show: false,
       );
 
   @override
