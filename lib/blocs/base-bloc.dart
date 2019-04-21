@@ -7,13 +7,12 @@ abstract class BaseBloc {
 
 // Generic BLoC provider
 class BlocProvider<T extends BaseBloc> extends StatefulWidget {
-  BlocProvider(
-      {Key key, @required this.child, @required this.bloc})
+  BlocProvider({Key key, @required this.child, @required this.bloc})
       : super(key: key);
 
   final T bloc;
   final Widget child;
-  
+
   @override
   _BlocProviderState<T> createState() => _BlocProviderState<T>();
 
@@ -27,7 +26,6 @@ class BlocProvider<T extends BaseBloc> extends StatefulWidget {
 }
 
 class _BlocProviderState<T> extends State<BlocProvider<BaseBloc>> {
-
   @override
   void dispose() {
     widget.bloc.dispose();
