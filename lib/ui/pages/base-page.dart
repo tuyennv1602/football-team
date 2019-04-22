@@ -9,7 +9,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
 
   AppBloc appBloc;
 
-  BaseBloc createBloc();
+  BaseBloc initPageBloc(BuildContext context);
 
   AppBarWidget buildAppBar(BuildContext context);
 
@@ -22,9 +22,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     appBloc = BlocProvider.of<AppBloc>(context);
-    if (createBloc() != null) {
-      pageBloc = BlocProvider.of<T>(context);
-    }
+    initPageBloc(context);
     return Scaffold(
       body: Stack(
         children: <Widget>[

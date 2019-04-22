@@ -3,7 +3,7 @@ import 'package:myfootball/res/colors.dart';
 
 typedef void OnChangedText(String text);
 typedef void OnSubmitText(String text);
-typedef void OnValidator(String text);
+typedef String OnValidator(String text);
 
 class InputWidget extends StatefulWidget {
   final String labelText;
@@ -42,13 +42,20 @@ class InputState extends State<InputWidget> {
     _controller.addListener(onChange);
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    _textFocus.dispose();
+    super.dispose();
+  }
+
   void onChange() {
     String text = _controller.text;
     if (_textFocus.hasFocus) {
       widget.onChangedText(text);
     }
-    _controller.selection =
-        new TextSelection(baseOffset: text.length, extentOffset: text.length);
+    // _controller.selection =
+    //     new TextSelection(baseOffset: text.length, extentOffset: text.length);
   }
 
   @override
@@ -67,8 +74,8 @@ class InputState extends State<InputWidget> {
       validator: widget.validator,
       onFieldSubmitted: widget.onSubmitText,
       obscureText: widget.obscureText ?? false,
-      keyboardType: widget.inputType,
-      textInputAction: widget.inputAction,
+      keyboardType: widget.inputType ?? TextInputType.text,
+      textInputAction: widget.inputAction ?? TextInputAction.next,
       decoration: InputDecoration(
         border: UnderlineInputBorder(
           borderSide: BorderSide(width: 1, color: AppColor.LINE_COLOR),
@@ -81,7 +88,7 @@ class InputState extends State<InputWidget> {
         labelText: widget.labelText,
         errorText: widget.errorText,
         errorStyle:
-            TextStyle(fontFamily: 'regular', color: Colors.red, fontSize: 15),
+            TextStyle(fontFamily: 'regular', color: Colors.red, fontSize: 11),
         labelStyle: TextStyle(
             fontFamily: 'regular', color: AppColor.SECOND_BLACK, fontSize: 15),
       ),

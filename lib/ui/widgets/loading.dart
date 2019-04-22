@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/widgets/rotation-widget.dart';
 
 class LoadingWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class LoadingWidget extends StatelessWidget {
     return show
         ? Stack(
             children: [
-              ModalBarrier(dismissible: false),
+              ModalBarrier(dismissible: false, color: AppColor.MAIN_WHITE,),
               Center(
                 child: RotationWidget(
                   widget: Image.asset('assets/images/icn_loading.png'),

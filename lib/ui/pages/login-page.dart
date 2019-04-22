@@ -8,8 +8,11 @@ import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/input-widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/utils/validator.dart';
 
-class LoginPage extends BasePage<LoginBloc> {
+class LoginPage extends BasePage<LoginBloc> with Validator {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   AppBarWidget buildAppBar(BuildContext context) {
     return null;
@@ -73,52 +76,74 @@ class LoginPage extends BasePage<LoginBloc> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Đăng nhập',
-                          style: Theme.of(context).textTheme.title.copyWith(
-                              fontSize: 20,
-                              color: AppColor.SECOND_BLACK,
-                              fontFamily: 'bold'),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InputWidget(
-                          labelText: 'Email',
-                          onChangedText: (text) => print(text),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InputWidget(
-                          labelText: 'Mật khẩu',
-                          obscureText: true,
-                          onChangedText: (text) => print(text),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: ButtonWidget(
-                            margin: EdgeInsets.only(top: 10),
-                            onTap: () => print('forgotpassword'),
-                            child: Text(
-                              'Quên mật khẩu?',
-                              style: Theme.of(context).textTheme.body1.copyWith(
-                                  fontFamily: 'semi-bold',
-                                  color: AppColor.GREEN),
-                            ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Đăng nhập',
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                fontSize: 20,
+                                color: AppColor.SECOND_BLACK,
+                                fontFamily: 'bold'),
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          InputWidget(
+                            validator: (value) {
+                              if (value.isEmpty) return 'Vui lòng nhập email';
+                              if (!validEmail(value))
+                                return 'Email không hợp lệ';
+                            },
+                            labelText: 'Email',
+                            onChangedText: (text) =>
+                                pageBloc.changeEmailFunc(text),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          InputWidget(
+                            validator: (value) {
+                              if (value.isEmpty)
+                                return 'Vui lòng nhập mật khẩu';
+                              if (!validPassword(value))
+                                return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
+                            },
+                            labelText: 'Mật khẩu',
+                            obscureText: true,
+                            onChangedText: (text) =>
+                                pageBloc.changePasswordFunc(text),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: ButtonWidget(
+                              margin: EdgeInsets.only(top: 10),
+                              onTap: () {},
+                              child: Text(
+                                'Quên mật khẩu?',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body1
+                                    .copyWith(
+                                        fontFamily: 'semi-bold',
+                                        color: AppColor.GREEN),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ButtonWidget(
-                      onTap: () =>
-                          pageBloc.login('tuyennguyen@gmail.com', '123456'),
+                      onTap: () {
+                        if (_formKey.currentState.validate()) {
+                          pageBloc.submitLogin();
+                        }
+                      },
                       borderRadius: 5,
                       margin: EdgeInsets.only(top: 20, bottom: 30),
                       padding: EdgeInsets.only(
@@ -207,7 +232,11 @@ class LoginPage extends BasePage<LoginBloc> {
   }
 
   @override
-  BaseBloc createBloc() => LoginBloc();
+  BaseBloc initPageBloc(BuildContext context) {
+    pageBloc = BlocProvider.of<LoginBloc>(context);
+    pageBloc.loginEmailStream.listen((response) => print(response));
+    return pageBloc;
+  }
 
   @override
   bool showFullScreen() => true;

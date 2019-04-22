@@ -1,38 +1,51 @@
 import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/data/user-api.dart';
+import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/requests/login-request.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:dio/dio.dart';
 
 class LoginBloc implements BaseBloc {
-  var _userApi = UserApi();
+  var _userRepository = UserRepository();
+  var _loginRequest;
 
   final _loadingCtrl = BehaviorSubject<bool>();
-  Function(bool) get addLoading => _loadingCtrl.add;
+  Function(bool) get addLoadingFunc => _loadingCtrl.add;
   Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
-  final _loginWithEmailCtrl = BehaviorSubject<LoginRequest>();
-  Function(LoginRequest) get excuteLoginEmailFunc => _loginWithEmailCtrl.add;
-  Observable<LoginRequest> get loginStream => Observable(_loginWithEmailCtrl);
+  final _loginWithEmailCtrl = BehaviorSubject<Response>();
+  Function(Response) get addLoginEmailFunc => _loginWithEmailCtrl.add;
+  Observable<Response> get loginEmailStream => Observable(_loginWithEmailCtrl);
 
-  Observable<Response> login(String email, String password) =>
-      Observable.fromFuture(_userApi.loginWithEmail(email, password))
-          .doOnListen(() => addLoading(true))
-          .doOnData((data) => addLoading(false))
-          .flatMap((response) => Observable.just(response));
+  final _emailCtrl = BehaviorSubject<String>();
+  Function(String) get changeEmailFunc => _emailCtrl.add;
+  Observable<String> get changeEmailStream => Observable(_emailCtrl);
+
+  final _passwordCtrl = BehaviorSubject<String>();
+  Function(String) get changePasswordFunc => _passwordCtrl.add;
+  Observable<String> get changePasswordStream => Observable(_passwordCtrl);
+
+  submitLogin() async {
+    addLoadingFunc(true);
+    var response = await _userRepository.loginWithEmail(
+        _loginRequest.email, _loginRequest.password);
+    addLoginEmailFunc(response);
+    addLoadingFunc(false);
+  }
 
   @override
   void dispose() {
     _loadingCtrl.close();
     _loginWithEmailCtrl.close();
+    _emailCtrl.close();
+    _passwordCtrl.close();
   }
 
   @override
   void initState() {
-    loginStream.listen((loginRequest) {
-      if (loginRequest != null) {
-        login(loginRequest.email, loginRequest.password);
-      }
-    });
+    Observable.combineLatest2(
+      changeEmailStream,
+      changePasswordStream,
+      (email, password) => LoginRequest(email, password),
+    ).listen((loginRequest) => _loginRequest = loginRequest);
   }
 }

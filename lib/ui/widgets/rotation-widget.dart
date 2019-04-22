@@ -20,7 +20,7 @@ class RotationState extends State<RotationWidget>
   void initState() {
     super.initState();
     rotationController = AnimationController(
-        duration: widget.duration ?? Duration(milliseconds: 1500), vsync: this);
+        duration: widget.duration ?? Duration(milliseconds: 1000), vsync: this);
     rotationController.repeat();
   }
 
