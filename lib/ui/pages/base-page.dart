@@ -25,36 +25,32 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
     if (createBloc() != null) {
       pageBloc = BlocProvider.of<T>(context);
     }
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                (showFullScreen() == null || !showFullScreen())
-                    ? Container(
-                        height: MediaQuery.of(context).padding.top,
-                        color: AppColor.GREEN,
-                      )
-                    : SizedBox(),
-                buildAppBar(context) ?? SizedBox(),
-                Expanded(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: buildMainContainer(context),
-                  ),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              (showFullScreen() == null || !showFullScreen())
+                  ? Container(
+                      height: MediaQuery.of(context).padding.top,
+                      color: AppColor.GREEN,
+                    )
+                  : SizedBox(),
+              buildAppBar(context) ?? SizedBox(),
+              Expanded(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: buildMainContainer(context),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).padding.bottom,
-                )
-              ],
-            ),
-            buildLoading(context) ?? SizedBox()
-          ],
-        ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).padding.bottom,
+              )
+            ],
+          ),
+          buildLoading(context) ?? SizedBox()
+        ],
       ),
     );
   }

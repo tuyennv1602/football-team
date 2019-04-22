@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
+import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/login-page.dart';
 import 'dart:convert';
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
                   letterSpacing: 0.1,
                   color: Colors.black87)),
         ),
-        home: LoginPage());
+        home: BlocProvider<LoginBloc>(
+          bloc: LoginBloc(),
+          child: LoginPage(),
+        ));
   }
 }
