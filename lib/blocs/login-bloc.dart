@@ -1,10 +1,11 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/requests/login-request.dart';
+import 'package:myfootball/models/responses/login-response.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:dio/dio.dart';
 
 class LoginBloc implements BaseBloc {
+  
   var _userRepository = UserRepository();
   var _loginRequest;
 
@@ -12,9 +13,9 @@ class LoginBloc implements BaseBloc {
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
   Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
-  final _loginWithEmailCtrl = BehaviorSubject<Response>();
-  Function(Response) get addLoginEmailFunc => _loginWithEmailCtrl.add;
-  Observable<Response> get loginEmailStream => Observable(_loginWithEmailCtrl);
+  final _loginWithEmailCtrl = BehaviorSubject<LoginResponse>();
+  Function(LoginResponse) get addLoginEmailFunc => _loginWithEmailCtrl.add;
+  Observable<LoginResponse> get loginEmailStream => Observable(_loginWithEmailCtrl);
 
   final _emailCtrl = BehaviorSubject<String>();
   Function(String) get changeEmailFunc => _emailCtrl.add;

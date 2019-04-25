@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:myfootball/data/providers/user-provider.dart';
+import 'package:myfootball/models/responses/login-response.dart';
 
 class UserRepository {
   static final UserRepository _instance = UserRepository.internal();
@@ -8,7 +8,7 @@ class UserRepository {
 
   UserApiProvider _apiProvider = UserApiProvider();
 
-  Future<Response> loginWithEmail(String email, String password) {
+  Future<LoginResponse> loginWithEmail(String email, String password) {
     return _apiProvider.loginWithEmail(email, password);
   }
 }

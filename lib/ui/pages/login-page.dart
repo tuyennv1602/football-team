@@ -234,7 +234,11 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
   @override
   BaseBloc initPageBloc(BuildContext context) {
     pageBloc = BlocProvider.of<LoginBloc>(context);
-    pageBloc.loginEmailStream.listen((response) => print(response));
+    pageBloc.loginEmailStream.listen((response) {
+      if (!response.success) {
+        
+      }
+    });
     return pageBloc;
   }
 
