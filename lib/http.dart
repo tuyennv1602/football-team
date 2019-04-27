@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 var dio = new Dio(
   BaseOptions(
-    connectTimeout: 60000,
-    receiveTimeout: 60000
+    connectTimeout: 30000,
+    receiveTimeout: 30000,
+    contentType: ContentType.json,
   )
 );

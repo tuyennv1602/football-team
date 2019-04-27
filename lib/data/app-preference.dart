@@ -5,16 +5,15 @@ class AppPreference {
   factory AppPreference() => _instance;
   AppPreference.internal();
 
-  // static const String KEY_BIRTHDAY = 'birthday';
+  static const String ACCESS_TOKEN = 'token';
 
-  // Future<DateTime> setBirthday(DateTime birthday) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var rs = await prefs.setString(KEY_BIRTHDAY, birthday.toString());
-  //   return rs ? birthday : null;
-  // }
+  Future<bool> setToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(ACCESS_TOKEN, token);
+  }
 
-  // Future<String> getBirthday() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString(KEY_BIRTHDAY);
-  // }
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(ACCESS_TOKEN);
+  }
 }

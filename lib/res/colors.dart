@@ -8,6 +8,7 @@ class AppColor {
   static const Color LINE_COLOR = Color(0xFFE0E0E0);
   static const Color MAIN_BLUE = Color(0xFF448AFF);
   static const Color GREEN = Colors.green;
+  static const Color RED = Colors.red;
   static const Color BLACK_TRANSPARENT = Color(0x66000000);
   static const List<Color> BLACK_GRADIENT = [
     Color(0xCC000000),

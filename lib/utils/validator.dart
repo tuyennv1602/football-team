@@ -10,6 +10,6 @@ class Validator {
   }
 
   bool validPhoneNumber(String phoneNumber) {
-    return phoneNumber.length == 10 || phoneNumber.length == 11;
+    return phoneNumber.length == 10;
   }
 }

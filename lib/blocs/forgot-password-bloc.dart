@@ -1,9 +1,9 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/repositories/user-repository.dart';
-import 'package:myfootball/models/responses/login-response.dart';
+import 'package:myfootball/models/responses/base-response.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LoginBloc implements BaseBloc {
+class ForgotPasswordBloc implements BaseBloc {
   var _userRepository = UserRepository();
 
   final _loadingCtrl = PublishSubject<bool>();
@@ -18,24 +18,28 @@ class LoginBloc implements BaseBloc {
   Function(String) get changePasswordFunc => _passwordCtrl.add;
   Observable<String> get changePasswordStream => Observable(_passwordCtrl);
 
-  final _submitLoginCtrl = PublishSubject<bool>();
-  Function(bool) get submitLoginEmailFunc => _submitLoginCtrl.add;
-   Observable<LoginResponse> get loginEmailStream =>
-      Observable(_submitLoginCtrl).flatMap((_) => Observable.fromFuture(_userRepository.loginWithEmail(
-                _emailCtrl.value, _passwordCtrl.value))
-            .doOnListen(() => addLoadingFunc(true))
-            .doOnData((_) => addLoadingFunc(false)))
-        .flatMap((res) => Observable.just(res));
+  final _confirmCodeCtrl = BehaviorSubject<String>();
+  Function(String) get changeCodeFunc => _confirmCodeCtrl.add;
+  Observable<String> get changeCodeStream => Observable(_confirmCodeCtrl);
+
+  final _submitEmailCtrl = BehaviorSubject<bool>();
+  Function(bool) get submitEmailFunc => _submitEmailCtrl.add;
+  Observable<BaseResponse> get submitEmailStream => Observable(_submitEmailCtrl)
+      .flatMap((_) => Observable.fromFuture(
+              _userRepository.forgotPassword(_emailCtrl.value))
+          .doOnListen(() => addLoadingFunc(true))
+          .doOnData((_) => addLoadingFunc(false)))
+      .flatMap((response) => Observable.just(response));
 
   @override
   void dispose() {
     _loadingCtrl.close();
     _emailCtrl.close();
+    _submitEmailCtrl.close();
     _passwordCtrl.close();
-    _submitLoginCtrl.close();
+    _confirmCodeCtrl.close();
   }
 
   @override
-  void initState() {
-  }
+  void initState() {}
 }

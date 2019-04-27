@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
+import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/input-widget.dart';
@@ -14,9 +14,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  AppBarWidget buildAppBar(BuildContext context) {
-    return null;
-  }
+  AppBarWidget buildAppBar(BuildContext context) => null;
 
   @override
   Widget buildLoading(BuildContext context) => StreamBuilder<bool>(
@@ -120,7 +118,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                             alignment: Alignment.centerRight,
                             child: ButtonWidget(
                               margin: EdgeInsets.only(top: 10),
-                              onTap: () {},
+                              onTap: () =>
+                                  Routes.routeToForgotPasswordPage(context),
                               child: Text(
                                 'Quên mật khẩu?',
                                 style: Theme.of(context)
@@ -141,11 +140,11 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                     child: ButtonWidget(
                       onTap: () {
                         if (_formKey.currentState.validate()) {
-                          pageBloc.submitLogin();
+                          pageBloc.submitLoginEmailFunc(true);
                         }
                       },
                       borderRadius: 5,
-                      margin: EdgeInsets.only(top: 20, bottom: 30),
+                      margin: EdgeInsets.only(top: 30, bottom: 30),
                       padding: EdgeInsets.only(
                           left: 30, right: 30, top: 10, bottom: 10),
                       backgroundColor: AppColor.GREEN,
@@ -169,7 +168,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                       Padding(
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Text(
-                          'Social Login',
+                          'Đăng nhập qua',
                           style: Theme.of(context).textTheme.body2.copyWith(
                               fontFamily: 'semi-bold', color: Colors.grey),
                         ),
@@ -190,12 +189,14 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                     children: <Widget>[
                       IconButton(
                         iconSize: 50,
-                        onPressed: () => print('facebook'),
+                        onPressed: () => showConfirmDialog(
+                            context, "data.errorMessage",
+                            onConfirmed: () => Navigator.of(context).pop()),
                         icon: Image.asset('assets/images/icn_facebook.png'),
                       ),
                       IconButton(
                         iconSize: 50,
-                        onPressed: () => print('facebook'),
+                        onPressed: () => print('google'),
                         icon: Image.asset('assets/images/icn_google.png'),
                       )
                     ],
@@ -217,9 +218,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                                       color: AppColor.GREEN,
                                       fontSize: 16),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      print('signup');
-                                    }),
+                                    ..onTap = () =>
+                                        Routes.routeToRegisterPage(context)),
                             ]),
                       ),
                     ),
@@ -232,16 +232,17 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
   }
 
   @override
-  BaseBloc initPageBloc(BuildContext context) {
-    pageBloc = BlocProvider.of<LoginBloc>(context);
+  void listenPageData(BuildContext context) {
     pageBloc.loginEmailStream.listen((response) {
       if (!response.success) {
-        
+        showSnackBar(response.errorMessage);
       }
     });
-    return pageBloc;
   }
 
   @override
   bool showFullScreen() => true;
+
+  @override
+  void listenAppData(BuildContext context) {}
 }
