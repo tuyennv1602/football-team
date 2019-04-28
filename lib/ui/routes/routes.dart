@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/forgot-password-bloc.dart';
+import 'package:myfootball/blocs/noti-bloc.dart';
 import 'package:myfootball/blocs/register-bloc.dart';
 import 'package:myfootball/ui/pages/forgot-password-page.dart';
+import 'package:myfootball/ui/pages/noti-detail-page.dart';
 import 'package:myfootball/ui/pages/register-page.dart';
 import 'package:myfootball/ui/routes/slide-left-route.dart';
 
@@ -33,5 +35,14 @@ class Routes {
       child: RegisterPage(),
     );
     return await Navigator.of(context).push(SlideLeftRoute(widget: page));
+  }
+
+  static routeToNotiDetailPage(BuildContext context) async {
+    var page = BlocProvider<NotiBloc>(
+      bloc: NotiBloc(),
+      child: NotiDetailPage(),
+    );
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: page));
   }
 }

@@ -1,14 +1,16 @@
 import 'package:myfootball/blocs/base-bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 class NotiBloc implements BaseBloc {
+  final _notiCtrl = BehaviorSubject<bool>();
+  Function(bool) get changeNotiFunc => _notiCtrl.add;
+  Observable<bool> get notiStream => Observable(_notiCtrl);
+
   @override
   void dispose() {
-    // TODO: implement dispose
+    _notiCtrl.close();
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-  }
-
+  void initState() {}
 }
