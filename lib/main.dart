@@ -3,6 +3,8 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
+import 'package:myfootball/data/app-preference.dart';
+import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login-page.dart';
 import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -22,17 +24,22 @@ parseJson(String text) {
 void main() async {
   await FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+  var user = await AppPreference().getUser();
   dio.interceptors
     ..add(CookieManager(CookieJar()))
     ..add(LogInterceptor(responseBody: true));
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
   return runApp(BlocProvider<AppBloc>(
     bloc: AppBloc(),
-    child: MyApp(),
+    child: MyApp(user != null),
   ));
 }
 
 class MyApp extends StatelessWidget {
+  final bool isLogined;
+
+  MyApp(this.isLogined);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,9 +63,11 @@ class MyApp extends StatelessWidget {
                   letterSpacing: 0.1,
                   color: Colors.black87)),
         ),
-        home: BlocProvider<LoginBloc>(
-          bloc: LoginBloc(),
-          child: LoginPage(),
-        ));
+        home: isLogined
+            ? HomePage()
+            : BlocProvider<LoginBloc>(
+                bloc: LoginBloc(),
+                child: LoginPage(),
+              ));
   }
 }

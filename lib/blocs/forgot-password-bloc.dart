@@ -22,6 +22,10 @@ class ForgotPasswordBloc implements BaseBloc {
   Function(String) get changeCodeFunc => _confirmCodeCtrl.add;
   Observable<String> get changeCodeStream => Observable(_confirmCodeCtrl);
 
+  final _changeTypeCtrl = BehaviorSubject<bool>(seedValue: false);
+  Function(bool) get changeTypeFunc => _changeTypeCtrl.add;
+  Observable<bool> get changeTypeStream => Observable(_changeTypeCtrl);
+
   final _submitEmailCtrl = BehaviorSubject<bool>();
   Function(bool) get submitEmailFunc => _submitEmailCtrl.add;
   Observable<BaseResponse> get submitEmailStream => Observable(_submitEmailCtrl)
@@ -31,6 +35,26 @@ class ForgotPasswordBloc implements BaseBloc {
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((response) => Observable.just(response));
 
+  final _submitChangePassword = BehaviorSubject<bool>();
+  Function(bool) get submitChangePassword => _submitChangePassword.add;
+  Observable<BaseResponse> get submitChangePasswordStream =>
+      Observable(_submitChangePassword)
+          .flatMap((_) => Observable.fromFuture(_userRepository.changePassword(
+                  _emailCtrl.value,
+                  _passwordCtrl.value,
+                  _confirmCodeCtrl.value))
+              .doOnListen(() => addLoadingFunc(true))
+              .doOnData((_) => addLoadingFunc(false)))
+          .flatMap((response) => Observable.just(response));
+
+  submit() {
+    if (_changeTypeCtrl.value) {
+      submitChangePassword(true);
+    } else {
+      submitEmailFunc(true);
+    }
+  }
+
   @override
   void dispose() {
     _loadingCtrl.close();
@@ -38,6 +62,8 @@ class ForgotPasswordBloc implements BaseBloc {
     _submitEmailCtrl.close();
     _passwordCtrl.close();
     _confirmCodeCtrl.close();
+    _changeTypeCtrl.close();
+    _submitChangePassword.close();
   }
 
   @override

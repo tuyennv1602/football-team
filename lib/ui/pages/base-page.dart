@@ -24,7 +24,10 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
 
   bool showFullScreen();
 
-  showSnackBar(String message, {Color backgroundColor, Duration duration}) {
+  bool resizeAvoidPadding();
+
+  void showSnackBar(String message,
+      {Color backgroundColor, Duration duration}) {
     scaffoldKey.currentState.showSnackBar(SnackBar(
       duration: duration ?? Duration(milliseconds: 5000),
       backgroundColor: backgroundColor ?? Colors.red,
@@ -142,6 +145,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                 ),
               ));
 
+  hideKeyBoard(BuildContext context) => FocusScope.of(context).requestFocus(new FocusNode());
+
   @override
   Widget build(BuildContext context) {
     if (appBloc == null) {
@@ -153,8 +158,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
       listenPageData(context);
     }
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       key: scaffoldKey,
+      resizeToAvoidBottomPadding: resizeAvoidPadding() ?? true,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {

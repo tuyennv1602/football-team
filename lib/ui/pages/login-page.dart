@@ -83,11 +83,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                             'Đăng nhập',
                             style: Theme.of(context).textTheme.title.copyWith(
                                 fontSize: 20,
-                                color: AppColor.SECOND_BLACK,
+                                color: AppColor.GREEN,
                                 fontFamily: 'bold'),
-                          ),
-                          SizedBox(
-                            height: 10,
                           ),
                           InputWidget(
                             validator: (value) {
@@ -98,9 +95,6 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                             labelText: 'Email',
                             onChangedText: (text) =>
                                 pageBloc.changeEmailFunc(text),
-                          ),
-                          SizedBox(
-                            height: 10,
                           ),
                           InputWidget(
                             validator: (value) {
@@ -144,7 +138,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         }
                       },
                       borderRadius: 5,
-                      margin: EdgeInsets.only(top: 30, bottom: 30),
+                      margin: EdgeInsets.only(top: 25, bottom: 25),
                       padding: EdgeInsets.only(
                           left: 30, right: 30, top: 10, bottom: 10),
                       backgroundColor: AppColor.GREEN,
@@ -188,14 +182,14 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       IconButton(
-                        iconSize: 50,
+                        iconSize: 45,
                         onPressed: () => showConfirmDialog(
                             context, "data.errorMessage",
                             onConfirmed: () => Navigator.of(context).pop()),
                         icon: Image.asset('assets/images/icn_facebook.png'),
                       ),
                       IconButton(
-                        iconSize: 50,
+                        iconSize: 45,
                         onPressed: () => print('google'),
                         icon: Image.asset('assets/images/icn_google.png'),
                       )
@@ -236,6 +230,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
     pageBloc.loginEmailStream.listen((response) {
       if (!response.success) {
         showSnackBar(response.errorMessage);
+      }else{
+         showSnackBar('Login success', backgroundColor: AppColor.GREEN);
       }
     });
   }
@@ -245,4 +241,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
 
   @override
   void listenAppData(BuildContext context) {}
+
+  @override
+  bool resizeAvoidPadding() => false;
 }

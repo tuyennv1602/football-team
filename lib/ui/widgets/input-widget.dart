@@ -61,6 +61,7 @@ class InputState extends State<InputWidget> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autocorrect: false,
       cursorColor: AppColor.GREEN,
       cursorWidth: 1,
       style: TextStyle(

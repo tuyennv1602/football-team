@@ -17,8 +17,7 @@ class ButtonWidget extends StatelessWidget {
       this.borderRadius});
 
   @override
-  Widget build(BuildContext context) {
-    return FittedBox(
+  Widget build(BuildContext context) => FittedBox(
       child: Container(
         alignment: Alignment.center,
         margin: this.margin ?? EdgeInsets.zero,
@@ -37,5 +36,4 @@ class ButtonWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

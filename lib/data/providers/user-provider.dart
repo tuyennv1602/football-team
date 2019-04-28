@@ -47,4 +47,15 @@ class UserApiProvider {
       return BaseResponse.error(e.message);
     }
   }
+
+  Future<BaseResponse> changePassword(
+      String email, String password, String code) async {
+    try {
+      var response = await dio.post('${ApiConfig.HOST}/user/change-password',
+          data: {"email": email, "password": password, "code": code});
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
 }

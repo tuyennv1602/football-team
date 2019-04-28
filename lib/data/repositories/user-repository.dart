@@ -9,16 +9,17 @@ class UserRepository {
 
   UserApiProvider _apiProvider = UserApiProvider();
 
-  Future<LoginResponse> loginWithEmail(String email, String password) {
-    return _apiProvider.loginWithEmail(email, password);
-  }
+  Future<LoginResponse> loginWithEmail(String email, String password) =>
+      _apiProvider.loginWithEmail(email, password);
 
-  Future<BaseResponse> forgotPassword(String email) {
-    return _apiProvider.forgotPassword(email);
-  }
+  Future<BaseResponse> forgotPassword(String email) =>
+      _apiProvider.forgotPassword(email);
 
   Future<BaseResponse> register(
-      String userName, String email, String password, String phoneNumber) {
-    return _apiProvider.register(userName, email, password, phoneNumber);
-  }
+          String userName, String email, String password, String phoneNumber) =>
+      _apiProvider.register(userName, email, password, phoneNumber);
+
+  Future<BaseResponse> changePassword(
+          String email, String password, String code) =>
+      _apiProvider.changePassword(email, password, code);
 }

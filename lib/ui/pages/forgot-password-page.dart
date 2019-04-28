@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/forgot-password-bloc.dart';
-import 'package:myfootball/models/responses/base-response.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
@@ -78,15 +77,20 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            'Quên mật khẩu',
-                            style: Theme.of(context).textTheme.title.copyWith(
-                                fontSize: 20,
-                                color: AppColor.SECOND_BLACK,
-                                fontFamily: 'bold'),
-                          ),
-                          SizedBox(
-                            height: 10,
+                          StreamBuilder<bool>(
+                            stream: pageBloc.changeTypeStream,
+                            builder: (c, snap) => Text(
+                                  (snap.hasData && snap.data)
+                                      ? 'Đổi mật khẩu'
+                                      : 'Lấy mã xác nhận',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .title
+                                      .copyWith(
+                                          fontSize: 20,
+                                          color: AppColor.GREEN,
+                                          fontFamily: 'bold'),
+                                ),
                           ),
                           InputWidget(
                             validator: (value) {
@@ -98,32 +102,49 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                             onChangedText: (text) =>
                                 pageBloc.changeEmailFunc(text),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          InputWidget(
-                            validator: (value) {
-                              if (value.isEmpty)
-                                return 'Vui lòng nhập mật khẩu';
-                              if (!validPassword(value))
-                                return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
+                          StreamBuilder<bool>(
+                            stream: pageBloc.changeTypeStream,
+                            builder: (c, snap) {
+                              if (snap.hasData && snap.data) {
+                                return Column(
+                                  children: <Widget>[
+                                    InputWidget(
+                                      validator: (value) {
+                                        if (value.isEmpty)
+                                          return 'Vui lòng nhập mật khẩu';
+                                        if (!validPassword(value))
+                                          return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
+                                      },
+                                      labelText: 'Mật khẩu mới',
+                                      obscureText: true,
+                                      onChangedText: (text) =>
+                                          pageBloc.changePasswordFunc(text),
+                                    ),
+                                    InputWidget(
+                                      validator: (value) {
+                                        if (value.isEmpty)
+                                          return 'Vui lòng nhập mã xác nhận';
+                                      },
+                                      labelText: 'Mã xác nhận',
+                                      onChangedText: (text) =>
+                                          pageBloc.changeCodeFunc(text),
+                                    )
+                                  ],
+                                );
+                              }
+                              return Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  "Một mã xác nhận sẽ được gửi đến email của bạn. Vui lòng kiểm tra email và sử dụng mã xác nhận để thay đổi mật khẩu",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body2
+                                      .copyWith(
+                                          fontFamily: 'italic',
+                                          color: Colors.grey),
+                                ),
+                              );
                             },
-                            labelText: 'Mật khẩu mới',
-                            obscureText: true,
-                            onChangedText: (text) =>
-                                pageBloc.changePasswordFunc(text),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          InputWidget(
-                            validator: (value) {
-                              if (value.isEmpty)
-                                return 'Vui lòng nhập mã xác nhận';
-                            },
-                            labelText: 'Mã xác nhận',
-                            onChangedText: (text) =>
-                                pageBloc.changeCodeFunc(text),
                           ),
                         ],
                       ),
@@ -150,11 +171,11 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                       ButtonWidget(
                         onTap: () {
                           if (_formKey.currentState.validate()) {
-                            pageBloc.submitEmailFunc(true);
+                            pageBloc.submit();
                           }
                         },
                         borderRadius: 5,
-                        margin: EdgeInsets.only(top: 30, bottom: 30),
+                        margin: EdgeInsets.only(top: 25, bottom: 25),
                         padding: EdgeInsets.only(
                             left: 30, right: 30, top: 10, bottom: 10),
                         backgroundColor: AppColor.GREEN,
@@ -180,6 +201,18 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
     pageBloc.submitEmailStream.listen((onData) {
       if (!onData.success) {
         showSnackBar(onData.errorMessage);
+      } else {
+        showSnackBar(onData.errorMessage, backgroundColor: AppColor.GREEN);
+        pageBloc.changeTypeFunc(true);
+      }
+    });
+    pageBloc.submitChangePasswordStream.listen((onData) {
+      if (!onData.success) {
+        showSnackBar(onData.errorMessage);
+      } else {
+        showSnackBar('Password was changed', backgroundColor: AppColor.GREEN);
+        Future.delayed(
+            Duration(milliseconds: 5000), () => Navigator.of(context).pop());
       }
     });
   }
@@ -188,6 +221,8 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
   bool showFullScreen() => true;
 
   @override
-  void listenAppData(BuildContext context) {
-  }
+  void listenAppData(BuildContext context) {}
+
+  @override
+  bool resizeAvoidPadding() => false;
 }
