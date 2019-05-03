@@ -159,6 +159,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
     }
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: AppColor.WHITE,
       resizeToAvoidBottomPadding: resizeAvoidPadding() ?? true,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,

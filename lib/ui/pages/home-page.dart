@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         activeColor: AppColor.GREEN,
+        currentIndex: 1,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications, size: 25),

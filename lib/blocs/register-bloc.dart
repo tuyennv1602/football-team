@@ -27,6 +27,10 @@ class RegisterBloc implements BaseBloc {
   Observable<String> get changePhoneNumberStream =>
       Observable(_phonenumberCtrl);
 
+  final _roleCtrl = BehaviorSubject<int>(seedValue: 0);
+  Function(int) get changeRoleFunc => _roleCtrl.add;
+  Observable<int> get changeRoleStream => Observable(_roleCtrl);
+
   final _submitRegisterCtrl = BehaviorSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
   Observable<BaseResponse> get registerStream => Observable(_submitRegisterCtrl)
@@ -47,6 +51,7 @@ class RegisterBloc implements BaseBloc {
     _userNameCtrl.close();
     _phonenumberCtrl.close();
     _submitRegisterCtrl.close();
+    _roleCtrl.close();
   }
 
   @override

@@ -20,6 +20,30 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
     return null;
   }
 
+  Widget _buildItemRole(
+      BuildContext context, int value, int groupValue, String title) {
+    bool isSelected = groupValue == value;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Radio<int>(
+          activeColor: AppColor.GREEN,
+          value: value,
+          groupValue: groupValue,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          onChanged: (value) => pageBloc.changeRoleFunc(value),
+        ),
+        Text(
+          title,
+          style: TextStyle(
+              fontFamily: isSelected ? 'semi-bold' : 'regular',
+              fontSize: 16,
+              color: isSelected ? AppColor.GREEN : AppColor.MAIN_BLACK),
+        )
+      ],
+    );
+  }
+
   @override
   Widget buildMainContainer(BuildContext context) {
     return Container(
@@ -138,6 +162,22 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                               SizedBox(
                                 height: 10,
                               ),
+                              StreamBuilder<int>(
+                                stream: pageBloc.changeRoleStream,
+                                builder: (c, snap) {
+                                  int groupValue = snap.hasData ? snap.data : 0;
+                                  return Column(
+                                    children: <Widget>[
+                                      _buildItemRole(context, 0, groupValue,
+                                          'Thành viên đội bóng'),
+                                      _buildItemRole(context, 1, groupValue,
+                                          'Đội trưởng đội bóng'),
+                                      _buildItemRole(context, 2, groupValue,
+                                          'Quản lý sân bóng'),
+                                    ],
+                                  );
+                                },
+                              )
                             ],
                           ),
                         ),

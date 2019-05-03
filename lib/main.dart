@@ -4,6 +4,7 @@ import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login-page.dart';
 import 'dart:convert';
@@ -31,7 +32,7 @@ void main() async {
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
   return runApp(BlocProvider<AppBloc>(
     bloc: AppBloc(),
-    child: MyApp(user != null),
+    child: MyApp(user == null),
   ));
 }
 
@@ -48,9 +49,9 @@ class MyApp extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.copyWith(
               title: TextStyle(
                   fontFamily: 'semi-bold',
-                  fontSize: 18,
+                  fontSize: 20,
                   letterSpacing: 0.1,
-                  color: Colors.black87),
+                  color: Colors.white),
               body1: TextStyle(
                 fontFamily: 'regular',
                 fontSize: 14,
