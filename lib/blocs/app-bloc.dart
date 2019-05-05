@@ -10,18 +10,11 @@ class AppBloc implements BaseBloc {
   Function(User) get setUserFunc => _userCtrl.add;
   Observable<User> get userStream => Observable(_userCtrl);
 
-  _getUser() async {
-    var user = await _appPref.getUser();
-    setUserFunc(user);
-  }
-
   @override
   void dispose() {
     _userCtrl.close();
   }
 
   @override
-  void initState() {
-    _getUser();
-  }
+  void initState() {}
 }

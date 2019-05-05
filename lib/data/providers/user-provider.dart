@@ -34,13 +34,14 @@ class UserApiProvider {
   }
 
   Future<BaseResponse> register(String userName, String email, String password,
-      String phoneNumber) async {
+      String phoneNumber, List<int> roles) async {
     try {
       var response = await dio.post('${ApiConfig.HOST}/user/register', data: {
         "userName": userName,
         "email": email,
         "password": password,
-        "phoneNumber": phoneNumber
+        "phone": phoneNumber,
+        "roleList": roles
       });
       return BaseResponse.success(response.data);
     } on DioError catch (e) {

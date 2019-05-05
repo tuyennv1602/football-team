@@ -49,7 +49,10 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       'Thông báo',
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(color: AppColor.MAIN_BLACK),
                     ),
                     SizedBox(
                       height: 10,
@@ -57,7 +60,6 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                     Text(
                       message,
                       style: Theme.of(context).textTheme.body2,
-                      textAlign: TextAlign.justify,
                     ),
                     ButtonWidget(
                       onTap: () {
@@ -131,7 +133,10 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       'Thông báo',
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(color: AppColor.MAIN_BLACK),
                     ),
                     SizedBox(
                       height: 10,
@@ -139,13 +144,13 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                     Text(
                       message,
                       style: Theme.of(context).textTheme.body2,
-                      textAlign: TextAlign.justify,
                     ),
                   ],
                 ),
               ));
 
-  hideKeyBoard(BuildContext context) => FocusScope.of(context).requestFocus(new FocusNode());
+  hideKeyBoard(BuildContext context) =>
+      FocusScope.of(context).requestFocus(new FocusNode());
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ class BorderFrameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(10),
         margin: this.margin ?? EdgeInsets.zero,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),

@@ -230,8 +230,9 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
     pageBloc.loginEmailStream.listen((response) {
       if (!response.success) {
         showSnackBar(response.errorMessage);
-      }else{
-         showSnackBar('Login success', backgroundColor: AppColor.GREEN);
+      } else {
+        appBloc.setUserFunc(response.user);
+        Routes.routeToHomePage(context, response.user);
       }
     });
   }

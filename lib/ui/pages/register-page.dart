@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/register-bloc.dart';
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/constants.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
@@ -21,17 +22,26 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
   }
 
   Widget _buildItemRole(
-      BuildContext context, int value, int groupValue, String title) {
-    bool isSelected = groupValue == value;
+      BuildContext context, int value, List<int> groupValue, String title) {
+    bool isSelected = groupValue.contains(value);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Radio<int>(
+        Checkbox(
+          value: isSelected,
           activeColor: AppColor.GREEN,
-          value: value,
-          groupValue: groupValue,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          onChanged: (value) => pageBloc.changeRoleFunc(value),
+          onChanged: (isChecked) {
+            print(isChecked);
+            if (isChecked) {
+              groupValue.add(value);
+            } else {
+              groupValue.remove(value);
+            }
+            if (groupValue.length == 0) {
+              groupValue.add(Constants.TEAM_MEMBER);
+            }
+            pageBloc.changeRoleFunc(groupValue);
+          },
         ),
         Text(
           title,
@@ -162,17 +172,19 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                               SizedBox(
                                 height: 10,
                               ),
-                              StreamBuilder<int>(
+                              StreamBuilder<List<int>>(
                                 stream: pageBloc.changeRoleStream,
                                 builder: (c, snap) {
-                                  int groupValue = snap.hasData ? snap.data : 0;
+                                  var groupValue =
+                                      snap.hasData ? snap.data : [0];
+                                  print(groupValue);
                                   return Column(
                                     children: <Widget>[
-                                      _buildItemRole(context, 0, groupValue,
+                                      _buildItemRole(context, Constants.TEAM_MEMBER, groupValue,
                                           'Thành viên đội bóng'),
-                                      _buildItemRole(context, 1, groupValue,
-                                          'Đội trưởng đội bóng'),
-                                      _buildItemRole(context, 2, groupValue,
+                                      _buildItemRole(context, Constants.TEAM_MANAGER, groupValue,
+                                          'Quản lý đội bóng'),
+                                      _buildItemRole(context, Constants.GROUND_OWNER, groupValue,
                                           'Quản lý sân bóng'),
                                     ],
                                   );

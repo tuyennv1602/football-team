@@ -24,11 +24,11 @@ class ItemOptionWidget extends StatelessWidget {
             children: <Widget>[
               Image.asset(
                 image,
-                width: this.iconWidth ?? 35,
-                height: this.iconHeight ?? 35,
+                width: this.iconWidth ?? 40,
+                height: this.iconHeight ?? 40,
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
               Text(
                 this.title + '\n',

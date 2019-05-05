@@ -12,23 +12,34 @@ class AppPreference {
   static const String KEY_USER = 'user';
 
   Future<bool> setToken(String token) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString(ACCESS_TOKEN, token);
   }
 
   Future<String> getToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(ACCESS_TOKEN);
   }
 
+  Future<bool> clearToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove(ACCESS_TOKEN);
+  }
+
   Future<bool> setUser(User user) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString(KEY_USER, jsonEncode(user));
   }
 
   Future<User> getUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString(KEY_USER) == null) return null;
-    return User.fromJson(jsonDecode(prefs.getString(KEY_USER)));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userData = prefs.getString(KEY_USER);
+    if (userData == null) return null;
+    return User.fromJson(jsonDecode(userData));
+  }
+
+  Future<bool> clearUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove(KEY_USER);
   }
 }

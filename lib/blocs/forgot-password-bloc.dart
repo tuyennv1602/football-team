@@ -1,10 +1,10 @@
 import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/data/repositories/user-repository.dart';
+import 'package:myfootball/data/providers/user-provider.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ForgotPasswordBloc implements BaseBloc {
-  var _userRepository = UserRepository();
+  var _userProvider = UserApiProvider();
 
   final _loadingCtrl = PublishSubject<bool>();
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
@@ -30,7 +30,7 @@ class ForgotPasswordBloc implements BaseBloc {
   Function(bool) get submitEmailFunc => _submitEmailCtrl.add;
   Observable<BaseResponse> get submitEmailStream => Observable(_submitEmailCtrl)
       .flatMap((_) => Observable.fromFuture(
-              _userRepository.forgotPassword(_emailCtrl.value))
+              _userProvider.forgotPassword(_emailCtrl.value))
           .doOnListen(() => addLoadingFunc(true))
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((response) => Observable.just(response));
@@ -39,7 +39,7 @@ class ForgotPasswordBloc implements BaseBloc {
   Function(bool) get submitChangePassword => _submitChangePassword.add;
   Observable<BaseResponse> get submitChangePasswordStream =>
       Observable(_submitChangePassword)
-          .flatMap((_) => Observable.fromFuture(_userRepository.changePassword(
+          .flatMap((_) => Observable.fromFuture(_userProvider.changePassword(
                   _emailCtrl.value,
                   _passwordCtrl.value,
                   _confirmCodeCtrl.value))

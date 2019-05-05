@@ -4,6 +4,7 @@ import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
+import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login-page.dart';
@@ -32,24 +33,26 @@ void main() async {
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
   return runApp(BlocProvider<AppBloc>(
     bloc: AppBloc(),
-    child: MyApp(user == null),
+    child: MyApp(user),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final bool isLogined;
+  final User _user;
 
-  MyApp(this.isLogined);
+  MyApp(this._user);
 
   @override
   Widget build(BuildContext context) {
+    var appBloc = BlocProvider.of<AppBloc>(context);
+    appBloc.setUserFunc(_user);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           textTheme: Theme.of(context).textTheme.copyWith(
               title: TextStyle(
                   fontFamily: 'semi-bold',
-                  fontSize: 20,
+                  fontSize: 18,
                   letterSpacing: 0.1,
                   color: Colors.white),
               body1: TextStyle(
@@ -64,8 +67,8 @@ class MyApp extends StatelessWidget {
                   letterSpacing: 0.1,
                   color: Colors.black87)),
         ),
-        home: isLogined
-            ? HomePage()
+        home: _user != null
+            ? HomePage(_user)
             : BlocProvider<LoginBloc>(
                 bloc: LoginBloc(),
                 child: LoginPage(),

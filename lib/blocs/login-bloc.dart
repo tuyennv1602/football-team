@@ -1,11 +1,11 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
-import 'package:myfootball/data/repositories/user-repository.dart';
+import 'package:myfootball/data/providers/user-provider.dart';
 import 'package:myfootball/models/responses/login-response.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginBloc implements BaseBloc {
-  var _userRepository = UserRepository();
+  var _userProvider = UserApiProvider();
   var _appPref = AppPreference();
 
   final _loadingCtrl = PublishSubject<bool>();
@@ -23,7 +23,7 @@ class LoginBloc implements BaseBloc {
   final _submitLoginCtrl = PublishSubject<bool>();
   Function(bool) get submitLoginEmailFunc => _submitLoginCtrl.add;
   Observable<LoginResponse> get loginEmailStream => Observable(_submitLoginCtrl)
-      .flatMap((_) => Observable.fromFuture(_userRepository.loginWithEmail(
+      .flatMap((_) => Observable.fromFuture(_userProvider.loginWithEmail(
               _emailCtrl.value, _passwordCtrl.value))
           .doOnListen(() => addLoadingFunc(true))
           .doOnData((_) => addLoadingFunc(false)))
