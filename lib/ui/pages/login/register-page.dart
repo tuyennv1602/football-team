@@ -180,11 +180,20 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                                   print(groupValue);
                                   return Column(
                                     children: <Widget>[
-                                      _buildItemRole(context, Constants.TEAM_MEMBER, groupValue,
+                                      _buildItemRole(
+                                          context,
+                                          Constants.TEAM_MEMBER,
+                                          groupValue,
                                           'Thành viên đội bóng'),
-                                      _buildItemRole(context, Constants.TEAM_MANAGER, groupValue,
+                                      _buildItemRole(
+                                          context,
+                                          Constants.TEAM_MANAGER,
+                                          groupValue,
                                           'Quản lý đội bóng'),
-                                      _buildItemRole(context, Constants.GROUND_OWNER, groupValue,
+                                      _buildItemRole(
+                                          context,
+                                          Constants.GROUND_OWNER,
+                                          groupValue,
                                           'Quản lý sân bóng'),
                                     ],
                                   );
@@ -201,8 +210,8 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             onTap: () => Navigator.of(context).pop(),
                             borderRadius: 5,
                             margin: EdgeInsets.only(top: 30, bottom: 30),
-                            padding: EdgeInsets.only(
-                                left: 30, right: 30, top: 10, bottom: 10),
+                            width: 150,
+                            height: 40,
                             backgroundColor: Colors.grey,
                             child: Text(
                               'QUAY LẠI',
@@ -221,9 +230,9 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                               }
                             },
                             borderRadius: 5,
+                            width: 150,
+                            height: 40,
                             margin: EdgeInsets.only(top: 25, bottom: 25),
-                            padding: EdgeInsets.only(
-                                left: 30, right: 30, top: 10, bottom: 10),
                             backgroundColor: AppColor.GREEN,
                             child: Text(
                               'ĐĂNG KÝ',

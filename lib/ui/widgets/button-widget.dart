@@ -4,8 +4,9 @@ class ButtonWidget extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
   final EdgeInsets margin;
-  final EdgeInsets padding;
   final Function onTap;
+  final double width;
+  final double height;
   final double borderRadius;
 
   ButtonWidget(
@@ -13,12 +14,14 @@ class ButtonWidget extends StatelessWidget {
       @required this.onTap,
       this.backgroundColor,
       this.margin,
-      this.padding,
+      this.width,
+      this.height,
       this.borderRadius});
 
   @override
-  Widget build(BuildContext context) => FittedBox(
-      child: Container(
+  Widget build(BuildContext context) => Container(
+        width: width,
+        height: height,
         alignment: Alignment.center,
         margin: this.margin ?? EdgeInsets.zero,
         child: ClipRRect(
@@ -27,13 +30,12 @@ class ButtonWidget extends StatelessWidget {
             color: this.backgroundColor ?? Colors.white,
             child: InkWell(
               onTap: onTap,
-              child: Padding(
-                padding: this.padding ?? EdgeInsets.all(5),
+              child: Align(
+                alignment: Alignment.center,
                 child: this.child,
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
 }

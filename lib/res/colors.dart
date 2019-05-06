@@ -29,4 +29,18 @@ class AppColor {
     Color(0x0D000000),
     Color(0x00000000),
   ];
+
+  static const List<Color> DRESS_COLORS = [
+    Colors.red,
+    Colors.pink,
+    Colors.orange,
+    Colors.yellow,
+    Colors.green,
+    Colors.blue,
+    Colors.lime,
+    Colors.purple,
+    Colors.black,
+    Colors.grey,
+    Colors.white
+  ];
 }

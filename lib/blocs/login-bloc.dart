@@ -1,6 +1,7 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
 import 'package:myfootball/data/providers/user-provider.dart';
+import 'package:myfootball/models/header.dart';
 import 'package:myfootball/models/responses/login-response.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -34,6 +35,8 @@ class LoginBloc implements BaseBloc {
     if (response.success) {
       await _appPref.setToken(response.token);
       await _appPref.setUser(response.user);
+      await _appPref.setHeader(
+          Header(accessToken: response.token, userId: response.user.id));
     }
     return Future.value(response);
   }

@@ -68,8 +68,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                       },
                       borderRadius: 5,
                       margin: EdgeInsets.only(top: 15),
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, top: 7, bottom: 7),
+                      width: 100,
+                      height: 40,
                       backgroundColor: AppColor.GREEN,
                       child: Text(
                         'Đồng ý',
@@ -98,8 +98,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                     onTap: () => Navigator.of(context).pop(),
                     borderRadius: 5,
                     margin: EdgeInsets.only(top: 15),
-                    padding:
-                        EdgeInsets.only(left: 10, right: 10, top: 7, bottom: 7),
+                    width: 100,
+                    height: 40,
                     backgroundColor: Colors.grey,
                     child: Text(
                       'Huỷ',
@@ -116,8 +116,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                     },
                     borderRadius: 5,
                     margin: EdgeInsets.only(top: 15),
-                    padding:
-                        EdgeInsets.only(left: 10, right: 10, top: 7, bottom: 7),
+                    width: 100,
+                    height: 40,
                     backgroundColor: AppColor.GREEN,
                     child: Text(
                       'Đồng ý',

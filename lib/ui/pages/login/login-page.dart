@@ -132,6 +132,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                   Align(
                     alignment: Alignment.centerRight,
                     child: ButtonWidget(
+                      height: 40,
+                      width: 150,
                       onTap: () {
                         if (_formKey.currentState.validate()) {
                           pageBloc.submitLoginEmailFunc(true);
@@ -139,8 +141,6 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                       },
                       borderRadius: 5,
                       margin: EdgeInsets.only(top: 25, bottom: 25),
-                      padding: EdgeInsets.only(
-                          left: 30, right: 30, top: 10, bottom: 10),
                       backgroundColor: AppColor.GREEN,
                       child: Text(
                         'ĐĂNG NHẬP',

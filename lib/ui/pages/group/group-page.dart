@@ -4,6 +4,8 @@ import 'package:myfootball/models/type-user.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
+import 'package:myfootball/ui/routes/routes.dart';
+import 'package:myfootball/ui/widgets/app-bar-button.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 
 class GroupPage extends BasePage<GroupBloc> {
@@ -15,6 +17,14 @@ class GroupPage extends BasePage<GroupBloc> {
             style: Theme.of(context).textTheme.title,
           ),
         ),
+        leftContent: AppBarButtonWidget(
+          imageName: 'icn_request_member.png',
+          onTap: () {},
+        ),
+        rightContent: AppBarButtonWidget(
+          imageName: 'icn_add.png',
+          onTap: () => Routes.routeToCreateGroupPage(context),
+        ),
       );
 
   @override
@@ -22,13 +32,14 @@ class GroupPage extends BasePage<GroupBloc> {
 
   Widget _buildEmptyGroup(BuildContext context, User user) => Column(
         children: <Widget>[
-          (user.getRoleType() == USER_ROLE.TEAM_MANAGER || user.getRoleType() == USER_ROLE.ALL)
+          (user.getRoleType() == USER_ROLE.TEAM_MANAGER ||
+                  user.getRoleType() == USER_ROLE.ALL)
               ? Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       InkWell(
-                        onTap: () => print('create'),
+                        onTap: () => Routes.routeToCreateGroupPage(context),
                         child: Image.asset(
                           'assets/images/icn_add.png',
                           color: AppColor.GREEN,
@@ -40,11 +51,11 @@ class GroupPage extends BasePage<GroupBloc> {
                         height: 15,
                       ),
                       Text(
-                        'Tạo đội bóng',
+                        'Đăng ký đội bóng mới',
                         style: Theme.of(context)
                             .textTheme
-                            .body2
-                            .copyWith(fontFamily: 'semi-bold'),
+                            .title
+                            .copyWith(color: AppColor.MAIN_BLACK),
                       )
                     ],
                   ),
@@ -70,8 +81,8 @@ class GroupPage extends BasePage<GroupBloc> {
                   'Tham gia đội bóng',
                   style: Theme.of(context)
                       .textTheme
-                      .body2
-                      .copyWith(fontFamily: 'semi-bold'),
+                      .title
+                      .copyWith(color: AppColor.MAIN_BLACK),
                 )
               ],
             ),

@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cho phép FootballTeam truy cập thư viện để lấy ảnh avatar, logo</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Cho phép FootballTeam truy cập máy ảnh để lấy ảnh avatar, logo</string>
 </dict>
 </plist>

@@ -15,6 +15,7 @@ class InputWidget extends StatefulWidget {
   final OnValidator validator;
   final TextInputType inputType;
   final TextInputAction inputAction;
+  final int maxLines;
 
   InputWidget(
       {this.labelText,
@@ -25,6 +26,7 @@ class InputWidget extends StatefulWidget {
       this.inputAction,
       this.inputType,
       this.errorText,
+      this.maxLines,
       this.onSubmitText});
 
   @override
@@ -59,40 +61,42 @@ class InputState extends State<InputWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      autocorrect: false,
-      cursorColor: AppColor.GREEN,
-      cursorWidth: 1,
-      style: TextStyle(
-          fontFamily: 'regular',
-          fontSize: 16,
-          color: AppColor.MAIN_BLACK,
-          letterSpacing: 0.15),
-      initialValue: widget.initValue,
-      controller: _controller,
-      focusNode: _textFocus,
-      validator: widget.validator,
-      onFieldSubmitted: widget.onSubmitText,
-      obscureText: widget.obscureText ?? false,
-      keyboardType: widget.inputType ?? TextInputType.text,
-      textInputAction: widget.inputAction ?? TextInputAction.next,
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(width: 1, color: AppColor.LINE_COLOR),
+  Widget build(BuildContext context) => TextFormField(
+        autocorrect: false,
+        cursorColor: AppColor.GREEN,
+        cursorWidth: 1,
+        maxLines: widget.maxLines ?? 1,
+        style: TextStyle(
+            fontFamily: 'regular',
+            fontSize: 16,
+            color: AppColor.MAIN_BLACK,
+            letterSpacing: 0.15),
+        initialValue: widget.initValue,
+        controller: _controller,
+        focusNode: _textFocus,
+        validator: widget.validator,
+        onFieldSubmitted: widget.onSubmitText,
+        obscureText: widget.obscureText ?? false,
+        keyboardType: widget.inputType ?? TextInputType.text,
+        textInputAction: widget.inputAction ?? TextInputAction.next,
+        decoration: InputDecoration(
+          alignLabelWithHint: widget.maxLines != null,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(width: 1, color: AppColor.LINE_COLOR),
+          ),
+          errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.red)),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(width: 1, color: AppColor.GREEN),
+          ),
+          labelText: widget.labelText,
+          errorText: widget.errorText,
+          errorStyle:
+              TextStyle(fontFamily: 'regular', color: Colors.red, fontSize: 11),
+          labelStyle: TextStyle(
+              fontFamily: 'regular',
+              color: AppColor.SECOND_BLACK,
+              fontSize: 15),
         ),
-        errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.red)),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(width: 1, color: AppColor.GREEN),
-        ),
-        labelText: widget.labelText,
-        errorText: widget.errorText,
-        errorStyle:
-            TextStyle(fontFamily: 'regular', color: Colors.red, fontSize: 11),
-        labelStyle: TextStyle(
-            fontFamily: 'regular', color: AppColor.SECOND_BLACK, fontSize: 15),
-      ),
-    );
-  }
+      );
 }

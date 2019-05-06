@@ -3,10 +3,11 @@ class Group {
   int status;
   int createDate;
   int manager;
-  Null captain;
+  int captain;
   String name;
   String dress;
   String bio;
+  String logo;
   int countMember;
   int countRequest;
   double wallet;
@@ -18,6 +19,7 @@ class Group {
       this.manager,
       this.captain,
       this.name,
+      this.logo,
       this.dress,
       this.bio,
       this.countMember,
@@ -31,6 +33,7 @@ class Group {
     manager = json['manager'];
     captain = json['captain'];
     name = json['name'];
+    logo = json['logo'];
     dress = json['dress'];
     bio = json['bio'];
     countMember = json['countMember'];
@@ -46,6 +49,7 @@ class Group {
     data['manager'] = this.manager;
     data['captain'] = this.captain;
     data['name'] = this.name;
+    data['logo'] = this.logo;
     data['dress'] = this.dress;
     data['bio'] = this.bio;
     data['countMember'] = this.countMember;

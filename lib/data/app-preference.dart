@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:myfootball/models/header.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +11,7 @@ class AppPreference {
 
   static const String ACCESS_TOKEN = 'token';
   static const String KEY_USER = 'user';
+  static const String KEY_HEADER = 'header';
 
   Future<bool> setToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,5 +43,22 @@ class AppPreference {
   Future<bool> clearUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.remove(KEY_USER);
+  }
+
+  Future<bool> setHeader(Header header) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(KEY_HEADER, jsonEncode(header));
+  }
+
+  Future<Map<String, dynamic>> getHeader() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var header = prefs.getString(KEY_HEADER);
+    if (header == null) return null;
+    return Header.fromJson(jsonDecode(header)).toJson();
+  }
+
+  Future<bool> clearHeader() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove(KEY_HEADER);
   }
 }

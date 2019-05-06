@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:myfootball/data/api-config.dart';
+import 'package:myfootball/data/app-api.dart';
 import 'package:myfootball/http.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:myfootball/models/responses/login-response.dart';
@@ -15,8 +15,7 @@ class UserApiProvider {
         'email': email,
         'password': password,
       });
-      var response = await dio.get('${ApiConfig.HOST}/user/login',
-          queryParameters: formData);
+      var response = await AppApi.getApi('user/login', queryParams: formData);
       return LoginResponse.success(response.data);
     } on DioError catch (e) {
       return LoginResponse.error(e.message);
@@ -25,8 +24,8 @@ class UserApiProvider {
 
   Future<BaseResponse> forgotPassword(String email) async {
     try {
-      var response = await dio.post('${ApiConfig.HOST}/user/forgot-password',
-          data: {"email": email});
+      var response =
+          await dio.post('user/forgot-password', data: {"email": email});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -36,7 +35,7 @@ class UserApiProvider {
   Future<BaseResponse> register(String userName, String email, String password,
       String phoneNumber, List<int> roles) async {
     try {
-      var response = await dio.post('${ApiConfig.HOST}/user/register', data: {
+      var response = await dio.post('user/register', data: {
         "userName": userName,
         "email": email,
         "password": password,
@@ -52,7 +51,7 @@ class UserApiProvider {
   Future<BaseResponse> changePassword(
       String email, String password, String code) async {
     try {
-      var response = await dio.post('${ApiConfig.HOST}/user/change-password',
+      var response = await dio.post('user/change-password',
           data: {"email": email, "password": password, "code": code});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {

@@ -156,9 +156,9 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                       ButtonWidget(
                         onTap: () => Navigator.of(context).pop(),
                         borderRadius: 5,
+                        width: 150,
+                        height: 40,
                         margin: EdgeInsets.only(top: 30, bottom: 30),
-                        padding: EdgeInsets.only(
-                            left: 30, right: 30, top: 10, bottom: 10),
                         backgroundColor: Colors.grey,
                         child: Text(
                           'QUAY LẠI',
@@ -175,9 +175,9 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                           }
                         },
                         borderRadius: 5,
+                        width: 150,
+                        height: 40,
                         margin: EdgeInsets.only(top: 25, bottom: 25),
-                        padding: EdgeInsets.only(
-                            left: 30, right: 30, top: 10, bottom: 10),
                         backgroundColor: AppColor.GREEN,
                         child: Text(
                           'XÁC NHẬN',

@@ -5,9 +5,8 @@ import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
 import 'package:myfootball/models/user.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
-import 'package:myfootball/ui/pages/login-page.dart';
+import 'package:myfootball/ui/pages/login/login-page.dart';
 import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/foundation.dart';
@@ -49,6 +48,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          canvasColor: Colors.transparent,
           textTheme: Theme.of(context).textTheme.copyWith(
               title: TextStyle(
                   fontFamily: 'semi-bold',

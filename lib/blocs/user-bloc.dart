@@ -20,7 +20,8 @@ class UserBloc implements BaseBloc {
   Future<bool> _logout() async {
     var token = await _appPref.clearToken();
     var user = await _appPref.clearUser();
-    return Future.value(token && user);
+    var header = await _appPref.clearHeader();
+    return Future.value(token && user && header);
   }
 
   @override

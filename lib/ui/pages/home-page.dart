@@ -11,11 +11,11 @@ import 'package:myfootball/models/type-user.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/chat-page.dart';
-import 'package:myfootball/ui/pages/ground-page.dart';
-import 'package:myfootball/ui/pages/group-page.dart';
-import 'package:myfootball/ui/pages/noti-page.dart';
+import 'package:myfootball/ui/pages/ground/ground-page.dart';
+import 'package:myfootball/ui/pages/group/group-page.dart';
+import 'package:myfootball/ui/pages/notify/noti-page.dart';
 import 'package:myfootball/ui/pages/social-page.dart';
-import 'package:myfootball/ui/pages/user-page.dart';
+import 'package:myfootball/ui/pages/user/user-page.dart';
 
 class HomePage extends StatelessWidget {
   USER_ROLE _roleType;
@@ -101,6 +101,7 @@ class HomePage extends StatelessWidget {
       tabBar: CupertinoTabBar(
         activeColor: AppColor.GREEN,
         items: tabBarItems,
+        currentIndex: 2,
       ),
       tabBuilder: (BuildContext context, int index) {
         if (index == 0)
