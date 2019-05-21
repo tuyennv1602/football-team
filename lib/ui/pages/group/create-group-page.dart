@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/choose-image.dart';
 import 'package:myfootball/ui/widgets/input-widget.dart';
+import 'package:myfootball/utils/device-util.dart';
 import 'package:myfootball/utils/validator.dart';
 
 class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
@@ -165,10 +166,10 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
         ),
         SizedBox(
           height: 45,
-          width: MediaQuery.of(context).size.width,
+          width: DeviceUtil.getWidth(context),
           child: Swiper(
             physics: BouncingScrollPhysics(),
-            viewportFraction: 45 / (MediaQuery.of(context).size.width - 20),
+            viewportFraction: 45 / (DeviceUtil.getWidth(context) - 20),
             scale: 0.1,
             onIndexChanged: (index) =>
                 pageBloc.chooseDressFunc(AppColor.DRESS_COLORS[index]),

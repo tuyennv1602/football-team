@@ -4,6 +4,7 @@ import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/utils/device-util.dart';
 
 abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -164,39 +165,38 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
     }
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: AppColor.WHITE,
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: resizeAvoidPadding() ?? true,
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Stack(
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                (showFullScreen() == null || !showFullScreen())
-                    ? Container(
-                        height: MediaQuery.of(context).padding.top,
-                        color: AppColor.GREEN,
-                      )
-                    : SizedBox(),
-                buildAppBar(context) ?? SizedBox(),
-                Expanded(
+      body: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              (showFullScreen() == null || !showFullScreen())
+                  ? Container(
+                      height: DeviceUtil.getPaddingTop(context),
+                      color: AppColor.GREEN,
+                    )
+                  : SizedBox(),
+              buildAppBar(context) ?? SizedBox(),
+              Expanded(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => hideKeyBoard(context),
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: DeviceUtil.getWidth(context),
                     child: buildMainContainer(context),
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).padding.bottom,
-                )
-              ],
-            ),
-            buildLoading(context) ?? SizedBox()
-          ],
-        ),
+              ),
+              SizedBox(
+                height: DeviceUtil.getPaddingBottom(context),
+              )
+            ],
+          ),
+          buildLoading(context) ?? SizedBox()
+        ],
       ),
     );
   }

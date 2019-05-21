@@ -108,48 +108,46 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                             onChangedText: (text) =>
                                 pageBloc.changePasswordFunc(text),
                           ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: ButtonWidget(
-                              margin: EdgeInsets.only(top: 10),
-                              onTap: () =>
-                                  Routes.routeToForgotPasswordPage(context),
-                              child: Text(
-                                'Quên mật khẩu?',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .body1
-                                    .copyWith(
-                                        fontFamily: 'semi-bold',
-                                        color: AppColor.GREEN),
-                              ),
-                            ),
+                          SizedBox(
+                            height: 10,
                           )
                         ],
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ButtonWidget(
-                      height: 40,
-                      width: 150,
-                      onTap: () {
-                        if (_formKey.currentState.validate()) {
-                          pageBloc.submitLoginEmailFunc(true);
-                        }
-                      },
-                      borderRadius: 5,
-                      margin: EdgeInsets.only(top: 25, bottom: 25),
-                      backgroundColor: AppColor.GREEN,
-                      child: Text(
-                        'ĐĂNG NHẬP',
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(color: Colors.white),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      ButtonWidget(
+                        backgroundColor: AppColor.WHITE,
+                        onTap: () => Routes.routeToForgotPasswordPage(context),
+                        child: Text(
+                          'Quên mật khẩu?',
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                              fontFamily: 'semi-bold', color: AppColor.GREEN),
+                        ),
                       ),
-                    ),
+                      ButtonWidget(
+                        height: 40,
+                        width: 150,
+                        onTap: () {
+                          if (_formKey.currentState.validate()) {
+                            pageBloc.submitLoginEmailFunc(true);
+                          }
+                        },
+                        borderRadius: 5,
+                        margin: EdgeInsets.only(top: 30, bottom: 30),
+                        backgroundColor: AppColor.GREEN,
+                        child: Text(
+                          'ĐĂNG NHẬP',
+                          style: Theme.of(context)
+                              .textTheme
+                              .body2
+                              .copyWith(color: Colors.white),
+                        ),
+                      )
+                    ],
                   ),
                   Row(
                     children: <Widget>[
@@ -176,7 +174,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

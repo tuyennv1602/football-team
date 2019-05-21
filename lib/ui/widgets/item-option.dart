@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 
 class ItemOptionWidget extends StatelessWidget {
   final String image;
@@ -15,7 +16,7 @@ class ItemOptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Material(
-        color: Colors.white,
+        color: AppColor.GREY_BACKGROUND,
         child: InkWell(
           onTap: onTap,
           child: Column(

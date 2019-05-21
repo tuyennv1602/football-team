@@ -15,9 +15,9 @@ class AppApi {
   }
 
   static Future<Response<dynamic>> postApi(String endPoint,
-      {FormData queryParams}) async {
+      {dynamic body}) async {
     var header = await _appPref.getHeader();
-    return await dio.get('$HOST/$endPoint',
-        queryParameters: queryParams, options: Options(headers: header));
+    return await dio.post('$HOST/$endPoint',
+        data: body, options: Options(headers: header));
   }
 }

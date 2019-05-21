@@ -12,13 +12,15 @@ class AppBarButtonWidget extends StatelessWidget {
     return Container(
       height: 50,
       width: 50,
-      padding: EdgeInsets.all(this.padding ?? 15),
       child: (imageName != null && onTap != null)
           ? InkWell(
               onTap: onTap,
-              child: Image.asset(
-                'assets/images/$imageName',
-                color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(this.padding ?? 15),
+                child: Image.asset(
+                  'assets/images/$imageName',
+                  color: Colors.white,
+                ),
               ),
             )
           : SizedBox(),

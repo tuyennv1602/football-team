@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 
 class BorderFrameWidget extends StatelessWidget {
   final EdgeInsets margin;
@@ -14,7 +15,7 @@ class BorderFrameWidget extends StatelessWidget {
         margin: this.margin ?? EdgeInsets.zero,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
-            color: backgroundColor ?? Colors.white),
+            color: backgroundColor ?? AppColor.GREY_BACKGROUND),
         child: this.child,
       );
 }
