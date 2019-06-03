@@ -18,11 +18,13 @@ class GroupPage extends BasePage<GroupBloc> {
           ),
         ),
         leftContent: AppBarButtonWidget(
-          imageName: 'icn_request_member.png',
+          padding: 12,
+          imageName: 'icn_add_request.png',
           onTap: () {},
         ),
         rightContent: AppBarButtonWidget(
-          imageName: 'icn_add.png',
+          padding: 12,
+          imageName: 'icn_add_group.png',
           onTap: () => Routes.routeToCreateGroupPage(context),
         ),
       );
@@ -41,7 +43,7 @@ class GroupPage extends BasePage<GroupBloc> {
                       InkWell(
                         onTap: () => Routes.routeToCreateGroupPage(context),
                         child: Image.asset(
-                          'assets/images/icn_add.png',
+                          'assets/images/icn_add_group.png',
                           color: AppColor.GREEN,
                           width: 50,
                           height: 50,
@@ -68,7 +70,7 @@ class GroupPage extends BasePage<GroupBloc> {
                 InkWell(
                   onTap: () => print('create'),
                   child: Image.asset(
-                    'assets/images/icn_request_member.png',
+                    'assets/images/icn_add_request.png',
                     color: AppColor.GREEN,
                     width: 50,
                     height: 50,

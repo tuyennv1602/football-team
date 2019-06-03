@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/choose-image.dart';
 import 'package:myfootball/ui/widgets/input-widget.dart';
+import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/device-util.dart';
 import 'package:myfootball/utils/validator.dart';
 
@@ -33,9 +34,15 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
       );
 
   @override
-  Widget buildLoading(BuildContext context) {
-    return null;
-  }
+  Widget buildLoading(BuildContext context) => StreamBuilder<bool>(
+        stream: pageBloc.loadingStream,
+        builder: (c, snap) {
+          bool isLoading = snap.hasData && snap.data;
+          return LoadingWidget(
+            show: isLoading,
+          );
+        },
+      );
 
   _showChooseImage(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -69,7 +76,6 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
   @override
   Widget buildMainContainer(BuildContext context) {
     return ListView(
-      shrinkWrap: true,
       padding: EdgeInsets.all(10),
       physics: BouncingScrollPhysics(),
       children: <Widget>[
@@ -208,7 +214,15 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
   void listenAppData(BuildContext context) {}
 
   @override
-  void listenPageData(BuildContext context) {}
+  void listenPageData(BuildContext context) {
+    pageBloc.submitRegisterStream.listen((res) {
+      if(!res.success){
+        showSnackBar(res.errorMessage);
+      }else{
+        showSnackBar('Uploaded', backgroundColor: AppColor.GREEN);
+      }
+    });
+  }
 
   @override
   bool resizeAvoidPadding() => true;

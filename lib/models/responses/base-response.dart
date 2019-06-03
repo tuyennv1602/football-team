@@ -4,6 +4,8 @@ class BaseResponse {
   String errorCode;
   bool success;
 
+  BaseResponse({this.success, this.errorMessage});
+
   BaseResponse.success(Map<String, dynamic> json) {
     token = json['token'];
     errorMessage = json['errorMessage'];

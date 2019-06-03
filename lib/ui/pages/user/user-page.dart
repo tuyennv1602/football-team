@@ -37,7 +37,7 @@ class UserPage extends BasePage<UserBloc> {
   Widget buildMainContainer(BuildContext context) => Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(bottom: 15),
+            padding: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
@@ -67,7 +67,7 @@ class UserPage extends BasePage<UserBloc> {
             child: ListView(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(10),
               children: <Widget>[
                 BorderFrameWidget(
                   child: Row(
@@ -82,7 +82,7 @@ class UserPage extends BasePage<UserBloc> {
                         ),
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       StreamBuilder<User>(
                         stream: appBloc.userStream,
@@ -101,7 +101,7 @@ class UserPage extends BasePage<UserBloc> {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 BorderFrameWidget(
                   child: GridView.count(

@@ -21,13 +21,13 @@ class ChooseImageWidget extends StatelessWidget {
               this.onTapGallery();
               Navigator.of(context).pop();
             },
-            backgroundColor: AppColor.GREEN,
+            backgroundColor: AppColor.WHITE,
             height: 42,
             width: MediaQuery.of(context).size.width,
             borderRadius: 21,
             child: Text(
               'Chọn từ thư viện',
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.body2,
             ),
           ),
           Container(
@@ -39,13 +39,13 @@ class ChooseImageWidget extends StatelessWidget {
               this.onTapCamera();
               Navigator.of(context).pop();
             },
-            backgroundColor: AppColor.GREEN,
+            backgroundColor: AppColor.WHITE,
             height: 42,
             width: MediaQuery.of(context).size.width,
             borderRadius: 21,
             child: Text(
               'Chọn từ máy ảnh',
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.body2,
             ),
           ),
           Container(
@@ -54,13 +54,13 @@ class ChooseImageWidget extends StatelessWidget {
           ),
           ButtonWidget(
             onTap: () => Navigator.of(context).pop(),
-            backgroundColor: AppColor.GREEN,
+            backgroundColor: AppColor.RED,
             height: 42,
             width: MediaQuery.of(context).size.width,
             borderRadius: 21,
             child: Text(
               'Huỷ',
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.body2.copyWith(color: AppColor.WHITE),
             ),
           ),
         ],

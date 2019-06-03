@@ -101,7 +101,7 @@ class HomePage extends StatelessWidget {
       tabBar: CupertinoTabBar(
         activeColor: AppColor.GREEN,
         items: tabBarItems,
-        currentIndex: 0,
+        currentIndex: 2,
       ),
       tabBuilder: (BuildContext context, int index) {
         if (index == 0)
