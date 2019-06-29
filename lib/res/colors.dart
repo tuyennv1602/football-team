@@ -44,4 +44,13 @@ class AppColor {
     Colors.grey,
     Colors.white
   ];
+
+  static String getColorValue(String color) {
+    return color.split('(0x')[1].split(')')[0];
+  }
+
+  static Color parseColor(String code) {
+    int value = int.parse(code, radix: 16);
+    return Color(value);
+  }
 }

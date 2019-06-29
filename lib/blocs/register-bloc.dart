@@ -1,10 +1,10 @@
 import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/data/providers/user-provider.dart';
+import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RegisterBloc implements BaseBloc {
-  var _userProvider = UserApiProvider();
+  var _userRepo = UserRepository();
 
   final _loadingCtrl = PublishSubject<bool>();
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
@@ -24,8 +24,7 @@ class RegisterBloc implements BaseBloc {
 
   final _phonenumberCtrl = BehaviorSubject<String>();
   Function(String) get changePhoneNumberFunc => _phonenumberCtrl.add;
-  Observable<String> get changePhoneNumberStream =>
-      Observable(_phonenumberCtrl);
+  Observable<String> get changePhoneNumberStream => Observable(_phonenumberCtrl);
 
   final _roleCtrl = BehaviorSubject<List<int>>(seedValue: [0]);
   Function(List<int>) get changeRoleFunc => _roleCtrl.add;
@@ -34,12 +33,8 @@ class RegisterBloc implements BaseBloc {
   final _submitRegisterCtrl = BehaviorSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
   Observable<BaseResponse> get registerStream => Observable(_submitRegisterCtrl)
-      .flatMap((_) => Observable.fromFuture(_userProvider.register(
-              _userNameCtrl.value,
-              _emailCtrl.value,
-              _passwordCtrl.value,
-              _phonenumberCtrl.value,
-              _roleCtrl.value))
+      .flatMap((_) => Observable.fromFuture(_userRepo.register(_userNameCtrl.value,
+              _emailCtrl.value, _passwordCtrl.value, _phonenumberCtrl.value, _roleCtrl.value))
           .doOnListen(() => addLoadingFunc(true))
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((res) => Observable.just(res));

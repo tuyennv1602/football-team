@@ -3,13 +3,14 @@ import 'package:myfootball/data/app-api.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:myfootball/models/responses/login-response.dart';
 
-class UserApiProvider {
-  static final UserApiProvider _instance = UserApiProvider.internal();
-  factory UserApiProvider() => _instance;
-  UserApiProvider.internal();
+class UserProvider {
+  static final UserProvider _instance = UserProvider.internal();
+  factory UserProvider() => _instance;
+  UserProvider.internal();
 
   Future<LoginResponse> loginWithEmail(String email, String password) async {
     try {
+      // for param
       FormData formData = new FormData.from({
         'email': email,
         'password': password,
@@ -34,6 +35,7 @@ class UserApiProvider {
   Future<BaseResponse> register(String userName, String email, String password,
       String phoneNumber, List<int> roles) async {
     try {
+      // for body
       var response = await AppApi.postApi('user/register', body: {
         "userName": userName,
         "email": email,

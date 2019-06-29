@@ -1,7 +1,6 @@
 class Group {
   int id;
   int status;
-  int createDate;
   int manager;
   int captain;
   String name;
@@ -12,24 +11,11 @@ class Group {
   int countRequest;
   double wallet;
 
-  Group(
-      {this.id,
-      this.status,
-      this.createDate,
-      this.manager,
-      this.captain,
-      this.name,
-      this.logo,
-      this.dress,
-      this.bio,
-      this.countMember,
-      this.countRequest,
-      this.wallet});
+  Group({this.manager, this.name, this.logo, this.dress, this.bio});
 
   Group.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
-    createDate = json['createDate'];
     manager = json['manager'];
     captain = json['captain'];
     name = json['name'];
@@ -45,7 +31,6 @@ class Group {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['status'] = this.status;
-    data['createDate'] = this.createDate;
     data['manager'] = this.manager;
     data['captain'] = this.captain;
     data['name'] = this.name;

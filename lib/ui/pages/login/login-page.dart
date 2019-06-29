@@ -32,9 +32,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15),
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/bg_login.jpg'),
-              fit: BoxFit.fill)),
+          image:
+              DecorationImage(image: AssetImage('assets/images/bg_login.jpg'), fit: BoxFit.fill)),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -71,9 +70,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)),
+                    decoration:
+                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -81,32 +79,28 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         children: <Widget>[
                           Text(
                             'Đăng nhập',
-                            style: Theme.of(context).textTheme.title.copyWith(
-                                fontSize: 20,
-                                color: AppColor.GREEN,
-                                fontFamily: 'bold'),
+                            style: Theme.of(context)
+                                .textTheme
+                                .title
+                                .copyWith(fontSize: 20, color: AppColor.GREEN, fontFamily: 'bold'),
                           ),
                           InputWidget(
                             validator: (value) {
                               if (value.isEmpty) return 'Vui lòng nhập email';
-                              if (!validEmail(value))
-                                return 'Email không hợp lệ';
+                              if (!validEmail(value)) return 'Email không hợp lệ';
                             },
                             labelText: 'Email',
-                            onChangedText: (text) =>
-                                pageBloc.changeEmailFunc(text),
+                            onChangedText: (text) => pageBloc.changeEmailFunc(text),
                           ),
                           InputWidget(
                             validator: (value) {
-                              if (value.isEmpty)
-                                return 'Vui lòng nhập mật khẩu';
+                              if (value.isEmpty) return 'Vui lòng nhập mật khẩu';
                               if (!validPassword(value))
                                 return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
                             },
                             labelText: 'Mật khẩu',
                             obscureText: true,
-                            onChangedText: (text) =>
-                                pageBloc.changePasswordFunc(text),
+                            onChangedText: (text) => pageBloc.changePasswordFunc(text),
                           ),
                           SizedBox(
                             height: 10,
@@ -124,8 +118,10 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         onTap: () => Routes.routeToForgotPasswordPage(context),
                         child: Text(
                           'Quên mật khẩu?',
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                              fontFamily: 'semi-bold', color: AppColor.GREEN),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(fontFamily: 'semi-bold', color: AppColor.GREEN),
                         ),
                       ),
                       ButtonWidget(
@@ -141,10 +137,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         backgroundColor: AppColor.GREEN,
                         child: Text(
                           'ĐĂNG NHẬP',
-                          style: Theme.of(context)
-                              .textTheme
-                              .body2
-                              .copyWith(color: Colors.white),
+                          style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                         ),
                       )
                     ],
@@ -161,8 +154,10 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Text(
                           'Đăng nhập qua',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                              fontFamily: 'semi-bold', color: Colors.grey),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body2
+                              .copyWith(fontFamily: 'semi-bold', color: Colors.grey),
                         ),
                       ),
                       Expanded(
@@ -181,8 +176,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                     children: <Widget>[
                       IconButton(
                         iconSize: 45,
-                        onPressed: () => showConfirmDialog(
-                            context, "data.errorMessage",
+                        onPressed: () => showConfirmDialog(context, "data.errorMessage",
                             onConfirmed: () => Navigator.of(context).pop()),
                         icon: Image.asset('assets/images/icn_facebook.png'),
                       ),
@@ -199,19 +193,14 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         text: TextSpan(
                             text: 'Bạn chưa có tài khoản? ',
                             style: TextStyle(
-                                fontFamily: 'semi-bold',
-                                color: AppColor.MAIN_BLACK,
-                                fontSize: 16),
+                                fontFamily: 'semi-bold', color: AppColor.MAIN_BLACK, fontSize: 16),
                             children: <TextSpan>[
                               TextSpan(
                                   text: 'Đăng ký ngay',
                                   style: TextStyle(
-                                      fontFamily: 'semi-bold',
-                                      color: AppColor.GREEN,
-                                      fontSize: 16),
+                                      fontFamily: 'semi-bold', color: AppColor.GREEN, fontSize: 16),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () =>
-                                        Routes.routeToRegisterPage(context)),
+                                    ..onTap = () => Routes.routeToRegisterPage(context)),
                             ]),
                       ),
                     ),
@@ -229,7 +218,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
       if (!response.success) {
         showSnackBar(response.errorMessage);
       } else {
-        appBloc.setUserFunc(response.user);
+        appBloc.updateUser();
         Routes.routeToHomePage(context, response.user);
       }
     });

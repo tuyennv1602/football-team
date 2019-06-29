@@ -48,13 +48,11 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
         context: context,
         builder: (c) => ChooseImageWidget(
               onTapCamera: () async {
-                var image =
-                    await ImagePicker.pickImage(source: ImageSource.camera);
+                var image = await ImagePicker.pickImage(source: ImageSource.camera);
                 pageBloc.chooseLogoFunc(image);
               },
               onTapGallery: () async {
-                var image =
-                    await ImagePicker.pickImage(source: ImageSource.gallery);
+                var image = await ImagePicker.pickImage(source: ImageSource.gallery);
                 pageBloc.chooseLogoFunc(image);
               },
             ),
@@ -84,8 +82,7 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
           child: Container(
             height: 120,
             width: 120,
-            decoration: BoxDecoration(
-                border: Border.all(color: AppColor.LINE_COLOR, width: 1)),
+            decoration: BoxDecoration(border: Border.all(color: AppColor.LINE_COLOR, width: 1)),
             child: InkWell(
               onTap: () => _showChooseImage(context),
               child: StreamBuilder<File>(
@@ -108,8 +105,10 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
                       ),
                       Text(
                         'Logo',
-                        style: Theme.of(context).textTheme.body2.copyWith(
-                            fontFamily: 'semi-bold', color: Colors.grey),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(fontFamily: 'semi-bold', color: Colors.grey),
                       )
                     ],
                   );
@@ -150,10 +149,7 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
         ),
         Text(
           'Màu áo',
-          style: Theme.of(context)
-              .textTheme
-              .body2
-              .copyWith(color: AppColor.SECOND_BLACK),
+          style: Theme.of(context).textTheme.body2.copyWith(color: AppColor.SECOND_BLACK),
         ),
         Align(
           alignment: Alignment.center,
@@ -177,8 +173,7 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
             physics: BouncingScrollPhysics(),
             viewportFraction: 45 / (DeviceUtil.getWidth(context) - 20),
             scale: 0.1,
-            onIndexChanged: (index) =>
-                pageBloc.chooseDressFunc(AppColor.DRESS_COLORS[index]),
+            onIndexChanged: (index) => pageBloc.chooseDressFunc(AppColor.DRESS_COLORS[index]),
             itemBuilder: (BuildContext context, int index) =>
                 _buildItemColor(context, AppColor.DRESS_COLORS[index]),
             itemCount: AppColor.DRESS_COLORS.length,
@@ -199,10 +194,7 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
             backgroundColor: AppColor.GREEN,
             child: Text(
               'ĐĂNG KÝ',
-              style: Theme.of(context)
-                  .textTheme
-                  .body2
-                  .copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
             ),
           ),
         )
@@ -216,10 +208,12 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
   @override
   void listenPageData(BuildContext context) {
     pageBloc.submitRegisterStream.listen((res) {
-      if(!res.success){
+      if (!res.success) {
         showSnackBar(res.errorMessage);
-      }else{
-        showSnackBar('Uploaded', backgroundColor: AppColor.GREEN);
+      } else {
+        appBloc.updateUser();
+        showSimpleDialog(context, 'Tạo đội bóng thành công',
+            onTap: () => Navigator.of(context).pop());
       }
     });
   }

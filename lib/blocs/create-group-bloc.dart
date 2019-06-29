@@ -3,12 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
+import 'package:myfootball/data/repositories/group-repository.dart';
+import 'package:myfootball/models/group.dart';
 import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/models/responses/create-group-response.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class CreateGroupBloc implements BaseBloc {
   final _loadingCtrl = PublishSubject<bool>();
+  final GroupReposiroty _groupReposiroty = GroupReposiroty();
+  final _appPref = AppPreference();
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
   Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
@@ -30,30 +36,42 @@ class CreateGroupBloc implements BaseBloc {
 
   final _submitRegisterCtrl = BehaviorSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
-  Observable<BaseResponse> get submitRegisterStream =>
-      Observable(_submitRegisterCtrl)
-          .flatMap((_) =>
-              Observable.fromFuture(uploadImage(_chooseLogoCtrl.value))
-                  .doOnListen(() => addLoadingFunc(true))
-                  .doOnData((link) {
-                if (link == null) {
-                  addLoadingFunc(false);
-                  return Observable.just(BaseResponse(
-                      success: false,
-                      errorMessage: "Error while upload group logo"));
-                } else {
-                  return Observable.just(link);
-                }
-              }))
-          .flatMap((imageLink) => Observable.just(BaseResponse(success: true)));
+  Observable<CreateGroupResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
+      .flatMap((_) => Observable.fromFuture(uploadImage(_chooseLogoCtrl.value))
+              .doOnListen(() => addLoadingFunc(true))
+              .doOnData((link) {
+            if (link == null) {
+              addLoadingFunc(false);
+              return Observable.just(
+                  BaseResponse(success: false, errorMessage: "Error while upload group logo"));
+            } else {
+              return Observable.just(link);
+            }
+          }))
+      .flatMap((imageLink) => Observable.fromFuture(_groupReposiroty.createGroup(Group(
+              name: _nameCtrl.value,
+              bio: _bioCtrl.value,
+              dress: AppColor.getColorValue(_chooseDressCtrl.value.toString()),
+              logo: imageLink)))
+          .doOnListen(() => print("listen create"))
+          .doOnData((onData) => addLoadingFunc(false)))
+      .flatMap((response) => Observable.fromFuture(_handleSuccess(response)))
+      .flatMap((response) => Observable.just(response));
+
+  Future<CreateGroupResponse> _handleSuccess(CreateGroupResponse response) async {
+    if (response.success) {
+      var user = await _appPref.getUser();
+      user.addGroup(response.group);
+      await _appPref.setUser(user);
+    }
+    return Future.value(response);
+  }
 
   Future<String> uploadImage(File image) async {
+    if (image == null) return null;
     var user = await AppPreference().getUser();
-    DateTime _now = DateTime.now();
-    StorageReference storageRef = FirebaseStorage.instance
-        .ref()
-        .child("groups")
-        .child('${user.id}-${_now.toString()}');
+    StorageReference storageRef =
+        FirebaseStorage.instance.ref().child("groups").child('leader-${user.id}');
     StorageUploadTask uploadTask = storageRef.putFile(image);
     StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
     if (uploadTask.isSuccessful) {
@@ -65,6 +83,7 @@ class CreateGroupBloc implements BaseBloc {
 
   @override
   void dispose() {
+    _loadingCtrl.close();
     _chooseLogoCtrl.close();
     _chooseDressCtrl.close();
     _nameCtrl.close();

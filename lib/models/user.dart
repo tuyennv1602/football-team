@@ -9,7 +9,6 @@ class User {
   String avatar;
   String email;
   String phone;
-  int createDate;
   List<Role> roles;
   List<Group> groups;
   double wallet;
@@ -20,7 +19,6 @@ class User {
       this.avatar,
       this.email,
       this.phone,
-      this.createDate,
       this.roles,
       this.groups,
       this.wallet});
@@ -31,7 +29,6 @@ class User {
     avatar = json['avatar'];
     email = json['email'];
     phone = json['phone'];
-    createDate = json['createDate'];
     if (json['roleList'] != null) {
       roles = new List<Role>();
       json['roleList'].forEach((v) {
@@ -54,7 +51,6 @@ class User {
     data['avatar'] = this.avatar;
     data['email'] = this.email;
     data['phone'] = this.phone;
-    data['createDate'] = this.createDate;
     if (this.roles != null) {
       data['roleList'] = this.roles.map((v) => v.toJson()).toList();
     }
@@ -77,5 +73,11 @@ class User {
     } else {
       return USER_ROLE.ALL;
     }
+  }
+
+  List<Group> addGroup(Group group) {
+    if (groups == null) return [];
+    groups.add(group);
+    return groups;
   }
 }

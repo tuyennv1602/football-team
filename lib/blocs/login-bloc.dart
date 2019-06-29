@@ -1,12 +1,12 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
-import 'package:myfootball/data/providers/user-provider.dart';
+import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/header.dart';
 import 'package:myfootball/models/responses/login-response.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginBloc implements BaseBloc {
-  var _userProvider = UserApiProvider();
+  var _userRepo = UserRepository();
   var _appPref = AppPreference();
 
   final _loadingCtrl = PublishSubject<bool>();
@@ -24,10 +24,10 @@ class LoginBloc implements BaseBloc {
   final _submitLoginCtrl = PublishSubject<bool>();
   Function(bool) get submitLoginEmailFunc => _submitLoginCtrl.add;
   Observable<LoginResponse> get loginEmailStream => Observable(_submitLoginCtrl)
-      .flatMap((_) => Observable.fromFuture(_userProvider.loginWithEmail(
-              _emailCtrl.value, _passwordCtrl.value))
-          .doOnListen(() => addLoadingFunc(true))
-          .doOnData((_) => addLoadingFunc(false)))
+      .flatMap((_) =>
+          Observable.fromFuture(_userRepo.loginWithEmail(_emailCtrl.value, _passwordCtrl.value))
+              .doOnListen(() => addLoadingFunc(true))
+              .doOnData((_) => addLoadingFunc(false)))
       .flatMap((res) => Observable.fromFuture(_handleLogin(res)))
       .flatMap((res) => Observable.just(res));
 
@@ -35,8 +35,7 @@ class LoginBloc implements BaseBloc {
     if (response.success) {
       await _appPref.setToken(response.token);
       await _appPref.setUser(response.user);
-      await _appPref.setHeader(
-          Header(accessToken: response.token, userId: response.user.id));
+      await _appPref.setHeader(Header(accessToken: response.token, userId: response.user.id));
     }
     return Future.value(response);
   }
