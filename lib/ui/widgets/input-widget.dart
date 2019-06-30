@@ -16,6 +16,7 @@ class InputWidget extends StatefulWidget {
   final TextInputType inputType;
   final TextInputAction inputAction;
   final int maxLines;
+  final int maxLength;
 
   InputWidget(
       {this.labelText,
@@ -27,6 +28,7 @@ class InputWidget extends StatefulWidget {
       this.inputType,
       this.errorText,
       this.maxLines,
+      this.maxLength,
       this.onSubmitText});
 
   @override
@@ -65,12 +67,10 @@ class InputState extends State<InputWidget> {
         autocorrect: false,
         cursorColor: AppColor.GREEN,
         cursorWidth: 1,
+        maxLength: widget.maxLength ?? 150,
         maxLines: widget.maxLines ?? 1,
         style: TextStyle(
-            fontFamily: 'regular',
-            fontSize: 16,
-            color: AppColor.MAIN_BLACK,
-            letterSpacing: 0.15),
+            fontFamily: 'regular', fontSize: 16, color: AppColor.MAIN_BLACK, letterSpacing: 0.15),
         initialValue: widget.initValue,
         controller: _controller,
         focusNode: _textFocus,
@@ -84,19 +84,15 @@ class InputState extends State<InputWidget> {
           border: UnderlineInputBorder(
             borderSide: BorderSide(width: 1, color: AppColor.LINE_COLOR),
           ),
-          errorBorder: UnderlineInputBorder(
-              borderSide: BorderSide(width: 1, color: Colors.red)),
+          errorBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.red)),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(width: 1, color: AppColor.GREEN),
           ),
           labelText: widget.labelText,
           errorText: widget.errorText,
-          errorStyle:
-              TextStyle(fontFamily: 'regular', color: Colors.red, fontSize: 11),
-          labelStyle: TextStyle(
-              fontFamily: 'regular',
-              color: AppColor.SECOND_BLACK,
-              fontSize: 15),
+          counter: SizedBox(),
+          errorStyle: TextStyle(fontFamily: 'regular', color: Colors.red, fontSize: 11),
+          labelStyle: TextStyle(fontFamily: 'regular', color: AppColor.SECOND_BLACK, fontSize: 15),
         ),
       );
 }

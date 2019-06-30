@@ -23,8 +23,7 @@ class NotiPage extends BasePage<NotiBloc> {
       children: <Widget>[
         StreamBuilder<bool>(
           stream: pageBloc.notiStream,
-          builder: (c, snap) =>
-              Text((snap.hasData && snap.data) ? "Changed" : "Init"),
+          builder: (c, snap) => Text((snap.hasData && snap.data) ? "Changed" : "Init"),
         ),
         InkWell(
           onTap: () => pageBloc.changeNotiFunc(true),
@@ -47,10 +46,4 @@ class NotiPage extends BasePage<NotiBloc> {
       print(onData);
     });
   }
-
-  @override
-  bool resizeAvoidPadding() => null;
-
-  @override
-  bool showFullScreen() => false;
 }

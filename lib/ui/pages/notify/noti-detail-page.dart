@@ -31,10 +31,4 @@ class NotiDetailPage extends BasePage<NotiBloc> {
 
   @override
   void listenPageData(BuildContext context) {}
-
-  @override
-  bool resizeAvoidPadding() => null;
-
-  @override
-  bool showFullScreen() => null;
 }

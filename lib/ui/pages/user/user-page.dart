@@ -40,8 +40,7 @@ class UserPage extends BasePage<UserBloc> {
             padding: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
+                  bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
               color: AppColor.GREEN,
             ),
             child: Center(
@@ -88,8 +87,7 @@ class UserPage extends BasePage<UserBloc> {
                         stream: appBloc.userStream,
                         builder: (c, snap) => Text(
                               (snap.hasData && snap.data.wallet != null)
-                                  ? StringUtil.formatCurrency(
-                                      snap.data.wallet * 1000)
+                                  ? StringUtil.formatCurrency(snap.data.wallet * 1000)
                                   : '0đ',
                               style: Theme.of(context)
                                   .textTheme
@@ -112,22 +110,14 @@ class UserPage extends BasePage<UserBloc> {
                     physics: ClampingScrollPhysics(),
                     mainAxisSpacing: 15,
                     children: <Widget>[
-                      ItemOptionWidget(
-                          'assets/images/icn_edit.png', 'Sửa hồ sơ'),
-                      ItemOptionWidget(
-                          'assets/images/icn_wallet_in.png', 'Nạp tiền'),
-                      ItemOptionWidget(
-                          'assets/images/icn_wallet_out.png', 'Rút tiền'),
-                      ItemOptionWidget(
-                          'assets/images/icn_transaction.png', 'Chuyển tiền'),
-                      ItemOptionWidget(
-                          'assets/images/icn_history.png', 'Lịch sử giao dịch'),
-                      ItemOptionWidget(
-                          'assets/images/icn_invite.png', 'Mời bạn bè'),
-                      ItemOptionWidget(
-                          'assets/images/icn_settings.png', 'Cài đặt'),
-                      ItemOptionWidget(
-                          'assets/images/icn_help.png', 'Trợ giúp'),
+                      ItemOptionWidget('assets/images/icn_edit.png', 'Sửa hồ sơ'),
+                      ItemOptionWidget('assets/images/icn_wallet_in.png', 'Nạp tiền'),
+                      ItemOptionWidget('assets/images/icn_wallet_out.png', 'Rút tiền'),
+                      ItemOptionWidget('assets/images/icn_transaction.png', 'Chuyển tiền'),
+                      ItemOptionWidget('assets/images/icn_history.png', 'Lịch sử giao dịch'),
+                      ItemOptionWidget('assets/images/icn_invite.png', 'Mời bạn bè'),
+                      ItemOptionWidget('assets/images/icn_settings.png', 'Cài đặt'),
+                      ItemOptionWidget('assets/images/icn_help.png', 'Trợ giúp'),
                       ItemOptionWidget(
                         'assets/images/icn_logout.png',
                         'Đăng xuất',
@@ -155,10 +145,4 @@ class UserPage extends BasePage<UserBloc> {
       }
     });
   }
-
-  @override
-  bool resizeAvoidPadding() => null;
-
-  @override
-  bool showFullScreen() => false;
 }

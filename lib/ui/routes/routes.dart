@@ -5,8 +5,10 @@ import 'package:myfootball/blocs/forgot-password-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/blocs/noti-bloc.dart';
 import 'package:myfootball/blocs/register-bloc.dart';
+import 'package:myfootball/blocs/request-member-bloc.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/ui/pages/group/create-group-page.dart';
+import 'package:myfootball/ui/pages/group/request-member-page.dart';
 import 'package:myfootball/ui/pages/login/forgot-password-page.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
@@ -18,8 +20,8 @@ import 'package:myfootball/ui/routes/slide-left-route.dart';
 class Routes {
   static routeToHomePage(BuildContext context, User user) async {
     var page = HomePage(user);
-    return await Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-        FadeInRoute(widget: page), (Route<dynamic> route) => false);
+    return await Navigator.of(context, rootNavigator: true)
+        .pushAndRemoveUntil(FadeInRoute(widget: page), (Route<dynamic> route) => false);
   }
 
   static routeToLoginPage(BuildContext context) async {
@@ -27,8 +29,8 @@ class Routes {
       bloc: LoginBloc(),
       child: LoginPage(),
     );
-    return await Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-        FadeInRoute(widget: page), (Route<dynamic> route) => false);
+    return await Navigator.of(context, rootNavigator: true)
+        .pushAndRemoveUntil(FadeInRoute(widget: page), (Route<dynamic> route) => false);
   }
 
   static routeToForgotPasswordPage(BuildContext context) async {
@@ -52,8 +54,7 @@ class Routes {
       bloc: NotiBloc(),
       child: NotiDetailPage(),
     );
-    return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: page));
+    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(widget: page));
   }
 
   static routeToCreateGroupPage(BuildContext context) async {
@@ -61,7 +62,14 @@ class Routes {
       bloc: CreateGroupBloc(),
       child: CreateGroupPage(),
     );
-    return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: page));
+    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(widget: page));
+  }
+
+  static routeToRequestMemberPage(BuildContext context) async {
+    var page = BlocProvider<RequestMemberBloc>(
+      bloc: RequestMemberBloc(),
+      child: RequestMemberPage(),
+    );
+    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(widget: page));
   }
 }

@@ -225,11 +225,8 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
   }
 
   @override
-  bool showFullScreen() => true;
+  bool get showFullScreen => true;
 
   @override
   void listenAppData(BuildContext context) {}
-
-  @override
-  bool resizeAvoidPadding() => false;
 }

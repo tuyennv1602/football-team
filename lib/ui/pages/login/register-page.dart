@@ -21,8 +21,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
     return null;
   }
 
-  Widget _buildItemRole(
-      BuildContext context, int value, List<int> groupValue, String title) {
+  Widget _buildItemRole(BuildContext context, int value, List<int> groupValue, String title) {
     bool isSelected = groupValue.contains(value);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,9 +58,8 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15),
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/bg_login.jpg'),
-              fit: BoxFit.fill)),
+          image:
+              DecorationImage(image: AssetImage('assets/images/bg_login.jpg'), fit: BoxFit.cover)),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: SizedBox(
@@ -103,8 +101,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                         width: double.infinity,
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5)),
+                            color: Colors.white, borderRadius: BorderRadius.circular(5)),
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -112,62 +109,47 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             children: <Widget>[
                               Text(
                                 'Đăng ký',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .copyWith(
-                                        fontSize: 20,
-                                        color: AppColor.GREEN,
-                                        fontFamily: 'bold'),
+                                style: Theme.of(context).textTheme.title.copyWith(
+                                    fontSize: 20, color: AppColor.GREEN, fontFamily: 'bold'),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty)
-                                    return 'Vui lòng nhập tên người dùng';
+                                  if (value.isEmpty) return 'Vui lòng nhập tên người dùng';
                                 },
                                 labelText: 'Tên người dùng',
                                 inputAction: TextInputAction.next,
-                                onChangedText: (text) =>
-                                    pageBloc.changeUsernameFunc(text),
+                                onChangedText: (text) => pageBloc.changeUsernameFunc(text),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty)
-                                    return 'Vui lòng nhập email';
-                                  if (!validEmail(value))
-                                    return 'Email không hợp lệ';
+                                  if (value.isEmpty) return 'Vui lòng nhập email';
+                                  if (!validEmail(value)) return 'Email không hợp lệ';
                                 },
                                 inputType: TextInputType.emailAddress,
                                 inputAction: TextInputAction.next,
                                 labelText: 'Email',
-                                onChangedText: (text) =>
-                                    pageBloc.changeEmailFunc(text),
+                                onChangedText: (text) => pageBloc.changeEmailFunc(text),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty)
-                                    return 'Vui lòng nhập mật khẩu';
+                                  if (value.isEmpty) return 'Vui lòng nhập mật khẩu';
                                   if (!validPassword(value))
                                     return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
                                 },
                                 labelText: 'Mật khẩu',
                                 obscureText: true,
                                 inputAction: TextInputAction.next,
-                                onChangedText: (text) =>
-                                    pageBloc.changePasswordFunc(text),
+                                onChangedText: (text) => pageBloc.changePasswordFunc(text),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty)
-                                    return 'Vui lòng nhập số điện thoại';
-                                  if (!validPhoneNumber(value))
-                                    return 'Số điện thoại không hợp lệ';
+                                  if (value.isEmpty) return 'Vui lòng nhập số điện thoại';
+                                  if (!validPhoneNumber(value)) return 'Số điện thoại không hợp lệ';
                                 },
                                 labelText: 'Số điện thoại',
                                 inputType: TextInputType.phone,
                                 inputAction: TextInputAction.done,
-                                onChangedText: (text) =>
-                                    pageBloc.changePhoneNumberFunc(text),
+                                onChangedText: (text) => pageBloc.changePhoneNumberFunc(text),
                               ),
                               SizedBox(
                                 height: 10,
@@ -175,25 +157,15 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                               StreamBuilder<List<int>>(
                                 stream: pageBloc.changeRoleStream,
                                 builder: (c, snap) {
-                                  var groupValue =
-                                      snap.hasData ? snap.data : [0];
+                                  var groupValue = snap.hasData ? snap.data : [0];
                                   print(groupValue);
                                   return Column(
                                     children: <Widget>[
-                                      _buildItemRole(
-                                          context,
-                                          Constants.TEAM_MEMBER,
-                                          groupValue,
+                                      _buildItemRole(context, Constants.TEAM_MEMBER, groupValue,
                                           'Thành viên đội bóng'),
-                                      _buildItemRole(
-                                          context,
-                                          Constants.TEAM_MANAGER,
-                                          groupValue,
+                                      _buildItemRole(context, Constants.TEAM_MANAGER, groupValue,
                                           'Quản lý đội bóng'),
-                                      _buildItemRole(
-                                          context,
-                                          Constants.GROUND_OWNER,
-                                          groupValue,
+                                      _buildItemRole(context, Constants.GROUND_OWNER, groupValue,
                                           'Quản lý sân bóng'),
                                     ],
                                   );
@@ -215,10 +187,8 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             backgroundColor: Colors.grey,
                             child: Text(
                               'QUAY LẠI',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .body2
-                                  .copyWith(color: Colors.white),
+                              style:
+                                  Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                             ),
                           ),
                           ButtonWidget(
@@ -236,10 +206,8 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             backgroundColor: AppColor.GREEN,
                             child: Text(
                               'ĐĂNG KÝ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .body2
-                                  .copyWith(color: Colors.white),
+                              style:
+                                  Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                             ),
                           ),
                         ],
@@ -259,18 +227,17 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
       if (!data.success) {
         showSnackBar(data.errorMessage);
       } else {
-        showSimpleDialog(context, data.errorMessage,
-            onTap: () => Navigator.of(context).pop());
+        showSimpleDialog(context, data.errorMessage, onTap: () => Navigator.of(context).pop());
       }
     });
   }
 
   @override
-  bool showFullScreen() => true;
-
-  @override
   void listenAppData(BuildContext context) {}
 
   @override
-  bool resizeAvoidPadding() => null;
+  bool get showFullScreen => true;
+
+  @override
+  bool get resizeAvoidPadding => true;
 }

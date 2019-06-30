@@ -30,9 +30,8 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15),
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/bg_login.jpg'),
-              fit: BoxFit.fill)),
+          image:
+              DecorationImage(image: AssetImage('assets/images/bg_login.jpg'), fit: BoxFit.fill)),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -69,9 +68,8 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)),
+                    decoration:
+                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -80,27 +78,18 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                           StreamBuilder<bool>(
                             stream: pageBloc.changeTypeStream,
                             builder: (c, snap) => Text(
-                                  (snap.hasData && snap.data)
-                                      ? 'Đổi mật khẩu'
-                                      : 'Lấy mã xác nhận',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .title
-                                      .copyWith(
-                                          fontSize: 20,
-                                          color: AppColor.GREEN,
-                                          fontFamily: 'bold'),
+                                  (snap.hasData && snap.data) ? 'Đổi mật khẩu' : 'Lấy mã xác nhận',
+                                  style: Theme.of(context).textTheme.title.copyWith(
+                                      fontSize: 20, color: AppColor.GREEN, fontFamily: 'bold'),
                                 ),
                           ),
                           InputWidget(
                             validator: (value) {
                               if (value.isEmpty) return 'Vui lòng nhập email';
-                              if (!validEmail(value))
-                                return 'Email không hợp lệ';
+                              if (!validEmail(value)) return 'Email không hợp lệ';
                             },
                             labelText: 'Email',
-                            onChangedText: (text) =>
-                                pageBloc.changeEmailFunc(text),
+                            onChangedText: (text) => pageBloc.changeEmailFunc(text),
                           ),
                           StreamBuilder<bool>(
                             stream: pageBloc.changeTypeStream,
@@ -110,24 +99,20 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                                   children: <Widget>[
                                     InputWidget(
                                       validator: (value) {
-                                        if (value.isEmpty)
-                                          return 'Vui lòng nhập mật khẩu';
+                                        if (value.isEmpty) return 'Vui lòng nhập mật khẩu';
                                         if (!validPassword(value))
                                           return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
                                       },
                                       labelText: 'Mật khẩu mới',
                                       obscureText: true,
-                                      onChangedText: (text) =>
-                                          pageBloc.changePasswordFunc(text),
+                                      onChangedText: (text) => pageBloc.changePasswordFunc(text),
                                     ),
                                     InputWidget(
                                       validator: (value) {
-                                        if (value.isEmpty)
-                                          return 'Vui lòng nhập mã xác nhận';
+                                        if (value.isEmpty) return 'Vui lòng nhập mã xác nhận';
                                       },
                                       labelText: 'Mã xác nhận',
-                                      onChangedText: (text) =>
-                                          pageBloc.changeCodeFunc(text),
+                                      onChangedText: (text) => pageBloc.changeCodeFunc(text),
                                     )
                                   ],
                                 );
@@ -139,9 +124,7 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                                   style: Theme.of(context)
                                       .textTheme
                                       .body2
-                                      .copyWith(
-                                          fontFamily: 'italic',
-                                          color: Colors.grey),
+                                      .copyWith(fontFamily: 'italic', color: Colors.grey),
                                 ),
                               );
                             },
@@ -162,10 +145,7 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                         backgroundColor: Colors.grey,
                         child: Text(
                           'QUAY LẠI',
-                          style: Theme.of(context)
-                              .textTheme
-                              .body2
-                              .copyWith(color: Colors.white),
+                          style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                         ),
                       ),
                       ButtonWidget(
@@ -181,10 +161,7 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                         backgroundColor: AppColor.GREEN,
                         child: Text(
                           'XÁC NHẬN',
-                          style: Theme.of(context)
-                              .textTheme
-                              .body2
-                              .copyWith(color: Colors.white),
+                          style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                         ),
                       ),
                     ],
@@ -211,18 +188,14 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
         showSnackBar(onData.errorMessage);
       } else {
         showSnackBar('Password was changed', backgroundColor: AppColor.GREEN);
-        Future.delayed(
-            Duration(milliseconds: 5000), () => Navigator.of(context).pop());
+        Future.delayed(Duration(milliseconds: 5000), () => Navigator.of(context).pop());
       }
     });
   }
 
   @override
-  bool showFullScreen() => true;
+  bool get showFullScreen => true;
 
   @override
   void listenAppData(BuildContext context) {}
-
-  @override
-  bool resizeAvoidPadding() => false;
 }

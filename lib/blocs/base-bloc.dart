@@ -7,8 +7,7 @@ abstract class BaseBloc {
 
 // Generic BLoC provider
 class BlocProvider<T extends BaseBloc> extends StatefulWidget {
-  BlocProvider({Key key, @required this.child, @required this.bloc})
-      : super(key: key);
+  BlocProvider({Key key, @required this.child, @required this.bloc}) : super(key: key);
 
   final T bloc;
   final Widget child;

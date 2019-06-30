@@ -32,9 +32,4 @@ class ChatPage extends BasePage<ChatBloc> {
   void listenPageData(BuildContext context) {
   }
 
-  @override
-  bool resizeAvoidPadding() => null;
-
-  @override
-  bool showFullScreen() => null;
 }

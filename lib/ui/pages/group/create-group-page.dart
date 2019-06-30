@@ -217,10 +217,4 @@ class CreateGroupPage extends BasePage<CreateGroupBloc> with Validator {
       }
     });
   }
-
-  @override
-  bool resizeAvoidPadding() => true;
-
-  @override
-  bool showFullScreen() => null;
 }
