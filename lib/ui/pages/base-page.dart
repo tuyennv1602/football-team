@@ -64,7 +64,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                     onTap();
                     Navigator.of(context).pop();
                   },
-                  borderRadius: 5,
+                  borderRadius: BorderRadius.circular(5),
                   margin: EdgeInsets.only(top: 15),
                   width: 100,
                   height: 40,
@@ -90,7 +90,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                 actions: <Widget>[
                   ButtonWidget(
                     onTap: () => Navigator.of(context).pop(),
-                    borderRadius: 5,
+                    borderRadius: BorderRadius.circular(5),
                     margin: EdgeInsets.only(top: 15),
                     width: 100,
                     height: 40,
@@ -105,7 +105,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                       onConfirmed();
                       Navigator.of(context).pop();
                     },
-                    borderRadius: 5,
+                    borderRadius: BorderRadius.circular(5),
                     margin: EdgeInsets.only(top: 15),
                     width: 100,
                     height: 40,
@@ -173,9 +173,11 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                height: DeviceUtil.getPaddingBottom(context),
-              )
+              !showFullScreen
+                  ? SizedBox(
+                      height: DeviceUtil.getPaddingBottom(context),
+                    )
+                  : SizedBox()
             ],
           ),
           buildLoading(context) ?? SizedBox()

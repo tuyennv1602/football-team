@@ -29,8 +29,7 @@ class AppBarWidget extends StatelessWidget {
         decoration: BoxDecoration(
             color: backgroundColor ?? AppColor.GREEN,
             border: showBorder
-                ? Border(
-                    bottom: BorderSide(width: 0.5, color: AppColor.LINE_COLOR))
+                ? Border(bottom: BorderSide(width: 0.5, color: AppColor.LINE_COLOR))
                 : null),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

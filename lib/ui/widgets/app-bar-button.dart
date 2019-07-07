@@ -18,7 +18,7 @@ class AppBarButtonWidget extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(this.padding ?? 15),
                 child: Image.asset(
-                  'assets/images/$imageName',
+                  imageName,
                   color: Colors.white,
                 ),
               ),

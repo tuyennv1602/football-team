@@ -6,13 +6,12 @@ import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 class ChatPage extends BasePage<ChatBloc> {
   @override
   AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
-      centerContent: Center(
-        child: Text(
+        centerContent: Text(
           "Chat",
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.title,
         ),
-      ),
-    );
+      );
 
   @override
   Widget buildLoading(BuildContext context) => null;
@@ -25,11 +24,8 @@ class ChatPage extends BasePage<ChatBloc> {
   }
 
   @override
-  void listenAppData(BuildContext context) {
-  }
+  void listenAppData(BuildContext context) {}
 
   @override
-  void listenPageData(BuildContext context) {
-  }
-
+  void listenPageData(BuildContext context) {}
 }

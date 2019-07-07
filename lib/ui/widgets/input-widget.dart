@@ -58,8 +58,6 @@ class InputState extends State<InputWidget> {
     if (_textFocus.hasFocus) {
       widget.onChangedText(text);
     }
-    // _controller.selection =
-    //     new TextSelection(baseOffset: text.length, extentOffset: text.length);
   }
 
   @override

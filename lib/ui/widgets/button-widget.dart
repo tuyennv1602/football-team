@@ -7,7 +7,7 @@ class ButtonWidget extends StatelessWidget {
   final Function onTap;
   final double width;
   final double height;
-  final double borderRadius;
+  final BorderRadius borderRadius;
 
   ButtonWidget(
       {@required this.child,
@@ -25,7 +25,7 @@ class ButtonWidget extends StatelessWidget {
         alignment: Alignment.center,
         margin: this.margin ?? EdgeInsets.zero,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(this.borderRadius ?? 0),
+          borderRadius: borderRadius ?? BorderRadius.zero,
           child: Material(
             color: this.backgroundColor ?? Colors.white,
             child: InkWell(

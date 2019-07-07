@@ -10,7 +10,7 @@ class ChooseImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return  Container(
       padding: EdgeInsets.all(15),
       color: Colors.transparent,
       child: Column(
@@ -23,8 +23,7 @@ class ChooseImageWidget extends StatelessWidget {
             },
             backgroundColor: AppColor.WHITE,
             height: 42,
-            width: MediaQuery.of(context).size.width,
-            borderRadius: 21,
+            borderRadius: BorderRadius.circular(21),
             child: Text(
               'Chọn từ thư viện',
               style: Theme.of(context).textTheme.body2,
@@ -41,8 +40,7 @@ class ChooseImageWidget extends StatelessWidget {
             },
             backgroundColor: AppColor.WHITE,
             height: 42,
-            width: MediaQuery.of(context).size.width,
-            borderRadius: 21,
+            borderRadius: BorderRadius.circular(21),
             child: Text(
               'Chọn từ máy ảnh',
               style: Theme.of(context).textTheme.body2,
@@ -56,8 +54,7 @@ class ChooseImageWidget extends StatelessWidget {
             onTap: () => Navigator.of(context).pop(),
             backgroundColor: AppColor.RED,
             height: 42,
-            width: MediaQuery.of(context).size.width,
-            borderRadius: 21,
+            borderRadius: BorderRadius.circular(21),
             child: Text(
               'Huỷ',
               style: Theme.of(context).textTheme.body2.copyWith(color: AppColor.WHITE),

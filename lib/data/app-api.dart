@@ -3,7 +3,7 @@ import 'package:myfootball/data/app-preference.dart';
 import 'package:myfootball/http.dart';
 
 class AppApi {
-  static const HOST = "http://192.168.16.101:8080/football";
+  static const HOST = "http://192.168.16.100:8080/football";
 
   static var _appPref = AppPreference();
 

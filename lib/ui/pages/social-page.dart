@@ -115,11 +115,10 @@ class SocialPage extends BasePage<SocialBloc> {
 
   @override
   AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
-        centerContent: Center(
-          child: Text(
-            'Cộng đồng',
-            style: Theme.of(context).textTheme.title,
-          ),
+        centerContent: Text(
+          'Cộng đồng',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.title,
         ),
       );
 

@@ -1,11 +1,13 @@
 import 'package:myfootball/blocs/user-bloc.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/images.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/ui/widgets/border-frame.dart';
+import 'package:myfootball/ui/widgets/bottom-sheet-widget.dart';
 import 'package:myfootball/ui/widgets/item-option.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/string-util.dart';
@@ -14,14 +16,10 @@ class UserPage extends BasePage<UserBloc> {
   @override
   AppBarWidget buildAppBar(BuildContext context) {
     return AppBarWidget(
-      centerContent: Center(
-        child: StreamBuilder<User>(
-          stream: appBloc.userStream,
-          builder: (c, snap) => Text(
-                snap.hasData ? snap.data.userName : '',
-                style: Theme.of(context).textTheme.title,
-              ),
-        ),
+      centerContent: Text(
+        'Thông tin cá nhân',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.title,
       ),
     );
   }
@@ -33,74 +31,68 @@ class UserPage extends BasePage<UserBloc> {
     );
   }
 
+  _showChooseTargetTransfer(BuildContext context) => showModalBottomSheet(
+      context: context,
+      builder: (c) => BottomSheetWidget(
+            options: ['Chuyển tiền', 'Tới bạn bè', 'Tới đội bóng', 'Huỷ'],
+          ));
+
   @override
   Widget buildMainContainer(BuildContext context) => Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                  bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
               color: AppColor.GREEN,
             ),
-            child: Center(
-              child: StreamBuilder<User>(
-                stream: appBloc.userStream,
-                builder: (c, snap) {
-                  if (snap.hasData && snap.data.avatar != null) {
-                    return CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(snap.data.avatar),
-                    );
-                  } else {
-                    return CircleAvatar(
-                      radius: 40,
-                      backgroundImage: AssetImage('assets/images/icn_man.png'),
-                    );
-                  }
-                },
-              ),
+            child: StreamBuilder<User>(
+              stream: appBloc.userStream,
+              builder: (c, snap) {
+                if (snap.hasData) {
+                  var _user = snap.data;
+                  var wallet = _user.wallet != null
+                      ? StringUtil.formatCurrency(snap.data.wallet * 1000)
+                      : '0đ';
+                  return Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: _user.avatar != null
+                            ? NetworkImage(_user.avatar)
+                            : AssetImage(Images.DEFAULT_AVATAR),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              _user.userName,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                            Text(
+                              'Số dư trong ví: $wallet',
+                              style:
+                                  Theme.of(context).textTheme.body2.copyWith(color: AppColor.WHITE),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                }
+                return Container();
+              },
             ),
           ),
           Expanded(
             child: ListView(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
               children: <Widget>[
-                BorderFrameWidget(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          'Ví cá nhân',
-                          style: Theme.of(context)
-                              .textTheme
-                              .title
-                              .copyWith(color: AppColor.MAIN_BLACK),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      StreamBuilder<User>(
-                        stream: appBloc.userStream,
-                        builder: (c, snap) => Text(
-                              (snap.hasData && snap.data.wallet != null)
-                                  ? StringUtil.formatCurrency(snap.data.wallet * 1000)
-                                  : '0đ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(color: AppColor.MAIN_BLACK),
-                            ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
                 BorderFrameWidget(
                   child: GridView.count(
                     shrinkWrap: true,
@@ -110,16 +102,28 @@ class UserPage extends BasePage<UserBloc> {
                     physics: ClampingScrollPhysics(),
                     mainAxisSpacing: 15,
                     children: <Widget>[
-                      ItemOptionWidget('assets/images/icn_edit.png', 'Sửa hồ sơ'),
-                      ItemOptionWidget('assets/images/icn_wallet_in.png', 'Nạp tiền'),
-                      ItemOptionWidget('assets/images/icn_wallet_out.png', 'Rút tiền'),
-                      ItemOptionWidget('assets/images/icn_transaction.png', 'Chuyển tiền'),
-                      ItemOptionWidget('assets/images/icn_history.png', 'Lịch sử giao dịch'),
-                      ItemOptionWidget('assets/images/icn_invite.png', 'Mời bạn bè'),
-                      ItemOptionWidget('assets/images/icn_settings.png', 'Cài đặt'),
-                      ItemOptionWidget('assets/images/icn_help.png', 'Trợ giúp'),
+                      ItemOptionWidget(Images.EDIT_PROFILE, 'Sửa hồ sơ'),
+                      ItemOptionWidget(Images.WALLET_IN, 'Nạp tiền'),
+                      ItemOptionWidget(Images.WALLET_OUT, 'Rút tiền'),
                       ItemOptionWidget(
-                        'assets/images/icn_logout.png',
+                        Images.TRANSACTIONS,
+                        'Chuyển tiền',
+                        onTap: () => _showChooseTargetTransfer(context),
+                      ),
+                      ItemOptionWidget(Images.TRANSACTION_HISTORY, 'Lịch sử giao dịch'),
+                      ItemOptionWidget(
+                        Images.INVITE,
+                        'Tham gia đội bóng',
+                        onTap: () => Routes.routeToRequestMemberPage(context),
+                      ),
+                      ItemOptionWidget(
+                        Images.CREATE_GROUP,
+                        'Thành lập đội bóng',
+                        onTap: () => Routes.routeToCreateGroupPage(context),
+                      ),
+                      ItemOptionWidget(Images.SETTING, 'Cài đặt'),
+                      ItemOptionWidget(
+                        Images.LOGOUT,
                         'Đăng xuất',
                         onTap: () => pageBloc.logoutFunc(true),
                       )

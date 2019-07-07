@@ -1,4 +1,4 @@
-import 'package:myfootball/models/group.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/role.dart';
 import 'package:myfootball/models/type-user.dart';
 import 'package:myfootball/res/constants.dart';
@@ -10,7 +10,7 @@ class User {
   String email;
   String phone;
   List<Role> roles;
-  List<Group> groups;
+  List<Team> groups;
   double wallet;
 
   User(
@@ -36,9 +36,9 @@ class User {
       });
     }
     if (json['groupList'] != null) {
-      groups = new List<Group>();
+      groups = new List<Team>();
       json['groupList'].forEach((v) {
-        groups.add(new Group.fromJson(v));
+        groups.add(new Team.fromJson(v));
       });
     }
     wallet = json['wallet'];
@@ -75,7 +75,7 @@ class User {
     }
   }
 
-  List<Group> addGroup(Group group) {
+  List<Team> addGroup(Team group) {
     if (groups == null) return [];
     groups.add(group);
     return groups;

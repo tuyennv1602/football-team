@@ -132,7 +132,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                             pageBloc.submitLoginEmailFunc(true);
                           }
                         },
-                        borderRadius: 5,
+                        borderRadius: BorderRadius.circular(5),
                         margin: EdgeInsets.only(top: 30, bottom: 30),
                         backgroundColor: AppColor.GREEN,
                         child: Text(

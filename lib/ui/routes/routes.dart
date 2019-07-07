@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/blocs/create-group-bloc.dart';
+import 'package:myfootball/blocs/create-team-bloc.dart';
 import 'package:myfootball/blocs/forgot-password-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/blocs/noti-bloc.dart';
 import 'package:myfootball/blocs/register-bloc.dart';
 import 'package:myfootball/blocs/request-member-bloc.dart';
 import 'package:myfootball/models/user.dart';
-import 'package:myfootball/ui/pages/group/create-group-page.dart';
-import 'package:myfootball/ui/pages/group/request-member-page.dart';
 import 'package:myfootball/ui/pages/login/forgot-password-page.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
 import 'package:myfootball/ui/pages/notify/noti-detail-page.dart';
 import 'package:myfootball/ui/pages/login/register-page.dart';
+import 'package:myfootball/ui/pages/team/create-team-page.dart';
+import 'package:myfootball/ui/pages/team/request-member-page.dart';
 import 'package:myfootball/ui/routes/fade-in-route.dart';
 import 'package:myfootball/ui/routes/slide-left-route.dart';
 
@@ -58,9 +58,9 @@ class Routes {
   }
 
   static routeToCreateGroupPage(BuildContext context) async {
-    var page = BlocProvider<CreateGroupBloc>(
-      bloc: CreateGroupBloc(),
-      child: CreateGroupPage(),
+    var page = BlocProvider<CreateTeamBloc>(
+      bloc: CreateTeamBloc(),
+      child: CreateTeamPage(),
     );
     return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(widget: page));
   }

@@ -1,4 +1,4 @@
-class Group {
+class Team {
   int id;
   int status;
   int manager;
@@ -11,9 +11,9 @@ class Group {
   int countRequest;
   double wallet;
 
-  Group({this.manager, this.name, this.logo, this.dress, this.bio});
+  Team({this.manager, this.name, this.logo, this.dress, this.bio});
 
-  Group.fromJson(Map<String, dynamic> json) {
+  Team.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
     manager = json['manager'];

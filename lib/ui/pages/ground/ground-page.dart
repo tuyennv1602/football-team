@@ -6,11 +6,10 @@ import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 class GroundPage extends BasePage<GroundBloc> {
   @override
   AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
-        centerContent: Center(
-          child: Text(
-            'Quản lý sân bóng',
-            style: Theme.of(context).textTheme.title,
-          ),
+        centerContent: Text(
+          'Quản lý sân bóng',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.title,
         ),
       );
 

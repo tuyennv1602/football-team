@@ -138,7 +138,7 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                     children: <Widget>[
                       ButtonWidget(
                         onTap: () => Navigator.of(context).pop(),
-                        borderRadius: 5,
+                        borderRadius: BorderRadius.circular(5),
                         width: 150,
                         height: 40,
                         margin: EdgeInsets.only(top: 30, bottom: 30),
@@ -154,7 +154,7 @@ class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
                             pageBloc.submit();
                           }
                         },
-                        borderRadius: 5,
+                        borderRadius: BorderRadius.circular(5),
                         width: 150,
                         height: 40,
                         margin: EdgeInsets.only(top: 25, bottom: 25),

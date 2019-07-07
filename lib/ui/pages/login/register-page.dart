@@ -180,7 +180,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                         children: <Widget>[
                           ButtonWidget(
                             onTap: () => Navigator.of(context).pop(),
-                            borderRadius: 5,
+                            borderRadius: BorderRadius.circular(5),
                             margin: EdgeInsets.only(top: 30, bottom: 30),
                             width: 150,
                             height: 40,
@@ -199,7 +199,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                                 hideKeyBoard(context);
                               }
                             },
-                            borderRadius: 5,
+                            borderRadius: BorderRadius.circular(5),
                             width: 150,
                             height: 40,
                             margin: EdgeInsets.only(top: 25, bottom: 25),

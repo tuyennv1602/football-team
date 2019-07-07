@@ -3,17 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
-import 'package:myfootball/data/repositories/group-repository.dart';
-import 'package:myfootball/models/group.dart';
+import 'package:myfootball/data/repositories/team-repository.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/responses/base-response.dart';
-import 'package:myfootball/models/responses/create-group-response.dart';
+import 'package:myfootball/models/responses/create-team-response.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class CreateGroupBloc implements BaseBloc {
+class CreateTeamBloc implements BaseBloc {
   final _loadingCtrl = PublishSubject<bool>();
-  final GroupReposiroty _groupReposiroty = GroupReposiroty();
+  final TeamReposiroty _groupReposiroty = TeamReposiroty();
   final _appPref = AppPreference();
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
   Observable<bool> get loadingStream => Observable(_loadingCtrl);
@@ -36,7 +36,7 @@ class CreateGroupBloc implements BaseBloc {
 
   final _submitRegisterCtrl = BehaviorSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
-  Observable<CreateGroupResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
+  Observable<CreateTeamResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
       .flatMap((_) => Observable.fromFuture(uploadImage(_chooseLogoCtrl.value))
               .doOnListen(() => addLoadingFunc(true))
               .doOnData((link) {
@@ -48,7 +48,7 @@ class CreateGroupBloc implements BaseBloc {
               return Observable.just(link);
             }
           }))
-      .flatMap((imageLink) => Observable.fromFuture(_groupReposiroty.createGroup(Group(
+      .flatMap((imageLink) => Observable.fromFuture(_groupReposiroty.createGroup(Team(
               name: _nameCtrl.value,
               bio: _bioCtrl.value,
               dress: AppColor.getColorValue(_chooseDressCtrl.value.toString()),
@@ -58,7 +58,7 @@ class CreateGroupBloc implements BaseBloc {
       .flatMap((response) => Observable.fromFuture(_handleSuccess(response)))
       .flatMap((response) => Observable.just(response));
 
-  Future<CreateGroupResponse> _handleSuccess(CreateGroupResponse response) async {
+  Future<CreateTeamResponse> _handleSuccess(CreateTeamResponse response) async {
     if (response.success) {
       var user = await _appPref.getUser();
       user.addGroup(response.group);

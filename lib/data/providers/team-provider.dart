@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:myfootball/data/app-api.dart';
 import 'package:myfootball/data/app-preference.dart';
-import 'package:myfootball/models/group.dart';
-import 'package:myfootball/models/responses/create-group-response.dart';
+import 'package:myfootball/models/team.dart';
+import 'package:myfootball/models/responses/create-team-response.dart';
 
-class GroupProvider {
-  static final GroupProvider _instance = GroupProvider.internal();
-  factory GroupProvider() => _instance;
-  GroupProvider.internal();
+class TeamProvider {
+  static final TeamProvider _instance = TeamProvider.internal();
+  factory TeamProvider() => _instance;
+  TeamProvider.internal();
 
-  Future<CreateGroupResponse> createGroup(Group group) async {
+  Future<CreateTeamResponse> createGroup(Team group) async {
     try {
       var user = await AppPreference().getUser();
       var response = await AppApi.postApi('group/create', body: {
@@ -19,9 +19,9 @@ class GroupProvider {
         "bio": group.bio,
         "logo": group.logo
       });
-      return CreateGroupResponse.success(response.data);
+      return CreateTeamResponse.success(response.data);
     } on DioError catch (e) {
-      return CreateGroupResponse.error(e.message);
+      return CreateTeamResponse.error(e.message);
     }
   }
 }
