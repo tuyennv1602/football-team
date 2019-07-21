@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:myfootball/blocs/social-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
@@ -143,8 +142,8 @@ class SocialPage extends BasePage<SocialBloc> {
   }
 
   @override
-  void listenAppData(BuildContext context) {}
+  void listenData(BuildContext context) {}
 
   @override
-  void listenPageData(BuildContext context) {}
+  bool get isRootLevel => true;
 }

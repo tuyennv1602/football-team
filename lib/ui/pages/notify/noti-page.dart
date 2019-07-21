@@ -38,12 +38,12 @@ class NotiPage extends BasePage<NotiBloc> {
   }
 
   @override
-  void listenAppData(BuildContext context) {}
-
-  @override
-  void listenPageData(BuildContext context) {
+  void listenData(BuildContext context) {
     pageBloc.notiStream.listen((onData) {
       print(onData);
     });
   }
+
+  @override
+  bool get isRootLevel => true;
 }

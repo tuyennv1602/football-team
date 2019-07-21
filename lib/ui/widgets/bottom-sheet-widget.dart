@@ -55,7 +55,7 @@ class BottomSheetWidget extends StatelessWidget {
     });
     return Container(
       height: ((length * BUTTON_HEIGHT) + length).toDouble(),
-      margin: EdgeInsets.all(25),
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: DeviceUtil.getPaddingBottom(context)),
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),

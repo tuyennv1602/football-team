@@ -1,4 +1,5 @@
 import 'package:myfootball/blocs/base-bloc.dart';
+import 'package:myfootball/data/app-api.dart';
 import 'package:myfootball/data/app-preference.dart';
 import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/header.dart';
@@ -27,6 +28,7 @@ class LoginBloc implements BaseBloc {
       .flatMap((_) =>
           Observable.fromFuture(_userRepo.loginWithEmail(_emailCtrl.value, _passwordCtrl.value))
               .doOnListen(() => addLoadingFunc(true))
+              .doOnError(() => addLoadingFunc(false))
               .doOnData((_) => addLoadingFunc(false)))
       .flatMap((res) => Observable.fromFuture(_handleLogin(res)))
       .flatMap((res) => Observable.just(res));
@@ -35,7 +37,7 @@ class LoginBloc implements BaseBloc {
     if (response.success) {
       await _appPref.setToken(response.token);
       await _appPref.setUser(response.user);
-      await _appPref.setHeader(Header(accessToken: response.token, userId: response.user.id));
+      AppApi.setHeader(Header(accessToken: response.token, userId: response.user.id));
     }
     return Future.value(response);
   }

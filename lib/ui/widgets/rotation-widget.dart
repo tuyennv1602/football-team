@@ -13,15 +13,14 @@ class RotationWidget extends StatefulWidget {
   State<StatefulWidget> createState() => RotationState();
 }
 
-class RotationState extends State<RotationWidget>
-    with SingleTickerProviderStateMixin {
+class RotationState extends State<RotationWidget> with SingleTickerProviderStateMixin {
   AnimationController rotationController;
 
   @override
   void initState() {
     super.initState();
-    rotationController = AnimationController(
-        duration: widget.duration ?? Duration(milliseconds: 1000), vsync: this);
+    rotationController =
+        AnimationController(duration: widget.duration ?? Duration(milliseconds: 1000), vsync: this);
     rotationController.repeat();
   }
 
@@ -39,7 +38,7 @@ class RotationState extends State<RotationWidget>
       padding: EdgeInsets.all(3),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColor.MAIN_WHITE,
+        color: AppColor.WHITE_OPACITY,
       ),
       child: RotationTransition(
         turns: Tween(begin: 0.0, end: 1.0).animate(rotationController),

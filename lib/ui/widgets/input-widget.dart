@@ -65,7 +65,7 @@ class InputState extends State<InputWidget> {
         autocorrect: false,
         cursorColor: AppColor.GREEN,
         cursorWidth: 1,
-        maxLength: widget.maxLength ?? 150,
+        maxLength: widget.maxLength ?? 50,
         maxLines: widget.maxLines ?? 1,
         style: TextStyle(
             fontFamily: 'regular', fontSize: 16, color: AppColor.MAIN_BLACK, letterSpacing: 0.15),

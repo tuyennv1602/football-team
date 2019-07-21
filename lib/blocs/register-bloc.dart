@@ -26,16 +26,17 @@ class RegisterBloc implements BaseBloc {
   Function(String) get changePhoneNumberFunc => _phonenumberCtrl.add;
   Observable<String> get changePhoneNumberStream => Observable(_phonenumberCtrl);
 
-  final _roleCtrl = BehaviorSubject<List<int>>(seedValue: [0]);
+  final _roleCtrl = BehaviorSubject<List<int>>(seedValue: [1]);
   Function(List<int>) get changeRoleFunc => _roleCtrl.add;
   Observable<List<int>> get changeRoleStream => Observable(_roleCtrl);
 
-  final _submitRegisterCtrl = BehaviorSubject<bool>();
+  final _submitRegisterCtrl = PublishSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
   Observable<BaseResponse> get registerStream => Observable(_submitRegisterCtrl)
       .flatMap((_) => Observable.fromFuture(_userRepo.register(_userNameCtrl.value,
               _emailCtrl.value, _passwordCtrl.value, _phonenumberCtrl.value, _roleCtrl.value))
           .doOnListen(() => addLoadingFunc(true))
+          .doOnError(() => addLoadingFunc(false))
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((res) => Observable.just(res));
 

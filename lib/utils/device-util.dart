@@ -22,14 +22,14 @@ class DeviceUtil {
 
   static double getPaddingTop(BuildContext context) {
     if (paddingTop == null) {
-      paddingTop = MediaQuery.of(context).padding.top;
+      paddingTop = MediaQuery.of(context).viewPadding.top;
     }
     return paddingTop;
   }
 
   static double getPaddingBottom(BuildContext context) {
     if (paddingBottom == null) {
-      paddingBottom = MediaQuery.of(context).padding.bottom;
+      paddingBottom = MediaQuery.of(context).viewPadding.bottom;
     }
     return paddingBottom;
   }

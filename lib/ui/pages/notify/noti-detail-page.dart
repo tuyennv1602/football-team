@@ -27,8 +27,5 @@ class NotiDetailPage extends BasePage<NotiBloc> {
   }
 
   @override
-  void listenAppData(BuildContext context) {}
-
-  @override
-  void listenPageData(BuildContext context) {}
+  void listenData(BuildContext context) {}
 }

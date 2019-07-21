@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_roleType == USER_ROLE.TEAM_MANAGER || _roleType == USER_ROLE.TEAM_MEMBER) {
+    if (_roleType == USER_ROLE.TEAM_MEMBER) {
       tabBarItems.insert(1, _groupItem);
     } else if (_roleType == USER_ROLE.GROUND_OWNER) {
       tabBarItems.insert(1, _groundItem);
@@ -89,7 +89,7 @@ class HomePage extends StatelessWidget {
       tabBar: CupertinoTabBar(
         activeColor: AppColor.GREEN,
         items: tabBarItems,
-        currentIndex: 2,
+        currentIndex: 3,
       ),
       tabBuilder: (BuildContext context, int index) {
         if (index == 0) return CupertinoTabView(builder: (BuildContext context) => _socialTab);
@@ -113,6 +113,7 @@ class HomePage extends StatelessWidget {
           return CupertinoTabView(builder: (BuildContext context) => _userTab);
         if (index == tabBarItems.length - 2)
           return CupertinoTabView(builder: (BuildContext context) => _notifyTab);
+        return null;
       },
     );
   }

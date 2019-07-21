@@ -41,7 +41,7 @@ class UserPage extends BasePage<UserBloc> {
   Widget buildMainContainer(BuildContext context) => Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
@@ -64,7 +64,7 @@ class UserPage extends BasePage<UserBloc> {
                             : AssetImage(Images.DEFAULT_AVATAR),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -91,16 +91,16 @@ class UserPage extends BasePage<UserBloc> {
             child: ListView(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(10),
               children: <Widget>[
                 BorderFrameWidget(
                   child: GridView.count(
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     crossAxisCount: 3,
-                    crossAxisSpacing: 15,
+                    crossAxisSpacing: 10,
                     physics: ClampingScrollPhysics(),
-                    mainAxisSpacing: 15,
+                    mainAxisSpacing: 10,
                     children: <Widget>[
                       ItemOptionWidget(Images.EDIT_PROFILE, 'Sửa hồ sơ'),
                       ItemOptionWidget(Images.WALLET_IN, 'Nạp tiền'),
@@ -137,10 +137,7 @@ class UserPage extends BasePage<UserBloc> {
       );
 
   @override
-  void listenAppData(BuildContext context) {}
-
-  @override
-  void listenPageData(BuildContext context) {
+  void listenData(BuildContext context) {
     pageBloc.logoutStream.listen((result) {
       if (result) {
         Routes.routeToLoginPage(context);
@@ -149,4 +146,7 @@ class UserPage extends BasePage<UserBloc> {
       }
     });
   }
+
+  @override
+  bool get isRootLevel => true;
 }

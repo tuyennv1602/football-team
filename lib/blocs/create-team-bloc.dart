@@ -12,9 +12,10 @@ import 'package:rxdart/rxdart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class CreateTeamBloc implements BaseBloc {
-  final _loadingCtrl = PublishSubject<bool>();
-  final TeamReposiroty _groupReposiroty = TeamReposiroty();
+  final _teamReposiroty = TeamReposiroty();
   final _appPref = AppPreference();
+
+  final _loadingCtrl = PublishSubject<bool>();
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
   Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
@@ -34,11 +35,12 @@ class CreateTeamBloc implements BaseBloc {
   Function(String) get changeBioFunc => _bioCtrl.add;
   Observable<String> get changeBioStream => Observable(_bioCtrl);
 
-  final _submitRegisterCtrl = BehaviorSubject<bool>();
+  final _submitRegisterCtrl = PublishSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
   Observable<CreateTeamResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
       .flatMap((_) => Observable.fromFuture(uploadImage(_chooseLogoCtrl.value))
               .doOnListen(() => addLoadingFunc(true))
+              .doOnError(() => addLoadingFunc(false))
               .doOnData((link) {
             if (link == null) {
               addLoadingFunc(false);
@@ -48,12 +50,12 @@ class CreateTeamBloc implements BaseBloc {
               return Observable.just(link);
             }
           }))
-      .flatMap((imageLink) => Observable.fromFuture(_groupReposiroty.createGroup(Team(
+      .flatMap((imageLink) => Observable.fromFuture(_teamReposiroty.createGroup(Team(
               name: _nameCtrl.value,
               bio: _bioCtrl.value,
               dress: AppColor.getColorValue(_chooseDressCtrl.value.toString()),
               logo: imageLink)))
-          .doOnListen(() => print("listen create"))
+          .doOnError(() => addLoadingFunc(false))
           .doOnData((onData) => addLoadingFunc(false)))
       .flatMap((response) => Observable.fromFuture(_handleSuccess(response)))
       .flatMap((response) => Observable.just(response));
@@ -61,7 +63,7 @@ class CreateTeamBloc implements BaseBloc {
   Future<CreateTeamResponse> _handleSuccess(CreateTeamResponse response) async {
     if (response.success) {
       var user = await _appPref.getUser();
-      user.addGroup(response.group);
+      user.addTeam(response.team);
       await _appPref.setUser(user);
     }
     return Future.value(response);

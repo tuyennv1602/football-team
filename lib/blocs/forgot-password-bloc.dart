@@ -26,11 +26,12 @@ class ForgotPasswordBloc implements BaseBloc {
   Function(bool) get changeTypeFunc => _changeTypeCtrl.add;
   Observable<bool> get changeTypeStream => Observable(_changeTypeCtrl);
 
-  final _submitEmailCtrl = BehaviorSubject<bool>();
+  final _submitEmailCtrl = PublishSubject<bool>();
   Function(bool) get submitEmailFunc => _submitEmailCtrl.add;
   Observable<BaseResponse> get submitEmailStream => Observable(_submitEmailCtrl)
       .flatMap((_) => Observable.fromFuture(_userRepo.forgotPassword(_emailCtrl.value))
           .doOnListen(() => addLoadingFunc(true))
+          .doOnError(() => addLoadingFunc(false))
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((response) => Observable.just(response));
 
@@ -40,6 +41,7 @@ class ForgotPasswordBloc implements BaseBloc {
       .flatMap((_) => Observable.fromFuture(_userRepo.changePassword(
               _emailCtrl.value, _passwordCtrl.value, _confirmCodeCtrl.value))
           .doOnListen(() => addLoadingFunc(true))
+          .doOnError(() => addLoadingFunc(false))
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((response) => Observable.just(response));
 

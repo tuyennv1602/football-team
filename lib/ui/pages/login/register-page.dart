@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/register-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/constants.dart';
+import 'package:myfootball/res/strings.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
@@ -30,7 +31,6 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
           value: isSelected,
           activeColor: AppColor.GREEN,
           onChanged: (isChecked) {
-            print(isChecked);
             if (isChecked) {
               groupValue.add(value);
             } else {
@@ -82,7 +82,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                         width: 15,
                       ),
                       Text(
-                        'FootballTeam',
+                        Strings.APP_NAME,
                         style: TextStyle(
                             fontFamily: 'bold',
                             fontSize: 24,
@@ -108,45 +108,48 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                'Đăng ký',
+                                Strings.REGISTER,
                                 style: Theme.of(context).textTheme.title.copyWith(
                                     fontSize: 20, color: AppColor.GREEN, fontFamily: 'bold'),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty) return 'Vui lòng nhập tên người dùng';
+                                  if (value.isEmpty) return Strings.USER_NAME_REQUIRED;
+                                  return null;
                                 },
-                                labelText: 'Tên người dùng',
+                                labelText: Strings.USER_NAME,
                                 inputAction: TextInputAction.next,
                                 onChangedText: (text) => pageBloc.changeUsernameFunc(text),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty) return 'Vui lòng nhập email';
-                                  if (!validEmail(value)) return 'Email không hợp lệ';
+                                  if (value.isEmpty) return Strings.REQUIRED_EMAIL;
+                                  if (!validEmail(value)) return Strings.EMAIL_INVALID;
+                                  return null;
                                 },
                                 inputType: TextInputType.emailAddress,
                                 inputAction: TextInputAction.next,
-                                labelText: 'Email',
+                                labelText: Strings.EMAIL,
                                 onChangedText: (text) => pageBloc.changeEmailFunc(text),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty) return 'Vui lòng nhập mật khẩu';
-                                  if (!validPassword(value))
-                                    return 'Mật khẩu không hợp lệ (nhiều hơn 5 ký tự)';
+                                  if (value.isEmpty) return Strings.REQUIRED_PASSWORD;
+                                  if (!validPassword(value)) return Strings.PASSWORD_INVALID;
+                                  return null;
                                 },
-                                labelText: 'Mật khẩu',
+                                labelText: Strings.PASSWORD,
                                 obscureText: true,
                                 inputAction: TextInputAction.next,
                                 onChangedText: (text) => pageBloc.changePasswordFunc(text),
                               ),
                               InputWidget(
                                 validator: (value) {
-                                  if (value.isEmpty) return 'Vui lòng nhập số điện thoại';
-                                  if (!validPhoneNumber(value)) return 'Số điện thoại không hợp lệ';
+                                  if (value.isEmpty) return Strings.REQUIRED_PHONE;
+                                  if (!validPhoneNumber(value)) return Strings.PHONE_INVALID;
+                                  return null;
                                 },
-                                labelText: 'Số điện thoại',
+                                labelText: Strings.PHONE,
                                 inputType: TextInputType.phone,
                                 inputAction: TextInputAction.done,
                                 onChangedText: (text) => pageBloc.changePhoneNumberFunc(text),
@@ -157,14 +160,12 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                               StreamBuilder<List<int>>(
                                 stream: pageBloc.changeRoleStream,
                                 builder: (c, snap) {
-                                  var groupValue = snap.hasData ? snap.data : [0];
+                                  var groupValue = snap.hasData ? snap.data : [1];
                                   print(groupValue);
                                   return Column(
                                     children: <Widget>[
                                       _buildItemRole(context, Constants.TEAM_MEMBER, groupValue,
                                           'Thành viên đội bóng'),
-                                      _buildItemRole(context, Constants.TEAM_MANAGER, groupValue,
-                                          'Quản lý đội bóng'),
                                       _buildItemRole(context, Constants.GROUND_OWNER, groupValue,
                                           'Quản lý sân bóng'),
                                     ],
@@ -186,7 +187,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             height: 40,
                             backgroundColor: Colors.grey,
                             child: Text(
-                              'QUAY LẠI',
+                              Strings.BACK,
                               style:
                                   Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                             ),
@@ -205,7 +206,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
                             margin: EdgeInsets.only(top: 25, bottom: 25),
                             backgroundColor: AppColor.GREEN,
                             child: Text(
-                              'ĐĂNG KÝ',
+                              Strings.REGISTER.toUpperCase(),
                               style:
                                   Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
                             ),
@@ -222,7 +223,7 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
   }
 
   @override
-  void listenPageData(BuildContext context) {
+  void listenData(BuildContext context) {
     pageBloc.registerStream.listen((data) {
       if (!data.success) {
         showSnackBar(data.errorMessage);
@@ -231,9 +232,6 @@ class RegisterPage extends BasePage<RegisterBloc> with Validator {
       }
     });
   }
-
-  @override
-  void listenAppData(BuildContext context) {}
 
   @override
   bool get showFullScreen => true;

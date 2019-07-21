@@ -10,8 +10,9 @@ class Team {
   int countMember;
   int countRequest;
   double wallet;
+  int userId;
 
-  Team({this.manager, this.name, this.logo, this.dress, this.bio});
+  Team({this.manager, this.name, this.logo, this.dress, this.bio, this.userId});
 
   Team.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,4 +43,7 @@ class Team {
     data['wallet'] = this.wallet;
     return data;
   }
+
+  bool get isManager => manager == userId;
+  bool get isCaptain => captain == userId;
 }

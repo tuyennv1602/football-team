@@ -5,13 +5,13 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:myfootball/blocs/create-team-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
+import 'package:myfootball/res/strings.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-button.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/ui/widgets/bottom-sheet-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
-import 'package:myfootball/ui/widgets/choose-image.dart';
 import 'package:myfootball/ui/widgets/input-widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/device-util.dart';
@@ -19,6 +19,36 @@ import 'package:myfootball/utils/validator.dart';
 
 class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
   final _formKey = GlobalKey<FormState>();
+
+  _showChooseImage(BuildContext context) => showModalBottomSheet(
+      context: context,
+      builder: (c) => BottomSheetWidget(
+            options: ['Chọn ảnh logo', 'Từ máy ảnh', 'Từ thư viện', 'Huỷ'],
+            onClickOption: (index) async {
+              if (index == 1) {
+                var image = await ImagePicker.pickImage(source: ImageSource.camera);
+                pageBloc.chooseLogoFunc(image);
+                Navigator.of(context).pop();
+              } else if (index == 2) {
+                var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                pageBloc.chooseLogoFunc(image);
+                Navigator.of(context).pop();
+              }
+            },
+          ));
+
+  Widget _buildItemColor(BuildContext context, Color color) => Padding(
+        padding: EdgeInsets.all(5),
+        child: Container(
+          height: 40,
+          width: 40,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(width: 0.5, color: Colors.grey)),
+        ),
+      );
 
   @override
   AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
@@ -43,34 +73,6 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
             show: isLoading,
           );
         },
-      );
-
-  _showChooseImage(BuildContext context) => showModalBottomSheet(
-      context: context,
-      builder: (c) => BottomSheetWidget(
-            options: ['Chọn ảnh logo', 'Từ máy ảnh', 'Từ thư viện', 'Huỷ'],
-            onClickOption: (index) async {
-              if (index == 1) {
-                var image = await ImagePicker.pickImage(source: ImageSource.camera);
-                pageBloc.chooseLogoFunc(image);
-              } else if (index == 2) {
-                var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-                pageBloc.chooseLogoFunc(image);
-              }
-            },
-          ));
-
-  Widget _buildItemColor(BuildContext context, Color color) => Padding(
-        padding: EdgeInsets.all(5),
-        child: Container(
-          height: 40,
-          width: 40,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(width: 0.5, color: Colors.grey)),
-        ),
       );
 
   @override
@@ -100,7 +102,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Image.asset(
-                        Images.GALLERY,
+                        Images.DEFAULT_LOGO,
                         width: 50,
                         height: 50,
                         color: Colors.grey,
@@ -129,6 +131,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
               InputWidget(
                   validator: (value) {
                     if (value.isEmpty) return 'Vui lòng nhập tên đội bóng';
+                    return null;
                   },
                   inputType: TextInputType.text,
                   inputAction: TextInputAction.next,
@@ -137,8 +140,10 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
               InputWidget(
                   validator: (value) {
                     if (value.isEmpty) return 'Vui lòng nhập giới thiệu';
+                    return null;
                   },
-                  maxLines: 5,
+                  maxLines: 3,
+                  maxLength: 100,
                   inputType: TextInputType.text,
                   inputAction: TextInputAction.done,
                   labelText: 'Giới thiệu đội bóng',
@@ -158,11 +163,11 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
           child: StreamBuilder<Color>(
             stream: pageBloc.chooseDressStream,
             builder: (c, snap) => Image.asset(
-                  Images.SHIRT,
-                  width: 90,
-                  height: 100,
-                  color: snap.hasData ? snap.data : AppColor.WHITE,
-                ),
+              Images.SHIRT,
+              width: 90,
+              height: 100,
+              color: snap.hasData ? snap.data : AppColor.WHITE,
+            ),
           ),
         ),
         SizedBox(
@@ -195,7 +200,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
             margin: EdgeInsets.only(top: 30),
             backgroundColor: AppColor.GREEN,
             child: Text(
-              'ĐĂNG KÝ',
+              Strings.REGISTER.toUpperCase(),
               style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
             ),
           ),
@@ -205,10 +210,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
   }
 
   @override
-  void listenAppData(BuildContext context) {}
-
-  @override
-  void listenPageData(BuildContext context) {
+  void listenData(BuildContext context) {
     pageBloc.submitRegisterStream.listen((res) {
       if (!res.success) {
         showSnackBar(res.errorMessage);

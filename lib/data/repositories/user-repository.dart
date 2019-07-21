@@ -21,4 +21,12 @@ class UserRepository {
   Future<BaseResponse> changePassword(String email, String password, String code) async {
     return _userProvider.changePassword(email, password, code);
   }
+
+  Future<BaseResponse> createRequestMember(int teamId, String content) async {
+    return _userProvider.createRequestMember(teamId, content);
+  }
+
+  Future<BaseResponse> cancelRequestMember(int requestId) async {
+    return _userProvider.cancelRequestMember(requestId);
+  }
 }

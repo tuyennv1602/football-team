@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:myfootball/blocs/app-bloc.dart';
@@ -27,9 +26,7 @@ void main() async {
   await FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
   var user = await AppPreference().getUser();
-  dio.interceptors
-    ..add(CookieManager(CookieJar()))
-    ..add(LogInterceptor(responseBody: true));
+  dio.interceptors..add(CookieManager(CookieJar()))..add(LogInterceptor(responseBody: true));
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
   return runApp(BlocProvider<AppBloc>(
     bloc: AppBloc(),
@@ -44,18 +41,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appBloc = BlocProvider.of<AppBloc>(context);
-    appBloc.setUserFunc(_user);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           canvasColor: Colors.transparent,
           textTheme: Theme.of(context).textTheme.copyWith(
               title: TextStyle(
-                  fontFamily: 'semi-bold',
-                  fontSize: 18,
-                  letterSpacing: 0.1,
-                  color: Colors.white),
+                  fontFamily: 'semi-bold', fontSize: 18, letterSpacing: 0.1, color: Colors.white),
               body1: TextStyle(
                 fontFamily: 'regular',
                 fontSize: 14,
@@ -63,10 +55,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.black87,
               ),
               body2: TextStyle(
-                  fontFamily: 'regular',
-                  fontSize: 16,
-                  letterSpacing: 0.1,
-                  color: Colors.black87)),
+                  fontFamily: 'regular', fontSize: 16, letterSpacing: 0.1, color: Colors.black87)),
         ),
         home: _user != null
             ? HomePage(_user)

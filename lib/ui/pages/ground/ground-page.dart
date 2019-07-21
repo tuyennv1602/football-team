@@ -26,8 +26,8 @@ class GroundPage extends BasePage<GroundBloc> {
   }
 
   @override
-  void listenAppData(BuildContext context) {}
+  void listenData(BuildContext context) {}
 
   @override
-  void listenPageData(BuildContext context) {}
+  bool get isRootLevel => true;
 }

@@ -10,7 +10,7 @@ class User {
   String email;
   String phone;
   List<Role> roles;
-  List<Team> groups;
+  List<Team> teams;
   double wallet;
 
   User(
@@ -20,7 +20,7 @@ class User {
       this.email,
       this.phone,
       this.roles,
-      this.groups,
+      this.teams,
       this.wallet});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -36,9 +36,11 @@ class User {
       });
     }
     if (json['groupList'] != null) {
-      groups = new List<Team>();
+      teams = new List<Team>();
       json['groupList'].forEach((v) {
-        groups.add(new Team.fromJson(v));
+        var team = new Team.fromJson(v);
+        team.userId = id;
+        teams.add(team);
       });
     }
     wallet = json['wallet'];
@@ -54,8 +56,8 @@ class User {
     if (this.roles != null) {
       data['roleList'] = this.roles.map((v) => v.toJson()).toList();
     }
-    if (this.groups != null) {
-      data['groupList'] = this.groups.map((v) => v.toJson()).toList();
+    if (this.teams != null) {
+      data['groupList'] = this.teams.map((v) => v.toJson()).toList();
     }
     data['wallet'] = this.wallet;
     return data;
@@ -65,8 +67,8 @@ class User {
     if (roles.length == 0) {
       return USER_ROLE.TEAM_MEMBER;
     } else if (roles.length == 1) {
-      if (roles[0].code == Constants.TEAM_MANAGER) {
-        return USER_ROLE.TEAM_MANAGER;
+      if (roles[0].code == Constants.TEAM_MEMBER) {
+        return USER_ROLE.TEAM_MEMBER;
       } else {
         return USER_ROLE.GROUND_OWNER;
       }
@@ -75,9 +77,12 @@ class User {
     }
   }
 
-  List<Team> addGroup(Team group) {
-    if (groups == null) return [];
-    groups.add(group);
-    return groups;
+  List<Team> addTeam(Team team) {
+    team.userId = id;
+    if (teams == null) {
+      teams = [];
+    }
+    teams.add(team);
+    return teams;
   }
 }

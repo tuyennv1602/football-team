@@ -9,19 +9,19 @@ class UserBloc implements BaseBloc {
   Function(bool) get addLoadingFunc => _loadingCtrl.add;
   Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
-  final _logoutCtrl = BehaviorSubject<bool>();
+  final _logoutCtrl = PublishSubject<bool>();
   Function(bool) get logoutFunc => _logoutCtrl.add;
   Observable<bool> get logoutStream => Observable(_logoutCtrl)
       .flatMap((_) => Observable.fromFuture(_logout())
           .doOnListen(() => addLoadingFunc(true))
+          .doOnError(() => addLoadingFunc(false))
           .doOnData((_) => addLoadingFunc(false)))
       .flatMap((result) => Observable.just(result));
 
   Future<bool> _logout() async {
     var token = await _appPref.clearToken();
     var user = await _appPref.clearUser();
-    var header = await _appPref.clearHeader();
-    return Future.value(token && user && header);
+    return Future.value(token && user);
   }
 
   @override

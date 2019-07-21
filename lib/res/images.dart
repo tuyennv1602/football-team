@@ -26,4 +26,6 @@ class Images {
   static const String CREATE_GROUP = 'assets/images/ic_create_group.png';
   static const String STACK = 'assets/images/ic_stack.png';
   static const String QR_SEARCH = 'assets/images/ic_qr_search.png';
+  static const String DEFAULT_LOGO = 'assets/images/ic_club.png';
+  static const String SWITCH_TEAM = 'assets/images/ic_switch_team.png';
 }
