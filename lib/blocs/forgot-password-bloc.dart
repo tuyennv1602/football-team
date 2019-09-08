@@ -3,12 +3,8 @@ import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ForgotPasswordBloc implements BaseBloc {
+class ForgotPasswordBloc extends BaseBloc {
   var _userRepo = UserRepository();
-
-  final _loadingCtrl = PublishSubject<bool>();
-  Function(bool) get addLoadingFunc => _loadingCtrl.add;
-  Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
   final _emailCtrl = BehaviorSubject<String>();
   Function(String) get changeEmailFunc => _emailCtrl.add;
@@ -29,20 +25,19 @@ class ForgotPasswordBloc implements BaseBloc {
   final _submitEmailCtrl = PublishSubject<bool>();
   Function(bool) get submitEmailFunc => _submitEmailCtrl.add;
   Observable<BaseResponse> get submitEmailStream => Observable(_submitEmailCtrl)
-      .flatMap((_) => Observable.fromFuture(_userRepo.forgotPassword(_emailCtrl.value))
-          .doOnListen(() => addLoadingFunc(true))
-          .doOnError(() => addLoadingFunc(false))
-          .doOnData((_) => addLoadingFunc(false)))
+      .flatMap((_) => Observable.fromFuture(_forgotPassword())
+          .doOnListen(() => setLoadingFunc(true))
+          .doOnError(() => setLoadingFunc(false))
+          .doOnDone(() => setLoadingFunc(false)))
       .flatMap((response) => Observable.just(response));
 
-  final _submitChangePassword = BehaviorSubject<bool>();
+  final _submitChangePassword = PublishSubject<bool>();
   Function(bool) get submitChangePassword => _submitChangePassword.add;
   Observable<BaseResponse> get submitChangePasswordStream => Observable(_submitChangePassword)
-      .flatMap((_) => Observable.fromFuture(_userRepo.changePassword(
-              _emailCtrl.value, _passwordCtrl.value, _confirmCodeCtrl.value))
-          .doOnListen(() => addLoadingFunc(true))
-          .doOnError(() => addLoadingFunc(false))
-          .doOnData((_) => addLoadingFunc(false)))
+      .flatMap((_) => Observable.fromFuture(_changePassword())
+          .doOnListen(() => setLoadingFunc(true))
+          .doOnError(() => setLoadingFunc(false))
+          .doOnDone(() => setLoadingFunc(false)))
       .flatMap((response) => Observable.just(response));
 
   submit() {
@@ -53,9 +48,16 @@ class ForgotPasswordBloc implements BaseBloc {
     }
   }
 
+  Future<BaseResponse> _changePassword() async {
+    return _userRepo.changePassword(_emailCtrl.value, _passwordCtrl.value, _confirmCodeCtrl.value);
+  }
+
+  Future<BaseResponse> _forgotPassword() async {
+    return _userRepo.forgotPassword(_emailCtrl.value);
+  }
+
   @override
   void dispose() {
-    _loadingCtrl.close();
     _emailCtrl.close();
     _submitEmailCtrl.close();
     _passwordCtrl.close();
@@ -63,7 +65,4 @@ class ForgotPasswordBloc implements BaseBloc {
     _changeTypeCtrl.close();
     _submitChangePassword.close();
   }
-
-  @override
-  void initState() {}
 }

@@ -22,11 +22,15 @@ class UserRepository {
     return _userProvider.changePassword(email, password, code);
   }
 
-  Future<BaseResponse> createRequestMember(int teamId, String content) async {
-    return _userProvider.createRequestMember(teamId, content);
+  Future<BaseResponse> createRequestMember(int userId, int teamId, String content) async {
+    return _userProvider.createRequestMember(userId, teamId, content);
   }
 
   Future<BaseResponse> cancelRequestMember(int requestId) async {
     return _userProvider.cancelRequestMember(requestId);
+  }
+
+  Future<LoginResponse> refreshToken(String refreshToken) async {
+    return _userProvider.refreshToken(refreshToken);
   }
 }

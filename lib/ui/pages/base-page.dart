@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/strings.dart';
+import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/utils/device-util.dart';
 
+// ignore: must_be_immutable
 abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -24,7 +25,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
 
   bool showFullScreen = false;
 
-  bool isRootLevel = false;
+  // use when need check screen has bootombar
+  bool hasBottomBar = false;
 
   // set true if need scroll all textfield
 
@@ -50,7 +52,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  Strings.NOTIFY,
+                  StringRes.NOTIFY,
                   style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
                 ),
                 SizedBox(
@@ -58,7 +60,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                 ),
                 Text(
                   message,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.body1,
                 ),
                 ButtonWidget(
                   onTap: () {
@@ -71,8 +73,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                   height: 40,
                   backgroundColor: AppColor.GREEN,
                   child: Text(
-                    Strings.OK,
-                    style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
+                    StringRes.OK,
+                    style: Theme.of(context).textTheme.body2,
                   ),
                 ),
               ],
@@ -92,7 +94,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      Strings.NOTIFY,
+                      StringRes.NOTIFY,
                       style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
                     ),
                     SizedBox(
@@ -100,7 +102,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                     ),
                     Text(
                       message,
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.body1,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -113,8 +115,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                           height: 40,
                           backgroundColor: Colors.grey,
                           child: Text(
-                            Strings.CANCEL,
-                            style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
+                            StringRes.CANCEL,
+                            style: Theme.of(context).textTheme.body2,
                           ),
                         ),
                         ButtonWidget(
@@ -128,8 +130,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                           height: 40,
                           backgroundColor: AppColor.GREEN,
                           child: Text(
-                            Strings.OK,
-                            style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
+                            StringRes.OK,
+                            style: Theme.of(context).textTheme.body2,
                           ),
                         )
                       ],
@@ -178,9 +180,7 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
               ),
               !showFullScreen
                   ? SizedBox(
-                      height: isRootLevel
-                          ? MediaQuery.of(context).padding.bottom
-                          : DeviceUtil.getPaddingBottom(context),
+                      height: hasBottomBar ? MediaQuery.of(context).padding.bottom : 0,
                     )
                   : SizedBox()
             ],

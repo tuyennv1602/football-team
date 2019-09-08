@@ -1,20 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:myfootball/data/app-api.dart';
-import 'package:myfootball/data/app-preference.dart';
 import 'package:myfootball/models/responses/search-team-response.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/responses/create-team-response.dart';
 
 class TeamProvider {
-  Future<CreateTeamResponse> createGroup(Team group) async {
+  Future<CreateTeamResponse> createTeam(Team team) async {
     try {
-      var user = await AppPreference().getUser();
       var response = await AppApi.postApi('group/create', body: {
-        "manager": user.id,
-        "name": group.name,
-        "dress": group.dress,
-        "bio": group.bio,
-        "logo": group.logo
+        "manager": team.userId,
+        "name": team.name,
+        "dress": team.dress,
+        "bio": team.bio,
+        "logo": team.logo
       });
       return CreateTeamResponse.success(response.data);
     } on DioError catch (e) {
@@ -22,9 +20,10 @@ class TeamProvider {
     }
   }
 
-  Future<SearchTeamResponse> getAllTeams() async {
+
+  Future<SearchTeamResponse> searchTeamByKey(String key) async {
     try {
-      var resp = await AppApi.getApi('group/find-all');
+      var resp = await AppApi.getApi('group/search?text_search=$key');
       return SearchTeamResponse.success(resp.data);
     } on DioError catch (e) {
       return SearchTeamResponse.error(e.message);

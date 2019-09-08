@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>201065002899-jiudas2i7n8jntu5a3qe0te7beh0vih2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.201065002899-jiudas2i7n8jntu5a3qe0te7beh0vih2</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>201065002899-u4ajrpi4mknetba55nka33fhtjp572dl.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBd4j7KjYXgAtFO362UC9CVWLTqLcmo65U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>201065002899</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.app.footballteam</string>
+	<key>PROJECT_ID</key>
+	<string>footballteam-eb70d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>footballteam-eb70d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:201065002899:ios:9f6a130e8e144761</string>
+	<key>DATABASE_URL</key>
+	<string>https://footballteam-eb70d.firebaseio.com</string>
+</dict>
+</plist>

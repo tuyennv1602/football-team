@@ -5,7 +5,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:myfootball/blocs/create-team-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
-import 'package:myfootball/res/strings.dart';
+import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-button.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
@@ -17,6 +17,7 @@ import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/device-util.dart';
 import 'package:myfootball/utils/validator.dart';
 
+// ignore: must_be_immutable
 class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
   final _formKey = GlobalKey<FormState>();
 
@@ -109,10 +110,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
                       ),
                       Text(
                         'Logo',
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(fontFamily: 'semi-bold', color: Colors.grey),
+                        style: Theme.of(context).textTheme.body2.copyWith(color: Colors.grey),
                       )
                     ],
                   );
@@ -156,7 +154,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
         ),
         Text(
           'Màu áo',
-          style: Theme.of(context).textTheme.body2.copyWith(color: AppColor.SECOND_BLACK),
+          style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey, fontSize: 16),
         ),
         Align(
           alignment: Alignment.center,
@@ -200,8 +198,8 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
             margin: EdgeInsets.only(top: 30),
             backgroundColor: AppColor.GREEN,
             child: Text(
-              Strings.REGISTER.toUpperCase(),
-              style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
+              StringRes.REGISTER.toUpperCase(),
+              style: Theme.of(context).textTheme.body2,
             ),
           ),
         )
@@ -212,7 +210,7 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
   @override
   void listenData(BuildContext context) {
     pageBloc.submitRegisterStream.listen((res) {
-      if (!res.success) {
+      if (!res.isSuccess) {
         showSnackBar(res.errorMessage);
       } else {
         appBloc.updateUser();

@@ -1,15 +1,15 @@
+import 'package:myfootball/utils/constants.dart';
+
 class BaseResponse {
-  String token;
   String errorMessage;
-  String errorCode;
+  String statusCode;
   bool success;
 
   BaseResponse({this.success, this.errorMessage});
 
   BaseResponse.success(Map<String, dynamic> json) {
-    token = json['token'];
-    errorMessage = json['errorMessage'];
-    errorCode = json['errorCode'];
+    errorMessage = json['error_messge'];
+    statusCode = json['status_code'];
     success = json['success'];
   }
 
@@ -17,4 +17,6 @@ class BaseResponse {
     this.success = false;
     this.errorMessage = message;
   }
+
+  bool get isSuccess => success && statusCode == Constants.CODE_OK;
 }

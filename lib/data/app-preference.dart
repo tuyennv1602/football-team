@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:myfootball/models/token.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,14 +11,16 @@ class AppPreference {
   static const String ACCESS_TOKEN = 'token';
   static const String KEY_USER = 'user';
 
-  Future<bool> setToken(String token) async {
+  Future<bool> setToken(Token token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setString(ACCESS_TOKEN, token);
+    return await prefs.setString(ACCESS_TOKEN, jsonEncode(token));
   }
 
-  Future<String> getToken() async {
+  Future<Token> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(ACCESS_TOKEN);
+    var tokenData = prefs.getString(ACCESS_TOKEN);
+    if (tokenData == null) return null;
+    return Token.fromJson(jsonDecode(tokenData));
   }
 
   Future<bool> clearToken() async {

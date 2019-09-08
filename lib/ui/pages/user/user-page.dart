@@ -7,11 +7,11 @@ import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/ui/widgets/border-frame.dart';
-import 'package:myfootball/ui/widgets/bottom-sheet-widget.dart';
 import 'package:myfootball/ui/widgets/item-option.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/string-util.dart';
 
+// ignore: must_be_immutable
 class UserPage extends BasePage<UserBloc> {
   @override
   AppBarWidget buildAppBar(BuildContext context) {
@@ -30,12 +30,6 @@ class UserPage extends BasePage<UserBloc> {
       show: false,
     );
   }
-
-  _showChooseTargetTransfer(BuildContext context) => showModalBottomSheet(
-      context: context,
-      builder: (c) => BottomSheetWidget(
-            options: ['Chuyển tiền', 'Tới bạn bè', 'Tới đội bóng', 'Huỷ'],
-          ));
 
   @override
   Widget buildMainContainer(BuildContext context) => Column(
@@ -75,7 +69,7 @@ class UserPage extends BasePage<UserBloc> {
                             Text(
                               'Số dư trong ví: $wallet',
                               style:
-                                  Theme.of(context).textTheme.body2.copyWith(color: AppColor.WHITE),
+                                  Theme.of(context).textTheme.body2,
                             )
                           ],
                         ),
@@ -108,7 +102,6 @@ class UserPage extends BasePage<UserBloc> {
                       ItemOptionWidget(
                         Images.TRANSACTIONS,
                         'Chuyển tiền',
-                        onTap: () => _showChooseTargetTransfer(context),
                       ),
                       ItemOptionWidget(Images.TRANSACTION_HISTORY, 'Lịch sử giao dịch'),
                       ItemOptionWidget(
@@ -148,5 +141,5 @@ class UserPage extends BasePage<UserBloc> {
   }
 
   @override
-  bool get isRootLevel => true;
+  bool get hasBottomBar => true;
 }

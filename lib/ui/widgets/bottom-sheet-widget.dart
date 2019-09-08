@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/ui/widgets/button-widget.dart';
-import 'package:myfootball/utils/device-util.dart';
+
+import 'button-widget.dart';
 
 typedef void OnClickOption(int index);
 
+// ignore: must_be_immutable
 class BottomSheetWidget extends StatelessWidget {
   final List<String> options;
   final OnClickOption onClickOption;
@@ -15,14 +16,14 @@ class BottomSheetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int length = options.length;
-    this.options.asMap().forEach((index, value) {
+    options.asMap().forEach((index, value) {
       if (index == 0) {
         children.add(SizedBox(
           height: BUTTON_HEIGHT,
           child: Center(
             child: Text(
               value,
-              style: TextStyle(color: Colors.black, fontFamily: 'semi-bold', fontSize: 18),
+              style: TextStyle(color: Colors.black, fontFamily: 'regular', fontSize: 16),
             ),
           ),
         ));
@@ -54,15 +55,18 @@ class BottomSheetWidget extends StatelessWidget {
       ));
     });
     return Container(
-      height: ((length * BUTTON_HEIGHT) + length).toDouble(),
-      margin: EdgeInsets.only(left: 15, right: 15, bottom: DeviceUtil.getPaddingBottom(context)),
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
       color: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-        child: Column(
-          children: this.children,
-          mainAxisAlignment: MainAxisAlignment.end,
-        ),
+      child: Wrap(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+            child: Column(
+              children: this.children,
+              mainAxisAlignment: MainAxisAlignment.end,
+            ),
+          )
+        ],
       ),
     );
   }

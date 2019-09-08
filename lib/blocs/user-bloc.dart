@@ -2,20 +2,16 @@ import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
 import 'package:rxdart/rxdart.dart';
 
-class UserBloc implements BaseBloc {
+class UserBloc extends BaseBloc {
   var _appPref = AppPreference();
-
-  final _loadingCtrl = PublishSubject<bool>();
-  Function(bool) get addLoadingFunc => _loadingCtrl.add;
-  Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
   final _logoutCtrl = PublishSubject<bool>();
   Function(bool) get logoutFunc => _logoutCtrl.add;
   Observable<bool> get logoutStream => Observable(_logoutCtrl)
       .flatMap((_) => Observable.fromFuture(_logout())
-          .doOnListen(() => addLoadingFunc(true))
-          .doOnError(() => addLoadingFunc(false))
-          .doOnData((_) => addLoadingFunc(false)))
+          .doOnListen(() => setLoadingFunc(true))
+          .doOnError(() => setLoadingFunc(false))
+          .doOnDone(() => setLoadingFunc(false)))
       .flatMap((result) => Observable.just(result));
 
   Future<bool> _logout() async {
@@ -27,9 +23,5 @@ class UserBloc implements BaseBloc {
   @override
   void dispose() {
     _logoutCtrl.close();
-    _loadingCtrl.close();
   }
-
-  @override
-  void initState() {}
 }

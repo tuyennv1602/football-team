@@ -6,11 +6,11 @@ import 'package:myfootball/models/responses/create-team-response.dart';
 class TeamReposiroty {
   TeamProvider _groupProvider = TeamProvider();
 
-  Future<CreateTeamResponse> createGroup(Team group) async {
-    return _groupProvider.createGroup(group);
+  Future<CreateTeamResponse> createTeam(Team team) async {
+    return _groupProvider.createTeam(team);
   }
 
-  Future<SearchTeamResponse> getAllTeams() async {
-    return _groupProvider.getAllTeams();
+  Future<SearchTeamResponse> searchTeamByKey(String key) async {
+    return _groupProvider.searchTeamByKey(key);
   }
 }

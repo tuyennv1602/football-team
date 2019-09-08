@@ -4,7 +4,6 @@ import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
-import 'package:myfootball/models/user.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
 import 'dart:convert';
@@ -25,19 +24,19 @@ parseJson(String text) {
 void main() async {
   await FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-  var user = await AppPreference().getUser();
-  dio.interceptors..add(CookieManager(CookieJar()))..add(LogInterceptor(responseBody: true));
+  var token = await AppPreference().getToken();
+  dio.interceptors..add(CookieManager(CookieJar()))..add(LogInterceptor(responseBody: true, requestBody: true, responseHeader: false, requestHeader: true));
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
   return runApp(BlocProvider<AppBloc>(
     bloc: AppBloc(),
-    child: MyApp(user),
+    child: MyApp(token != null),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final User _user;
+  final bool _isLogined;
 
-  MyApp(this._user);
+  MyApp(this._isLogined);
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +54,13 @@ class MyApp extends StatelessWidget {
                 color: Colors.black87,
               ),
               body2: TextStyle(
-                  fontFamily: 'regular', fontSize: 16, letterSpacing: 0.1, color: Colors.black87)),
+                  fontFamily: 'semi-bold',
+                  fontSize: 16,
+                  letterSpacing: 0.1,
+                  color: Colors.white)),
         ),
-        home: _user != null
-            ? HomePage(_user)
+        home: _isLogined
+            ? HomePage()
             : BlocProvider<LoginBloc>(
                 bloc: LoginBloc(),
                 child: LoginPage(),

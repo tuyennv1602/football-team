@@ -1,11 +1,9 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 
-class SocialBloc implements BaseBloc {
+class SocialBloc extends BaseBloc {
   @override
-  void dispose() {
-  }
+  void dispose() {}
 
   @override
-  void initState() {
-  }
+  void initState() {}
 }

@@ -3,8 +3,6 @@ import 'package:myfootball/data/app-api.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:myfootball/models/responses/login-response.dart';
 
-import '../app-preference.dart';
-
 class UserProvider {
   Future<LoginResponse> loginWithEmail(String email, String password) async {
     try {
@@ -56,11 +54,10 @@ class UserProvider {
     }
   }
 
-  Future<BaseResponse> createRequestMember(int teamId, String content) async {
+  Future<BaseResponse> createRequestMember(int userId, int teamId, String content) async {
     try {
-      var user = await AppPreference().getUser();
       var response = await AppApi.postApi('request-member/create',
-          body: {"userId": user.id, "groupId": teamId, "content": content});
+          body: {"userId": userId, "groupId": teamId, "content": content});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -73,6 +70,15 @@ class UserProvider {
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<LoginResponse> refreshToken(String refreshToken) async {
+    try {
+      var resp = await AppApi.getApi('user/login/refresh-token/$refreshToken');
+      return LoginResponse.success(resp.data);
+    } on DioError catch (e) {
+      return LoginResponse.error(e.message);
     }
   }
 }

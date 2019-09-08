@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 
+// ignore: must_be_immutable
 class NotiPage extends BasePage<NotiBloc> {
   @override
   AppBarWidget buildAppBar(BuildContext context) {
     return AppBarWidget(
-      centerContent: Text("Noti"),
+      centerContent: Text(
+        "Thông báo",
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.title,
+      ),
     );
   }
 
@@ -39,11 +44,9 @@ class NotiPage extends BasePage<NotiBloc> {
 
   @override
   void listenData(BuildContext context) {
-    pageBloc.notiStream.listen((onData) {
-      print(onData);
-    });
+    pageBloc.notiStream.listen((onData) {});
   }
 
   @override
-  bool get isRootLevel => true;
+  bool get hasBottomBar => true;
 }

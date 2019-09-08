@@ -1,26 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/blocs/ground-bloc.dart';
 import 'package:myfootball/blocs/team-bloc.dart';
 import 'package:myfootball/blocs/noti-bloc.dart';
 import 'package:myfootball/blocs/social-bloc.dart';
 import 'package:myfootball/blocs/user-bloc.dart';
-import 'package:myfootball/models/type-user.dart';
-import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/ui/pages/ground/ground-page.dart';
 import 'package:myfootball/ui/pages/notify/noti-page.dart';
 import 'package:myfootball/ui/pages/social-page.dart';
 import 'package:myfootball/ui/pages/team/team-page.dart';
 import 'package:myfootball/ui/pages/user/user-page.dart';
+import 'package:myfootball/ui/routes/routes.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  USER_ROLE _roleType;
-
-  HomePage(User user) {
-    _roleType = user.getRoleType();
-  }
+  AppBloc _appBloc;
 
   final _userTab = BlocProvider<UserBloc>(
     bloc: UserBloc(),
@@ -37,30 +32,19 @@ class HomePage extends StatelessWidget {
     child: TeamPage(),
   );
 
-  final _groundTab = BlocProvider<GroundBloc>(
-    bloc: GroundBloc(),
-    child: GroundPage(),
-  );
-
   final _socialTab = BlocProvider<SocialBloc>(
     bloc: SocialBloc(),
     child: SocialPage(),
   );
 
-  final _groundItem = BottomNavigationBarItem(
-    icon: Icon(Icons.flag, size: 25),
-    title: Text('Sân bóng', style: TextStyle(fontSize: 10)),
-  );
-
-  final _groupItem = BottomNavigationBarItem(
-    icon: Icon(Icons.group_work, size: 25),
-    title: Text('Đội bóng', style: TextStyle(fontSize: 10)),
-  );
-
-  List<BottomNavigationBarItem> tabBarItems = [
+  final List<BottomNavigationBarItem> tabBarItems = [
     BottomNavigationBarItem(
       icon: Icon(Icons.rss_feed, size: 25),
       title: Text('Cộng đồng', style: TextStyle(fontSize: 10)),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.group_work, size: 25),
+      title: Text('Đội bóng', style: TextStyle(fontSize: 10)),
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications, size: 25),
@@ -77,42 +61,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_roleType == USER_ROLE.TEAM_MEMBER) {
-      tabBarItems.insert(1, _groupItem);
-    } else if (_roleType == USER_ROLE.GROUND_OWNER) {
-      tabBarItems.insert(1, _groundItem);
-    } else {
-      tabBarItems.insert(1, _groundItem);
-      tabBarItems.insert(2, _groupItem);
+    if (_appBloc == null) {
+      _appBloc = BlocProvider.of<AppBloc>(context);
+      _appBloc.refreshTokenStream.listen((result) {
+        if (!result) Routes.routeToLoginPage(context);
+      });
     }
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         activeColor: AppColor.GREEN,
         items: tabBarItems,
-        currentIndex: 3,
+        currentIndex: 1,
       ),
       tabBuilder: (BuildContext context, int index) {
         if (index == 0) return CupertinoTabView(builder: (BuildContext context) => _socialTab);
-        if (_roleType == USER_ROLE.ALL) {
-          if (index == 1) {
-            return CupertinoTabView(builder: (BuildContext context) => _groundTab);
-          }
-          if (index == 2) {
-            return CupertinoTabView(builder: (BuildContext context) => _groupTab);
-          }
-        } else if (_roleType == USER_ROLE.GROUND_OWNER) {
-          if (index == 1) {
-            return CupertinoTabView(builder: (BuildContext context) => _groundTab);
-          }
-        } else {
-          if (index == 1) {
-            return CupertinoTabView(builder: (BuildContext context) => _groupTab);
-          }
-        }
-        if (index == tabBarItems.length - 1)
-          return CupertinoTabView(builder: (BuildContext context) => _userTab);
-        if (index == tabBarItems.length - 2)
-          return CupertinoTabView(builder: (BuildContext context) => _notifyTab);
+        if (index == 1) return CupertinoTabView(builder: (BuildContext context) => _groupTab);
+        if (index == 2) return CupertinoTabView(builder: (BuildContext context) => _notifyTab);
+        if (index == 3) return CupertinoTabView(builder: (BuildContext context) => _userTab);
         return null;
       },
     );

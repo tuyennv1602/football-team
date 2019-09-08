@@ -13,6 +13,7 @@ import 'package:myfootball/ui/widgets/border-frame.dart';
 import 'package:myfootball/ui/widgets/item-option.dart';
 import 'package:myfootball/ui/widgets/team-avatar.dart';
 
+// ignore: must_be_immutable
 class TeamPage extends BasePage<TeamBloc> {
   Widget _buildEmptyGroup(BuildContext context) => Column(
         children: <Widget>[
@@ -243,5 +244,5 @@ class TeamPage extends BasePage<TeamBloc> {
   }
 
   @override
-  bool get isRootLevel => true;
+  bool get hasBottomBar => true;
 }

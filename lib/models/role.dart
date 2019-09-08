@@ -10,7 +10,7 @@ class Role {
   Role.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
-    createDate = json['createDate'];
+    createDate = json['create_date'];
     code = json['code'];
     name = json['name'];
   }
@@ -19,7 +19,7 @@ class Role {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['status'] = this.status;
-    data['createDate'] = this.createDate;
+    data['create_date'] = this.createDate;
     data['code'] = this.code;
     data['name'] = this.name;
     return data;

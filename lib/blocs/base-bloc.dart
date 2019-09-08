@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/subjects.dart';
 
 abstract class BaseBloc {
-  void dispose();
-  void initState();
+  final _loadingCtrl = PublishSubject<bool>();
+  Function(bool) get setLoadingFunc => _loadingCtrl.add;
+  Observable<bool> get loadingStream => Observable(_loadingCtrl);
+
+  void dispose() {
+    _loadingCtrl.close();
+  }
+
+  void initState() {}
 }
 
 // Generic BLoC provider

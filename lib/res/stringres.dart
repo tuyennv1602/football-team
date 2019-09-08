@@ -1,4 +1,4 @@
-class Strings {
+class StringRes {
   static const String APP_NAME = 'FootballTeam';
   static const String LOGIN = 'Đăng nhập';
   static const String REQUIRED_EMAIL = 'Vui lòng nhập email';
@@ -23,4 +23,5 @@ class Strings {
   static const String CONTENT = 'Nội dung';
   static const String REQUIRED_CONTENT = 'Vui lòng nhập nội dung';
   static const String SEND_REQUEST = 'Gửi yêu cầu';
+  static const String SENT_REQUEST = 'Đã gửi yêu cầu';
 }

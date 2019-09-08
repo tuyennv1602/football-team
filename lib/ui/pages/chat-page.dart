@@ -3,6 +3,7 @@ import 'package:myfootball/blocs/chat-bloc.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 
+// ignore: must_be_immutable
 class ChatPage extends BasePage<ChatBloc> {
   @override
   AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(

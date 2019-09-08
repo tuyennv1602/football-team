@@ -6,7 +6,6 @@ import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/blocs/noti-bloc.dart';
 import 'package:myfootball/blocs/register-bloc.dart';
 import 'package:myfootball/blocs/request-member-bloc.dart';
-import 'package:myfootball/models/user.dart';
 import 'package:myfootball/ui/pages/login/forgot-password-page.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
@@ -18,8 +17,8 @@ import 'package:myfootball/ui/routes/fade-in-route.dart';
 import 'package:myfootball/ui/routes/slide-left-route.dart';
 
 class Routes {
-  static routeToHomePage(BuildContext context, User user) async {
-    var page = HomePage(user);
+  static routeToHomePage(BuildContext context) async {
+    var page = HomePage();
     return await Navigator.of(context, rootNavigator: true)
         .pushAndRemoveUntil(FadeInRoute(widget: page), (Route<dynamic> route) => false);
   }

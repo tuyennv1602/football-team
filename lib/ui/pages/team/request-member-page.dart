@@ -4,7 +4,7 @@ import 'package:myfootball/blocs/request-member-bloc.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
-import 'package:myfootball/res/strings.dart';
+import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-button.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
@@ -14,6 +14,7 @@ import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/search-widget.dart';
 import 'package:myfootball/ui/widgets/team-avatar.dart';
 
+// ignore: must_be_immutable
 class RequestMemberPage extends BasePage<RequestMemberBloc> {
   final _formKey = GlobalKey<FormState>();
 
@@ -39,8 +40,10 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
                         Expanded(
                           child: Text(
                             team.name,
-                            style:
-                                Theme.of(context).textTheme.body2.copyWith(fontFamily: 'semi-bold'),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(color: AppColor.MAIN_BLACK),
                           ),
                         ),
                         FlutterRatingBarIndicator(
@@ -89,14 +92,14 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
                   key: _formKey,
                   child: InputWidget(
                     validator: (value) {
-                      if (value.isEmpty) return Strings.REQUIRED_CONTENT;
+                      if (value.isEmpty) return StringRes.REQUIRED_CONTENT;
                       return null;
                     },
                     maxLines: 5,
                     maxLength: 150,
                     inputType: TextInputType.text,
                     inputAction: TextInputAction.done,
-                    labelText: Strings.CONTENT,
+                    labelText: StringRes.CONTENT,
                     onChangedText: (text) => pageBloc.changeContentFunc(text),
                   ),
                 ),
@@ -111,8 +114,8 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
                       height: 40,
                       backgroundColor: Colors.grey,
                       child: Text(
-                        Strings.CANCEL,
-                        style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
+                        StringRes.CANCEL,
+                        style: Theme.of(context).textTheme.body2,
                       ),
                     ),
                     ButtonWidget(
@@ -128,8 +131,8 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
                       height: 40,
                       backgroundColor: AppColor.GREEN,
                       child: Text(
-                        Strings.SEND_REQUEST,
-                        style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white),
+                        StringRes.SEND_REQUEST,
+                        style: Theme.of(context).textTheme.body2,
                       ),
                     )
                   ],
@@ -176,6 +179,9 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
             Expanded(
               child: SearchWidget(
                 hintText: 'Nhập tên đội bóng',
+                onChangedText: (text) {
+                  pageBloc.searchTeamFunc(text);
+                },
               ),
             ),
             ButtonWidget(
@@ -219,10 +225,10 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
   @override
   void listenData(BuildContext context) {
     pageBloc.requestMemberStream.listen((resp) {
-      if (!resp.success) {
+      if (!resp.isSuccess) {
         showSnackBar(resp.errorMessage);
       } else {
-        showSnackBar('Đã gửi yêu cầu', backgroundColor: AppColor.MAIN_BLUE);
+        showSnackBar(StringRes.SENT_REQUEST, backgroundColor: AppColor.MAIN_BLUE);
       }
     });
   }

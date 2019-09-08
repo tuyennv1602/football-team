@@ -1,7 +1,5 @@
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/role.dart';
-import 'package:myfootball/models/type-user.dart';
-import 'package:myfootball/res/constants.dart';
 
 class User {
   int id;
@@ -25,19 +23,19 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userName = json['userName'];
+    userName = json['username'];
     avatar = json['avatar'];
     email = json['email'];
     phone = json['phone'];
-    if (json['roleList'] != null) {
+    if (json['role_list'] != null) {
       roles = new List<Role>();
-      json['roleList'].forEach((v) {
+      json['role_list'].forEach((v) {
         roles.add(new Role.fromJson(v));
       });
     }
-    if (json['groupList'] != null) {
+    if (json['group_list'] != null) {
       teams = new List<Team>();
-      json['groupList'].forEach((v) {
+      json['group_list'].forEach((v) {
         var team = new Team.fromJson(v);
         team.userId = id;
         teams.add(team);
@@ -49,32 +47,18 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['userName'] = this.userName;
+    data['username'] = this.userName;
     data['avatar'] = this.avatar;
     data['email'] = this.email;
     data['phone'] = this.phone;
     if (this.roles != null) {
-      data['roleList'] = this.roles.map((v) => v.toJson()).toList();
+      data['role_list'] = this.roles.map((v) => v.toJson()).toList();
     }
     if (this.teams != null) {
-      data['groupList'] = this.teams.map((v) => v.toJson()).toList();
+      data['group_list'] = this.teams.map((v) => v.toJson()).toList();
     }
     data['wallet'] = this.wallet;
     return data;
-  }
-
-  USER_ROLE getRoleType() {
-    if (roles.length == 0) {
-      return USER_ROLE.TEAM_MEMBER;
-    } else if (roles.length == 1) {
-      if (roles[0].code == Constants.TEAM_MEMBER) {
-        return USER_ROLE.TEAM_MEMBER;
-      } else {
-        return USER_ROLE.GROUND_OWNER;
-      }
-    } else {
-      return USER_ROLE.ALL;
-    }
   }
 
   List<Team> addTeam(Team team) {

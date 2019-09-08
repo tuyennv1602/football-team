@@ -23,8 +23,8 @@ class Team {
     logo = json['logo'];
     dress = json['dress'];
     bio = json['bio'];
-    countMember = json['countMember'];
-    countRequest = json['countRequest'];
+    countMember = json['count_member'];
+    countRequest = json['count_request'];
     wallet = json['wallet'];
   }
 
@@ -38,8 +38,8 @@ class Team {
     data['logo'] = this.logo;
     data['dress'] = this.dress;
     data['bio'] = this.bio;
-    data['countMember'] = this.countMember;
-    data['countRequest'] = this.countRequest;
+    data['count_member'] = this.countMember;
+    data['count_request'] = this.countRequest;
     data['wallet'] = this.wallet;
     return data;
   }

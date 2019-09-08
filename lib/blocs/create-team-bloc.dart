@@ -3,21 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
+import 'package:myfootball/data/repositories/firebase-repository.dart';
 import 'package:myfootball/data/repositories/team-repository.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:myfootball/models/responses/create-team-response.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
-class CreateTeamBloc implements BaseBloc {
-  final _teamReposiroty = TeamReposiroty();
+class CreateTeamBloc extends BaseBloc {
+  final _teamRepositoty = TeamReposiroty();
   final _appPref = AppPreference();
-
-  final _loadingCtrl = PublishSubject<bool>();
-  Function(bool) get addLoadingFunc => _loadingCtrl.add;
-  Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
   final _chooseLogoCtrl = BehaviorSubject<File>();
   Function(File) get chooseLogoFunc => _chooseLogoCtrl.add;
@@ -38,30 +34,37 @@ class CreateTeamBloc implements BaseBloc {
   final _submitRegisterCtrl = PublishSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
   Observable<CreateTeamResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
-      .flatMap((_) => Observable.fromFuture(uploadImage(_chooseLogoCtrl.value))
-              .doOnListen(() => addLoadingFunc(true))
-              .doOnError(() => addLoadingFunc(false))
+      .flatMap((_) => Observable.fromFuture(_uploadImage(_chooseLogoCtrl.value))
+              .doOnListen(() => setLoadingFunc(true))
+              .doOnError(() => setLoadingFunc(false))
               .doOnData((link) {
             if (link == null) {
-              addLoadingFunc(false);
+              setLoadingFunc(false);
               return Observable.just(
                   BaseResponse(success: false, errorMessage: "Error while upload group logo"));
             } else {
               return Observable.just(link);
             }
           }))
-      .flatMap((imageLink) => Observable.fromFuture(_teamReposiroty.createGroup(Team(
-              name: _nameCtrl.value,
-              bio: _bioCtrl.value,
-              dress: AppColor.getColorValue(_chooseDressCtrl.value.toString()),
-              logo: imageLink)))
-          .doOnError(() => addLoadingFunc(false))
-          .doOnData((onData) => addLoadingFunc(false)))
-      .flatMap((response) => Observable.fromFuture(_handleSuccess(response)))
-      .flatMap((response) => Observable.just(response));
+      .flatMap((imageLink) => Observable.fromFuture(_createTeam(imageLink))
+          .doOnError(() => setLoadingFunc(false))
+          .doOnDone(() => setLoadingFunc(false)))
+      .flatMap((resp) => Observable.fromFuture(_handleSuccess(resp)))
+      .flatMap((resp) => Observable.just(resp));
+
+  Future<CreateTeamResponse> _createTeam(String imageLink) async {
+    var user = await _appPref.getUser();
+    print(imageLink);
+    return _teamRepositoty.createTeam(Team(
+        userId: user.id,
+        name: _nameCtrl.value,
+        bio: _bioCtrl.value,
+        dress: AppColor.getColorValue(_chooseDressCtrl.value.toString()),
+        logo: imageLink));
+  }
 
   Future<CreateTeamResponse> _handleSuccess(CreateTeamResponse response) async {
-    if (response.success) {
+    if (response.isSuccess) {
       var user = await _appPref.getUser();
       user.addTeam(response.team);
       await _appPref.setUser(user);
@@ -69,30 +72,19 @@ class CreateTeamBloc implements BaseBloc {
     return Future.value(response);
   }
 
-  Future<String> uploadImage(File image) async {
+  Future<String> _uploadImage(File image) async {
     if (image == null) return null;
-    var user = await AppPreference().getUser();
-    StorageReference storageRef =
-        FirebaseStorage.instance.ref().child("groups").child('leader-${user.id}');
-    StorageUploadTask uploadTask = storageRef.putFile(image);
-    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-    if (uploadTask.isSuccessful) {
-      return await storageTaskSnapshot.ref.getDownloadURL();
-    } else {
-      return null;
-    }
+    var user = await _appPref.getUser();
+    var name = '${user.id}-${_nameCtrl.value}';
+    return FirebaseRepository().uploadImage(image, 'team', name);
   }
 
   @override
   void dispose() {
-    _loadingCtrl.close();
     _chooseLogoCtrl.close();
     _chooseDressCtrl.close();
     _nameCtrl.close();
     _bioCtrl.close();
     _submitRegisterCtrl.close();
   }
-
-  @override
-  void initState() {}
 }

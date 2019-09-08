@@ -5,6 +5,7 @@ import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/utils/device-util.dart';
 
+// ignore: must_be_immutable
 class SocialPage extends BasePage<SocialBloc> {
   Widget _buildCateTitle(String title) => Text(
         title,
@@ -145,5 +146,5 @@ class SocialPage extends BasePage<SocialBloc> {
   void listenData(BuildContext context) {}
 
   @override
-  bool get isRootLevel => true;
+  bool get hasBottomBar => true;
 }

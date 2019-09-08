@@ -21,6 +21,5 @@ class SlideLeftRoute extends PageRouteBuilder {
         });
 
   @override
-  // TODO: implement transitionDuration
   Duration get transitionDuration => Duration(milliseconds: duration);
 }

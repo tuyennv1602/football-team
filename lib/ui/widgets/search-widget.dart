@@ -40,10 +40,10 @@ class SearchWidget extends StatelessWidget {
               cursorWidth: 1,
               onSubmitted: onSubmitText,
               onChanged: onChangedText,
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.body1,
               decoration: InputDecoration(
                   hintText: this.hintText,
-                  hintStyle: Theme.of(context).textTheme.body2.copyWith(color: Colors.grey),
+                  hintStyle: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(left: 15, right: 15)),
               textInputAction: TextInputAction.search,

@@ -1,14 +1,11 @@
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/data/repositories/user-repository.dart';
 import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/utils/constants.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RegisterBloc implements BaseBloc {
+class RegisterBloc extends BaseBloc {
   var _userRepo = UserRepository();
-
-  final _loadingCtrl = PublishSubject<bool>();
-  Function(bool) get addLoadingFunc => _loadingCtrl.add;
-  Observable<bool> get loadingStream => Observable(_loadingCtrl);
 
   final _userNameCtrl = BehaviorSubject<String>();
   Function(String) get changeUsernameFunc => _userNameCtrl.add;
@@ -26,31 +23,26 @@ class RegisterBloc implements BaseBloc {
   Function(String) get changePhoneNumberFunc => _phonenumberCtrl.add;
   Observable<String> get changePhoneNumberStream => Observable(_phonenumberCtrl);
 
-  final _roleCtrl = BehaviorSubject<List<int>>(seedValue: [1]);
-  Function(List<int>) get changeRoleFunc => _roleCtrl.add;
-  Observable<List<int>> get changeRoleStream => Observable(_roleCtrl);
-
   final _submitRegisterCtrl = PublishSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
   Observable<BaseResponse> get registerStream => Observable(_submitRegisterCtrl)
-      .flatMap((_) => Observable.fromFuture(_userRepo.register(_userNameCtrl.value,
-              _emailCtrl.value, _passwordCtrl.value, _phonenumberCtrl.value, _roleCtrl.value))
-          .doOnListen(() => addLoadingFunc(true))
-          .doOnError(() => addLoadingFunc(false))
-          .doOnData((_) => addLoadingFunc(false)))
+      .flatMap((_) => Observable.fromFuture(_register())
+          .doOnListen(() => setLoadingFunc(true))
+          .doOnError(() => setLoadingFunc(false))
+          .doOnDone(() => setLoadingFunc(false)))
       .flatMap((res) => Observable.just(res));
+
+  Future<BaseResponse> _register() async {
+    return _userRepo.register(_userNameCtrl.value, _emailCtrl.value, _passwordCtrl.value,
+        _phonenumberCtrl.value, [Constants.TEAM_LEADER]);
+  }
 
   @override
   void dispose() {
-    _loadingCtrl.close();
     _emailCtrl.close();
     _passwordCtrl.close();
     _userNameCtrl.close();
     _phonenumberCtrl.close();
     _submitRegisterCtrl.close();
-    _roleCtrl.close();
   }
-
-  @override
-  void initState() {}
 }
