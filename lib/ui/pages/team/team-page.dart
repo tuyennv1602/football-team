@@ -35,7 +35,10 @@ class TeamPage extends BasePage<TeamBloc> {
                 ),
                 Text(
                   'Đăng ký đội bóng mới',
-                  style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
+                  style: Theme.of(context)
+                      .textTheme
+                      .title
+                      .copyWith(color: AppColor.MAIN_BLACK),
                 )
               ],
             ),
@@ -58,7 +61,10 @@ class TeamPage extends BasePage<TeamBloc> {
                 ),
                 Text(
                   'Tham gia đội bóng',
-                  style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
+                  style: Theme.of(context)
+                      .textTheme
+                      .title
+                      .copyWith(color: AppColor.MAIN_BLACK),
                 )
               ],
             ),
@@ -100,7 +106,10 @@ class TeamPage extends BasePage<TeamBloc> {
             padding: EdgeInsets.only(top: 10, bottom: 10),
             child: Text(
               'Quản trị đội bóng',
-              style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
+              style: Theme.of(context)
+                  .textTheme
+                  .title
+                  .copyWith(color: AppColor.MAIN_BLACK),
             ),
           ),
           BorderFrameWidget(
@@ -154,9 +163,6 @@ class TeamPage extends BasePage<TeamBloc> {
       );
 
   @override
-  Widget buildLoading(BuildContext context) => null;
-
-  @override
   Widget buildMainContainer(BuildContext context) {
     return StreamBuilder<Team>(
       stream: pageBloc.changeTeamStream,
@@ -169,7 +175,8 @@ class TeamPage extends BasePage<TeamBloc> {
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15)),
                   color: AppColor.GREEN,
                 ),
                 child: Row(
@@ -183,8 +190,10 @@ class TeamPage extends BasePage<TeamBloc> {
                           children: <Widget>[
                             Text(
                               team.bio,
-                              style:
-                                  Theme.of(context).textTheme.body1.copyWith(color: AppColor.WHITE),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(color: AppColor.WHITE),
                             ),
                             Divider(
                               height: 10,

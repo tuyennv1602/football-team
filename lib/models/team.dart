@@ -25,7 +25,7 @@ class Team {
     bio = json['bio'];
     countMember = json['count_member'];
     countRequest = json['count_request'];
-    wallet = json['wallet'];
+    wallet = double.parse(json['wallet'].toString()) ;
   }
 
   Map<String, dynamic> toJson() {

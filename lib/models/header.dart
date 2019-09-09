@@ -4,12 +4,12 @@ class Header {
   Header({this.accessToken});
 
   Header.fromJson(Map<String, dynamic> json) {
-    accessToken = json['accessToken'];
+    accessToken = json['Authorization'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['accessToken'] = this.accessToken;
+    data['Authorization'] = 'Bearer ${this.accessToken}';
     return data;
   }
 }

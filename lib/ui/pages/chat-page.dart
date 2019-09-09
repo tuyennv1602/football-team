@@ -15,9 +15,6 @@ class ChatPage extends BasePage<ChatBloc> {
       );
 
   @override
-  Widget buildLoading(BuildContext context) => null;
-
-  @override
   Widget buildMainContainer(BuildContext context) {
     return Container(
       child: Text("chat"),

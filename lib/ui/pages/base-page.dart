@@ -5,6 +5,7 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/device-util.dart';
 
 // ignore: must_be_immutable
@@ -21,8 +22,6 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
 
   AppBarWidget buildAppBar(BuildContext context);
 
-  Widget buildLoading(BuildContext context);
-
   bool showFullScreen = false;
 
   // use when need check screen has bootombar
@@ -32,7 +31,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
 
   bool resizeAvoidPadding = false;
 
-  void showSnackBar(String message, {Color backgroundColor, Duration duration}) {
+  void showSnackBar(String message,
+      {Color backgroundColor, Duration duration}) {
     scaffoldKey.currentState.showSnackBar(SnackBar(
       duration: duration ?? Duration(milliseconds: 5000),
       backgroundColor: backgroundColor ?? Colors.red,
@@ -40,48 +40,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
     ));
   }
 
-  void showSimpleDialog(BuildContext context, String message, {Function onTap}) => showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            contentPadding: EdgeInsets.all(10),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  StringRes.NOTIFY,
-                  style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  message,
-                  style: Theme.of(context).textTheme.body1,
-                ),
-                ButtonWidget(
-                  onTap: () {
-                    onTap();
-                    Navigator.of(context).pop();
-                  },
-                  borderRadius: BorderRadius.circular(5),
-                  margin: EdgeInsets.only(top: 15),
-                  width: 110,
-                  height: 40,
-                  backgroundColor: AppColor.GREEN,
-                  child: Text(
-                    StringRes.OK,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-              ],
-            ),
-          ));
-
-  void showConfirmDialog(BuildContext context, String message, {Function onConfirmed}) =>
+  void showSimpleDialog(BuildContext context, String message,
+          {Function onTap}) =>
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -89,49 +49,118 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                contentPadding: EdgeInsets.all(10),
+                contentPadding: EdgeInsets.zero,
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text(
-                      StringRes.NOTIFY,
-                      style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            StringRes.NOTIFY,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(color: AppColor.MAIN_BLACK),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(message,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(fontSize: 16))
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: 10,
+                    Align(
+                      child: ButtonWidget(
+                        onTap: () {
+                          onTap();
+                          Navigator.of(context).pop();
+                        },
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(5)),
+                        backgroundColor: AppColor.GREEN,
+                        child: Text(
+                          StringRes.OK,
+                          style: Theme.of(context).textTheme.body2,
+                        ),
+                      ),
                     ),
-                    Text(
-                      message,
-                      style: Theme.of(context).textTheme.body1,
+                  ],
+                ),
+              ));
+
+  void showConfirmDialog(BuildContext context, String message,
+          {Function onConfirmed}) =>
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                contentPadding: EdgeInsets.zero,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            StringRes.NOTIFY,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(color: AppColor.MAIN_BLACK),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            message,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 16),
+                          )
+                        ],
+                      ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        ButtonWidget(
-                          onTap: () => Navigator.of(context).pop(),
-                          borderRadius: BorderRadius.circular(5),
-                          margin: EdgeInsets.only(top: 15),
-                          width: 110,
-                          height: 40,
-                          backgroundColor: Colors.grey,
-                          child: Text(
-                            StringRes.CANCEL,
-                            style: Theme.of(context).textTheme.body2,
+                        Expanded(
+                          child: ButtonWidget(
+                            onTap: () => Navigator.of(context).pop(),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(5)),
+                            height: 40,
+                            backgroundColor: Colors.grey,
+                            child: Text(
+                              StringRes.CANCEL,
+                              style: Theme.of(context).textTheme.body2,
+                            ),
                           ),
                         ),
-                        ButtonWidget(
-                          onTap: () {
-                            onConfirmed();
-                            Navigator.of(context).pop();
-                          },
-                          borderRadius: BorderRadius.circular(5),
-                          margin: EdgeInsets.only(top: 15),
-                          width: 110,
-                          height: 40,
-                          backgroundColor: AppColor.GREEN,
-                          child: Text(
-                            StringRes.OK,
-                            style: Theme.of(context).textTheme.body2,
+                        Expanded(
+                          child: ButtonWidget(
+                            onTap: () {
+                              onConfirmed();
+                              Navigator.of(context).pop();
+                            },
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(5)),
+                            height: 40,
+                            backgroundColor: AppColor.GREEN,
+                            child: Text(
+                              StringRes.OK,
+                              style: Theme.of(context).textTheme.body2,
+                            ),
                           ),
                         )
                       ],
@@ -140,7 +169,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                 ),
               ));
 
-  void hideKeyBoard(BuildContext context) => FocusScope.of(context).requestFocus(new FocusNode());
+  void hideKeyBoard(BuildContext context) =>
+      FocusScope.of(context).requestFocus(new FocusNode());
 
   @override
   Widget build(BuildContext context) {
@@ -180,12 +210,22 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
               ),
               !showFullScreen
                   ? SizedBox(
-                      height: hasBottomBar ? MediaQuery.of(context).padding.bottom : 0,
+                      height: hasBottomBar
+                          ? MediaQuery.of(context).padding.bottom
+                          : DeviceUtil.getPaddingBottom(context),
                     )
                   : SizedBox()
             ],
           ),
-          buildLoading(context) ?? SizedBox()
+          StreamBuilder<bool>(
+            stream: pageBloc.loadingStream,
+            builder: (c, snap) {
+              bool isLoading = snap.hasData && snap.data;
+              return LoadingWidget(
+                show: isLoading,
+              );
+            },
+          )
         ],
       ),
     );

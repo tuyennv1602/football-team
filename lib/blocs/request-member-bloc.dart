@@ -18,7 +18,7 @@ class RequestMemberBloc extends BaseBloc {
   Function(String) get searchTeamFunc => _searchTeamCtrl.add;
   Observable<List<Team>> get getAllTeamsStream => Observable(_searchTeamCtrl)
       .flatMap((key) => Observable.fromFuture(_teamRepository.searchTeamByKey(key))
-      .flatMap((resp) => Observable.just(resp.teams));
+      .flatMap((resp) => Observable.just(resp.teams)));
 
   final _contentCtrl = BehaviorSubject<String>();
   Function(String) get changeContentFunc => _contentCtrl.add;

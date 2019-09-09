@@ -20,10 +20,12 @@ class TeamProvider {
     }
   }
 
-
   Future<SearchTeamResponse> searchTeamByKey(String key) async {
     try {
-      var resp = await AppApi.getApi('group/search?text_search=$key');
+      FormData formData = new FormData.from({
+        'text_search': key,
+      });
+      var resp = await AppApi.getApi('group/search', queryParams: formData);
       return SearchTeamResponse.success(resp.data);
     } on DioError catch (e) {
       return SearchTeamResponse.error(e.message);

@@ -15,7 +15,7 @@ class ButtonWidget extends StatelessWidget {
       this.backgroundColor,
       this.margin,
       this.width,
-      this.height,
+      this.height = 45,
       this.borderRadius});
 
   @override

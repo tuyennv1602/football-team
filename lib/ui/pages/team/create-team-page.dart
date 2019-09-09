@@ -27,11 +27,13 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
             options: ['Chọn ảnh logo', 'Từ máy ảnh', 'Từ thư viện', 'Huỷ'],
             onClickOption: (index) async {
               if (index == 1) {
-                var image = await ImagePicker.pickImage(source: ImageSource.camera);
+                var image =
+                    await ImagePicker.pickImage(source: ImageSource.camera);
                 pageBloc.chooseLogoFunc(image);
                 Navigator.of(context).pop();
               } else if (index == 2) {
-                var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                var image =
+                    await ImagePicker.pickImage(source: ImageSource.gallery);
                 pageBloc.chooseLogoFunc(image);
                 Navigator.of(context).pop();
               }
@@ -66,20 +68,9 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
       );
 
   @override
-  Widget buildLoading(BuildContext context) => StreamBuilder<bool>(
-        stream: pageBloc.loadingStream,
-        builder: (c, snap) {
-          bool isLoading = snap.hasData && snap.data;
-          return LoadingWidget(
-            show: isLoading,
-          );
-        },
-      );
-
-  @override
   Widget buildMainContainer(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(20),
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         Align(
@@ -87,7 +78,8 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
           child: Container(
             height: 120,
             width: 120,
-            decoration: BoxDecoration(border: Border.all(color: AppColor.LINE_COLOR, width: 1)),
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColor.LINE_COLOR, width: 1)),
             child: InkWell(
               onTap: () => _showChooseImage(context),
               child: StreamBuilder<File>(
@@ -110,7 +102,10 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
                       ),
                       Text(
                         'Logo',
-                        style: Theme.of(context).textTheme.body2.copyWith(color: Colors.grey),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(color: Colors.grey),
                       )
                     ],
                   );
@@ -154,7 +149,10 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
         ),
         Text(
           'Màu áo',
-          style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey, fontSize: 16),
+          style: Theme.of(context)
+              .textTheme
+              .body1
+              .copyWith(color: Colors.grey, fontSize: 16),
         ),
         Align(
           alignment: Alignment.center,
@@ -178,7 +176,8 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
             physics: BouncingScrollPhysics(),
             viewportFraction: 45 / (DeviceUtil.getWidth(context) - 20),
             scale: 0.1,
-            onIndexChanged: (index) => pageBloc.chooseDressFunc(AppColor.DRESS_COLORS[index]),
+            onIndexChanged: (index) =>
+                pageBloc.chooseDressFunc(AppColor.DRESS_COLORS[index]),
             itemBuilder: (BuildContext context, int index) =>
                 _buildItemColor(context, AppColor.DRESS_COLORS[index]),
             itemCount: AppColor.DRESS_COLORS.length,
@@ -187,8 +186,6 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
         Align(
           alignment: Alignment.center,
           child: ButtonWidget(
-            height: 40,
-            width: 150,
             onTap: () {
               if (_formKey.currentState.validate()) {
                 pageBloc.submitRegisterFunc(true);

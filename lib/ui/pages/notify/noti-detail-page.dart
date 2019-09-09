@@ -13,11 +13,6 @@ class NotiDetailPage extends BasePage<NotiBloc> {
   }
 
   @override
-  Widget buildLoading(BuildContext context) {
-    return null;
-  }
-
-  @override
   Widget buildMainContainer(BuildContext context) {
     return Container(
       child: InkWell(

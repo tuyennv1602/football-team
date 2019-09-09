@@ -18,21 +18,11 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
   @override
   AppBarWidget buildAppBar(BuildContext context) => null;
 
-  @override
-  Widget buildLoading(BuildContext context) => StreamBuilder<bool>(
-        stream: pageBloc.loadingStream,
-        builder: (c, snap) {
-          bool isLoading = snap.hasData && snap.data;
-          return LoadingWidget(
-            show: isLoading,
-          );
-        },
-      );
 
   @override
   Widget buildMainContainer(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 15, right: 15),
+      padding: EdgeInsets.only(left: 20, right: 20),
       decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage('assets/images/bg.jpg'), fit: BoxFit.fill)),
       child: Column(
@@ -121,8 +111,7 @@ class LoginPage extends BasePage<LoginBloc> with Validator {
                         ),
                       ),
                       ButtonWidget(
-                        height: 40,
-                        width: 150,
+                        width: 200,
                         onTap: () {
                           if (_formKey.currentState.validate()) {
                             pageBloc.submitLoginEmailFunc(true);

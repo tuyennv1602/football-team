@@ -9,6 +9,7 @@ import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-button.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/divider.dart';
 import 'package:myfootball/ui/widgets/input-widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/search-widget.dart';
@@ -18,12 +19,27 @@ import 'package:myfootball/ui/widgets/team-avatar.dart';
 class RequestMemberPage extends BasePage<RequestMemberBloc> {
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
+        rightContent: AppBarButtonWidget(
+          imageName: Images.STACK,
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        leftContent: AppBarButtonWidget(
+          imageName: Images.BACK,
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        centerContent: Text(
+          'Tìm kiếm đội bóng',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.title,
+        ),
+      );
+
   Widget _buildItemTeam(BuildContext context, Team team) => InkWell(
         onTap: () => showRequestForm(context, team),
         child: Container(
           padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: AppColor.GREY_BACKGROUND),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -76,63 +92,73 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
   void showRequestForm(BuildContext context, Team team) => showDialog(
       context: context,
       barrierDismissible: false,
+
       builder: (context) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            contentPadding: EdgeInsets.all(10),
+            contentPadding: EdgeInsets.zero,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
-                  team.name,
-                  style: Theme.of(context).textTheme.title.copyWith(color: AppColor.MAIN_BLACK),
-                ),
-                Form(
-                  key: _formKey,
-                  child: InputWidget(
-                    validator: (value) {
-                      if (value.isEmpty) return StringRes.REQUIRED_CONTENT;
-                      return null;
-                    },
-                    maxLines: 5,
-                    maxLength: 150,
-                    inputType: TextInputType.text,
-                    inputAction: TextInputAction.done,
-                    labelText: StringRes.CONTENT,
-                    onChangedText: (text) => pageBloc.changeContentFunc(text),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        team.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .title
+                            .copyWith(color: AppColor.MAIN_BLACK),
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: InputWidget(
+                          validator: (value) {
+                            if (value.isEmpty)
+                              return StringRes.REQUIRED_CONTENT;
+                            return null;
+                          },
+                          maxLines: 5,
+                          maxLength: 150,
+                          inputType: TextInputType.text,
+                          inputAction: TextInputAction.done,
+                          labelText: StringRes.CONTENT,
+                          onChangedText: (text) =>
+                              pageBloc.changeContentFunc(text),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    ButtonWidget(
-                      onTap: () => Navigator.of(context).pop(),
-                      borderRadius: BorderRadius.circular(5),
-                      margin: EdgeInsets.only(top: 15),
-                      width: 110,
-                      height: 40,
-                      backgroundColor: Colors.grey,
-                      child: Text(
-                        StringRes.CANCEL,
-                        style: Theme.of(context).textTheme.body2,
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () => Navigator.of(context).pop(),
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5)),
+                        backgroundColor: Colors.grey,
+                        child: Text(
+                          StringRes.CANCEL,
+                          style: Theme.of(context).textTheme.body2,
+                        ),
                       ),
                     ),
-                    ButtonWidget(
-                      onTap: () {
-                        if (_formKey.currentState.validate()) {
-                          Navigator.of(context).pop();
-                          pageBloc.submitRequestFunc(team.id);
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(5),
-                      margin: EdgeInsets.only(top: 15),
-                      width: 110,
-                      height: 40,
-                      backgroundColor: AppColor.GREEN,
-                      child: Text(
-                        StringRes.SEND_REQUEST,
-                        style: Theme.of(context).textTheme.body2,
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () {
+                          if (_formKey.currentState.validate()) {
+                            Navigator.of(context).pop();
+                            pageBloc.submitRequestFunc(team.id);
+                          }
+                        },
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(5)),
+                        backgroundColor: AppColor.GREEN,
+                        child: Text(
+                          StringRes.SEND_REQUEST,
+                          style: Theme.of(context).textTheme.body2,
+                        ),
                       ),
                     )
                   ],
@@ -140,34 +166,6 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
               ],
             ),
           ));
-
-  @override
-  AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
-        rightContent: AppBarButtonWidget(
-          imageName: Images.STACK,
-          onTap: () => Navigator.of(context).pop(),
-        ),
-        leftContent: AppBarButtonWidget(
-          imageName: Images.BACK,
-          onTap: () => Navigator.of(context).pop(),
-        ),
-        centerContent: Text(
-          'Yêu cầu gia nhập đội bóng',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.title,
-        ),
-      );
-
-  @override
-  Widget buildLoading(BuildContext context) => StreamBuilder<bool>(
-        stream: pageBloc.loadingStream,
-        builder: (c, snap) {
-          bool isLoading = snap.hasData && snap.data;
-          return LoadingWidget(
-            show: isLoading,
-          );
-        },
-      );
 
   @override
   Widget buildMainContainer(BuildContext context) {
@@ -205,13 +203,11 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
               if (snap.hasData) {
                 return ListView.separated(
                   physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.zero,
                   itemCount: snap.data.length,
-                  separatorBuilder: (c, index) => Divider(
-                    height: 10,
-                    color: AppColor.WHITE,
-                  ),
-                  itemBuilder: (c, index) => _buildItemTeam(context, snap.data[index]),
+                  separatorBuilder: (c, index) => DividerWidget(),
+                  itemBuilder: (c, index) =>
+                      _buildItemTeam(context, snap.data[index]),
                 );
               }
               return SizedBox();
@@ -228,7 +224,8 @@ class RequestMemberPage extends BasePage<RequestMemberBloc> {
       if (!resp.isSuccess) {
         showSnackBar(resp.errorMessage);
       } else {
-        showSnackBar(StringRes.SENT_REQUEST, backgroundColor: AppColor.MAIN_BLUE);
+        showSnackBar(StringRes.SENT_REQUEST,
+            backgroundColor: AppColor.MAIN_BLUE);
       }
     });
   }

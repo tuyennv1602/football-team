@@ -19,8 +19,9 @@ class SocialPage extends BasePage<SocialBloc> {
   Widget _buildItemNew(BuildContext context, int index) => Container(
         width: DeviceUtil.getWidth(context) / 2,
         margin: EdgeInsets.only(right: 10),
-        decoration:
-            BoxDecoration(color: AppColor.GREY_BACKGROUND, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            color: AppColor.GREY_BACKGROUND,
+            borderRadius: BorderRadius.circular(10)),
         padding: EdgeInsets.all(10),
         child: Text("Item $index"),
       );
@@ -121,11 +122,6 @@ class SocialPage extends BasePage<SocialBloc> {
           style: Theme.of(context).textTheme.title,
         ),
       );
-
-  @override
-  Widget buildLoading(BuildContext context) {
-    return null;
-  }
 
   @override
   Widget buildMainContainer(BuildContext context) {
