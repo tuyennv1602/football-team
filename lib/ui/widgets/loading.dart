@@ -14,7 +14,7 @@ class LoadingWidget extends StatelessWidget {
     return show
         ? Stack(
             children: [
-              ModalBarrier(dismissible: false, color: AppColor.BLACK_TRANSPARENT,),
+              ModalBarrier(dismissible: false, color: BLACK_TRANSPARENT,),
               Center(
                 child: RotationWidget(
                   widget: Image.asset('assets/images/icn_loading.png'),

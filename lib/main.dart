@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/blocs/login-bloc.dart';
 import 'package:myfootball/data/app-preference.dart';
+import 'package:myfootball/provider_setup.dart' as setupProvider;
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
 import 'dart:convert';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:myfootball/utils/local-timeago.dart';
+import 'package:provider/provider.dart';
 import 'http.dart'; // make dio as global top-level variable
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 // Must be top-level function
 _parseAndDecode(String response) {
@@ -22,10 +26,12 @@ parseJson(String text) {
 }
 
 void main() async {
-  await FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-  await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+  timeago.setLocaleMessages('vi', ViMessage());
+  _firebaseMessaging.requestNotificationPermissions();
   var token = await AppPreference().getToken();
-  dio.interceptors..add(CookieManager(CookieJar()))..add(LogInterceptor(responseBody: true, requestBody: true, responseHeader: false, requestHeader: true));
+  dio.interceptors
+    ..add(LogInterceptor(
+        responseBody: true, requestBody: true, responseHeader: false));
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
   return runApp(BlocProvider<AppBloc>(
     bloc: AppBloc(),
@@ -40,30 +46,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+      providers: setupProvider.providers,
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           canvasColor: Colors.transparent,
-          textTheme: Theme.of(context).textTheme.copyWith(
-              title: TextStyle(
-                  fontFamily: 'semi-bold', fontSize: 18, letterSpacing: 0.1, color: Colors.white),
-              body1: TextStyle(
-                fontFamily: 'regular',
-                fontSize: 14,
-                letterSpacing: 0.1,
-                color: Colors.black87,
-              ),
-              body2: TextStyle(
-                  fontFamily: 'semi-bold',
-                  fontSize: 16,
-                  letterSpacing: 0.1,
-                  color: Colors.white)),
+          fontFamily: 'regular',
         ),
-        home: _isLogined
-            ? HomePage()
-            : BlocProvider<LoginBloc>(
-                bloc: LoginBloc(),
-                child: LoginPage(),
-              ));
+        home: _isLogined ? HomePage() : LoginPage(),
+      ),
+    );
   }
 }

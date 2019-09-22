@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/fonts.dart';
+import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/ui/widgets/border-background.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 
 import 'button-widget.dart';
 
@@ -9,9 +14,11 @@ class BottomSheetWidget extends StatelessWidget {
   final List<String> options;
   final OnClickOption onClickOption;
   List<Widget> children = [];
-  static const double BUTTON_HEIGHT = 50;
+  final double BUTTON_HEIGHT = UIHelper.size(50);
 
-  BottomSheetWidget({@required this.options, this.onClickOption});
+  BottomSheetWidget({Key key, @required this.options, this.onClickOption})
+      : assert(options != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +30,16 @@ class BottomSheetWidget extends StatelessWidget {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(color: Colors.black, fontFamily: 'regular', fontSize: 16),
+              style: textStyleSemiBold(color: PRIMARY),
             ),
           ),
         ));
       } else if (index == length - 1) {
         children.add(ButtonWidget(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
           height: BUTTON_HEIGHT,
           child: Text(
             value,
-            style: TextStyle(
-                fontFamily: 'semi-bold', fontSize: 16, letterSpacing: 0.1, color: Colors.red),
+            style: textStyleSemiBold(color: Colors.red),
           ),
           onTap: () => Navigator.of(context).pop(),
         ));
@@ -43,8 +48,7 @@ class BottomSheetWidget extends StatelessWidget {
           height: BUTTON_HEIGHT,
           child: Text(
             value,
-            style: TextStyle(
-                fontFamily: 'regular', fontSize: 16, letterSpacing: 0.1, color: Colors.black87),
+            style: textStyleRegular(size: 16),
           ),
           onTap: () => onClickOption(index),
         ));
@@ -55,12 +59,10 @@ class BottomSheetWidget extends StatelessWidget {
       ));
     });
     return Container(
-      margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
       color: Colors.transparent,
       child: Wrap(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+          BorderBackground(
             child: Column(
               children: this.children,
               mainAxisAlignment: MainAxisAlignment.end,

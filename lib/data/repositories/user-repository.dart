@@ -1,6 +1,8 @@
 import 'package:myfootball/data/providers/user-provider.dart';
+import 'package:myfootball/models/device-info.dart';
 import 'package:myfootball/models/responses/base-response.dart';
 import 'package:myfootball/models/responses/login-response.dart';
+import 'package:myfootball/models/responses/user-request-response.dart';
 
 class UserRepository {
   UserProvider _userProvider = UserProvider();
@@ -14,8 +16,8 @@ class UserRepository {
   }
 
   Future<BaseResponse> register(
-      String userName, String email, String password, String phoneNumber, List<int> roles) async {
-    return _userProvider.register(userName, email, password, phoneNumber, roles);
+      String name, String email, String password, String phoneNumber, List<int> roles) async {
+    return _userProvider.register(name, email, password, phoneNumber, roles);
   }
 
   Future<BaseResponse> changePassword(String email, String password, String code) async {
@@ -32,5 +34,13 @@ class UserRepository {
 
   Future<LoginResponse> refreshToken(String refreshToken) async {
     return _userProvider.refreshToken(refreshToken);
+  }
+
+  Future<BaseResponse> registerDevice(DeviceInfo deviceInfo) async {
+    return _userProvider.registerDevice(deviceInfo);
+  }
+
+  Future<UserRequestResponse> getUserRequests() async {
+    return _userProvider.getUserRequests();
   }
 }

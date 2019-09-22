@@ -1,215 +1,203 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/blocs/forgot-password-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
-import 'package:myfootball/ui/pages/base-page.dart';
-import 'package:myfootball/ui/widgets/app-bar-widget.dart';
+import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/ui/pages/base_widget.dart';
+import 'package:myfootball/ui/widgets/border_textformfield.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
-import 'package:myfootball/ui/widgets/input-widget.dart';
-import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/utils/device-util.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/utils/validator.dart';
+import 'package:myfootball/viewmodels/forgotpassword_view_model.dart';
+import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class ForgotPasswordPage extends BasePage<ForgotPasswordBloc> with Validator {
+class ForgotPasswordPage extends StatefulWidget {
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
 
-  @override
-  AppBarWidget buildAppBar(BuildContext context) => null;
+  String _email;
+  String _password;
+  String _code;
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _passwordCtrl = TextEditingController();
+  final TextEditingController _codeCtrl = TextEditingController();
+
+  bool validateAndSave() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
 
   @override
-  Widget buildMainContainer(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 20, right: 20),
-      decoration: BoxDecoration(
+  Widget build(BuildContext context) {
+    UIHelper().init(context);
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
+        decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/bg.jpg'), fit: BoxFit.fill)),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ButtonWidget(
-                    width: 50,
-                    height: 50,
-                    onTap: () => Navigator.of(context).pop(),
-                    margin:
-                        EdgeInsets.only(top: DeviceUtil.getPaddingTop(context)),
-                    backgroundColor: AppColor.TRANSPARENT,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 12, right: 12, bottom: 12),
-                      child: Image.asset(
-                        Images.LEFT_ARROW,
-                        color: AppColor.WHITE,
+              image: AssetImage(Images.BACK_GROUND), fit: BoxFit.fill),
+        ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: UIHelper.size20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ButtonWidget(
+                      width: UIHelper.size50,
+                      height: UIHelper.size50,
+                      onTap: () => Navigator.of(context).pop(),
+                      margin: EdgeInsets.only(top: UIHelper.paddingTop),
+                      backgroundColor: Colors.transparent,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: UIHelper.size15,
+                            right: UIHelper.size15,
+                            bottom: UIHelper.size15),
+                        child: Image.asset(
+                          Images.LEFT_ARROW,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/icn_logo.png',
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.contain,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          StringRes.APP_NAME,
-                          style: TextStyle(
-                              fontFamily: 'bold',
-                              fontSize: 24,
-                              letterSpacing: 0.1,
-                              color: AppColor.WHITE),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-              flex: 3,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          StreamBuilder<bool>(
-                            stream: pageBloc.changeTypeStream,
-                            builder: (c, snap) => Text(
-                              (snap.hasData && snap.data)
-                                  ? 'Đổi mật khẩu'
-                                  : 'Lấy mã xác nhận',
-                              style: Theme.of(context).textTheme.title.copyWith(
-                                  fontSize: 20,
-                                  color: AppColor.GREEN,
-                                  fontFamily: 'bold'),
-                            ),
+                          Image.asset(
+                            Images.LOGO,
+                            width: UIHelper.size50,
+                            height: UIHelper.size50,
+                            fit: BoxFit.contain,
                           ),
-                          InputWidget(
-                            validator: (value) {
-                              if (value.isEmpty)
-                                return StringRes.REQUIRED_EMAIL;
-                              if (!validEmail(value))
-                                return StringRes.EMAIL_INVALID;
-                              return null;
-                            },
-                            labelText: StringRes.EMAIL,
-                            onChangedText: (text) =>
-                                pageBloc.changeEmailFunc(text),
-                          ),
-                          StreamBuilder<bool>(
-                            stream: pageBloc.changeTypeStream,
-                            builder: (c, snap) {
-                              if (snap.hasData && snap.data) {
-                                return Column(
-                                  children: <Widget>[
-                                    InputWidget(
-                                      validator: (value) {
-                                        if (value.isEmpty)
-                                          return StringRes.REQUIRED_PASSWORD;
-                                        if (!validPassword(value))
-                                          return StringRes.PASSWORD_INVALID;
-                                        return null;
-                                      },
-                                      labelText: 'Mật khẩu mới',
-                                      obscureText: true,
-                                      onChangedText: (text) =>
-                                          pageBloc.changePasswordFunc(text),
-                                    ),
-                                    InputWidget(
-                                      validator: (value) {
-                                        if (value.isEmpty)
-                                          return 'Vui lòng nhập mã xác nhận';
-                                        return null;
-                                      },
-                                      labelText: 'Mã xác nhận',
-                                      onChangedText: (text) =>
-                                          pageBloc.changeCodeFunc(text),
-                                    )
-                                  ],
-                                );
-                              }
-                              return Padding(
-                                padding: EdgeInsets.only(top: 10),
-                                child: Text(
-                                  "Một mã xác nhận sẽ được gửi đến email của bạn. Vui lòng kiểm tra email và sử dụng mã xác nhận để thay đổi mật khẩu",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .body1
-                                      .copyWith(
-                                          fontFamily: 'italic',
-                                          color: Colors.grey),
-                                ),
-                              );
-                            },
-                          ),
+                          UIHelper.horizontalSpaceMedium,
+                          Text(
+                            StringRes.APP_NAME,
+                            style: textStyleAppName(),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  Align(
-                    child: ButtonWidget(
-                      onTap: () {
-                        if (_formKey.currentState.validate()) {
-                          pageBloc.submit();
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(5),
-                      margin: EdgeInsets.only(top: 25, bottom: 25),
-                      backgroundColor: AppColor.GREEN,
-                      child: Text(
-                        StringRes.CONFIRM,
-                        style: Theme.of(context).textTheme.body2,
-                      ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: BaseWidget<ForgotPasswordViewModel>(
+                model: ForgotPasswordViewModel(api: Provider.of(context)),
+                builder: (context, model, child) => Padding(
+                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          model.isChangePassword
+                              ? 'Đổi mật khẩu'
+                              : 'Lấy mã xác thực',
+                          style: textStyleBold(color: Colors.white),
+                        ),
+                        UIHelper.verticalSpaceLarge,
+                        BorderTextFormField(
+                          labelText: StringRes.EMAIL,
+                          controller: _emailCtrl,
+                          validator: Validator.validEmail,
+                          onSaved: (value) => _email = value.trim(),
+                        ),
+                        model.isChangePassword
+                            ? Column(
+                                children: <Widget>[
+                                  UIHelper.verticalSpaceMedium,
+                                  BorderTextFormField(
+                                    labelText: 'Mật khẩu mới',
+                                    controller: _passwordCtrl,
+                                    obscureText: true,
+                                    validator: Validator.validPassword,
+                                    onSaved: (value) =>
+                                        _password = value.trim(),
+                                  ),
+                                  UIHelper.verticalSpaceMedium,
+                                  BorderTextFormField(
+                                    labelText: 'Mã xác thực',
+                                    controller: _codeCtrl,
+                                    obscureText: true,
+                                    validator: Validator.validCode,
+                                    onSaved: (value) => _code = value.trim(),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                'Một mã xác thực sẽ được gửi tới email mà bạn đã đăng ký. Vui lòng kiểm tra email và sử dụng mã xác thực để lấy lại mật khẩu',
+                                style: textStyleItalic(color: Colors.white),
+                              ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ButtonWidget(
+                              margin: EdgeInsets.only(bottom: UIHelper.size30),
+                              backgroundColor: PRIMARY,
+                              child: Text(
+                                model.isChangePassword
+                                    ? 'ĐỔI MẬT KHẨU'
+                                    : 'XÁC THỰC',
+                                style: textStyleButton(),
+                              ),
+                              onTap: () async {
+                                if (validateAndSave()) {
+                                  UIHelper.showProgressDialog;
+                                  if (!model.isChangePassword) {
+                                    var _resp =
+                                        await model.forgotPassword(_email);
+                                    UIHelper.hideProgressDialog;
+                                    if (_resp.isSuccess) {
+                                      UIHelper.showSimpleDialog(
+                                          context, 'Mã xác thực đã được gửi');
+                                    } else {
+                                      UIHelper.showSimpleDialog(
+                                          context, _resp.errorMessage);
+                                    }
+                                  } else {
+                                    var _resp = await model.changePassword(
+                                        _email, _password, _code);
+                                    UIHelper.hideProgressDialog;
+                                    if (_resp.isSuccess) {
+                                      UIHelper.showSimpleDialog(
+                                        context,
+                                        'Mật khẩu đã được thay đổi',
+                                        onTap: () => Navigator.pop(context),
+                                      );
+                                    } else {
+                                      UIHelper.showSimpleDialog(
+                                          context, _resp.errorMessage);
+                                    }
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ))
-        ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
-
-  @override
-  void listenData(BuildContext context) {
-    pageBloc.submitEmailStream.listen((onData) {
-      if (!onData.isSuccess) {
-        showSnackBar(onData.errorMessage);
-      } else {
-        showSnackBar(onData.errorMessage, backgroundColor: AppColor.GREEN);
-        pageBloc.changeTypeFunc(true);
-      }
-    });
-    pageBloc.submitChangePasswordStream.listen((onData) {
-      if (!onData.isSuccess) {
-        showSnackBar(onData.errorMessage);
-      } else {
-        showSnackBar('Mật khẩu đã được thay đổi',
-            backgroundColor: AppColor.GREEN);
-        Future.delayed(
-            Duration(milliseconds: 5000), () => Navigator.of(context).pop());
-      }
-    });
-  }
-
-  @override
-  bool get showFullScreen => true;
 }

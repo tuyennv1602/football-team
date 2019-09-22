@@ -7,7 +7,7 @@ import 'package:myfootball/data/repositories/firebase-repository.dart';
 import 'package:myfootball/data/repositories/team-repository.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/responses/base-response.dart';
-import 'package:myfootball/models/responses/create-team-response.dart';
+import 'package:myfootball/models/responses/team-response.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -19,7 +19,7 @@ class CreateTeamBloc extends BaseBloc {
   Function(File) get chooseLogoFunc => _chooseLogoCtrl.add;
   Observable<File> get chooseLogoStream => Observable(_chooseLogoCtrl);
 
-  final _chooseDressCtrl = BehaviorSubject<Color>(seedValue: Colors.red);
+  final _chooseDressCtrl = BehaviorSubject<Color>(seedValue: Colors.pink);
   Function(Color) get chooseDressFunc => _chooseDressCtrl.add;
   Observable<Color> get chooseDressStream => Observable(_chooseDressCtrl);
 
@@ -33,7 +33,7 @@ class CreateTeamBloc extends BaseBloc {
 
   final _submitRegisterCtrl = PublishSubject<bool>();
   Function(bool) get submitRegisterFunc => _submitRegisterCtrl.add;
-  Observable<CreateTeamResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
+  Observable<TeamResponse> get submitRegisterStream => Observable(_submitRegisterCtrl)
       .flatMap((_) => Observable.fromFuture(_uploadImage(_chooseLogoCtrl.value))
               .doOnListen(() => setLoadingFunc(true))
               .doOnError(() => setLoadingFunc(false))
@@ -52,18 +52,18 @@ class CreateTeamBloc extends BaseBloc {
       .flatMap((resp) => Observable.fromFuture(_handleSuccess(resp)))
       .flatMap((resp) => Observable.just(resp));
 
-  Future<CreateTeamResponse> _createTeam(String imageLink) async {
+  Future<TeamResponse> _createTeam(String imageLink) async {
     var user = await _appPref.getUser();
     print(imageLink);
     return _teamRepositoty.createTeam(Team(
         userId: user.id,
         name: _nameCtrl.value,
         bio: _bioCtrl.value,
-        dress: AppColor.getColorValue(_chooseDressCtrl.value.toString()),
+        dress: getColorValue(_chooseDressCtrl.value.toString()),
         logo: imageLink));
   }
 
-  Future<CreateTeamResponse> _handleSuccess(CreateTeamResponse response) async {
+  Future<TeamResponse> _handleSuccess(TeamResponse response) async {
     if (response.isSuccess) {
       var user = await _appPref.getUser();
       user.addTeam(response.team);
@@ -81,6 +81,7 @@ class CreateTeamBloc extends BaseBloc {
 
   @override
   void dispose() {
+    super.dispose();
     _chooseLogoCtrl.close();
     _chooseDressCtrl.close();
     _nameCtrl.close();

@@ -8,6 +8,7 @@ class NotiBloc extends BaseBloc {
 
   @override
   void dispose() {
+    super.dispose();
     _notiCtrl.close();
   }
 }

@@ -1,3 +1,5 @@
+import 'package:myfootball/models/user.dart';
+
 class Team {
   int id;
   int status;
@@ -11,6 +13,7 @@ class Team {
   int countRequest;
   double wallet;
   int userId;
+  List<User> members;
 
   Team({this.manager, this.name, this.logo, this.dress, this.bio, this.userId});
 
@@ -25,7 +28,15 @@ class Team {
     bio = json['bio'];
     countMember = json['count_member'];
     countRequest = json['count_request'];
-    wallet = double.parse(json['wallet'].toString()) ;
+    if (json['wallet'] != null) {
+      wallet = double.parse(json['wallet'].toString());
+    }
+    if (json['users'] != null) {
+      members = new List<User>();
+      json['users'].forEach((v) {
+        members.add(new User.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -41,9 +52,13 @@ class Team {
     data['count_member'] = this.countMember;
     data['count_request'] = this.countRequest;
     data['wallet'] = this.wallet;
+    if (this.members != null) {
+      data['users'] = this.members.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 
   bool get isManager => manager == userId;
+
   bool get isCaptain => captain == userId;
 }

@@ -6,20 +6,33 @@ import 'package:myfootball/blocs/create-team-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
+import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-button.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:myfootball/ui/widgets/border-background.dart';
 import 'package:myfootball/ui/widgets/bottom-sheet-widget.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
-import 'package:myfootball/ui/widgets/input-widget.dart';
-import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/utils/device-util.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/utils/validator.dart';
 
 // ignore: must_be_immutable
 class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget buildAppBar(BuildContext context) => AppBarWidget(
+        leftContent: AppBarButtonWidget(
+          imageName: Images.BACK,
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        centerContent: Text(
+          'Đăng ký đội bóng',
+          textAlign: TextAlign.center,
+          style: textStyleTitle(),
+        ),
+      );
 
   _showChooseImage(BuildContext context) => showModalBottomSheet(
       context: context,
@@ -27,13 +40,13 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
             options: ['Chọn ảnh logo', 'Từ máy ảnh', 'Từ thư viện', 'Huỷ'],
             onClickOption: (index) async {
               if (index == 1) {
-                var image =
-                    await ImagePicker.pickImage(source: ImageSource.camera);
+                var image = await ImagePicker.pickImage(
+                    source: ImageSource.camera, maxHeight: 500, maxWidth: 500);
                 pageBloc.chooseLogoFunc(image);
                 Navigator.of(context).pop();
               } else if (index == 2) {
-                var image =
-                    await ImagePicker.pickImage(source: ImageSource.gallery);
+                var image = await ImagePicker.pickImage(
+                    source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);
                 pageBloc.chooseLogoFunc(image);
                 Navigator.of(context).pop();
               }
@@ -41,166 +54,149 @@ class CreateTeamPage extends BasePage<CreateTeamBloc> with Validator {
           ));
 
   Widget _buildItemColor(BuildContext context, Color color) => Padding(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(size5),
         child: Container(
-          height: 40,
-          width: 40,
-          padding: EdgeInsets.all(10),
+          height: size40,
+          width: size40,
+          padding: EdgeInsets.all(size10),
           decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(size20),
               border: Border.all(width: 0.5, color: Colors.grey)),
         ),
       );
 
   @override
-  AppBarWidget buildAppBar(BuildContext context) => AppBarWidget(
-        rightContent: AppBarButtonWidget(),
-        leftContent: AppBarButtonWidget(
-          imageName: Images.BACK,
-          onTap: () => Navigator.of(context).pop(),
-        ),
-        centerContent: Text(
-          'Đăng ký đội bóng mới',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.title,
-        ),
-      );
-
-  @override
   Widget buildMainContainer(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.all(20),
-      physics: BouncingScrollPhysics(),
-      children: <Widget>[
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 120,
-            width: 120,
-            decoration: BoxDecoration(
-                border: Border.all(color: AppColor.LINE_COLOR, width: 1)),
-            child: InkWell(
-              onTap: () => _showChooseImage(context),
-              child: StreamBuilder<File>(
-                stream: pageBloc.chooseLogoStream,
-                builder: (c, snap) {
-                  if (snap.hasData) {
-                    return Image.file(
-                      snap.data,
-                      fit: BoxFit.cover,
+    return BorderBackground(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        physics: BouncingScrollPhysics(),
+        children: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: UIHelper.size(120),
+              width: UIHelper.size(120),
+              margin: EdgeInsets.symmetric(vertical: size20),
+              decoration: BoxDecoration(
+                  border: Border.all(color: LINE_COLOR, width: 1)),
+              child: InkWell(
+                onTap: () => _showChooseImage(context),
+                child: StreamBuilder<File>(
+                  stream: pageBloc.chooseLogoStream,
+                  builder: (c, snap) {
+                    if (snap.hasData) {
+                      return Image.file(
+                        snap.data,
+                        fit: BoxFit.cover,
+                      );
+                    }
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          Images.DEFAULT_LOGO,
+                          width: size50,
+                          height: size50,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          'Logo',
+                          style: textStyleSemiBold(color: Colors.grey),
+                        )
+                      ],
                     );
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        Images.DEFAULT_LOGO,
-                        width: 50,
-                        height: 50,
-                        color: Colors.grey,
-                      ),
-                      Text(
-                        'Logo',
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(color: Colors.grey),
-                      )
-                    ],
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              InputWidget(
-                  validator: (value) {
-                    if (value.isEmpty) return 'Vui lòng nhập tên đội bóng';
-                    return null;
-                  },
-                  inputType: TextInputType.text,
-                  inputAction: TextInputAction.next,
-                  labelText: 'Tên đội bóng',
-                  onChangedText: (text) => pageBloc.changeNameFunc(text)),
-              InputWidget(
-                  validator: (value) {
-                    if (value.isEmpty) return 'Vui lòng nhập giới thiệu';
-                    return null;
-                  },
-                  maxLines: 3,
-                  maxLength: 100,
-                  inputType: TextInputType.text,
-                  inputAction: TextInputAction.done,
-                  labelText: 'Giới thiệu đội bóng',
-                  onChangedText: (text) => pageBloc.changeBioFunc(text)),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'Màu áo',
-          style: Theme.of(context)
-              .textTheme
-              .body1
-              .copyWith(color: Colors.grey, fontSize: 16),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: StreamBuilder<Color>(
-            stream: pageBloc.chooseDressStream,
-            builder: (c, snap) => Image.asset(
-              Images.SHIRT,
-              width: 90,
-              height: 100,
-              color: snap.hasData ? snap.data : AppColor.WHITE,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: size10),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+//                  InputWidget(
+//                      validator: (value) {
+//                        if (value.isEmpty) return 'Vui lòng nhập tên đội bóng';
+//                        return null;
+//                      },
+//                      inputType: TextInputType.text,
+//                      inputAction: TextInputAction.next,
+//                      labelText: 'Tên đội bóng',
+//                      onChangedText: (text) => pageBloc.changeNameFunc(text)),
+//                  InputWidget(
+//                      validator: (value) {
+//                        if (value.isEmpty) return 'Vui lòng nhập giới thiệu';
+//                        return null;
+//                      },
+//                      maxLines: 3,
+//                      maxLength: 150,
+//                      inputType: TextInputType.text,
+//                      inputAction: TextInputAction.done,
+//                      labelText: 'Giới thiệu đội bóng',
+//                      onChangedText: (text) => pageBloc.changeBioFunc(text)),
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          height: 45,
-          width: DeviceUtil.getWidth(context),
-          child: Swiper(
-            physics: BouncingScrollPhysics(),
-            viewportFraction: 45 / (DeviceUtil.getWidth(context) - 20),
-            scale: 0.1,
-            onIndexChanged: (index) =>
-                pageBloc.chooseDressFunc(AppColor.DRESS_COLORS[index]),
-            itemBuilder: (BuildContext context, int index) =>
-                _buildItemColor(context, AppColor.DRESS_COLORS[index]),
-            itemCount: AppColor.DRESS_COLORS.length,
-          ),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: ButtonWidget(
-            onTap: () {
-              if (_formKey.currentState.validate()) {
-                pageBloc.submitRegisterFunc(true);
-              }
-            },
-            borderRadius: BorderRadius.circular(5),
-            margin: EdgeInsets.only(top: 30),
-            backgroundColor: AppColor.GREEN,
+          Padding(
+            padding: EdgeInsets.all(size10),
             child: Text(
-              StringRes.REGISTER.toUpperCase(),
-              style: Theme.of(context).textTheme.body2,
+              'Màu áo',
+              style: textStyleInput(color: Colors.grey),
             ),
           ),
-        )
-      ],
+          Align(
+            alignment: Alignment.center,
+            child: StreamBuilder<Color>(
+              stream: pageBloc.chooseDressStream,
+              builder: (c, snap) => Image.asset(
+                Images.SHIRT,
+                width: UIHelper.size(90),
+                height: UIHelper.size(100),
+                color: snap.hasData ? snap.data : Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: size10,
+          ),
+          SizedBox(
+            height: size50,
+            width: UIHelper.screenWidth,
+            child: Swiper(
+              physics: BouncingScrollPhysics(),
+              viewportFraction: size50 / (UIHelper.screenWidth),
+              scale: 0.1,
+              onIndexChanged: (index) =>
+                  pageBloc.chooseDressFunc(DRESS_COLORS[index]),
+              itemBuilder: (BuildContext context, int index) =>
+                  _buildItemColor(context, DRESS_COLORS[index]),
+              itemCount: DRESS_COLORS.length,
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: ButtonWidget(
+              onTap: () {
+                if (_formKey.currentState.validate()) {
+                  pageBloc.submitRegisterFunc(true);
+                }
+              },
+              borderRadius: BorderRadius.circular(size5),
+              margin: EdgeInsets.all(size20),
+              backgroundColor: PRIMARY,
+              child: Text(
+                StringRes.REGISTER.toUpperCase(),
+                style: textStyleButton(),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

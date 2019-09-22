@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+final double _kButtonHeight = 48;
+
 class ButtonWidget extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
@@ -10,32 +12,36 @@ class ButtonWidget extends StatelessWidget {
   final BorderRadius borderRadius;
 
   ButtonWidget(
-      {@required this.child,
-      @required this.onTap,
-      this.backgroundColor,
-      this.margin,
-      this.width,
-      this.height = 45,
-      this.borderRadius});
+      {Key key,
+        @required this.child,
+        @required this.onTap,
+        this.backgroundColor,
+        this.margin,
+        this.width,
+        this.height,
+        this.borderRadius})
+      : assert(child != null),
+        assert(onTap != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
-        width: width,
-        height: height,
-        alignment: Alignment.center,
-        margin: this.margin ?? EdgeInsets.zero,
-        child: ClipRRect(
-          borderRadius: borderRadius ?? BorderRadius.zero,
-          child: Material(
-            color: this.backgroundColor ?? Colors.white,
-            child: InkWell(
-              onTap: onTap,
-              child: Align(
-                alignment: Alignment.center,
-                child: this.child,
-              ),
-            ),
+    width: width,
+    height: height ?? _kButtonHeight,
+    alignment: Alignment.center,
+    margin: this.margin ?? EdgeInsets.zero,
+    child: ClipRRect(
+      borderRadius: borderRadius ?? BorderRadius.circular(_kButtonHeight / 2) ,
+      child: Material(
+        color: this.backgroundColor ?? Colors.white,
+        child: InkWell(
+          onTap: onTap,
+          child: Align(
+            alignment: Alignment.center,
+            child: this.child,
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

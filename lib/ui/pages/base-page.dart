@@ -3,10 +3,10 @@ import 'package:myfootball/blocs/app-bloc.dart';
 import 'package:myfootball/blocs/base-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/stringres.dart';
-import 'package:myfootball/ui/widgets/app-bar-widget.dart';
+import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/utils/device-util.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 
 // ignore: must_be_immutable
 abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
@@ -20,16 +20,33 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
 
   void listenData(BuildContext context);
 
-  AppBarWidget buildAppBar(BuildContext context);
+  Widget buildAppBar(BuildContext context);
 
   bool showFullScreen = false;
-
-  // use when need check screen has bootombar
-  bool hasBottomBar = false;
 
   // set true if need scroll all textfield
 
   bool resizeAvoidPadding = false;
+
+  double get size5 => UIHelper.size(5);
+
+  double get size10 => UIHelper.size(10);
+
+  double get size15 => UIHelper.size(15);
+
+  double get size20 => UIHelper.size(20);
+
+  double get size25 => UIHelper.size(25);
+
+  double get size30 => UIHelper.size(30);
+
+  double get size35 => UIHelper.size(35);
+
+  double get size40 => UIHelper.size(40);
+
+  double get size45 => UIHelper.size(45);
+
+  double get size50 => UIHelper.size(50);
 
   void showSnackBar(String message,
       {Color backgroundColor, Duration duration}) {
@@ -47,31 +64,24 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
           barrierDismissible: false,
           builder: (context) => AlertDialog(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(size5),
                 ),
                 contentPadding: EdgeInsets.zero,
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(size15),
                       child: Column(
                         children: <Widget>[
                           Text(
                             StringRes.NOTIFY,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(color: AppColor.MAIN_BLACK),
+                            style: textStyleSemiBold(size: 18),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: size10,
                           ),
-                          Text(message,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .body1
-                                  .copyWith(fontSize: 16))
+                          Text(message, style: textStyleRegular(size: 16))
                         ],
                       ),
                     ),
@@ -81,13 +91,14 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                           onTap();
                           Navigator.of(context).pop();
                         },
+                        height: size40,
                         borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(5)),
-                        backgroundColor: AppColor.GREEN,
+                            bottomLeft: Radius.circular(size5),
+                            bottomRight: Radius.circular(size5)),
+                        backgroundColor: PRIMARY,
                         child: Text(
                           StringRes.OK,
-                          style: Theme.of(context).textTheme.body2,
+                          style: textStyleButton(),
                         ),
                       ),
                     ),
@@ -102,32 +113,26 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
           barrierDismissible: false,
           builder: (context) => AlertDialog(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(size5),
                 ),
                 contentPadding: EdgeInsets.zero,
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(size15),
                       child: Column(
                         children: <Widget>[
                           Text(
                             StringRes.NOTIFY,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(color: AppColor.MAIN_BLACK),
+                            style: textStyleSemiBold(size: 18),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: size10,
                           ),
                           Text(
                             message,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(fontSize: 16),
+                            style: textStyleRegular(size: 16),
                           )
                         ],
                       ),
@@ -137,13 +142,13 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                         Expanded(
                           child: ButtonWidget(
                             onTap: () => Navigator.of(context).pop(),
+                            height: size40,
                             borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(5)),
-                            height: 40,
+                                bottomLeft: Radius.circular(size5)),
                             backgroundColor: Colors.grey,
                             child: Text(
                               StringRes.CANCEL,
-                              style: Theme.of(context).textTheme.body2,
+                              style: textStyleButton(),
                             ),
                           ),
                         ),
@@ -153,13 +158,13 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                               onConfirmed();
                               Navigator.of(context).pop();
                             },
+                            height: size40,
                             borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(5)),
-                            height: 40,
-                            backgroundColor: AppColor.GREEN,
+                                bottomRight: Radius.circular(size5)),
+                            backgroundColor: PRIMARY,
                             child: Text(
                               StringRes.OK,
-                              style: Theme.of(context).textTheme.body2,
+                              style: textStyleButton(),
                             ),
                           ),
                         )
@@ -181,9 +186,10 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
       pageBloc = BlocProvider.of<T>(context);
     }
     listenData(context);
+    UIHelper().init(context);
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: resizeAvoidPadding,
       body: Stack(
         children: <Widget>[
@@ -193,8 +199,8 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
             children: <Widget>[
               !showFullScreen
                   ? Container(
-                      height: DeviceUtil.getPaddingTop(context),
-                      color: AppColor.GREEN,
+                      height: UIHelper.paddingTop,
+                      color: PRIMARY,
                     )
                   : SizedBox(),
               buildAppBar(context) ?? SizedBox(),
@@ -203,17 +209,13 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () => hideKeyBoard(context),
                   child: SizedBox(
-                    width: DeviceUtil.getWidth(context),
+                    width: UIHelper.screenWidth,
                     child: buildMainContainer(context),
                   ),
                 ),
               ),
               !showFullScreen
-                  ? SizedBox(
-                      height: hasBottomBar
-                          ? MediaQuery.of(context).padding.bottom
-                          : DeviceUtil.getPaddingBottom(context),
-                    )
+                  ? SizedBox(height: UIHelper.paddingBottom)
                   : SizedBox()
             ],
           ),

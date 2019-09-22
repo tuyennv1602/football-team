@@ -11,7 +11,7 @@ class StringRes {
   static const String LOGIN_VIA = 'Đăng nhập qua';
   static const String BACK = 'QUAY LẠI';
   static const String REGISTER = 'Đăng ký';
-  static const String USER_NAME = 'Tên người dùng';
+  static const String USER_NAME = 'Họ và tên';
   static const String USER_NAME_REQUIRED = 'Vui lòng nhập tên người dùng';
   static const String PHONE = 'Số điện thoại';
   static const String REQUIRED_PHONE = 'Vui lòng nhập số điện thoại';

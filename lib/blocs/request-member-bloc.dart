@@ -11,27 +11,39 @@ class RequestMemberBloc extends BaseBloc {
   final _userRepo = UserRepository();
 
   final _changeKeyCtrl = PublishSubject<String>();
+
   Function(String) get changeKeyFunc => _changeKeyCtrl.add;
-  Observable<String> get changeKeyStream => Observable(_changeKeyCtrl).debounce(Duration(milliseconds: 200));
-  
+
+  Observable<String> get changeKeyStream =>
+      Observable(_changeKeyCtrl).debounce(Duration(milliseconds: 200));
+
   final _searchTeamCtrl = BehaviorSubject<String>();
+
   Function(String) get searchTeamFunc => _searchTeamCtrl.add;
+
   Observable<List<Team>> get getAllTeamsStream => Observable(_searchTeamCtrl)
-      .flatMap((key) => Observable.fromFuture(_teamRepository.searchTeamByKey(key))
-      .flatMap((resp) => Observable.just(resp.teams)));
+      .flatMap(
+          (key) => Observable.fromFuture(_teamRepository.searchTeamByKey(key)))
+      .flatMap((resp) => Observable.just(resp.teams));
 
   final _contentCtrl = BehaviorSubject<String>();
+
   Function(String) get changeContentFunc => _contentCtrl.add;
+
   Observable<String> get changeContentStream => Observable(_contentCtrl);
 
-  final _submitRequestCtrl = PublishSubject<int>();
+  final _submitRequestCtrl = BehaviorSubject<int>();
+
   Function(int) get submitRequestFunc => _submitRequestCtrl.add;
-  Observable<BaseResponse> get requestMemberStream => Observable(_submitRequestCtrl)
-      .flatMap((teamId) => Observable.fromFuture(_createRequestMember(teamId))
-          .doOnListen(() => setLoadingFunc(true))
-          .doOnDone(() => setLoadingFunc(false))
-          .doOnError(() => setLoadingFunc(false)))
-      .flatMap((resp) => Observable.just(resp));
+
+  Observable<BaseResponse>
+      get requestMemberStream => Observable(_submitRequestCtrl)
+          .flatMap((teamId) =>
+              Observable.fromFuture(_createRequestMember(teamId))
+                  .doOnListen(() => setLoadingFunc(true))
+                  .doOnDone(() => setLoadingFunc(false))
+                  .doOnError(() => setLoadingFunc(false)))
+          .flatMap((resp) => Observable.just(resp));
 
   Future<BaseResponse> _createRequestMember(int teamId) async {
     var user = await AppPreference().getUser();
@@ -40,6 +52,7 @@ class RequestMemberBloc extends BaseBloc {
 
   @override
   void dispose() {
+    super.dispose();
     _searchTeamCtrl.close();
     _contentCtrl.close();
     _submitRequestCtrl.close();

@@ -3,6 +3,7 @@ import 'package:myfootball/models/role.dart';
 
 class User {
   int id;
+  String name;
   String userName;
   String avatar;
   String email;
@@ -13,6 +14,7 @@ class User {
 
   User(
       {this.id,
+      this.name,
       this.userName,
       this.avatar,
       this.email,
@@ -23,6 +25,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    name = json['name'];
     userName = json['username'];
     avatar = json['avatar'];
     email = json['email'];
@@ -41,12 +44,16 @@ class User {
         teams.add(team);
       });
     }
+    if (json[wallet] != null) {
+      wallet = double.parse(json['wallet'].toString());
+    }
     wallet = json['wallet'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['name'] = this.name;
     data['username'] = this.userName;
     data['avatar'] = this.avatar;
     data['email'] = this.email;

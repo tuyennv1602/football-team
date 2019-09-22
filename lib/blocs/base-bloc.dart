@@ -40,6 +40,12 @@ class _BlocProviderState<T> extends State<BlocProvider<BaseBloc>> {
     super.dispose();
   }
 
+//  @override
+//  void deactivate() {
+//    widget.bloc.dispose();
+//    super.deactivate();
+//  }
+
   @override
   void initState() {
     super.initState();

@@ -1,50 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/ui/widgets/app-bar-button.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 
 class AppBarWidget extends StatelessWidget {
-  final appBarHeight;
   final Widget leftContent;
   final Widget centerContent;
   final Widget rightContent;
   final bool showBorder;
-  final bool removePadding;
-  final double paddingLeft;
-  final double paddingRight;
   final Color backgroundColor;
+  final double _kAppbarHeight = UIHelper.size(48);
 
   AppBarWidget(
-      {this.appBarHeight,
+      {Key key,
       this.leftContent,
       this.rightContent,
       @required this.centerContent,
-      this.removePadding = false,
-      this.paddingLeft,
-      this.paddingRight,
       this.backgroundColor,
-      this.showBorder = false});
+      this.showBorder = false})
+      : assert(centerContent != null),
+        super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: appBarHeight ?? 50,
-        decoration: BoxDecoration(
-            color: backgroundColor ?? AppColor.GREEN,
-            border: showBorder
-                ? Border(bottom: BorderSide(width: 0.5, color: AppColor.LINE_COLOR))
-                : null),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            leftContent ??
-                SizedBox(
-                  width: paddingLeft ?? 0,
-                ),
-            Expanded(child: centerContent),
-            rightContent ??
-                SizedBox(
-                  width: paddingRight ?? 0,
-                )
-          ],
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: UIHelper.paddingTop,
         ),
-      );
+        Container(
+          height: _kAppbarHeight,
+          decoration: BoxDecoration(
+              color: backgroundColor ?? PRIMARY,
+              border: showBorder
+                  ? Border(bottom: BorderSide(width: 0.5, color: LINE_COLOR))
+                  : null),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              leftContent ?? AppBarButtonWidget(),
+              Expanded(child: centerContent),
+              rightContent ?? AppBarButtonWidget()
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -1,8 +1,11 @@
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DateUtil {
   static final DateUtil _instance = DateUtil.internal();
+
   factory DateUtil() => _instance;
+
   DateUtil.internal();
 
   String getDayOfWeek(int number) {
@@ -25,17 +28,17 @@ class DateUtil {
     return null;
   }
 
-  String formatDateTimestamp(int timestamp, DateFormat format) {
-    return format
-        .format(new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+  String getDateFromTimestamp(int timestamp) {
+    return DateFormat('dd-MM-yyyy')
+        .format(new DateTime.fromMillisecondsSinceEpoch(timestamp));
   }
 
-  String formatDateTime(DateTime date, DateFormat format) {
+  String formatDate(DateTime date, DateFormat format) {
     return format.format(date);
   }
 
-  DateTime parseDateRss(String date) {
-    return DateFormat('EEE, dd MMM yyyy hh:mm:ss zzz').parse(date);
+  String getTimeAgo(int timestamp) {
+    return timeago.format(new DateTime.fromMillisecondsSinceEpoch(timestamp),
+        locale: 'vi');
   }
-
 }

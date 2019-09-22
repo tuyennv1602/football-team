@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 
 class ItemOptionWidget extends StatelessWidget {
   final String image;
@@ -8,37 +9,46 @@ class ItemOptionWidget extends StatelessWidget {
   final TextStyle titleStyle;
   final double iconHeight;
   final double iconWidth;
+  final Color iconColor;
 
   ItemOptionWidget(this.image, this.title,
-      {this.onTap, this.titleStyle, this.iconHeight, this.iconWidth});
-      
+      {Key key,
+      this.onTap,
+      this.titleStyle,
+      this.iconHeight,
+      this.iconWidth,
+      this.iconColor})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Material(
-        color: AppColor.GREY_BACKGROUND,
         child: InkWell(
           onTap: onTap,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                image,
-                width: this.iconWidth ?? 40,
-                height: this.iconHeight ?? 40,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                this.title + '\n',
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                style: this.titleStyle ?? Theme.of(context).textTheme.body1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: UIHelper.size(10), horizontal: UIHelper.size(20)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  image,
+                  width: this.iconWidth ?? UIHelper.size(25),
+                  height: this.iconHeight ?? UIHelper.size(25),
+                  color: this.iconColor,
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: EdgeInsets.only(left: UIHelper.size(20)),
+                  child: Text(
+                    this.title,
+                    style: this.titleStyle ?? textStyleRegular(size: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )),
+              ],
+            ),
           ),
         ),
       ),

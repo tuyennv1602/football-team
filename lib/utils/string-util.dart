@@ -5,4 +5,5 @@ class StringUtil {
     final formatter = new NumberFormat("###,###.###", "vi");
     return '${formatter.format(price)}đ';
   }
+
 }
