@@ -1,27 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/ui/widgets/rotation-widget.dart';
+import 'package:myfootball/utils/ui-helper.dart';
 
 class LoadingWidget extends StatelessWidget {
-  final bool show;
-  LoadingWidget({Key key, this.show = false}) : super(key: key);
-
   @override
-  Widget build(BuildContext context) {
-    if (show) {
-      FocusScope.of(context).requestFocus(new FocusNode());
-    }
-    return show
-        ? Stack(
-            children: [
-              ModalBarrier(dismissible: false, color: BLACK_TRANSPARENT,),
-              Center(
-                child: RotationWidget(
-                  widget: Image.asset('assets/images/icn_loading.png'),
-                ),
-              ),
-            ],
-          )
-        : SizedBox();
-  }
+  Widget build(BuildContext context) => Center(
+        child: RotationWidget(
+          width: UIHelper.size50,
+          height: UIHelper.size50,
+          widget: Image.asset(
+            'assets/images/icn_loading.png',
+          ),
+        ),
+      );
 }

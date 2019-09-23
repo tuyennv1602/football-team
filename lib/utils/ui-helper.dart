@@ -73,18 +73,7 @@ class UIHelper {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(size15),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Thông báo',
-                            style: textStyleSemiBold(size: 18),
-                          ),
-                          SizedBox(
-                            height: size10,
-                          ),
-                          Text(message, style: textStyleRegular(size: 16))
-                        ],
-                      ),
+                      child: Text(message, style: textStyleRegular(size: 16)),
                     ),
                     Align(
                       child: ButtonWidget(
@@ -124,20 +113,9 @@ class UIHelper {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(size15),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Thông báo',
-                      style: textStyleSemiBold(size: 18),
-                    ),
-                    SizedBox(
-                      height: size10,
-                    ),
-                    Text(
-                      message,
-                      style: textStyleRegular(size: 16),
-                    )
-                  ],
+                child: Text(
+                  message,
+                  style: textStyleRegular(size: 16),
                 ),
               ),
               Row(

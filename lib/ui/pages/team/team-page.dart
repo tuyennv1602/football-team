@@ -13,6 +13,7 @@ import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item-option.dart';
 import 'package:myfootball/ui/widgets/image-widget.dart';
+import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/rotation-widget.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/team_view_model.dart';
@@ -248,8 +249,10 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
     return Scaffold(
       backgroundColor: PRIMARY,
       body: BaseWidget<TeamViewModel>(
-        model: TeamViewModel(authServices: Provider.of(context), sharePreferences: Provider.of(context), api: Provider.of(
-            context)),
+        model: TeamViewModel(
+            authServices: Provider.of(context),
+            sharePreferences: Provider.of(context),
+            api: Provider.of(context)),
         onModelReady: (model) async {
           var resp = await model.refreshToken();
           if (!resp.isSuccess) {
@@ -275,11 +278,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               Expanded(
                 child: model.busy
                     ? BorderBackground(
-                        child: Center(
-                          child: RotationWidget(
-                            widget: Image.asset(Images.LOADING),
-                          ),
-                        ),
+                        child: LoadingWidget(),
                       )
                     : _hasGroup
                         ? Container(

@@ -224,7 +224,6 @@ abstract class BasePage<T extends BaseBloc> extends StatelessWidget {
             builder: (c, snap) {
               bool isLoading = snap.hasData && snap.data;
               return LoadingWidget(
-                show: isLoading,
               );
             },
           )
