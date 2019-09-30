@@ -26,8 +26,6 @@ class _LoginState extends State<LoginPage> {
   String _email;
   String _password;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailCtrl = TextEditingController();
-  final TextEditingController _passwordCtrl = TextEditingController();
 
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -36,6 +34,23 @@ class _LoginState extends State<LoginPage> {
       return true;
     }
     return false;
+  }
+
+  void _handleSubmit(LoginViewModel model) async {
+    UIHelper.showProgressDialog;
+    var _loginResp = await model.loginEmail(_email, _password);
+    if (_loginResp.isSuccess) {
+      var _registerDeviceResp = await model.registerDevice();
+      UIHelper.hideProgressDialog;
+      if (_registerDeviceResp.isSuccess) {
+        Routes.routeToHome(context);
+      } else {
+        UIHelper.showSimpleDialog(_registerDeviceResp.errorMessage);
+      }
+    } else {
+      UIHelper.hideProgressDialog;
+      UIHelper.showSimpleDialog(_loginResp.errorMessage);
+    }
   }
 
   @override
@@ -86,14 +101,12 @@ class _LoginState extends State<LoginPage> {
                           UIHelper.verticalSpaceLarge,
                           BorderTextFormField(
                             labelText: StringRes.EMAIL,
-                            controller: _emailCtrl,
                             validator: Validator.validEmail,
                             onSaved: (value) => _email = value.trim(),
                           ),
                           UIHelper.verticalSpaceMedium,
                           BorderTextFormField(
                             labelText: StringRes.PASSWORD,
-                            controller: _passwordCtrl,
                             validator: Validator.validPassword,
                             obscureText: true,
                             onSaved: (value) => _password = value.trim(),
@@ -120,26 +133,9 @@ class _LoginState extends State<LoginPage> {
                                 StringRes.LOGIN.toUpperCase(),
                                 style: textStyleButton(),
                               ),
-                              onTap: () async {
+                              onTap: () {
                                 if (validateAndSave()) {
-                                  UIHelper.showProgressDialog;
-                                  var _loginResp =
-                                      await model.loginEmail(_email, _password);
-                                  if (_loginResp.isSuccess) {
-                                    var _registerDeviceResp =
-                                        await model.registerDevice();
-                                    UIHelper.hideProgressDialog;
-                                    if (_registerDeviceResp.isSuccess) {
-                                     Routes.routeToHome(context);
-                                    } else {
-                                      UIHelper.showSimpleDialog(context,
-                                          _registerDeviceResp.errorMessage);
-                                    }
-                                  } else {
-                                    UIHelper.hideProgressDialog;
-                                    UIHelper.showSimpleDialog(
-                                        context, _loginResp.errorMessage);
-                                  }
+                                  _handleSubmit(model);
                                 }
                               },
                             ),
@@ -157,7 +153,8 @@ class _LoginState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: UIHelper.size10),
                         child: Text(
                           StringRes.LOGIN_VIA,
                           style: textStyleRegular(color: Colors.white),
@@ -192,17 +189,19 @@ class _LoginState extends State<LoginPage> {
                       alignment: Alignment.center,
                       child: RichText(
                         text: TextSpan(
-                          text: 'Bạn chưa có tài khoản? ',
-                          style: TextStyle(
-                              color: Colors.white, fontSize: UIHelper.size(16)),
                           children: <TextSpan>[
+                            TextSpan(
+                                text: 'Bạn chưa có tài khoản? ',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: UIHelper.size(16))),
                             TextSpan(
                                 text: 'Đăng ký ngay',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
                                     fontFamily: SEMI_BOLD,
                                     color: Colors.white,
-                                    fontSize: UIHelper.size(18)),
+                                    fontSize: UIHelper.size(16)),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap =
                                       () => Routes.routeToRegister(context)),

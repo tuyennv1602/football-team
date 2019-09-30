@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/blocs/app-bloc.dart';
-import 'package:myfootball/blocs/base-bloc.dart';
-import 'package:myfootball/data/app-preference.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
+import 'package:myfootball/services/share_preferences.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
 import 'dart:convert';
@@ -28,15 +26,12 @@ parseJson(String text) {
 void main() async {
   timeago.setLocaleMessages('vi', ViMessage());
   _firebaseMessaging.requestNotificationPermissions();
-  var token = await AppPreference().getToken();
+  var token = await SharePreferences().getToken();
   dio.interceptors
     ..add(LogInterceptor(
         responseBody: true, requestBody: true, responseHeader: false));
   (dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
-  return runApp(BlocProvider<AppBloc>(
-    bloc: AppBloc(),
-    child: MyApp(token != null),
-  ));
+  return runApp(MyApp(token != null));
 }
 
 class MyApp extends StatelessWidget {

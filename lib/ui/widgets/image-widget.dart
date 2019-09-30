@@ -9,7 +9,7 @@ class ImageWidget extends StatelessWidget {
 
   ImageWidget(
       {Key key,
-      this.source,
+      @required this.source,
       @required this.placeHolder,
       this.size,
       this.radius})
@@ -24,8 +24,8 @@ class ImageWidget extends StatelessWidget {
             child: FadeInImage.assetNetwork(
               image: source,
               placeholder: placeHolder,
-              width: size ?? UIHelper.size(50),
-              height: size ?? UIHelper.size(50),
+              width: size ?? UIHelper.size(55),
+              height: size ?? UIHelper.size(55),
               fit: BoxFit.cover,
               fadeInDuration: Duration(milliseconds: 100),
               fadeOutDuration: Duration(milliseconds: 100),
@@ -33,8 +33,8 @@ class ImageWidget extends StatelessWidget {
           )
         : Image.asset(
             placeHolder,
-            width: size ?? UIHelper.size(50),
-            height: size ?? UIHelper.size(50),
+            width: size ?? UIHelper.size(55),
+            height: size ?? UIHelper.size(55),
             fit: BoxFit.cover,
           );
   }

@@ -19,8 +19,6 @@ class User {
       this.avatar,
       this.email,
       this.phone,
-      this.roles,
-      this.teams,
       this.wallet});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -44,10 +42,9 @@ class User {
         teams.add(team);
       });
     }
-    if (json[wallet] != null) {
+    if (json['wallet'] != null) {
       wallet = double.parse(json['wallet'].toString());
     }
-    wallet = json['wallet'];
   }
 
   Map<String, dynamic> toJson() {

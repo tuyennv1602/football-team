@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/models/responses/login-response.dart';
-import 'package:myfootball/models/responses/team-response.dart';
+import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/responses/team_resp.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/auth_services.dart';

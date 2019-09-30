@@ -28,6 +28,7 @@ dependencies:
   device_info: ^0.4.0+2
   diacritic: ^0.1.1
   provider: ^3.1.0
+  url_launcher: ^5.1.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0

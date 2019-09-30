@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/user.dart';
 import 'package:myfootball/ui/pages/login/forgot-password-page.dart';
 import 'package:myfootball/ui/pages/home-page.dart';
 import 'package:myfootball/ui/pages/login/login-page.dart';
-import 'package:myfootball/ui/pages/notify/notification-detail-page.dart';
 import 'package:myfootball/ui/pages/login/register-page.dart';
+import 'package:myfootball/ui/pages/team/member_page.dart';
 import 'package:myfootball/ui/pages/team/user-request-page.dart';
 import 'package:myfootball/ui/pages/team/create-team-page.dart';
 import 'package:myfootball/ui/pages/team/member-manager-page.dart';
@@ -33,11 +34,6 @@ class Routes {
         .push(SlideLeftRoute(widget: RegisterPage()));
   }
 
-  static routeToNotiDetail(BuildContext context) async {
-    return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: NotificationDetailPage()));
-  }
-
   static routeToCreateGroup(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: CreateTeamPage()));
@@ -56,5 +52,14 @@ class Routes {
   static routeToMemberManager(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: MemberManagerPage()));
+  }
+
+  static routeToMember(
+      BuildContext context, int managerId, List<User> members) async {
+    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(
+        widget: MemberPage(
+      members: members,
+      managerId: managerId,
+    )));
   }
 }

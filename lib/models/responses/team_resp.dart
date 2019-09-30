@@ -6,7 +6,7 @@ class TeamResponse extends BaseResponse {
 
   TeamResponse.success(Map<String, dynamic> json) : super.success(json) {
     if (json['object'] != null) {
-      team = Team.fromJson(json['object'][0]);
+      team = Team.fromJson(json['object']);
     }
   }
 

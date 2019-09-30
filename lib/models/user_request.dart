@@ -1,3 +1,4 @@
+import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date-util.dart';
 
 class UserRequest {
@@ -41,4 +42,12 @@ class UserRequest {
   }
 
   String get getCreateDate => DateUtil().getDateFromTimestamp(createDate);
+
+  String get getStatus {
+    if (status == Constants.REQUEST_WAITING) return 'Đang chờ';
+    if (status == Constants.REQUEST_CANCEL) return 'Đã huỷ';
+    if (status == Constants.REQUEST_ACCEPTED) return 'Đã chấp nhận';
+    if (status == Constants.REQUEST_REJECTED) return 'Đã từ chối';
+    return 'Không xác định';
+  }
 }

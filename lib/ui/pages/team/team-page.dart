@@ -14,7 +14,6 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item-option.dart';
 import 'package:myfootball/ui/widgets/image-widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/ui/widgets/rotation-widget.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/team_view_model.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +87,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         Images.MEMBER,
         'Thành viên',
         iconColor: Colors.indigoAccent,
+        onTap: () => Routes.routeToMember(context, team.manager, team.members),
       ),
       LineWidget(),
       ItemOptionWidget(
@@ -206,13 +206,15 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                   Text('Trình độ: Trung bình', style: textStyleRegular()),
                   Row(
                     children: <Widget>[
-                      Text('Đánh giá:', style: textStyleRegular()),
-                      FlutterRatingBarIndicator(
-                        rating: 2.5,
-                        itemCount: 5,
-                        itemSize: UIHelper.size15,
-                        emptyColor: Colors.amber.withAlpha(90),
-                      ),
+                      Text('Đánh giá: ', style: textStyleRegular()),
+                      team.rating != null
+                          ? FlutterRatingBarIndicator(
+                              rating: 2.5,
+                              itemCount: 5,
+                              itemSize: UIHelper.size15,
+                              emptyColor: Colors.amber.withAlpha(90),
+                            )
+                          : Text('Chưa có đánh giá', style: textStyleRegular()),
                     ],
                   ),
                 ],
@@ -256,7 +258,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         onModelReady: (model) async {
           var resp = await model.refreshToken();
           if (!resp.isSuccess) {
-            UIHelper.showSimpleDialog(context, resp.errorMessage,
+            UIHelper.showSimpleDialog(resp.errorMessage,
                 onTap: () => Routes.routeToLogin(context));
           }
         },

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:myfootball/models/device-info.dart';
+import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/headers.dart';
 import 'package:myfootball/models/responses/base-response.dart';
-import 'package:myfootball/models/responses/login-response.dart';
+import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/token.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/services/base-api.dart';
@@ -23,12 +23,16 @@ class AuthServices {
 
   Stream<User> get user => _userController.stream;
 
+  updateUser(User user) {
+    _userController.add(user);
+  }
+
   Future<LoginResponse> loginEmail(String email, String password) async {
     var resp = await _api.loginEmail(email, password);
     if (resp.isSuccess) {
-      _userController.add(resp.user);
-      _preferences.setToken(
-          Token(token: resp.token, refreshToken: resp.refreshToken));
+      updateUser(resp.user);
+      _preferences
+          .setToken(Token(token: resp.token, refreshToken: resp.refreshToken));
       BaseApi.setHeader(Headers(accessToken: resp.token));
     }
     return resp;
@@ -43,7 +47,7 @@ class AuthServices {
     if (token != null) {
       var resp = await _api.refreshToken(token.refreshToken);
       if (resp.isSuccess) {
-        _userController.add(resp.user);
+        updateUser(resp.user);
         _preferences.setToken(
             Token(token: resp.token, refreshToken: resp.refreshToken));
         BaseApi.setHeader(Headers(accessToken: resp.token));

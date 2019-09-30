@@ -10,7 +10,7 @@ class BaseApi {
 
   BaseApi.internal();
 
-  static const HOST = "http://192.168.16.105:8080/football";
+  static const HOST = "http://35.192.88.45:8080/football";
 
   static Headers header;
 

@@ -6,6 +6,7 @@ import 'package:myfootball/ui/widgets/progress_dialog.dart';
 
 class UIHelper {
   static MediaQueryData _mediaQueryData;
+  static BuildContext _buildContext;
   static double paddingTop;
   static double paddingBottom;
   static double screenWidth;
@@ -21,6 +22,7 @@ class UIHelper {
   static double size50;
 
   void init(BuildContext context) {
+    _buildContext = context;
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
@@ -58,104 +60,109 @@ class UIHelper {
 
   static get hideProgressDialog => progressDialog.hide();
 
-  static void showSimpleDialog(BuildContext context, String message,
-          {Function onTap}) =>
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(size5),
-                ),
-                contentPadding: EdgeInsets.zero,
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(size15),
-                      child: Text(message, style: textStyleRegular(size: 16)),
-                    ),
-                    Align(
-                      child: ButtonWidget(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          if (onTap != null) {
-                            onTap();
-                          }
-                        },
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(size5),
-                            bottomRight: Radius.circular(size5)),
-                        backgroundColor: PRIMARY,
-                        child: Text(
-                          'Xong',
-                          style: textStyleButton(),
-                        ),
+  static void showSimpleDialog(String message, {Function onTap}) => showDialog(
+      context: _buildContext,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(size5),
+            ),
+            contentPadding: EdgeInsets.zero,
+            content: Container(
+              width: screenWidth * 0.9,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(size15),
+                    child: Text(message, style: textStyleRegular(size: 16)),
+                  ),
+                  Align(
+                    child: ButtonWidget(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        if (onTap != null) {
+                          onTap();
+                        }
+                      },
+                      height: size40,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(size5),
+                          bottomRight: Radius.circular(size5)),
+                      backgroundColor: PRIMARY,
+                      child: Text(
+                        'Xong',
+                        style: textStyleRegular(size: 16, color: Colors.white),
                       ),
                     ),
-                  ],
-                ),
-              ));
+                  ),
+                ],
+              ),
+            ),
+          ));
 
-  static void showConfirmDialog(BuildContext context, String message,
-          {Function onConfirmed}) =>
+  static void showConfirmDialog(String message, {Function onConfirmed}) =>
       showDialog(
-        context: context,
+        context: _buildContext,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(size5),
           ),
           contentPadding: EdgeInsets.zero,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(size15),
-                child: Text(
-                  message,
-                  style: textStyleRegular(size: 16),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ButtonWidget(
-                      onTap: () => Navigator.of(context).pop(),
-                      height: size40,
-                      borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(size5)),
-                      backgroundColor: Colors.grey,
-                      child: Text(
-                        'Huỷ',
-                        style: textStyleButton(),
-                      ),
-                    ),
+          content: Container(
+            width: screenWidth * 0.9,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(size15),
+                  child: Text(
+                    message,
+                    style: textStyleRegular(size: 16),
                   ),
-                  Expanded(
-                    child: ButtonWidget(
-                      onTap: () {
-                        onConfirmed();
-                        Navigator.of(context).pop();
-                      },
-                      height: size40,
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(size5)),
-                      backgroundColor: PRIMARY,
-                      child: Text(
-                        'Đồng ý',
-                        style: textStyleButton(),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () => Navigator.of(context).pop(),
+                        height: size40,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(size5)),
+                        backgroundColor: Colors.grey,
+                        child: Text(
+                          'Huỷ',
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
+                        ),
                       ),
                     ),
-                  )
-                ],
-              )
-            ],
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          onConfirmed();
+                        },
+                        height: size40,
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(size5)),
+                        backgroundColor: PRIMARY,
+                        child: Text(
+                          'Đồng ý',
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
 
-  static void hideKeyBoard(BuildContext context) =>
-      FocusScope.of(context).requestFocus(new FocusNode());
+  static void hideKeyBoard() =>
+      FocusScope.of(_buildContext).requestFocus(new FocusNode());
 }

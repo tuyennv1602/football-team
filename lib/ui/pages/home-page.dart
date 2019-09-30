@@ -6,7 +6,6 @@ import 'package:myfootball/ui/pages/notify/notification-page.dart';
 import 'package:myfootball/ui/pages/social/social-page.dart';
 import 'package:myfootball/ui/pages/team/team-page.dart';
 import 'package:myfootball/ui/pages/user/user-page.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -15,6 +14,11 @@ class HomePage extends StatelessWidget {
       icon: Icon(Icons.people, size: 25),
       title:
           Text('Đội bóng', style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.rss_feed, size: 25),
+      title: Text('Cộng đồng',
+          style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications, size: 25),
@@ -27,11 +31,6 @@ class HomePage extends StatelessWidget {
         'Cá nhân',
         style: TextStyle(fontSize: 10, fontFamily: REGULAR),
       ),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.rss_feed, size: 25),
-      title: Text('Cộng đồng',
-          style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
     ),
   ];
 
@@ -50,13 +49,13 @@ class HomePage extends StatelessWidget {
               builder: (BuildContext context) => TeamPage());
         if (index == 1)
           return CupertinoTabView(
-              builder: (BuildContext context) => NotificationPage());
+              builder: (BuildContext context) => SocialPage());
         if (index == 2)
           return CupertinoTabView(
-              builder: (BuildContext context) => UserPage());
+              builder: (BuildContext context) => NotificationPage());
         if (index == 3)
           return CupertinoTabView(
-              builder: (BuildContext context) => SocialPage());
+              builder: (BuildContext context) => UserPage());
         return null;
       },
     );

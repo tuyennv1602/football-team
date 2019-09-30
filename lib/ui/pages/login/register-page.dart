@@ -24,10 +24,6 @@ class _RegisterState extends State<RegisterPage> {
   String _phone;
   String _email;
   String _password;
-  final TextEditingController _emailCtrl = TextEditingController();
-  final TextEditingController _passwordCtrl = TextEditingController();
-  final TextEditingController _nameCtrl = TextEditingController();
-  final TextEditingController _phoneCtrl = TextEditingController();
 
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -36,6 +32,21 @@ class _RegisterState extends State<RegisterPage> {
       return true;
     }
     return false;
+  }
+
+  void _handleSubmit(RegisterViewModel model) async {
+    UIHelper.showProgressDialog;
+    var _resp = await model.registerWithEmail(
+        _name, _email, _password, _phone, [Constants.TEAM_LEADER]);
+    UIHelper.hideProgressDialog;
+    if (_resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+          'Đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản',
+          onTap: () => Navigator.pop(context));
+    } else {
+      UIHelper.showSimpleDialog(_resp.errorMessage,
+          onTap: () => Navigator.of(context).pop());
+    }
   }
 
   @override
@@ -118,28 +129,24 @@ class _RegisterState extends State<RegisterPage> {
                               UIHelper.verticalSpaceLarge,
                               BorderTextFormField(
                                 labelText: StringRes.USER_NAME,
-                                controller: _nameCtrl,
                                 validator: Validator.validName,
                                 onSaved: (value) => _name = value.trim(),
                               ),
                               UIHelper.verticalSpaceMedium,
                               BorderTextFormField(
                                 labelText: StringRes.EMAIL,
-                                controller: _emailCtrl,
                                 validator: Validator.validEmail,
                                 onSaved: (value) => _email = value.trim(),
                               ),
                               UIHelper.verticalSpaceMedium,
                               BorderTextFormField(
                                 labelText: StringRes.PHONE,
-                                controller: _phoneCtrl,
                                 validator: Validator.validPhoneNumber,
                                 onSaved: (value) => _phone = value.trim(),
                               ),
                               UIHelper.verticalSpaceMedium,
                               BorderTextFormField(
                                 labelText: StringRes.PASSWORD,
-                                controller: _passwordCtrl,
                                 obscureText: true,
                                 validator: Validator.validPassword,
                                 onSaved: (value) => _password = value.trim(),
@@ -160,26 +167,9 @@ class _RegisterState extends State<RegisterPage> {
                                 StringRes.REGISTER.toUpperCase(),
                                 style: textStyleButton(),
                               ),
-                              onTap: () async {
+                              onTap: () {
                                 if (validateAndSave()) {
-                                  UIHelper.showProgressDialog;
-                                  var _resp = await model.registerWithEmail(
-                                      _name,
-                                      _email,
-                                      _password,
-                                      _phone,
-                                      [Constants.TEAM_LEADER]);
-                                  UIHelper.hideProgressDialog;
-                                  if (_resp.isSuccess) {
-                                    UIHelper.showSimpleDialog(context,
-                                        'Đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản',
-                                        onTap: () => Navigator.pop(context));
-                                  } else {
-                                    UIHelper.showSimpleDialog(
-                                        context, _resp.errorMessage,
-                                        onTap: () =>
-                                            Navigator.of(context).pop());
-                                  }
+                                  _handleSubmit(model);
                                 }
                               },
                             ),

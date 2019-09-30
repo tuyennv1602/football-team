@@ -1,3 +1,4 @@
+import 'package:myfootball/models/member.dart';
 import 'package:myfootball/models/user.dart';
 
 class Team {
@@ -13,7 +14,9 @@ class Team {
   int countRequest;
   double wallet;
   int userId;
-  List<User> members;
+  List<Member> members;
+  double rating;
+  bool rated;
 
   Team({this.manager, this.name, this.logo, this.dress, this.bio, this.userId});
 
@@ -26,15 +29,19 @@ class Team {
     logo = json['logo'];
     dress = json['dress'];
     bio = json['bio'];
+    if (json['rating'] != null) {
+      rating = double.parse(json['rating'].toString());
+    }
+    rated = json['rated'];
     countMember = json['count_member'];
     countRequest = json['count_request'];
     if (json['wallet'] != null) {
       wallet = double.parse(json['wallet'].toString());
     }
     if (json['users'] != null) {
-      members = new List<User>();
+      members = new List<Member>();
       json['users'].forEach((v) {
-        members.add(new User.fromJson(v));
+        members.add(new Member.fromJson(v));
       });
     }
   }
@@ -52,6 +59,8 @@ class Team {
     data['count_member'] = this.countMember;
     data['count_request'] = this.countRequest;
     data['wallet'] = this.wallet;
+    data['rating'] = this.rating;
+    data['rated'] = this.rated;
     if (this.members != null) {
       data['users'] = this.members.map((v) => v.toJson()).toList();
     }

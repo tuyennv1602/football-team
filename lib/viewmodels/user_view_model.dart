@@ -11,7 +11,8 @@ class UserViewModel extends BaseViewModel {
   Future<bool> logout() async {
     setBusy(true);
     var _token = await _preferences.clearToken();
+    var _lastTeam = await _preferences.clearLastTeam();
     setBusy(false);
-    return _token;
+    return _token && _lastTeam;
   }
 }

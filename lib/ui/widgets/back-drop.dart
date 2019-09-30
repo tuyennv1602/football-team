@@ -1,11 +1,10 @@
-import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 
 final double _kFrontHeadingHeight =
-    UIHelper.size(20); // front layer beveled rectangle
+    UIHelper.size(15); // front layer beveled rectangle
 final double _kFrontClosedHeight =
     UIHelper.size(48); // front layer height when closed
 final double _kBackAppBarHeight =

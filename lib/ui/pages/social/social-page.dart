@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/blocs/social-bloc.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/pages/base-page.dart';
 import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/border-background.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 
-// ignore: must_be_immutable
-class SocialPage extends BasePage<SocialBloc> {
-  @override
-  Widget buildAppBar(BuildContext context) => AppBarWidget(
-        centerContent: Text(
-          'Cộng đồng',
-          textAlign: TextAlign.center,
-          style: textStyleTitle(),
-        ),
-      );
-
+class SocialPage extends StatelessWidget {
   Widget _buildCateTitle(String title) => Text(
         title,
         style: textStyleSemiBold(color: PRIMARY),
@@ -25,11 +13,11 @@ class SocialPage extends BasePage<SocialBloc> {
 
   Widget _buildItemNew(BuildContext context, int index) => Container(
         width: UIHelper.screenWidth / 2,
-        margin: EdgeInsets.only(right: size10),
+        margin: EdgeInsets.only(right: UIHelper.size10),
         decoration: BoxDecoration(
             color: GREY_BACKGROUND,
-            borderRadius: BorderRadius.circular(size10)),
-        padding: EdgeInsets.all(size10),
+            borderRadius: BorderRadius.circular(UIHelper.size10)),
+        padding: EdgeInsets.all(UIHelper.size10),
         child: Text("Item $index"),
       );
 
@@ -38,11 +26,9 @@ class SocialPage extends BasePage<SocialBloc> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildCateTitle('Tin tức mới nhất'),
-        SizedBox(
-          height: size10,
-        ),
+        UIHelper.verticalSpaceMedium,
         Container(
-            margin: EdgeInsets.only(bottom: size10),
+            margin: EdgeInsets.only(bottom: UIHelper.size10),
             height: UIHelper.size(150),
             child: ListView.builder(
               itemCount: 10,
@@ -60,11 +46,9 @@ class SocialPage extends BasePage<SocialBloc> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildCateTitle('Bảng xếp hạng'),
-        SizedBox(
-          height: size10,
-        ),
+        UIHelper.verticalSpaceMedium,
         Container(
-            margin: EdgeInsets.only(bottom: size10),
+            margin: EdgeInsets.only(bottom: UIHelper.size10),
             height: UIHelper.size(150),
             child: ListView.builder(
               itemCount: 10,
@@ -82,11 +66,9 @@ class SocialPage extends BasePage<SocialBloc> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildCateTitle('Giải đấu'),
-        SizedBox(
-          height: size10,
-        ),
+        UIHelper.verticalSpaceMedium,
         Container(
-            margin: EdgeInsets.only(bottom: size10),
+            margin: EdgeInsets.only(bottom: UIHelper.size10),
             height: UIHelper.size(150),
             child: ListView.builder(
               itemCount: 10,
@@ -104,9 +86,7 @@ class SocialPage extends BasePage<SocialBloc> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildCateTitle('Thông tin tuyển quân'),
-        SizedBox(
-          height: size10,
-        ),
+        UIHelper.verticalSpaceMedium,
         Container(
             height: UIHelper.size(150),
             child: ListView.builder(
@@ -121,22 +101,35 @@ class SocialPage extends BasePage<SocialBloc> {
   }
 
   @override
-  Widget buildMainContainer(BuildContext context) {
-    return BorderBackground(
-      child: ListView(
-        padding: EdgeInsets.all(size10),
-        physics: BouncingScrollPhysics(),
-        shrinkWrap: true,
+  Widget build(BuildContext context) {
+    UIHelper().init(context);
+    return Scaffold(
+      backgroundColor: PRIMARY,
+      body: Column(
         children: <Widget>[
-          _buildNewsest(context),
-          _buildRanking(context),
-          _buildTournament(context),
-          _buildRecruit(context)
+          AppBarWidget(
+            centerContent: Text(
+              'Cộng đồng',
+              textAlign: TextAlign.center,
+              style: textStyleTitle(),
+            ),
+          ),
+          Expanded(
+              child: BorderBackground(
+            child: ListView(
+              padding: EdgeInsets.all(UIHelper.size10),
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              children: <Widget>[
+                _buildNewsest(context),
+                _buildRanking(context),
+                _buildTournament(context),
+                _buildRecruit(context)
+              ],
+            ),
+          ))
         ],
       ),
     );
   }
-
-  @override
-  void listenData(BuildContext context) {}
 }

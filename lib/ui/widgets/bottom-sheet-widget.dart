@@ -50,7 +50,10 @@ class BottomSheetWidget extends StatelessWidget {
             value,
             style: textStyleRegular(size: 16),
           ),
-          onTap: () => onClickOption(index),
+          onTap: () {
+            Navigator.of(context).pop();
+            onClickOption(index);
+          },
         ));
       }
       children.add(Container(
@@ -62,7 +65,13 @@ class BottomSheetWidget extends StatelessWidget {
       color: Colors.transparent,
       child: Wrap(
         children: <Widget>[
-          BorderBackground(
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(UIHelper.size(15)),
+                  topLeft: Radius.circular(UIHelper.size(15))),
+            ),
             child: Column(
               children: this.children,
               mainAxisAlignment: MainAxisAlignment.end,

@@ -28,19 +28,19 @@ class ItemOptionWidget extends StatelessWidget {
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: UIHelper.size(10), horizontal: UIHelper.size(20)),
+                vertical: UIHelper.size10, horizontal: UIHelper.size20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
                   image,
-                  width: this.iconWidth ?? UIHelper.size(25),
-                  height: this.iconHeight ?? UIHelper.size(25),
+                  width: this.iconWidth ?? UIHelper.size20,
+                  height: this.iconHeight ??UIHelper.size20,
                   color: this.iconColor,
                 ),
                 Expanded(
                     child: Padding(
-                  padding: EdgeInsets.only(left: UIHelper.size(20)),
+                  padding: EdgeInsets.only(left: UIHelper.size20),
                   child: Text(
                     this.title,
                     style: this.titleStyle ?? textStyleRegular(size: 16),

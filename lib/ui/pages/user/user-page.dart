@@ -130,7 +130,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                         LineWidget(),
                         ItemOptionWidget(
                           Images.ADD_TEAM,
-                          'Thành lập đội bóng',
+                          'Đăng ký đội bóng',
                           iconColor: Colors.indigoAccent,
                           onTap: () => Routes.routeToCreateGroup(context),
                         ),

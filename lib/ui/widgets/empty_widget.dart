@@ -11,6 +11,7 @@ class EmptyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Image.asset(
           'assets/images/icn_empty.png',

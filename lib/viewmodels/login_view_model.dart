@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:myfootball/models/device-info.dart';
+import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/responses/base-response.dart';
-import 'package:myfootball/models/responses/login-response.dart';
+import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/services/auth_services.dart';
 import 'package:myfootball/viewmodels/base_view_model.dart';
 

@@ -7,6 +7,10 @@ const Color GREY_BACKGROUND = Color(0xFFF2F3F4);
 const Color BLACK_TRANSPARENT = Color(0x66000000);
 const Color BLACK_TEXT = Colors.black87;
 const Color SHADOW_GREEN = Color(0xFFE9F7EF);
+const Color FW = Colors.red;
+const Color MF = Colors.lightGreen;
+const Color DF = Colors.blueAccent;
+const Color GK = Colors.orange;
 
 const List<Color> BLACK_GRADIENT = [
   Color(0xCC000000),
@@ -30,7 +34,7 @@ const List<Color> BLACK_GRADIENT = [
 
 const List<Color> DRESS_COLORS = [
   Colors.red,
-  Colors.pink,
+  Colors.pinkAccent,
   Colors.orange,
   Colors.yellow,
   Colors.green,

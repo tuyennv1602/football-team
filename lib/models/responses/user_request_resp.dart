@@ -1,5 +1,5 @@
 import 'package:myfootball/models/responses/base-response.dart';
-import 'package:myfootball/models/user-request.dart';
+import 'package:myfootball/models/user_request.dart';
 
 class UserRequestResponse extends BaseResponse {
   List<UserRequest> userRequests;

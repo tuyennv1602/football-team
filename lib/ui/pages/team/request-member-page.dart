@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/team.dart';
+import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
@@ -12,15 +13,29 @@ import 'package:myfootball/ui/widgets/app-bar-widget.dart';
 import 'package:myfootball/ui/widgets/border-background.dart';
 import 'package:myfootball/ui/widgets/button-widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
+import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search-widget.dart';
 import 'package:myfootball/ui/widgets/image-widget.dart';
+import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/request_member_view_model.dart';
 import 'package:provider/provider.dart';
 
 class RequestMemberPage extends StatelessWidget {
+  String _content;
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool validateAndSave() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
 
   Widget _buildItemTeam(BuildContext context, Team team) => InkWell(
         onTap: () => _showRequestForm(context, team),
@@ -38,13 +53,23 @@ class RequestMemberPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(
+                      team.name,
+                      style: textStyleRegularTitle(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size(2)),
+                      child: Text(
+                        'Xếp hạng: 3/100 (1500 điểm)',
+                        style: textStyleRegularBody(),
+                      ),
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            team.name,
-                            style: textStyleSemiBold(color: BLACK_TEXT),
-                          ),
+                        Text(
+                          'Đánh giá: ',
+                          style: textStyleRegularBody(),
                         ),
                         FlutterRatingBarIndicator(
                           rating: 2.5,
@@ -52,23 +77,13 @@ class RequestMemberPage extends StatelessWidget {
                           itemPadding: EdgeInsets.only(left: 2),
                           itemSize: UIHelper.size(12),
                           emptyColor: Colors.amber.withAlpha(90),
-                        )
-                      ],
-                    ),
-                    Text(
-                      team.bio,
-                      style: textStyleRegular(),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Trình độ: Trung bình',
-                          style: textStyleRegular(),
                         ),
-                        Text(
-                          '${team.countMember} thành viên',
-                          style: textStyleRegular(),
+                        Expanded(
+                          child: Text(
+                            '${team.countMember} thành viên',
+                            textAlign: TextAlign.right,
+                            style: textStyleRegularBody(),
+                          ),
                         )
                       ],
                     )
@@ -80,6 +95,17 @@ class RequestMemberPage extends StatelessWidget {
         ),
       );
 
+  _handleSubmit(RequestMemberViewModel model, int teamId) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.createRequest(teamId, _content);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã gửi đăng ký!');
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   void _showRequestForm(BuildContext context, Team team) => showDialog(
         context: context,
         barrierDismissible: false,
@@ -88,72 +114,85 @@ class RequestMemberPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(UIHelper.size5),
           ),
           contentPadding: EdgeInsets.zero,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(UIHelper.size10),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      team.name,
-                      style: textStyleSemiBold(size: 18),
-                    ),
-//                      Form(
-//                        key: _formKey,
-//                        child: InputWidget(
-//                          validator: (value) {
-//                            if (value.isEmpty)
-//                              return StringRes.REQUIRED_CONTENT;
-//                            return null;
-//                          },
-//                          maxLines: 5,
-//                          maxLength: 150,
-//                          inputType: TextInputType.text,
-//                          inputAction: TextInputAction.done,
-//                          labelText: StringRes.CONTENT,
-//                          onChangedText: (text) =>
-//                              pageBloc.changeContentFunc(text),
-//                        ),
-//                      )
-                  ],
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ButtonWidget(
-                      onTap: () => Navigator.of(context).pop(),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(UIHelper.size5)),
-                      backgroundColor: Colors.grey,
-                      height: UIHelper.size40,
-                      child: Text(
-                        StringRes.CANCEL,
-                        style: textStyleButton(),
+          content: Container(
+            width: UIHelper.screenWidth * 0.9,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(UIHelper.size10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Gửi tới: ${team.name}',
+                        style: textStyleRegularTitle(),
                       ),
-                    ),
+                      Form(
+                        key: _formKey,
+                        child: InputWidget(
+                          validator: (value) {
+                            if (value.isEmpty) return 'Vui lòng nhập nội dung';
+                            return null;
+                          },
+                          onSaved: (value) => _content = value,
+                          maxLines: 3,
+                          inputType: TextInputType.text,
+                          inputAction: TextInputAction.done,
+                          labelText: 'Giới thiệu bản thân',
+                        ),
+                      ),
+                      Text(
+                        'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+                        style: textStyleRegular(color: Colors.grey),
+                      ),
+                      MultiChoicePosition()
+                    ],
                   ),
-                  Expanded(
-                    child: ButtonWidget(
-                      onTap: () {
-                        if (_formKey.currentState.validate()) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      height: UIHelper.size40,
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(UIHelper.size5)),
-                      backgroundColor: PRIMARY,
-                      child: Text(
-                        StringRes.SEND_REQUEST,
-                        style: textStyleButton(),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () => Navigator.of(context).pop(),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(UIHelper.size5)),
+                        backgroundColor: Colors.grey,
+                        height: UIHelper.size40,
+                        child: Text(
+                          StringRes.CANCEL,
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
+                        ),
                       ),
                     ),
-                  )
-                ],
-              )
-            ],
+                    Expanded(
+                      child: BaseWidget<RequestMemberViewModel>(
+                        model:
+                            RequestMemberViewModel(api: Provider.of(context)),
+                        builder: (context, model, child) => ButtonWidget(
+                          onTap: () {
+                            if (validateAndSave()) {
+                              Navigator.of(context).pop();
+                              _handleSubmit(model, team.id);
+                            }
+                          },
+                          height: UIHelper.size40,
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(UIHelper.size5)),
+                          backgroundColor: PRIMARY,
+                          child: Text(
+                            'Đăng ký',
+                            style:
+                                textStyleRegular(size: 16, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
@@ -162,6 +201,7 @@ class RequestMemberPage extends StatelessWidget {
   Widget build(BuildContext context) {
     UIHelper().init(context);
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[

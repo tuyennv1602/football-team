@@ -22,9 +22,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
   String _email;
   String _password;
   String _code;
-  final TextEditingController _emailCtrl = TextEditingController();
-  final TextEditingController _passwordCtrl = TextEditingController();
-  final TextEditingController _codeCtrl = TextEditingController();
 
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -33,6 +30,30 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
       return true;
     }
     return false;
+  }
+
+  void _handleSubmit(ForgotPasswordViewModel model) async {
+    UIHelper.showProgressDialog;
+    if (!model.isChangePassword) {
+      var _resp = await model.forgotPassword(_email);
+      UIHelper.hideProgressDialog;
+      if (_resp.isSuccess) {
+        UIHelper.showSimpleDialog('Mã xác thực đã được gửi');
+      } else {
+        UIHelper.showSimpleDialog(_resp.errorMessage);
+      }
+    } else {
+      var _resp = await model.changePassword(_email, _password, _code);
+      UIHelper.hideProgressDialog;
+      if (_resp.isSuccess) {
+        UIHelper.showSimpleDialog(
+          'Mật khẩu đã được thay đổi',
+          onTap: () => Navigator.pop(context),
+        );
+      } else {
+        UIHelper.showSimpleDialog(_resp.errorMessage);
+      }
+    }
   }
 
   @override
@@ -113,7 +134,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                         UIHelper.verticalSpaceLarge,
                         BorderTextFormField(
                           labelText: StringRes.EMAIL,
-                          controller: _emailCtrl,
                           validator: Validator.validEmail,
                           onSaved: (value) => _email = value.trim(),
                         ),
@@ -123,7 +143,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                   UIHelper.verticalSpaceMedium,
                                   BorderTextFormField(
                                     labelText: 'Mật khẩu mới',
-                                    controller: _passwordCtrl,
                                     obscureText: true,
                                     validator: Validator.validPassword,
                                     onSaved: (value) =>
@@ -132,7 +151,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                   UIHelper.verticalSpaceMedium,
                                   BorderTextFormField(
                                     labelText: 'Mã xác thực',
-                                    controller: _codeCtrl,
                                     obscureText: true,
                                     validator: Validator.validCode,
                                     onSaved: (value) => _code = value.trim(),
@@ -155,35 +173,9 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                     : 'XÁC THỰC',
                                 style: textStyleButton(),
                               ),
-                              onTap: () async {
+                              onTap: () {
                                 if (validateAndSave()) {
-                                  UIHelper.showProgressDialog;
-                                  if (!model.isChangePassword) {
-                                    var _resp =
-                                        await model.forgotPassword(_email);
-                                    UIHelper.hideProgressDialog;
-                                    if (_resp.isSuccess) {
-                                      UIHelper.showSimpleDialog(
-                                          context, 'Mã xác thực đã được gửi');
-                                    } else {
-                                      UIHelper.showSimpleDialog(
-                                          context, _resp.errorMessage);
-                                    }
-                                  } else {
-                                    var _resp = await model.changePassword(
-                                        _email, _password, _code);
-                                    UIHelper.hideProgressDialog;
-                                    if (_resp.isSuccess) {
-                                      UIHelper.showSimpleDialog(
-                                        context,
-                                        'Mật khẩu đã được thay đổi',
-                                        onTap: () => Navigator.pop(context),
-                                      );
-                                    } else {
-                                      UIHelper.showSimpleDialog(
-                                          context, _resp.errorMessage);
-                                    }
-                                  }
+                                  _handleSubmit(model);
                                 }
                               },
                             ),

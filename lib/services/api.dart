@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:myfootball/models/device-info.dart';
+import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/responses/base-response.dart';
-import 'package:myfootball/models/responses/login-response.dart';
-import 'package:myfootball/models/responses/search-team-response.dart';
-import 'package:myfootball/models/responses/team-response.dart';
-import 'package:myfootball/models/responses/user-request-response.dart';
+import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/responses/search_team_resp.dart';
+import 'package:myfootball/models/responses/team_request_resp.dart';
+import 'package:myfootball/models/responses/team_resp.dart';
+import 'package:myfootball/models/responses/user_request_resp.dart';
 import 'package:myfootball/models/team.dart';
 
 import 'base-api.dart';
@@ -91,11 +92,34 @@ class Api {
     }
   }
 
-  Future<BaseResponse> createRequestMember(
-      int userId, int teamId, String content) async {
+  Future<TeamRequestResponse> getTeamRequest(int teamId) async {
+    try {
+      FormData formData = new FormData.from({
+        "groupId": teamId,
+      });
+      var resp = await _api.getApi('request-member/find-by-group-id',
+          queryParams: formData);
+      return TeamRequestResponse.success(resp.data);
+    } on DioError catch (e) {
+      return TeamRequestResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> createRequestMember(int teamId, String content) async {
     try {
       var response = await _api.postApi('request-member/create',
-          body: {"user_id": userId, "group_id": teamId, "content": content});
+          body: {"group_id": teamId, "content": content});
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> updateRequestMember(
+      int requestId, int teamId, String content) async {
+    try {
+      var response = await _api.postApi('request-member/update',
+          body: {"id": requestId, "content": content, 'group_id': teamId});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -104,8 +128,25 @@ class Api {
 
   Future<BaseResponse> cancelRequestMember(int requestId) async {
     try {
-      var response =
-          await _api.postApi('request-member/cancel', body: {"id": requestId});
+      var response = await _api.postApi('request-member/$requestId/cancel');
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> approveRequestMember(int requestId) async {
+    try {
+      var response = await _api.postApi('request-member/$requestId/approved');
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> rejectRequestMember(int requestId) async {
+    try {
+      var response = await _api.postApi('request-member/$requestId/rejected');
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -124,6 +165,15 @@ class Api {
       return TeamResponse.success(response.data);
     } on DioError catch (e) {
       return TeamResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> updateTeam(Team team) async {
+    try {
+      var response = await _api.postApi('group/update', body: team.toJson());
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
     }
   }
 
