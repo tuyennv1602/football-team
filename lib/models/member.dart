@@ -10,8 +10,7 @@ class Member extends User {
       rating = double.parse(json['rating'].toString());
     }
     rated = json['rated'];
-//    position = json['position'];
-    position = 'MF,GK,FW,DF';
+    position = json['position'];
   }
 
   List<String> get getPositions => position != null ? position.split(',') : [];

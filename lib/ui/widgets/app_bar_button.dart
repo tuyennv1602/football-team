@@ -5,7 +5,7 @@ class AppBarButtonWidget extends StatelessWidget {
   final String imageName;
   final Function onTap;
   final double padding;
-  final double _kButtonAppbarHeight = UIHelper.size(48);
+  final double _kButtonAppbarHeight = UIHelper.size(50);
 
   AppBarButtonWidget({Key key, this.imageName, this.onTap, this.padding})
       : super(key: key);

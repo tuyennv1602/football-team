@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/widgets/border-background.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 
-import 'button-widget.dart';
+import 'button_widget.dart';
 
 typedef void OnClickOption(int index);
 
@@ -14,7 +11,7 @@ class BottomSheetWidget extends StatelessWidget {
   final List<String> options;
   final OnClickOption onClickOption;
   List<Widget> children = [];
-  final double BUTTON_HEIGHT = UIHelper.size(50);
+  final double _kButtonHeight = UIHelper.size(50);
 
   BottomSheetWidget({Key key, @required this.options, this.onClickOption})
       : assert(options != null),
@@ -26,17 +23,17 @@ class BottomSheetWidget extends StatelessWidget {
     options.asMap().forEach((index, value) {
       if (index == 0) {
         children.add(SizedBox(
-          height: BUTTON_HEIGHT,
+          height: _kButtonHeight,
           child: Center(
             child: Text(
               value,
-              style: textStyleSemiBold(color: PRIMARY),
+              style: textStyleSemiBold(color: Colors.black),
             ),
           ),
         ));
       } else if (index == length - 1) {
         children.add(ButtonWidget(
-          height: BUTTON_HEIGHT,
+          height: _kButtonHeight,
           child: Text(
             value,
             style: textStyleSemiBold(color: Colors.red),
@@ -45,7 +42,7 @@ class BottomSheetWidget extends StatelessWidget {
         ));
       } else {
         children.add(ButtonWidget(
-          height: BUTTON_HEIGHT,
+          height: _kButtonHeight,
           child: Text(
             value,
             style: textStyleRegular(size: 16),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/models/user.dart';
-import 'package:myfootball/ui/pages/login/forgot-password-page.dart';
-import 'package:myfootball/ui/pages/home-page.dart';
-import 'package:myfootball/ui/pages/login/login-page.dart';
-import 'package:myfootball/ui/pages/login/register-page.dart';
+import 'package:myfootball/models/team.dart';
+import 'package:myfootball/ui/pages/login/forgot_password_page.dart';
+import 'package:myfootball/ui/pages/home_page.dart';
+import 'package:myfootball/ui/pages/login/login_page.dart';
+import 'package:myfootball/ui/pages/login/register_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
-import 'package:myfootball/ui/pages/team/user-request-page.dart';
+import 'package:myfootball/ui/pages/team/province_page.dart';
+import 'package:myfootball/ui/pages/team/user_request_page.dart';
 import 'package:myfootball/ui/pages/team/create-team-page.dart';
-import 'package:myfootball/ui/pages/team/member-manager-page.dart';
-import 'package:myfootball/ui/pages/team/request-member-page.dart';
+import 'package:myfootball/ui/pages/team/member_manager_page.dart';
+import 'package:myfootball/ui/pages/team/request_member_page.dart';
 import 'package:myfootball/ui/routes/fade-in-route.dart';
 import 'package:myfootball/ui/routes/slide-left-route.dart';
 
@@ -54,12 +55,13 @@ class Routes {
         .push(SlideLeftRoute(widget: MemberManagerPage()));
   }
 
-  static routeToMember(
-      BuildContext context, int managerId, List<User> members) async {
-    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(
-        widget: MemberPage(
-      members: members,
-      managerId: managerId,
-    )));
+  static routeToMember(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: MemberPage()));
+  }
+
+  static routeToProvinces(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: ProvincePage()));
   }
 }

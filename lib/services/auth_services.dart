@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/headers.dart';
-import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/token.dart';
 import 'package:myfootball/models/user.dart';

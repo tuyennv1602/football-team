@@ -38,7 +38,6 @@ class User {
       teams = new List<Team>();
       json['group_list'].forEach((v) {
         var team = new Team.fromJson(v);
-        team.userId = id;
         teams.add(team);
       });
     }
@@ -66,7 +65,6 @@ class User {
   }
 
   List<Team> addTeam(Team team) {
-    team.userId = id;
     if (teams == null) {
       teams = [];
     }

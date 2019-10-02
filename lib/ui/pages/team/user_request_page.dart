@@ -5,16 +5,18 @@ import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/widgets/app-bar-button.dart';
-import 'package:myfootball/ui/widgets/app-bar-widget.dart';
-import 'package:myfootball/ui/widgets/border-background.dart';
-import 'package:myfootball/ui/widgets/bottom-sheet-widget.dart';
-import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/app_bar_button.dart';
+import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
-import 'package:myfootball/ui/widgets/image-widget.dart';
+import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/item_position.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/user_request_model.dart';
@@ -22,6 +24,7 @@ import 'package:provider/provider.dart';
 
 class UserRequestPage extends StatelessWidget {
   String _content;
+  List<String> _positions;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -70,7 +73,8 @@ class UserRequestPage extends StatelessWidget {
   void _handleUpdateRequest(
       UserRequestModel model, int index, int requestId, int teamId) async {
     UIHelper.showProgressDialog;
-    var resp = await model.updateRequest(index, requestId, teamId, _content);
+    var resp = await model.updateRequest(
+        index, requestId, teamId, _content, _positions);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!');
@@ -97,6 +101,7 @@ class UserRequestPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(UIHelper.size10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         'Chỉnh sửa yêu cầu',
@@ -115,8 +120,17 @@ class UserRequestPage extends StatelessWidget {
                           maxLines: 4,
                           inputType: TextInputType.text,
                           inputAction: TextInputAction.done,
-                          labelText: 'Nhập nội dung',
+                          labelText: 'Giới thiệu bản thân',
                         ),
+                      ),
+                      Text(
+                        'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+                        style: textStyleRegular(color: Colors.grey),
+                      ),
+                      MultiChoicePosition(
+                        initPositions: userRequest.getPositions,
+                        onChangePositions: (positions) =>
+                            _positions = positions,
                       )
                     ],
                   ),
@@ -132,7 +146,8 @@ class UserRequestPage extends StatelessWidget {
                         height: UIHelper.size40,
                         child: Text(
                           StringRes.CANCEL,
-                          style: textStyleRegular(size: 16, color: Colors.white),
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
                         ),
                       ),
                     ),
@@ -150,7 +165,8 @@ class UserRequestPage extends StatelessWidget {
                         backgroundColor: PRIMARY,
                         child: Text(
                           'Cập nhật',
-                          style: textStyleRegular(size: 16, color: Colors.white),
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
                         ),
                       ),
                     )
@@ -196,9 +212,13 @@ class UserRequestPage extends StatelessWidget {
                       style: textStyleRegularTitle(),
                     ),
                     Text(
-                      'Nội dung: ${request.content}',
+                      'Giới thiệu: ${request.content}',
                       style: textStyleRegularBody(),
                     ),
+                    Row(
+                        children: request.getPositions
+                            .map((pos) => ItemPosition(position: pos))
+                            .toList()),
                     Row(
                       children: <Widget>[
                         Expanded(

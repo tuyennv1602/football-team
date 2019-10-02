@@ -4,16 +4,28 @@ import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 
+typedef void OnChangePositions(List<String> positions);
+
 class MultiChoicePosition extends StatefulWidget {
+  final OnChangePositions onChangePositions;
+  final List<String> initPositions;
+
+  MultiChoicePosition(
+      {@required OnChangePositions onChangePositions,
+      List<String> initPositions})
+      : this.onChangePositions = onChangePositions,
+        this.initPositions = initPositions;
+
   @override
   _MultiChoicePositionState createState() => _MultiChoicePositionState();
 }
 
 class _MultiChoicePositionState extends State<MultiChoicePosition> {
-  List<String> _selectedPositions = [];
+  List<String> _selectedPositions;
 
   @override
   Widget build(BuildContext context) {
+    _selectedPositions = widget.initPositions;
     List<Widget> _children = [];
     StringRes.POSITIONS_SYMBOL.asMap().forEach(
       (index, title) {
@@ -51,6 +63,7 @@ class _MultiChoicePositionState extends State<MultiChoicePosition> {
                     _selectedPositions.remove(title);
                   });
                 }
+                widget.onChangePositions(_selectedPositions);
               },
             ),
           ),

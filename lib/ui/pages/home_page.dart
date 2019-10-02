@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/fonts.dart';
-import 'package:myfootball/ui/pages/notify/notification-page.dart';
 import 'package:myfootball/ui/pages/social/social-page.dart';
-import 'package:myfootball/ui/pages/team/team-page.dart';
-import 'package:myfootball/ui/pages/user/user-page.dart';
+import 'package:myfootball/ui/pages/team/team_page.dart';
+import 'package:myfootball/ui/pages/user/user_page.dart';
+
+import 'notification/notification_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/user_request_resp.dart';
 import 'package:myfootball/models/user_request.dart';
 import 'package:myfootball/services/api.dart';
@@ -22,9 +22,10 @@ class UserRequestModel extends BaseViewModel {
     return resp;
   }
 
-  Future<BaseResponse> updateRequest(
-      int index, int requestId, int teamId, String content) async {
-    var resp = await _api.updateRequestMember(requestId, teamId, content);
+  Future<BaseResponse> updateRequest(int index, int requestId, int teamId,
+      String content, List<String> positions) async {
+    var resp = await _api.updateRequestMember(
+        requestId, teamId, content, positions.join(','));
     if (resp.isSuccess) {
       var _userRequest = userRequests[index];
       _userRequest.status = Constants.REQUEST_WAITING;

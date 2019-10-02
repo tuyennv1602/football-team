@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/widgets/app-bar-widget.dart';
-import 'package:myfootball/ui/widgets/border-background.dart';
+import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 
 class SocialPage extends StatelessWidget {

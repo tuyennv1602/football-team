@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/team.dart';
+import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/routes/routes.dart';
-import 'package:myfootball/ui/widgets/app-bar-widget.dart';
-import 'package:myfootball/ui/widgets/back-drop.dart';
-import 'package:myfootball/ui/widgets/border-background.dart';
-import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/back_drop.dart';
+import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
-import 'package:myfootball/ui/widgets/item-option.dart';
-import 'package:myfootball/ui/widgets/image-widget.dart';
+import 'package:myfootball/ui/widgets/item_option.dart';
+import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/team_view_model.dart';
@@ -82,51 +83,58 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       );
 
   Widget _buildTeamMember(BuildContext context, Team team) {
-    return Column(children: <Widget>[
-      ItemOptionWidget(
-        Images.MEMBER,
-        'Thành viên',
-        iconColor: Colors.indigoAccent,
-        onTap: () => Routes.routeToMember(context, team.manager, team.members),
-      ),
-      LineWidget(),
-      ItemOptionWidget(
-        Images.SCHEDULE,
-        'Lịch thi đấu',
-        iconColor: Colors.deepOrange,
-      ),
-      LineWidget(),
-      ItemOptionWidget(
-        Images.RANK,
-        'Thành tích',
-        iconColor: Colors.amber,
-      ),
-      LineWidget(),
-      ItemOptionWidget(
-        Images.MATCH_HISTORY,
-        'Lịch sử đối đầu',
-        iconColor: Colors.lightGreen,
-      ),
-      LineWidget(),
-      ItemOptionWidget(
-        Images.COMMENT,
-        'Thảo luận',
-        iconColor: Colors.cyan,
-      ),
-      LineWidget(),
-      ItemOptionWidget(
-        Images.INVITE,
-        'Mời bạn bè vào đội',
-        iconColor: Colors.green,
-      ),
-      LineWidget(),
-      ItemOptionWidget(
-        Images.LEAVE_TEAM,
-        'Rời đội bóng',
-        iconColor: Colors.blueGrey,
-      ),
-      LineWidget(),
-    ]);
+    List<Widget> _children = [];
+    if (team.manager != Provider.of<User>(context).id) {
+      _children.addAll([
+        ItemOptionWidget(
+          Images.MEMBER,
+          'Thành viên',
+          iconColor: Colors.green,
+          onTap: () => Routes.routeToMember(context),
+        ),
+        LineWidget(),
+      ]);
+    }
+    return Column(
+        children: _children
+          ..addAll([
+            ItemOptionWidget(
+              Images.SCHEDULE,
+              'Lịch thi đấu',
+              iconColor: Colors.deepOrange,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.RANK,
+              'Thành tích',
+              iconColor: Colors.amber,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.MATCH_HISTORY,
+              'Lịch sử đối đầu',
+              iconColor: Colors.lightGreen,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.COMMENT,
+              'Thảo luận',
+              iconColor: Colors.cyan,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.INVITE,
+              'Mời bạn bè vào đội',
+              iconColor: Colors.indigoAccent,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.LEAVE_TEAM,
+              'Rời đội bóng',
+              iconColor: Colors.blueGrey,
+            ),
+            LineWidget(),
+          ]));
   }
 
   Widget _buildTeamManager(BuildContext context, Team team) {
@@ -149,6 +157,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.FIND_MATCH,
           'Tìm đối',
           iconColor: Colors.red,
+          onTap: () => Routes.routeToProvinces(context),
         ),
         LineWidget(),
         ItemOptionWidget(
@@ -165,7 +174,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         LineWidget(),
         ItemOptionWidget(
           Images.MEMBER_MANAGE,
-          'Quản lý thành viên',
+          'Quản lý thành viên & yêu cầu',
           iconColor: Colors.amberAccent,
           onTap: () => Routes.routeToMemberManager(context),
         ),
@@ -182,7 +191,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   Widget _buildHeaderWidget(BuildContext context, Team team) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: UIHelper.size15, vertical: UIHelper.size15),
+          horizontal: UIHelper.size15, vertical: UIHelper.size10),
       child: Row(
         children: <Widget>[
           ImageWidget(
@@ -227,7 +236,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _buildSelectTeam(BuildContext context, List<Team> teams,
-          Function onChangeTeam(Team team)) =>
+          Future onChangeTeam(Team team)) =>
       ListView.separated(
           physics: BouncingScrollPhysics(),
           itemBuilder: (c, index) => ButtonWidget(
@@ -253,6 +262,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       body: BaseWidget<TeamViewModel>(
         model: TeamViewModel(
             authServices: Provider.of(context),
+            teamServices: Provider.of(context),
             sharePreferences: Provider.of(context),
             api: Provider.of(context)),
         onModelReady: (model) async {
@@ -264,7 +274,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         },
         builder: (context, model, child) {
           var _teams = model.teams;
-          var _team = model.currentTeam;
+          var _team = Provider.of<Team>(context);
           var _hasGroup = _team != null;
           return Column(
             children: <Widget>[
@@ -303,16 +313,26 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   physics: BouncingScrollPhysics(),
                                   children: <Widget>[
                                     _buildHeaderWidget(context, _team),
-                                    LineWidget(),
+                                    UIHelper.verticalSpaceSmall,
                                     _buildTeamMember(context, _team),
-                                    _buildTeamManager(context, _team)
+                                    _team.manager ==
+                                            Provider.of<User>(context).id
+                                        ? _buildTeamManager(context, _team)
+                                        : SizedBox()
                                   ],
                                 ),
                               ),
                               backLayer: Container(
                                 color: Colors.green,
-                                child: _buildSelectTeam(context, _teams,
-                                    (team) => model.changeTeam(team)),
+                                child: _buildSelectTeam(
+                                  context,
+                                  _teams,
+                                  (team) async {
+                                    UIHelper.showProgressDialog;
+                                    await model.changeTeam(team);
+                                    UIHelper.hideProgressDialog;
+                                  },
+                                ),
                               ),
                               frontTitle: Align(
                                 child: Text(

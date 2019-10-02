@@ -9,6 +9,7 @@ class UserRequest {
   int idName;
   String teamName;
   String teamLogo;
+  String position;
 
   UserRequest(
       {this.content,
@@ -17,7 +18,8 @@ class UserRequest {
       this.idRequest,
       this.idName,
       this.teamName,
-      this.teamLogo});
+      this.teamLogo,
+      this.position});
 
   UserRequest.fromJson(Map<String, dynamic> json) {
     content = json['content'];
@@ -27,6 +29,7 @@ class UserRequest {
     idName = json['id_name'];
     teamName = json['team_name'];
     teamLogo = json['team_logo'];
+    position = json['position'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,6 +41,7 @@ class UserRequest {
     data['id_name'] = this.idName;
     data['team_name'] = this.teamName;
     data['team_logo'] = this.teamLogo;
+    data['position'] = this.position;
     return data;
   }
 
@@ -50,4 +54,6 @@ class UserRequest {
     if (status == Constants.REQUEST_REJECTED) return 'Đã từ chối';
     return 'Không xác định';
   }
+
+  List<String> get getPositions => position != null ? position.split(',') : [];
 }

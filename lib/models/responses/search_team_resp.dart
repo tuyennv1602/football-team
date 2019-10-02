@@ -1,4 +1,4 @@
-import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/team.dart';
 
 class SearchTeamResponse extends BaseResponse {

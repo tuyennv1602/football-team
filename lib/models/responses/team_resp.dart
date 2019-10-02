@@ -1,5 +1,5 @@
 import 'package:myfootball/models/team.dart';
-import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/models/responses/base_response.dart';
 
 class TeamResponse extends BaseResponse {
   Team team;

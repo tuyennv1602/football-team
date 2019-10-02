@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
 import 'package:myfootball/services/share_preferences.dart';
-import 'package:myfootball/ui/pages/home-page.dart';
-import 'package:myfootball/ui/pages/login/login-page.dart';
+import 'package:myfootball/ui/pages/home_page.dart';
+import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';

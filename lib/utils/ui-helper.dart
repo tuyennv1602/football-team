@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/progress_dialog.dart';
 
 class UIHelper {
@@ -18,6 +18,7 @@ class UIHelper {
   static double size20;
   static double size25;
   static double size30;
+  static double size35;
   static double size40;
   static double size50;
 
@@ -34,6 +35,7 @@ class UIHelper {
     size20 = size(20);
     size25 = size(25);
     size30 = size(30);
+    size35 = size(35);
     size40 = size(40);
     size50 = size(50);
     progressDialog = new ProgressDialog(context, isDismissible: false);

@@ -14,10 +14,10 @@ class TabBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: UIHelper.size(35),
+      height: UIHelper.size50,
       decoration: BoxDecoration(
           border:
-              Border(bottom: BorderSide(color: LINE_COLOR, width: 1))),
+              Border(bottom: BorderSide(color: LINE_COLOR, width: 0.5))),
       child: TabBar(
         tabs: titles
             .map(
@@ -26,9 +26,9 @@ class TabBarWidget extends StatelessWidget {
               ),
             )
             .toList(),
-        labelStyle: textStyleSemiBold(),
+        labelStyle: textStyleRegularTitle(),
         isScrollable: isScrollable,
-        unselectedLabelStyle: textStyleRegular(size: 15),
+        unselectedLabelStyle: textStyleRegularTitle(),
         labelColor: PRIMARY,
         unselectedLabelColor: BLACK_TEXT,
         indicator: UnderlineTabIndicator(

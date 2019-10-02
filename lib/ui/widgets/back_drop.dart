@@ -6,9 +6,9 @@ import 'package:myfootball/utils/ui-helper.dart';
 final double _kFrontHeadingHeight =
     UIHelper.size(15); // front layer beveled rectangle
 final double _kFrontClosedHeight =
-    UIHelper.size(48); // front layer height when closed
+    UIHelper.size(50); // front layer height when closed
 final double _kBackAppBarHeight =
-    UIHelper.size(48); // back layer (options) appbar height
+    UIHelper.size(50); // back layer (options) appbar height
 
 // The size of the front layer heading's left and right beveled corners.
 final Animatable<BorderRadius> _kFrontHeadingBevelRadius = BorderRadiusTween(

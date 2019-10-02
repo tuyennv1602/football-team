@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:myfootball/models/device_info.dart';
-import 'package:myfootball/models/responses/base-response.dart';
+import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/responses/notification_resp.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
@@ -105,10 +106,11 @@ class Api {
     }
   }
 
-  Future<BaseResponse> createRequestMember(int teamId, String content) async {
+  Future<BaseResponse> createRequestMember(
+      int teamId, String content, String position) async {
     try {
       var response = await _api.postApi('request-member/create',
-          body: {"group_id": teamId, "content": content});
+          body: {"group_id": teamId, "content": content, "position": position});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -116,10 +118,14 @@ class Api {
   }
 
   Future<BaseResponse> updateRequestMember(
-      int requestId, int teamId, String content) async {
+      int requestId, int teamId, String content, String position) async {
     try {
-      var response = await _api.postApi('request-member/update',
-          body: {"id": requestId, "content": content, 'group_id': teamId});
+      var response = await _api.postApi('request-member/update', body: {
+        "id": requestId,
+        "content": content,
+        'group_id': teamId,
+        'position': position
+      });
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -153,10 +159,10 @@ class Api {
     }
   }
 
-  Future<TeamResponse> createTeam(Team team) async {
+  Future<TeamResponse> createTeam(int userId, Team team) async {
     try {
       var response = await _api.postApi('group/create', body: {
-        "manager": team.userId,
+        "manager": userId,
         "name": team.name,
         "dress": team.dress,
         "bio": team.bio,
@@ -195,6 +201,15 @@ class Api {
       return TeamResponse.success(resp.data);
     } on DioError catch (e) {
       return TeamResponse.error(e.message);
+    }
+  }
+
+  Future<NotificationResponse> getNotifications() async {
+    try {
+      var resp = await _api.getApi("user/notification");
+      return NotificationResponse.success(resp.data);
+    } on DioError catch (e) {
+      return NotificationResponse.error(e.message);
     }
   }
 }

@@ -2,7 +2,10 @@ import 'package:myfootball/models/user.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/auth_services.dart';
 import 'package:myfootball/services/share_preferences.dart';
+import 'package:myfootball/services/team_services.dart';
 import 'package:provider/provider.dart';
+
+import 'models/team.dart';
 
 // Define all provider in app
 List<SingleChildCloneableWidget> providers = [
@@ -21,7 +24,10 @@ List<SingleChildCloneableWidget> independentServices = [
 List<SingleChildCloneableWidget> dependentServices = [
   ProxyProvider2<Api, SharePreferences, AuthServices>(
       builder: (context, api, sharePref, authenticationService) =>
-          AuthServices(api: api, sharePreferences: sharePref))
+          AuthServices(api: api, sharePreferences: sharePref)),
+  ProxyProvider2<Api, SharePreferences, TeamServices>(
+      builder: (context, api, sharePref, teamServices) =>
+          TeamServices(api: api, sharePreferences: sharePref))
 ];
 
 // These are values that you want to consume directly in the UI
@@ -33,5 +39,9 @@ List<SingleChildCloneableWidget> uiConsumableProviders = [
   StreamProvider<User>(
     builder: (context) =>
         Provider.of<AuthServices>(context, listen: false).user,
+  ),
+  StreamProvider<Team>(
+    builder: (context) =>
+        Provider.of<TeamServices>(context, listen: false).team,
   )
 ];

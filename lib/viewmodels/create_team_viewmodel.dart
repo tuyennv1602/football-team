@@ -36,12 +36,13 @@ class CreateTeamViewModel extends BaseViewModel {
   Future<TeamResponse> createTeam(User user, String name, String bio) async {
     int userId = user.id;
     setBusy(true);
-    var resp = await _api.createTeam(Team(
-        manager: userId,
-        name: name,
-        bio: bio,
-        userId: userId,
-        dress: getColorValue(dressColor.toString())));
+    var resp = await _api.createTeam(
+        userId,
+        Team(
+            manager: userId,
+            name: name,
+            bio: bio,
+            dress: getColorValue(dressColor.toString())));
     if (resp.isSuccess) {
       var _team = resp.team;
       if (image != null) {

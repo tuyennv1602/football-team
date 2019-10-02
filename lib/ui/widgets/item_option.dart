@@ -28,7 +28,7 @@ class ItemOptionWidget extends StatelessWidget {
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: UIHelper.size10, horizontal: UIHelper.size20),
+                vertical: UIHelper.size15, horizontal: UIHelper.size20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[

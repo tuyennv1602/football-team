@@ -1,3 +1,5 @@
+import 'package:myfootball/utils/date-util.dart';
+
 class TeamRequest {
   String content;
   String username;
@@ -6,15 +8,17 @@ class TeamRequest {
   int createDate;
   int idRequest;
   int userId;
+  String position;
 
   TeamRequest(
       {this.content,
-        this.username,
-        this.name,
-        this.avatar,
-        this.createDate,
-        this.idRequest,
-        this.userId});
+      this.username,
+      this.name,
+      this.avatar,
+      this.createDate,
+      this.idRequest,
+      this.userId,
+      this.position});
 
   TeamRequest.fromJson(Map<String, dynamic> json) {
     content = json['content'];
@@ -24,6 +28,7 @@ class TeamRequest {
     createDate = json['createDate'];
     idRequest = json['id_request'];
     userId = json['user_id'];
+    position = json['position'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +40,11 @@ class TeamRequest {
     data['createDate'] = this.createDate;
     data['id_request'] = this.idRequest;
     data['user_id'] = this.userId;
+    data['position'] = this.position;
     return data;
   }
+
+  String get getCreateDate => DateUtil().getDateFromTimestamp(createDate);
+
+  List<String> get getPositions => position != null ? position.split(',') : [];
 }

@@ -8,16 +8,16 @@ import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/routes/routes.dart';
-import 'package:myfootball/ui/widgets/app-bar-button.dart';
-import 'package:myfootball/ui/widgets/app-bar-widget.dart';
-import 'package:myfootball/ui/widgets/border-background.dart';
-import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/app_bar_button.dart';
+import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search-widget.dart';
-import 'package:myfootball/ui/widgets/image-widget.dart';
+import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/request_member_view_model.dart';
@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 
 class RequestMemberPage extends StatelessWidget {
   String _content;
+  List<String> _positions;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -97,7 +98,7 @@ class RequestMemberPage extends StatelessWidget {
 
   _handleSubmit(RequestMemberViewModel model, int teamId) async {
     UIHelper.showProgressDialog;
-    var resp = await model.createRequest(teamId, _content);
+    var resp = await model.createRequest(teamId, _content, _positions);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã gửi đăng ký!');
@@ -146,7 +147,11 @@ class RequestMemberPage extends StatelessWidget {
                         'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
                         style: textStyleRegular(color: Colors.grey),
                       ),
-                      MultiChoicePosition()
+                      MultiChoicePosition(
+                        initPositions: [],
+                        onChangePositions: (positions) =>
+                            _positions = positions,
+                      )
                     ],
                   ),
                 ),
@@ -173,8 +178,14 @@ class RequestMemberPage extends StatelessWidget {
                         builder: (context, model, child) => ButtonWidget(
                           onTap: () {
                             if (validateAndSave()) {
-                              Navigator.of(context).pop();
-                              _handleSubmit(model, team.id);
+                              if (_positions == null ||
+                                  _positions.length == 0) {
+                                UIHelper.showSimpleDialog(
+                                    'Bạn chưa chọn vị trí có thể chơi');
+                              } else {
+                                Navigator.of(context).pop();
+                                _handleSubmit(model, team.id);
+                              }
                             }
                           },
                           height: UIHelper.size40,

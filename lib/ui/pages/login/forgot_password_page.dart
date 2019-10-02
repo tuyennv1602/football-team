@@ -5,7 +5,7 @@ import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/border_textformfield.dart';
-import 'package:myfootball/ui/widgets/button-widget.dart';
+import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/utils/validator.dart';
 import 'package:myfootball/viewmodels/forgotpassword_view_model.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/ui/widgets/app-bar-button.dart';
+import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 
 class AppBarWidget extends StatelessWidget {
@@ -9,7 +9,7 @@ class AppBarWidget extends StatelessWidget {
   final Widget rightContent;
   final bool showBorder;
   final Color backgroundColor;
-  final double _kAppbarHeight = UIHelper.size(48);
+  final double _kAppbarHeight = UIHelper.size(50);
 
   AppBarWidget(
       {Key key,
