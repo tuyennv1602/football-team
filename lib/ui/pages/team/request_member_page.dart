@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/team.dart';
-import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
@@ -18,7 +17,6 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search-widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/viewmodels/request_member_view_model.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +39,7 @@ class RequestMemberPage extends StatelessWidget {
   Widget _buildItemTeam(BuildContext context, Team team) => InkWell(
         onTap: () => _showRequestForm(context, team),
         child: Padding(
-          padding: EdgeInsets.all(UIHelper.size10),
+          padding: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -191,7 +189,6 @@ class RequestMemberPage extends StatelessWidget {
                           height: UIHelper.size40,
                           borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(UIHelper.size5)),
-                          backgroundColor: PRIMARY,
                           child: Text(
                             'Đăng ký',
                             style:

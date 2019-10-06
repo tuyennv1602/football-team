@@ -128,7 +128,6 @@ class _LoginState extends State<LoginPage> {
                             builder: (context, model, child) => ButtonWidget(
                               margin: EdgeInsets.symmetric(
                                   vertical: UIHelper.size30),
-                              backgroundColor: PRIMARY,
                               child: Text(
                                 StringRes.LOGIN.toUpperCase(),
                                 style: textStyleButton(),

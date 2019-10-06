@@ -166,7 +166,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                             alignment: Alignment.bottomCenter,
                             child: ButtonWidget(
                               margin: EdgeInsets.only(bottom: UIHelper.size30),
-                              backgroundColor: PRIMARY,
                               child: Text(
                                 model.isChangePassword
                                     ? 'ĐỔI MẬT KHẨU'

@@ -2,7 +2,7 @@ import 'package:myfootball/models/province.dart';
 import 'package:myfootball/viewmodels/base_view_model.dart';
 
 class ProvinceViewModel extends BaseViewModel {
-  final _mokeProvinces = [
+  final _provinces = [
     {
       "id": 7860,
       "status": 0,
@@ -34,7 +34,7 @@ class ProvinceViewModel extends BaseViewModel {
   getProvinces() {
     setBusy(true);
     provinces = new List<Province>();
-    _mokeProvinces.forEach((v) {
+    _provinces.forEach((v) {
       provinces.add(new Province.fromJson(v));
     });
     setBusy(false);

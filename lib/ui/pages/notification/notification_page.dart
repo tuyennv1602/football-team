@@ -21,16 +21,16 @@ class NotificationPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.size15),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: UIHelper.size20, vertical: UIHelper.size10),
+              horizontal: UIHelper.size10, vertical: UIHelper.size10),
           child: Row(
             children: <Widget>[
               Container(
                 width: UIHelper.size10,
                 height: UIHelper.size10,
-                margin: EdgeInsets.only(right: UIHelper.size20),
+                margin: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size15),
                 decoration: BoxDecoration(
                     color: PRIMARY,
                     borderRadius: BorderRadius.circular(UIHelper.size5),

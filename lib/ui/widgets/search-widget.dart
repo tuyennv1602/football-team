@@ -71,6 +71,7 @@ class SearchWidget extends StatelessWidget {
           ButtonWidget(
             width: _kSearchHeight,
             height: _kSearchHeight,
+            backgroundColor: Colors.white,
             borderRadius: BorderRadius.circular(_kSearchHeight / 2),
             onTap: () {
               if (length > 0) {

@@ -51,7 +51,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                   ),
                   UIHelper.verticalSpaceMedium,
                   Text(
-                    'Đăng ký đội bóng mới',
+                    'Thành lập đội bóng',
                     style: textStyleTitle(color: BLACK_TEXT),
                   )
                 ],
@@ -112,7 +112,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             LineWidget(),
             ItemOptionWidget(
               Images.MATCH_HISTORY,
-              'Lịch sử đối đầu',
+              'Lịch sử thi đấu',
               iconColor: Colors.lightGreen,
             ),
             LineWidget(),
@@ -155,21 +155,15 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         LineWidget(),
         ItemOptionWidget(
           Images.FIND_MATCH,
-          'Tìm đối',
+          'Tìm đối tác',
           iconColor: Colors.red,
-          onTap: () => Routes.routeToProvinces(context),
+          onTap: () => Routes.routeToFindMatching(context),
         ),
         LineWidget(),
         ItemOptionWidget(
           Images.BOOKING,
-          'Đặt sân',
+          'Đặt sân bóng',
           iconColor: Colors.green,
-        ),
-        LineWidget(),
-        ItemOptionWidget(
-          Images.EDIT_TEAM,
-          'Sửa hồ sơ',
-          iconColor: Colors.blue,
         ),
         LineWidget(),
         ItemOptionWidget(
@@ -183,6 +177,13 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.BUDGET,
           'Quản lý tài chính',
           iconColor: Colors.amber,
+        ),
+        LineWidget(),
+        ItemOptionWidget(
+          Images.SETTING,
+          'Thiết lập đội bóng',
+          iconColor: Colors.orange,
+          onTap: () => Routes.routeToSetupTeam(context),
         ),
       ],
     );
@@ -240,7 +241,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       ListView.separated(
           physics: BouncingScrollPhysics(),
           itemBuilder: (c, index) => ButtonWidget(
-                backgroundColor: Colors.green,
                 onTap: () {
                   onChangeTeam(teams[index]);
                   _backdropKey.currentState.toggleFrontLayer();

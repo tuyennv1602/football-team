@@ -14,7 +14,6 @@ import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_member.dart';
 import 'package:myfootball/ui/widgets/item_position.dart';
 import 'package:myfootball/ui/widgets/line.dart';
-import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar-widget.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:myfootball/res/colors.dart';
@@ -28,7 +27,8 @@ class MemberManagerPage extends StatelessWidget {
           Function onAccept, Function onDeny) =>
       InkWell(
         child: Padding(
-          padding: EdgeInsets.all(UIHelper.size10),
+          padding: EdgeInsets.symmetric(
+              horizontal: UIHelper.size15, vertical: UIHelper.size10),
           child: Row(
             children: <Widget>[
               ImageWidget(

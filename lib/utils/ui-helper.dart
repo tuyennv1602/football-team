@@ -53,7 +53,7 @@ class UIHelper {
     const double baseWidth = 375;
     double percent = screenWidth / baseWidth;
     if (percent < 1) {
-      return size * percent;
+      return size * 0.85;
     }
     return size;
   }
@@ -91,7 +91,6 @@ class UIHelper {
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(size5),
                           bottomRight: Radius.circular(size5)),
-                      backgroundColor: PRIMARY,
                       child: Text(
                         'Xong',
                         style: textStyleRegular(size: 16, color: Colors.white),
@@ -149,7 +148,6 @@ class UIHelper {
                         height: size40,
                         borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(size5)),
-                        backgroundColor: PRIMARY,
                         child: Text(
                           'Đồng ý',
                           style:

@@ -162,7 +162,6 @@ class _RegisterState extends State<RegisterPage> {
                             model: RegisterViewModel(api: Provider.of(context)),
                             builder: (context, model, child) => ButtonWidget(
                               margin: EdgeInsets.only(bottom: UIHelper.size30),
-                              backgroundColor: PRIMARY,
                               child: Text(
                                 StringRes.REGISTER.toUpperCase(),
                                 style: textStyleButton(),

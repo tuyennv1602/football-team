@@ -35,7 +35,7 @@ class ItemOptionWidget extends StatelessWidget {
                 Image.asset(
                   image,
                   width: this.iconWidth ?? UIHelper.size20,
-                  height: this.iconHeight ??UIHelper.size20,
+                  height: this.iconHeight ?? UIHelper.size20,
                   color: this.iconColor,
                 ),
                 Expanded(
@@ -43,7 +43,7 @@ class ItemOptionWidget extends StatelessWidget {
                   padding: EdgeInsets.only(left: UIHelper.size20),
                   child: Text(
                     this.title,
-                    style: this.titleStyle ?? textStyleRegular(size: 16),
+                    style: this.titleStyle ?? textStyleRegularTitle(),
                     overflow: TextOverflow.ellipsis,
                   ),
                 )),

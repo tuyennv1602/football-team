@@ -1,12 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:myfootball/models/device_info.dart';
+import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/responses/base_response.dart';
+import 'package:myfootball/models/responses/create_matching_resp.dart';
+import 'package:myfootball/models/responses/district_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/responses/notification_resp.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
 import 'package:myfootball/models/responses/user_request_resp.dart';
+import 'package:myfootball/models/responses/ward_resp.dart';
 import 'package:myfootball/models/team.dart';
 
 import 'base-api.dart';
@@ -210,6 +214,62 @@ class Api {
       return NotificationResponse.success(resp.data);
     } on DioError catch (e) {
       return NotificationResponse.error(e.message);
+    }
+  }
+
+  Future<DistrictResponse> getDistrictByProvince(int provinceId) async {
+    try {
+      FormData formData = new FormData.from({
+        "provinceId": provinceId,
+      });
+      var resp = await _api.getApi("address/find-district-by-province-id",
+          queryParams: formData);
+      return DistrictResponse.success(resp.data);
+    } on DioError catch (e) {
+      return DistrictResponse.error(e.message);
+    }
+  }
+
+  Future<WardResponse> getWardByDistrict(int districtId) async {
+    try {
+      FormData formData = new FormData.from({
+        "districtId": districtId,
+      });
+      var resp = await _api.getApi("address/find-ward-by-district-id",
+          queryParams: formData);
+      return WardResponse.success(resp.data);
+    } on DioError catch (e) {
+      return WardResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> activeMatching(int groupId) async {
+    try {
+      var resp = await _api.putApi("group/$groupId/matching/active");
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> inActiveMatching(int groupId) async {
+    try {
+      var resp = await _api.putApi("group/$groupId/matching/inactive");
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<CreateMatchingResponse> createMatchingInfo(
+      GroupMatchingInfo groupMatchingInfo) async {
+    try {
+      var resp = await _api.postApi(
+          "group/${groupMatchingInfo.groupId}/matching",
+          body: groupMatchingInfo.toJson());
+      return CreateMatchingResponse.success(resp.data);
+    } on DioError catch (e) {
+      return CreateMatchingResponse.error(e.message);
     }
   }
 }

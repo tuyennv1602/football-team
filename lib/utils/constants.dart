@@ -8,4 +8,7 @@ class Constants {
   static const int REQUEST_REJECTED = -1;
   static const int REQUEST_WAITING = 0;
   static const int REQUEST_ACCEPTED = 1;
+  static const int SELECT_PROVINCE = 1;
+  static const int SELECT_DISTRICT = 2;
+  static const int SELECT_WARD = 3;
 }

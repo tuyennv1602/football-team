@@ -43,4 +43,9 @@ class Images {
   static const String MORE = '$FOLDER/icn_more.png';
   static const String ACCEPT = '$FOLDER/icn_accept.png';
   static const String DENY = '$FOLDER/icn_deny.png';
+  static const String SEARCH = '$FOLDER/icn_search.png';
+  static const String ADD = '$FOLDER/icn_add.png';
+  static const String NEXT = '$FOLDER/icn_next.png';
+  static const String CHECK = '$FOLDER/icn_check.png';
+
 }

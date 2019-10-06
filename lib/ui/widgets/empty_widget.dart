@@ -21,7 +21,7 @@ class EmptyWidget extends StatelessWidget {
         UIHelper.verticalSpaceMedium,
         Text(
           _message,
-          style: textStyleRegular(),
+          style: textStyleRegularTitle(),
         )
       ],
     );

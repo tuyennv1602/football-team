@@ -39,4 +39,10 @@ class BaseApi {
         data: body,
         options: Options(headers: header != null ? header.toJson() : null));
   }
+
+  Future<Response<dynamic>> putApi(String endPoint, {dynamic body}) async {
+    return await dio.put('$HOST/$endPoint',
+        data: body,
+        options: Options(headers: header != null ? header.toJson() : null));
+  }
 }

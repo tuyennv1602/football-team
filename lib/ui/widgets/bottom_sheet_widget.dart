@@ -22,36 +22,44 @@ class BottomSheetWidget extends StatelessWidget {
     int length = options.length;
     options.asMap().forEach((index, value) {
       if (index == 0) {
-        children.add(SizedBox(
-          height: _kButtonHeight,
-          child: Center(
-            child: Text(
-              value,
-              style: textStyleSemiBold(color: Colors.black),
+        children.add(
+          SizedBox(
+            height: _kButtonHeight,
+            child: Center(
+              child: Text(
+                value,
+                style: textStyleSemiBold(color: Colors.black),
+              ),
             ),
           ),
-        ));
+        );
       } else if (index == length - 1) {
-        children.add(ButtonWidget(
-          height: _kButtonHeight,
-          child: Text(
-            value,
-            style: textStyleSemiBold(color: Colors.red),
+        children.add(
+          ButtonWidget(
+            height: _kButtonHeight,
+            backgroundColor: Colors.white,
+            child: Text(
+              value,
+              style: textStyleSemiBold(color: Colors.red),
+            ),
+            onTap: () => Navigator.of(context).pop(),
           ),
-          onTap: () => Navigator.of(context).pop(),
-        ));
+        );
       } else {
-        children.add(ButtonWidget(
-          height: _kButtonHeight,
-          child: Text(
-            value,
-            style: textStyleRegular(size: 16),
+        children.add(
+          ButtonWidget(
+            height: _kButtonHeight,
+            backgroundColor: Colors.white,
+            child: Text(
+              value,
+              style: textStyleRegular(size: 16),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              onClickOption(index);
+            },
           ),
-          onTap: () {
-            Navigator.of(context).pop();
-            onClickOption(index);
-          },
-        ));
+        );
       }
       children.add(Container(
         height: 1,

@@ -35,7 +35,7 @@ class ButtonWidget extends StatelessWidget {
           borderRadius:
               borderRadius ?? BorderRadius.circular(_kButtonHeight / 2),
           child: Material(
-            color: this.backgroundColor ?? Colors.white,
+            color: this.backgroundColor ?? PRIMARY,
             child: InkWell(
               onTap: onTap,
               child: Align(

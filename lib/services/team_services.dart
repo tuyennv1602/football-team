@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/services/api.dart';
@@ -9,6 +10,7 @@ import 'package:myfootball/services/share_preferences.dart';
 class TeamServices {
   final Api _api;
   final SharePreferences _sharePreferences;
+  Team _currentTeam;
 
   TeamServices({@required Api api, SharePreferences sharePreferences})
       : _api = api,
@@ -21,7 +23,8 @@ class TeamServices {
   Future<TeamResponse> getTeamDetail(int teamId) async {
     var resp = await _api.getTeamDetail(teamId);
     if (resp.isSuccess) {
-      _teamController.add(resp.team);
+      _currentTeam = resp.team;
+      _teamController.add(_currentTeam);
     }
     return resp;
   }
@@ -46,5 +49,15 @@ class TeamServices {
     _sharePreferences.setLastTeam(team);
     var resp = await getTeamDetail(team.id);
     return resp;
+  }
+
+  updateMatchingInfo(List<GroupMatchingInfo> groupMatchingInfo) {
+    _currentTeam.groupMatchingInfo = groupMatchingInfo;
+    _teamController.add(_currentTeam);
+  }
+
+  updateActiveSearching(int isSearching) {
+    _currentTeam.isSearching = isSearching;
+    _teamController.add(_currentTeam);
   }
 }

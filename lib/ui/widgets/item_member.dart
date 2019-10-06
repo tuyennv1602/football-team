@@ -27,7 +27,7 @@ class ItemMember extends StatelessWidget {
       onTap: _onTap,
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: UIHelper.size10, vertical: UIHelper.size10),
+            horizontal: UIHelper.size15, vertical: UIHelper.size10),
         child: Row(
           children: <Widget>[
             ImageWidget(
@@ -80,6 +80,7 @@ class ItemMember extends StatelessWidget {
                 width: UIHelper.size40,
                 height: UIHelper.size40,
                 borderRadius: BorderRadius.circular(UIHelper.size20),
+                backgroundColor: Colors.white,
                 child: Padding(
                   padding: EdgeInsets.all(UIHelper.size10),
                   child: Image.asset(

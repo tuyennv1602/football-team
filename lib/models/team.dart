@@ -1,6 +1,8 @@
 import 'package:myfootball/models/member.dart';
 import 'package:myfootball/models/user.dart';
 
+import 'group_matching_info.dart';
+
 class Team {
   int id;
   int status;
@@ -16,6 +18,8 @@ class Team {
   List<Member> members;
   double rating;
   bool rated;
+  int isSearching;
+  List<GroupMatchingInfo> groupMatchingInfo;
 
   Team({this.manager, this.name, this.logo, this.dress, this.bio});
 
@@ -43,6 +47,13 @@ class Team {
         members.add(new Member.fromJson(v));
       });
     }
+    isSearching = json['is_searching'];
+    if (json['group_matching_infos'] != null) {
+      groupMatchingInfo = new List<GroupMatchingInfo>();
+      json['group_matching_infos'].forEach((v) {
+        groupMatchingInfo.add(new GroupMatchingInfo.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +73,11 @@ class Team {
     data['rated'] = this.rated;
     if (this.members != null) {
       data['users'] = this.members.map((v) => v.toJson()).toList();
+    }
+    data['is_searching'] = this.isSearching;
+    if (this.groupMatchingInfo != null) {
+      data['group_matching_infos'] =
+          this.groupMatchingInfo.map((v) => v.toJson()).toList();
     }
     return data;
   }

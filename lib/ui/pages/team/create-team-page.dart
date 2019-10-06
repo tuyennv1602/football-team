@@ -214,10 +214,7 @@ class CreateTeamPage extends StatelessWidget {
                                     model, Provider.of<User>(context));
                               }
                             },
-                            margin: EdgeInsets.symmetric(
-                                vertical: UIHelper.size20,
-                                horizontal: UIHelper.size15),
-                            backgroundColor: PRIMARY,
+                            margin: EdgeInsets.all(UIHelper.size15),
                             child: Text(
                               StringRes.REGISTER.toUpperCase(),
                               style: textStyleButton(),

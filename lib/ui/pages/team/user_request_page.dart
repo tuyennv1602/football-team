@@ -162,7 +162,6 @@ class UserRequestPage extends StatelessWidget {
                         height: UIHelper.size40,
                         borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(UIHelper.size5)),
-                        backgroundColor: PRIMARY,
                         child: Text(
                           'Cập nhật',
                           style:
@@ -193,9 +192,13 @@ class UserRequestPage extends StatelessWidget {
         _status = Colors.green;
     }
     return InkWell(
-      onTap: () => _showChooseAction(context, model, index, request),
+      onTap: () {
+        if (request.status == Constants.REQUEST_REJECTED ||
+            request.status == Constants.REQUEST_ACCEPTED) return;
+        _showChooseAction(context, model, index, request);
+      },
       child: Padding(
-        padding: EdgeInsets.all(UIHelper.size10),
+        padding: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
