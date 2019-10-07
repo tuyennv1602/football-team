@@ -7,7 +7,10 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
+import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
+import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/compare_team_widget.dart';
+import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/utils/ui-helper.dart';
 import 'package:provider/provider.dart';
 
@@ -37,20 +40,18 @@ class CompareTeamPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: UIHelper.size20),
-                child: Column(
-                  children: <Widget>[
-                    CompareTeamWidget(team1: _team1, team2: _team2),
-                    ButtonWidget(
-                        child: Text(
-                          'GỬI LỜI MỜI',
-                          style: textStyleButton(),
-                        ),
-                        margin: EdgeInsets.all(UIHelper.size15),
-                        onTap: () {})
-                  ],
-                ),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  CompareTeamWidget(team1: _team1, team2: _team2),
+                  ButtonWidget(
+                      child: Text(
+                        'GỬI LỜI MỜI',
+                        style: textStyleButton(),
+                      ),
+                      margin: EdgeInsets.all(UIHelper.size15),
+                      onTap: () {})
+                ],
               ),
             ),
           )

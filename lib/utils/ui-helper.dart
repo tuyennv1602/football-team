@@ -53,7 +53,7 @@ class UIHelper {
     const double baseWidth = 375;
     double percent = screenWidth / baseWidth;
     if (percent < 1) {
-      return size * 0.85;
+      return size * percent;
     }
     return size;
   }

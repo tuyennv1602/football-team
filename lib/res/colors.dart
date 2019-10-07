@@ -41,6 +41,7 @@ const List<Color> DRESS_COLORS = [
   Colors.blue,
   Colors.lime,
   Colors.purple,
+  Colors.indigoAccent,
   Colors.black,
   Colors.grey,
   Colors.white

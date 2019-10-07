@@ -30,6 +30,7 @@ class CreateTeamViewModel extends BaseViewModel {
 
   void setImage(File image) {
     this.image = image;
+    print(image.path);
     notifyListeners();
   }
 
