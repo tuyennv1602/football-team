@@ -11,7 +11,7 @@ import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/compare_team_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class CompareTeamPage extends StatelessWidget {

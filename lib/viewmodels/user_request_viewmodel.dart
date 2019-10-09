@@ -4,7 +4,7 @@ import 'package:myfootball/models/responses/user_request_resp.dart';
 import 'package:myfootball/models/user_request.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class UserRequestModel extends BaseViewModel {
   Api _api;

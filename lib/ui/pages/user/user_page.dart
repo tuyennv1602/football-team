@@ -11,9 +11,9 @@ import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
-import 'package:myfootball/utils/ui-helper.dart';
-import 'package:myfootball/utils/string-util.dart';
-import 'package:myfootball/viewmodels/user_view_model.dart';
+import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/utils/string_util.dart';
+import 'package:myfootball/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class UserPage extends StatefulWidget {

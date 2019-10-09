@@ -6,7 +6,7 @@ import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import 'package:myfootball/utils/local-timeago.dart';
+import 'package:myfootball/utils/local_timeago.dart';
 import 'package:provider/provider.dart';
 import 'http.dart'; // make dio as global top-level variable
 import 'package:timeago/timeago.dart' as timeago;

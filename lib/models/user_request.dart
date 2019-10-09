@@ -1,5 +1,5 @@
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/utils/date-util.dart';
+import 'package:myfootball/utils/date_util.dart';
 
 class UserRequest {
   String content;

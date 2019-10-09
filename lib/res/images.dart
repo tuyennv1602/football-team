@@ -1,6 +1,7 @@
 class Images {
   static const String FOLDER = 'assets/images';
-  static const String BACK_GROUND = '$FOLDER/bg.jpg';
+  static const String GROUND = '$FOLDER/ground.jpg';
+  static const String BACKGROUND = '$FOLDER/bg.jpg';
   static const String LOGO = '$FOLDER/icn_logo.png';
   static const String EDIT_PROFILE = '$FOLDER/icn_edit_profile.png';
   static const String WALLET_IN = '$FOLDER/icn_wallet_in.png';

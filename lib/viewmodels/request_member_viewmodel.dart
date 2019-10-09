@@ -3,7 +3,7 @@ import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/services/api.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class RequestMemberViewModel extends BaseViewModel {
   Api _api;

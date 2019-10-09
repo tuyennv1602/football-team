@@ -33,17 +33,22 @@ const List<Color> BLACK_GRADIENT = [
 ];
 
 const List<Color> DRESS_COLORS = [
+  Color(0xFFF6D2D1),
+  Color(0xFFF3615D),
   Colors.red,
-  Colors.pinkAccent,
   Colors.orange,
   Colors.yellow,
   Colors.green,
-  Colors.blue,
+  Color(0xFFBEF471),
   Colors.lime,
+  Colors.blue,
+  Color(0xFF96C9E7),
   Colors.purple,
-  Colors.indigoAccent,
-  Colors.black,
+  Color(0xFF5219B0),
   Colors.grey,
+  Color(0xFF738589),
+  Color(0xFF1B2D54),
+  Colors.black,
   Colors.white
 ];
 

@@ -10,7 +10,7 @@ import 'package:myfootball/models/responses/ward_resp.dart';
 import 'package:myfootball/models/ward.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class AddAddressViewModel extends BaseViewModel {

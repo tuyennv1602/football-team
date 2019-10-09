@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/services/share_preferences.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class UserViewModel extends BaseViewModel {
   SharePreferences _preferences;

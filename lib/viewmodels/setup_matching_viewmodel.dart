@@ -3,7 +3,7 @@ import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/team_services.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class SetupMatchingInfoViewModel extends BaseViewModel {
   Api _api;

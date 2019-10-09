@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/team_services.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class FindMatchingViewModel extends BaseViewModel {
   Api _api;

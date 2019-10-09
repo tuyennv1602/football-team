@@ -4,7 +4,7 @@ import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/team_request.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/team_services.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class MemberMangerViewModel extends BaseViewModel {
   Api _api;

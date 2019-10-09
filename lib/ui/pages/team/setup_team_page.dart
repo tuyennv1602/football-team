@@ -9,7 +9,7 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/setup_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 

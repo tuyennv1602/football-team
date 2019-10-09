@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 
 class TabBarWidget extends StatelessWidget {
   final List<String> titles;

@@ -1,5 +1,5 @@
 import 'package:myfootball/models/province.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class ProvinceViewModel extends BaseViewModel {
   final _provinces = [

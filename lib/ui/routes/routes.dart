@@ -13,7 +13,7 @@ import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/pages/team/setup_matching_info_page.dart';
 import 'package:myfootball/ui/pages/team/setup_team_page.dart';
 import 'package:myfootball/ui/pages/team/user_request_page.dart';
-import 'package:myfootball/ui/pages/team/create-team-page.dart';
+import 'package:myfootball/ui/pages/team/create_team_page.dart';
 import 'package:myfootball/ui/pages/team/member_manager_page.dart';
 import 'package:myfootball/ui/pages/team/request_member_page.dart';
 import 'package:myfootball/ui/routes/fade-in-route.dart';

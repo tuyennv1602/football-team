@@ -1,7 +1,7 @@
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 
 final double _kFrontHeadingHeight =
     UIHelper.size(15); // front layer beveled rectangle

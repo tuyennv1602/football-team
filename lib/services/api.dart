@@ -13,7 +13,7 @@ import 'package:myfootball/models/responses/user_request_resp.dart';
 import 'package:myfootball/models/responses/ward_resp.dart';
 import 'package:myfootball/models/team.dart';
 
-import 'base-api.dart';
+import 'base_api.dart';
 
 class Api {
   final _api = BaseApi();
@@ -124,7 +124,7 @@ class Api {
   Future<BaseResponse> updateRequestMember(
       int requestId, int teamId, String content, String position) async {
     try {
-      var response = await _api.postApi('request-member/update', body: {
+      var response = await _api.putApi('request-member/update', body: {
         "id": requestId,
         "content": content,
         'group_id': teamId,
@@ -180,7 +180,7 @@ class Api {
 
   Future<BaseResponse> updateTeam(Team team) async {
     try {
-      var response = await _api.postApi('group/update', body: team.toJson());
+      var response = await _api.putApi('group/update', body: team.toJson());
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);

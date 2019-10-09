@@ -10,7 +10,7 @@ import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/item_member.dart';
 import 'package:myfootball/ui/widgets/line.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class MemberPage extends StatelessWidget {

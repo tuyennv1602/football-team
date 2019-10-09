@@ -11,12 +11,12 @@ import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/auth_services.dart';
 import 'package:myfootball/services/firebase_services.dart';
 import 'package:myfootball/services/share_preferences.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class CreateTeamViewModel extends BaseViewModel {
   Api _api;
   File image;
-  Color dressColor = Colors.red;
+  Color dressColor =  Color(0xFFF6D2D1);
   SharePreferences _sharePreferences;
   AuthServices _authServices;
 

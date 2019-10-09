@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 
 class LineWidget extends StatelessWidget {
   @override

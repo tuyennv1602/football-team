@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 
 class ImageWidget extends StatelessWidget {
   final String source;
@@ -26,7 +26,7 @@ class ImageWidget extends StatelessWidget {
               placeholder: placeHolder,
               width: size ?? UIHelper.size(55),
               height: size ?? UIHelper.size(55),
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               fadeInDuration: Duration(milliseconds: 100),
               fadeOutDuration: Duration(milliseconds: 100),
             ),

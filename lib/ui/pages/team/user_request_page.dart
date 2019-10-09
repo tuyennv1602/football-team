@@ -18,8 +18,8 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/utils/ui-helper.dart';
-import 'package:myfootball/viewmodels/user_request_model.dart';
+import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/viewmodels/user_request_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class UserRequestPage extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
@@ -7,9 +6,9 @@ import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/border_textformfield.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
-import 'package:myfootball/viewmodels/register_view_model.dart';
+import 'package:myfootball/viewmodels/register_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -57,7 +56,7 @@ class _RegisterState extends State<RegisterPage> {
         padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(Images.BACK_GROUND), fit: BoxFit.fill),
+              image: AssetImage(Images.BACKGROUND), fit: BoxFit.fill),
         ),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),

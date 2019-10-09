@@ -12,8 +12,8 @@ import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
-import 'package:myfootball/ui/widgets/search-widget.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/ui/widgets/search_widget.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/search_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -62,9 +62,9 @@ class SearchTeamPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            '${team.countMember} thành viên',
+                            'Có sân nhà',
                             textAlign: TextAlign.right,
-                            style: textStyleRegularBody(),
+                            style: textStyleSemiBold(size: 12, color: PRIMARY),
                           ),
                         )
                       ],

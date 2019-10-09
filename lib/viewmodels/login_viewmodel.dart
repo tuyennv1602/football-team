@@ -7,7 +7,7 @@ import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/services/auth_services.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class LoginViewModel extends BaseViewModel {
   AuthServices _authServices;

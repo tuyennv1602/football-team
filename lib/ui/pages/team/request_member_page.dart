@@ -15,10 +15,10 @@ import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
-import 'package:myfootball/ui/widgets/search-widget.dart';
+import 'package:myfootball/ui/widgets/search_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/utils/ui-helper.dart';
-import 'package:myfootball/viewmodels/request_member_view_model.dart';
+import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/viewmodels/request_member_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class RequestMemberPage extends StatelessWidget {

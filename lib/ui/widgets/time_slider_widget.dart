@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
-import 'package:myfootball/utils/date-util.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnSelectedTime(String start, String end);
 

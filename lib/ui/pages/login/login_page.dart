@@ -8,9 +8,9 @@ import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/border_textformfield.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
-import 'package:myfootball/utils/ui-helper.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
-import 'package:myfootball/viewmodels/login_view_model.dart';
+import 'package:myfootball/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../base_widget.dart';
@@ -62,7 +62,7 @@ class _LoginState extends State<LoginPage> {
         padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(Images.BACK_GROUND), fit: BoxFit.fill),
+              image: AssetImage(Images.BACKGROUND), fit: BoxFit.fill),
         ),
         child: Column(
           children: <Widget>[

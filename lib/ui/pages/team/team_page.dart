@@ -15,8 +15,8 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/utils/ui-helper.dart';
-import 'package:myfootball/viewmodels/team_view_model.dart';
+import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/viewmodels/team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class TeamPage extends StatefulWidget {

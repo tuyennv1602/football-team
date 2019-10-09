@@ -1,4 +1,4 @@
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class DistrictViewModel extends BaseViewModel {
 

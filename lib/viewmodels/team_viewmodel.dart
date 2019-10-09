@@ -6,7 +6,7 @@ import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/auth_services.dart';
 import 'package:myfootball/services/share_preferences.dart';
 import 'package:myfootball/services/team_services.dart';
-import 'package:myfootball/viewmodels/base_view_model.dart';
+import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class TeamViewModel extends BaseViewModel {
   final AuthServices _authServices;
