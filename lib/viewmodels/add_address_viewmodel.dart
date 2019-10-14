@@ -1,58 +1,46 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/district.dart';
 import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/province.dart';
-import 'package:myfootball/models/responses/district_resp.dart';
-import 'package:myfootball/models/responses/province_resp.dart';
-import 'package:myfootball/models/responses/ward_resp.dart';
 import 'package:myfootball/models/ward.dart';
-import 'package:myfootball/services/api.dart';
+import 'package:myfootball/services/sqlite_services.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 class AddAddressViewModel extends BaseViewModel {
   Province province;
   District district;
-  Ward ward;
+  List<Ward> selectedWards = [];
   int step = Constants.SELECT_PROVINCE;
   List<District> districts = [];
   List<Ward> wards = [];
   List<Province> provinces = [];
 
-  Api _api;
+  SQLiteServices _sqLiteServices;
 
-  AddAddressViewModel({@required Api api}) : _api = api;
+  AddAddressViewModel({@required SQLiteServices sqLiteServices})
+      : _sqLiteServices = sqLiteServices;
 
-  Future<ProvinceResponse> getAllProvince() async {
+  Future<List<Province>> getAllProvince() async {
     setBusy(true);
-    String data = await rootBundle.loadString('assets/data/provinces.json');
-    var resp = ProvinceResponse.success(jsonDecode(data));
-    if (resp.isSuccess) {
-      provinces = resp.provinces;
-    }
+    var resp = await _sqLiteServices.getProvinces();
+    provinces = resp;
     setBusy(false);
     return resp;
   }
 
-  Future<DistrictResponse> getDistrictByProvinceId() async {
+  Future<List<District>> getDistrictByProvinceId() async {
     setBusy(true);
-    var resp = await _api.getDistrictByProvince(province.id);
-    if (resp.isSuccess) {
-      this.districts = resp.districts;
-    }
+    var resp = await _sqLiteServices.getDistrictsByProvince(province.id);
+    districts = resp;
     setBusy(false);
     return resp;
   }
 
-  Future<WardResponse> getWardByDistrict() async {
+  Future<List<Ward>> getWardByDistrict() async {
     setBusy(true);
-    var resp = await _api.getWardByDistrict(district.id);
-    if (resp.isSuccess) {
-      this.wards = resp.wards;
-    }
+    var resp = await _sqLiteServices.getWardsByDistrict(district.id);
+    wards = resp;
     setBusy(false);
     return resp;
   }
@@ -72,17 +60,38 @@ class AddAddressViewModel extends BaseViewModel {
   }
 
   setWard(Ward ward) {
-    this.ward = ward;
+    this.selectedWards.add(ward);
     notifyListeners();
   }
 
-  AddressInfo getAddressInfo() {
-    return AddressInfo(
+  removeWard(Ward ward) {
+    int index = this.selectedWards.indexWhere((item) => item.id == ward.id);
+    if (index != -1) {
+      this.selectedWards.removeAt(index);
+      notifyListeners();
+    }
+  }
+
+  selectAllWards() {
+    this.selectedWards.clear();
+    this.selectedWards.addAll(wards);
+    notifyListeners();
+  }
+
+  removeAllWards() {
+    this.selectedWards.clear();
+    notifyListeners();
+  }
+
+  List<AddressInfo> getAddressInfo() {
+    List<AddressInfo> addressInfos = [];
+    this.selectedWards.forEach((ward) => addressInfos.add(AddressInfo(
         provinceName: this.province.name,
         provinceId: this.province.id,
         districtName: this.district.name,
         districtId: this.district.id,
-        wardName: this.ward.name,
-        wardId: this.ward.id);
+        wardName: ward.name,
+        wardId: ward.id)));
+    return addressInfos;
   }
 }

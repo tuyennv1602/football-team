@@ -165,13 +165,8 @@ class Api {
 
   Future<TeamResponse> createTeam(int userId, Team team) async {
     try {
-      var response = await _api.postApi('group/create', body: {
-        "manager": userId,
-        "name": team.name,
-        "dress": team.dress,
-        "bio": team.bio,
-        "logo": team.logo
-      });
+      var response =
+          await _api.postApi('group/create', body: team.createTeamJson());
       return TeamResponse.success(response.data);
     } on DioError catch (e) {
       return TeamResponse.error(e.message);
@@ -214,32 +209,6 @@ class Api {
       return NotificationResponse.success(resp.data);
     } on DioError catch (e) {
       return NotificationResponse.error(e.message);
-    }
-  }
-
-  Future<DistrictResponse> getDistrictByProvince(int provinceId) async {
-    try {
-      FormData formData = new FormData.from({
-        "provinceId": provinceId,
-      });
-      var resp = await _api.getApi("address/find-district-by-province-id",
-          queryParams: formData);
-      return DistrictResponse.success(resp.data);
-    } on DioError catch (e) {
-      return DistrictResponse.error(e.message);
-    }
-  }
-
-  Future<WardResponse> getWardByDistrict(int districtId) async {
-    try {
-      FormData formData = new FormData.from({
-        "districtId": districtId,
-      });
-      var resp = await _api.getApi("address/find-ward-by-district-id",
-          queryParams: formData);
-      return WardResponse.success(resp.data);
-    } on DioError catch (e) {
-      return WardResponse.error(e.message);
     }
   }
 

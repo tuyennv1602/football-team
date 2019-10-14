@@ -5,7 +5,7 @@ import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-typedef void OnSelectedTime(String start, String end);
+typedef void OnSelectedTime(double start, double end);
 
 class TimeSliderWidget extends StatefulWidget {
   final OnSelectedTime onSelectedTime;
@@ -83,7 +83,7 @@ class TimeSliderState extends State<TimeSliderWidget> {
               style: textStyleButton(),
             ),
             margin: EdgeInsets.all(UIHelper.size15),
-            onTap: () => widget.onSelectedTime(formattedStart, formattedEnd)),
+            onTap: () => widget.onSelectedTime(_values.start, _values.end)),
         UIHelper.verticalSpaceLarge,
       ],
     );

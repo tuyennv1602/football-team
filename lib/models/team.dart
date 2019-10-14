@@ -81,4 +81,13 @@ class Team {
     }
     return data;
   }
+
+  Map<String, dynamic> createTeamJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['manager'] = this.manager;
+    data['name'] = this.name;
+    data['dress'] = this.dress;
+    data['bio'] = this.bio;
+    return data;
+  }
 }

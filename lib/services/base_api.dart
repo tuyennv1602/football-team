@@ -20,11 +20,14 @@ class BaseApi {
 
   Future<Response<dynamic>> getAuthApi(String endPoint,
       {FormData queryParams}) async {
-    return await dio.get('$HOST/$endPoint', queryParameters: queryParams);
+    return await dio.get('$HOST/$endPoint',
+        queryParameters: queryParams,
+        options: Options(headers: {'app-type': 1}));
   }
 
   Future<Response<dynamic>> postAuthApi(String endPoint, {dynamic body}) async {
-    return await dio.post('$HOST/$endPoint', data: body);
+    return await dio.post('$HOST/$endPoint',
+        data: body, options: Options(headers: {'app-type': 1}));
   }
 
   Future<Response<dynamic>> getApi(String endPoint,

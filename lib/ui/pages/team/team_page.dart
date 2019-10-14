@@ -15,6 +15,7 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -37,45 +38,45 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () => Routes.routeToCreateGroup(context),
-                    child: Image.asset(
+              child: InkWell(
+                onTap: () => Routes.routeToCreateGroup(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(
                       Images.ADD_TEAM,
                       color: PRIMARY,
                       width: UIHelper.size50,
                       height: UIHelper.size50,
                     ),
-                  ),
-                  UIHelper.verticalSpaceMedium,
-                  Text(
-                    'Thành lập đội bóng',
-                    style: textStyleTitle(color: BLACK_TEXT),
-                  )
-                ],
+                    UIHelper.verticalSpaceMedium,
+                    Text(
+                      'Thành lập đội bóng',
+                      style: textStyleTitle(color: BLACK_TEXT),
+                    )
+                  ],
+                ),
               ),
             ),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () => Routes.routeToRequestMember(context),
-                    child: Image.asset(
+              child: InkWell(
+                onTap: () => Routes.routeToRequestMember(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(
                       Images.ADD_REQUEST,
                       color: PRIMARY,
                       width: UIHelper.size50,
                       height: UIHelper.size50,
                     ),
-                  ),
-                  UIHelper.verticalSpaceMedium,
-                  Text(
-                    'Tham gia đội bóng',
-                    style: textStyleTitle(color: BLACK_TEXT),
-                  )
-                ],
+                    UIHelper.verticalSpaceMedium,
+                    Text(
+                      'Tham gia đội bóng',
+                      style: textStyleTitle(color: BLACK_TEXT),
+                    )
+                  ],
+                ),
               ),
             )
           ],

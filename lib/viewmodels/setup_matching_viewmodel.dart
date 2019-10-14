@@ -23,8 +23,8 @@ class SetupMatchingInfoViewModel extends BaseViewModel {
     }
   }
 
-  addAddressInfo(AddressInfo addressInfo) {
-    this.addressInfos.add(addressInfo);
+  addAddressInfos(List<AddressInfo>  addressInfo) {
+    this.addressInfos.addAll(addressInfo);
     notifyListeners();
   }
 
@@ -40,16 +40,8 @@ class SetupMatchingInfoViewModel extends BaseViewModel {
     }
   }
 
-  addTimeInfo(String start, String end) {
-    List<String> _starts = start.split(':');
-    List<String> _ends = end.split(':');
-    this.timeInfos.add(
-          TimeInfo(
-              startHour: int.parse(_starts[0]),
-              startMinute: int.parse(_starts[1]),
-              endHour: int.parse(_ends[0]),
-              endMinute: int.parse(_ends[1])),
-        );
+  addTimeInfo(double start, double end) {
+    this.timeInfos.add(TimeInfo(startHour: start, endHour: end));
     notifyListeners();
   }
 

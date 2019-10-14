@@ -50,5 +50,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>FootballTeam muốn truy cập vị trí của bạn để hiển thị trên bản đồ</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>FootballTeam muốn truy cập vị trí của bạn để hiển thị trên bản đồ</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>FootballTeam muốn truy cập vị trí của bạn để hiển thị trên bản đồ</string>
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
 </dict>
 </plist>

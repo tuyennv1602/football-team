@@ -8,7 +8,6 @@ import 'package:myfootball/ui/pages/team/add_address_page.dart';
 import 'package:myfootball/ui/pages/team/compare_team_page.dart';
 import 'package:myfootball/ui/pages/team/find_matching_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
-import 'package:myfootball/ui/pages/team/province_page.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/pages/team/setup_matching_info_page.dart';
 import 'package:myfootball/ui/pages/team/setup_team_page.dart';
@@ -64,11 +63,6 @@ class Routes {
   static Future<dynamic> routeToMember(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: MemberPage()));
-  }
-
-  static Future<dynamic> routeToProvinces(BuildContext context) async {
-    return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: ProvincePage()));
   }
 
   static Future<dynamic> routeToFindMatching(BuildContext context) async {

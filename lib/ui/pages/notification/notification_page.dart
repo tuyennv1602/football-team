@@ -13,7 +13,18 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/notification_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return NotificationState();
+  }
+}
+
+class NotificationState extends State<NotificationPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   Widget _buildItemNotification(
           BuildContext context, noti.Notification notification) =>
       Card(
@@ -30,7 +41,8 @@ class NotificationPage extends StatelessWidget {
               Container(
                 width: UIHelper.size10,
                 height: UIHelper.size10,
-                margin: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size15),
+                margin: EdgeInsets.only(
+                    left: UIHelper.size5, right: UIHelper.size15),
                 decoration: BoxDecoration(
                     color: PRIMARY,
                     borderRadius: BorderRadius.circular(UIHelper.size5),
@@ -67,6 +79,7 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,

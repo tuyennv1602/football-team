@@ -1,3 +1,6 @@
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/string_util.dart';
+
 class GroupMatchingInfo {
   int groupId;
   List<TimeInfo> timeInfo;
@@ -37,70 +40,46 @@ class GroupMatchingInfo {
 class TimeInfo {
   int id;
   int status;
-  int groupId;
-  int startHour;
-  int startMinute;
-  int endHour;
-  int endMinute;
-  int createDate;
+  double startHour;
+  double endHour;
 
-  TimeInfo(
-      {this.id,
-      this.status,
-      this.groupId,
-      this.startHour,
-      this.startMinute,
-      this.endHour,
-      this.endMinute,
-      this.createDate});
+  TimeInfo({this.id, this.status, this.startHour, this.endHour});
 
   TimeInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
-    groupId = json['group_id'];
     startHour = json['start_hour'];
-    startMinute = json['start_minute'];
     endHour = json['end_hour'];
-    endMinute = json['end_minute'];
-    createDate = json['create_date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['status'] = this.status;
     data['start_hour'] = this.startHour;
-    data['start_minute'] = this.startMinute;
     data['end_hour'] = this.endHour;
-    data['end_minute'] = this.endMinute;
     return data;
   }
 
-  String get getStartHour => startHour < 10 ? '0$startHour' : '$startHour';
+  String get getStartHour => DateUtil().getTimeStringFromDouble(startHour);
 
-  String get getStartMinute =>
-      startMinute < 10 ? '0$startMinute' : '$startMinute';
+  String get getEndHour => DateUtil().getTimeStringFromDouble(endHour);
 
-  String get getEndHour => endHour < 10 ? '0$endHour' : '$endHour';
-
-  String get getEndMinute => endMinute < 10 ? '0$endMinute' : '$endMinute';
-
-  String get getTimes =>
-      '$getStartHour:$getStartMinute - $getEndHour:$getEndMinute';
+  String get getTimes => '$getStartHour - $getEndHour';
 }
 
 class AddressInfo {
   int id;
-  int status;
   int groupId;
-  int wardId;
+  String wardId;
   String wardName;
-  int districtId;
+  String districtId;
   String districtName;
-  int provinceId;
+  String provinceId;
   String provinceName;
 
   AddressInfo(
       {this.id,
-      this.status,
       this.groupId,
       this.wardId,
       this.wardName,
@@ -111,23 +90,22 @@ class AddressInfo {
 
   AddressInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    status = json['status'];
     groupId = json['group_id'];
-    wardId = json['ward_id'];
+    wardId = json['ward_id'].toString();
     wardName = json['ward_name'];
-    districtId = json['district_id'];
+    districtId = json['district_id'].toString();
     districtName = json['district_name'];
-    provinceId = json['province_id'];
+    provinceId = json['province_id'].toString();
     provinceName = json['province_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ward_id'] = this.wardId;
+    data['ward_id'] = StringUtil.getIdFromString(this.wardId);
     data['ward_name'] = this.wardName;
-    data['district_id'] = this.districtId;
+    data['district_id'] = StringUtil.getIdFromString(this.districtId);
     data['district_name'] = this.districtName;
-    data['province_id'] = this.provinceId;
+    data['province_id'] = StringUtil.getIdFromString(this.provinceId);
     data['province_name'] = this.provinceName;
     return data;
   }

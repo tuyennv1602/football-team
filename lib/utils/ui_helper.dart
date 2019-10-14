@@ -20,6 +20,7 @@ class UIHelper {
   static double size30;
   static double size35;
   static double size40;
+  static double size45;
   static double size50;
 
   void init(BuildContext context) {
@@ -37,6 +38,7 @@ class UIHelper {
     size30 = size(30);
     size35 = size(35);
     size40 = size(40);
+    size45 = size(45);
     size50 = size(50);
     progressDialog = new ProgressDialog(context, isDismissible: false);
   }

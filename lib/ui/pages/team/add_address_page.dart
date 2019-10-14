@@ -9,6 +9,7 @@ import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/constants.dart';
@@ -68,9 +69,9 @@ class AddAddressPage extends StatelessWidget {
       );
 
   Widget _buildItemWard(BuildContext context, Ward ward, District district,
-          Province province, Function onTap) =>
+          Province province, bool isSelected, Function onTap) =>
       InkWell(
-        onTap: () => onTap(ward),
+        onTap: () => onTap(!isSelected, ward),
         child: Padding(
           padding: EdgeInsets.all(UIHelper.size15),
           child: Row(
@@ -85,11 +86,14 @@ class AddAddressPage extends StatelessWidget {
                 ),
               ),
               UIHelper.horizontalSpaceSmall,
-              Image.asset(
-                Images.CHECK,
-                width: UIHelper.size15,
-                height: UIHelper.size15,
-                color: Colors.green,
+              SizedBox(
+                height: UIHelper.size25,
+                width: UIHelper.size25,
+                child: Checkbox(
+                    value: isSelected,
+                    activeColor: PRIMARY,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    onChanged: (value) => onTap(value, ward)),
               )
             ],
           ),
@@ -101,81 +105,117 @@ class AddAddressPage extends StatelessWidget {
     UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
-      body: Column(
-        children: <Widget>[
-          AppBarWidget(
-            centerContent: Text(
-              'Thêm khu vực',
-              textAlign: TextAlign.center,
-              style: textStyleTitle(),
-            ),
-            leftContent: AppBarButtonWidget(
-              imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
-            ),
-          ),
-          Expanded(
-            child: BorderBackground(
-              child: BaseWidget<AddAddressViewModel>(
-                model: AddAddressViewModel(api: Provider.of(context)),
-                onModelReady: (model) {
-                  model.getAllProvince();
-                },
-                builder: (c, model, child) {
-                  if (model.busy) {
-                    return LoadingWidget();
-                  }
-                  Widget _child;
-                  switch (model.step) {
-                    case Constants.SELECT_PROVINCE:
-                      _child = ListView.separated(
-                          padding: EdgeInsets.zero,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (c, index) => _buildItemProvince(
-                              context,
-                              model.provinces[index],
-                              (province) => model.setProvince(province)),
-                          separatorBuilder: (c, index) => LineWidget(),
-                          itemCount: model.provinces.length);
-                      break;
-                    case Constants.SELECT_DISTRICT:
-                      _child = ListView.separated(
-                          padding: EdgeInsets.zero,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (c, index) => _buildItemDistrict(
-                              context,
-                              model.districts[index],
-                              model.province,
-                              (district) => model.setDistrict(district)),
-                          separatorBuilder: (c, index) => LineWidget(),
-                          itemCount: model.districts.length);
-                      break;
-                    case Constants.SELECT_WARD:
-                      _child = ListView.separated(
-                          padding: EdgeInsets.zero,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (c, index) => _buildItemWard(
-                              context,
-                              model.wards[index],
-                              model.district,
-                              model.province,
-                              (ward) {
-                                model.setWard(ward);
-                                Navigator.pop(context, model.getAddressInfo());
-                              }),
-                          separatorBuilder: (c, index) => LineWidget(),
-                          itemCount: model.wards.length);
-                      break;
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[Expanded(child: _child)],
-                  );
-                },
+      body: BaseWidget<AddAddressViewModel>(
+        model: AddAddressViewModel(sqLiteServices: Provider.of(context)),
+        onModelReady: (model) {
+          model.getAllProvince();
+        },
+        builder: (c, model, child) {
+          Widget _child;
+          switch (model.step) {
+            case Constants.SELECT_PROVINCE:
+              _child = ListView.separated(
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (c, index) => _buildItemProvince(
+                      context,
+                      model.provinces[index],
+                      (province) => model.setProvince(province)),
+                  separatorBuilder: (c, index) => LineWidget(),
+                  itemCount: model.provinces.length);
+              break;
+            case Constants.SELECT_DISTRICT:
+              _child = ListView.separated(
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (c, index) => _buildItemDistrict(
+                      context,
+                      model.districts[index],
+                      model.province,
+                      (district) => model.setDistrict(district)),
+                  separatorBuilder: (c, index) => LineWidget(),
+                  itemCount: model.districts.length);
+              break;
+            case Constants.SELECT_WARD:
+              _child = ListView.separated(
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (c, index) => _buildItemWard(
+                          context,
+                          model.wards[index],
+                          model.district,
+                          model.province,
+                          model.selectedWards.contains(model.wards[index]),
+                          (isSelected, ward) {
+                        if (isSelected) {
+                          model.setWard(ward);
+                        } else {
+                          model.removeWard(ward);
+                        }
+                      }),
+                  separatorBuilder: (c, index) => LineWidget(),
+                  itemCount: model.wards.length);
+              break;
+          }
+          bool isSelecedAll = model.wards.length == model.selectedWards.length;
+          return Column(
+            children: <Widget>[
+              AppBarWidget(
+                centerContent: Text(
+                  'Thêm khu vực',
+                  textAlign: TextAlign.center,
+                  style: textStyleTitle(),
+                ),
+                leftContent: AppBarButtonWidget(
+                  imageName: Images.BACK,
+                  onTap: () => Navigator.of(context).pop(),
+                ),
+                rightContent: model.step == Constants.SELECT_WARD
+                    ? AppBarButtonWidget(
+                        imageName: isSelecedAll ? Images.CLEAR : Images.CHECK,
+                        onTap: () {
+                          if (isSelecedAll) {
+                            model.removeAllWards();
+                          } else {
+                            model.selectAllWards();
+                          }
+                        },
+                      )
+                    : SizedBox(),
               ),
-            ),
-          )
-        ],
+              Expanded(
+                child: BorderBackground(
+                  child: model.busy
+                      ? LoadingWidget()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(child: _child),
+                            model.step == Constants.SELECT_WARD
+                                ? ButtonWidget(
+                                    margin: EdgeInsets.all(UIHelper.size15),
+                                    backgroundColor:
+                                        model.selectedWards.length > 0
+                                            ? PRIMARY
+                                            : Colors.grey,
+                                    child: Text(
+                                      'HOÀN THÀNH (${model.selectedWards.length})',
+                                      style: textStyleButton(),
+                                    ),
+                                    onTap: () {
+                                      if (model.selectedWards.length > 0) {
+                                        Navigator.pop(
+                                            context, model.getAddressInfo());
+                                      }
+                                    })
+                                : SizedBox()
+                          ],
+                        ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

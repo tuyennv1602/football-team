@@ -57,7 +57,7 @@ textStyleBold({double size, Color color}) => TextStyle(
     letterSpacing: 0.1);
 
 textStyleInput({double size, Color color}) => TextStyle(
-    fontSize: UIHelper.size(size ?? 16),
+    fontSize: UIHelper.size(size ?? 15),
     fontFamily: REGULAR,
     color: color ?? Colors.black,
     letterSpacing: 0.1);

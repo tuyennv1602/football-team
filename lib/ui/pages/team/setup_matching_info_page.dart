@@ -130,87 +130,94 @@ class SetupMatchingInfoPage extends StatelessWidget {
                         ),
                       );
                   return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: UIHelper.size15,
-                            vertical: UIHelper.size10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Thời gian có thể chơi',
-                              style: textStyleRegularTitle(),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(UIHelper.size10),
-                              child: InkWell(
-                                onTap: () => _showAddTime(
-                                    context,
-                                    (start, end) =>
-                                        model.addTimeInfo(start, end)),
-                                child: Image.asset(
-                                  Images.ADD,
-                                  width: UIHelper.size20,
-                                  height: UIHelper.size20,
-                                  color: PRIMARY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
-                        child: Wrap(
-                          spacing: UIHelper.size5,
-                          children: _timeChildren,
-                        ),
-                      ),
-                      UIHelper.verticalSpaceMedium,
-                      LineWidget(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: UIHelper.size15,
-                            vertical: UIHelper.size10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Khu vực có thể chơi',
-                              style: textStyleRegularTitle(),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(UIHelper.size10),
-                              child: InkWell(
-                                onTap: () async {
-                                  var result =
-                                      await Routes.routeToSetupAddAddress(
-                                          context);
-                                  if (result != null) {
-                                    model.addAddressInfo(result);
-                                  }
-                                },
-                                child: Image.asset(
-                                  Images.ADD,
-                                  width: UIHelper.size20,
-                                  height: UIHelper.size20,
-                                  color: PRIMARY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
                       Expanded(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: UIHelper.size15),
-                          child: Wrap(
-                              spacing: UIHelper.size5,
-                              children: _addressChildren),
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          physics: ClampingScrollPhysics(),
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size15,
+                                  vertical: UIHelper.size10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Thời gian có thể chơi',
+                                    style: textStyleRegularTitle(),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(UIHelper.size10),
+                                    child: InkWell(
+                                      onTap: () => _showAddTime(
+                                          context,
+                                          (start, end) =>
+                                              model.addTimeInfo(start, end)),
+                                      child: Image.asset(
+                                        Images.ADD,
+                                        width: UIHelper.size20,
+                                        height: UIHelper.size20,
+                                        color: PRIMARY,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size15),
+                              child: Wrap(
+                                spacing: UIHelper.size5,
+                                children: _timeChildren,
+                              ),
+                            ),
+                            UIHelper.verticalSpaceMedium,
+                            LineWidget(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size15,
+                                  vertical: UIHelper.size10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Khu vực có thể chơi',
+                                    style: textStyleRegularTitle(),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(UIHelper.size10),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        var result =
+                                            await Routes.routeToSetupAddAddress(
+                                                context);
+                                        if (result != null) {
+                                          model.addAddressInfos(result);
+                                        }
+                                      },
+                                      child: Image.asset(
+                                        Images.ADD,
+                                        width: UIHelper.size20,
+                                        height: UIHelper.size20,
+                                        color: PRIMARY,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size15),
+                              child: Wrap(
+                                  spacing: UIHelper.size5,
+                                  children: _addressChildren),
+                            ),
+                          ],
                         ),
                       ),
                       ButtonWidget(
