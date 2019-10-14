@@ -15,7 +15,6 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -264,12 +263,11 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         model: TeamViewModel(
             authServices: Provider.of(context),
             teamServices: Provider.of(context),
-            sharePreferences: Provider.of(context),
             api: Provider.of(context)),
         onModelReady: (model) async {
           var resp = await model.refreshToken();
           if (!resp.isSuccess) {
-            UIHelper.showSimpleDialog(resp.errorMessage,
+            UIHelper.showSimpleDialog(resp.getErrorMessage,
                 onTap: () => Routes.routeToLogin(context));
           }
         },

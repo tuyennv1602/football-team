@@ -10,7 +10,7 @@ class Headers {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Authorization'] = 'Bearer ${this.accessToken}';
-    data['app-type'] = 1;
+    data['app-type'] = 0;
     return data;
   }
 }

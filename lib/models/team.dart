@@ -1,5 +1,4 @@
 import 'package:myfootball/models/member.dart';
-import 'package:myfootball/models/user.dart';
 
 import 'group_matching_info.dart';
 

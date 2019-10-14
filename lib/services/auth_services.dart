@@ -4,6 +4,7 @@ import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/headers.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/token.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/services/base_api.dart';
@@ -51,6 +52,9 @@ class AuthServices {
         _preferences.setToken(
             Token(token: resp.token, refreshToken: resp.refreshToken));
         BaseApi.setHeader(Headers(accessToken: resp.token));
+      } else {
+        _preferences.clearLastTeam();
+        _preferences.clearToken();
       }
       return resp;
     }

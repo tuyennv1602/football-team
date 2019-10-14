@@ -16,7 +16,7 @@ import 'package:myfootball/viewmodels/base_viewmodel.dart';
 class CreateTeamViewModel extends BaseViewModel {
   Api _api;
   File image;
-  Color dressColor =  Color(0xFFF6D2D1);
+  Color dressColor = Color(0xFFF6D2D1);
   SharePreferences _sharePreferences;
   AuthServices _authServices;
 
@@ -51,8 +51,7 @@ class CreateTeamViewModel extends BaseViewModel {
           // upload image success and update team info
           print(_imageLink);
           _team.logo = _imageLink;
-          var _updateTeamResp = await _api.updateTeam(_team);
-          print(_updateTeamResp.statusCode);
+          await _api.updateTeam(_team);
         }
       }
       _sharePreferences.setLastTeam(_team);
@@ -65,7 +64,7 @@ class CreateTeamViewModel extends BaseViewModel {
 
   Future<String> _uploadImage(int managerId, String teamName) async {
     if (image == null) return null;
-    var name = '$managerId-$teamName';
+    var name = '$managerId-${teamName.trim().replaceAll(" ", "-")}';
     return FirebaseServices().uploadImage(image, 'team', name);
   }
 

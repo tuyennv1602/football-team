@@ -22,12 +22,12 @@ class BaseApi {
       {FormData queryParams}) async {
     return await dio.get('$HOST/$endPoint',
         queryParameters: queryParams,
-        options: Options(headers: {'app-type': 1}));
+        options: Options(headers: {'app-type': 0}));
   }
 
   Future<Response<dynamic>> postAuthApi(String endPoint, {dynamic body}) async {
     return await dio.post('$HOST/$endPoint',
-        data: body, options: Options(headers: {'app-type': 1}));
+        data: body, options: Options(headers: {'app-type': 0}));
   }
 
   Future<Response<dynamic>> getApi(String endPoint,

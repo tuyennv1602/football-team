@@ -19,4 +19,11 @@ class BaseResponse {
   }
 
   bool get isSuccess => success && statusCode == Constants.CODE_OK;
+
+  String get getErrorMessage {
+    if(statusCode == Constants.CODE_UNAUTHORIZED){
+      return 'Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại';
+    }
+    return errorMessage;
+  }
 }
