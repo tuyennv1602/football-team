@@ -102,6 +102,7 @@ class _LoginState extends State<LoginPage> {
                           BorderTextFormField(
                             labelText: StringRes.EMAIL,
                             validator: Validator.validEmail,
+                            inputType: TextInputType.emailAddress,
                             onSaved: (value) => _email = value.trim(),
                           ),
                           UIHelper.verticalSpaceMedium,

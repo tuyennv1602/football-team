@@ -240,16 +240,34 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Future onChangeTeam(Team team)) =>
       ListView.separated(
           physics: BouncingScrollPhysics(),
-          itemBuilder: (c, index) => ButtonWidget(
-                onTap: () {
-                  onChangeTeam(teams[index]);
-                  _backdropKey.currentState.toggleFrontLayer();
-                },
-                child: Text(
-                  teams[index].name,
-                  style: textStyleRegular(color: Colors.white, size: 16),
+          itemBuilder: (c, index) {
+            var _team = teams[index];
+            return InkWell(
+              onTap: () {
+                onChangeTeam(_team);
+                _backdropKey.currentState.toggleFrontLayer();
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: UIHelper.size15, vertical: UIHelper.size10),
+                child: Row(
+                  children: <Widget>[
+                    ImageWidget(
+                      source: _team.logo,
+                      placeHolder: Images.DEFAULT_LOGO,
+                      size: UIHelper.size35,
+                    ),
+                    UIHelper.horizontalSpaceMedium,
+                    Expanded(
+                        child: Text(
+                      _team.name,
+                      style: textStyleRegularTitle(),
+                    ),),
+                  ],
                 ),
               ),
+            );
+          },
           separatorBuilder: (c, index) => LineWidget(),
           itemCount: teams.length);
 
@@ -321,16 +339,32 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   ],
                                 ),
                               ),
-                              backLayer: Container(
-                                color: Colors.green,
-                                child: _buildSelectTeam(
-                                  context,
-                                  _teams,
-                                  (team) async {
-                                    UIHelper.showProgressDialog;
-                                    await model.changeTeam(team);
-                                    UIHelper.hideProgressDialog;
-                                  },
+                              backLayer: BorderBackground(
+                                child: Column(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: _buildSelectTeam(
+                                      context,
+                                      _teams,
+                                      (team) async {
+                                        UIHelper.showProgressDialog;
+                                        await model.changeTeam(team);
+                                        UIHelper.hideProgressDialog;
+                                      },
+                                    )),
+                                    Container(
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: PRIMARY,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft:
+                                              Radius.circular(UIHelper.size15),
+                                          topRight:
+                                              Radius.circular(UIHelper.size15),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                               frontTitle: Align(

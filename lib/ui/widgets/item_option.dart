@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
@@ -39,14 +41,21 @@ class ItemOptionWidget extends StatelessWidget {
                   color: this.iconColor,
                 ),
                 Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.only(left: UIHelper.size20),
-                  child: Text(
-                    this.title,
-                    style: this.titleStyle ?? textStyleRegularTitle(),
-                    overflow: TextOverflow.ellipsis,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: UIHelper.size20),
+                    child: Text(
+                      this.title,
+                      style: this.titleStyle ?? textStyleRegularTitle(),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                )),
+                ),
+                Image.asset(
+                  Images.NEXT,
+                  width: UIHelper.size10,
+                  height: UIHelper.size10,
+                  color: LINE_COLOR,
+                )
               ],
             ),
           ),

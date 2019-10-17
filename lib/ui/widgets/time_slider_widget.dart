@@ -20,7 +20,7 @@ class TimeSliderWidget extends StatefulWidget {
 }
 
 class TimeSliderState extends State<TimeSliderWidget> {
-  RangeValues _values = RangeValues(0, 24);
+  RangeValues _values = RangeValues(4, 24);
 
   @override
   Widget build(BuildContext context) {

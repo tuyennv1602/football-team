@@ -135,12 +135,14 @@ class _RegisterState extends State<RegisterPage> {
                               BorderTextFormField(
                                 labelText: StringRes.EMAIL,
                                 validator: Validator.validEmail,
+                                inputType: TextInputType.emailAddress,
                                 onSaved: (value) => _email = value.trim(),
                               ),
                               UIHelper.verticalSpaceMedium,
                               BorderTextFormField(
                                 labelText: StringRes.PHONE,
                                 validator: Validator.validPhoneNumber,
+                                inputType: TextInputType.phone,
                                 onSaved: (value) => _phone = value.trim(),
                               ),
                               UIHelper.verticalSpaceMedium,

@@ -21,7 +21,7 @@ class SocialPage extends StatelessWidget {
         child: Text("Item $index"),
       );
 
-  Widget _buildNewsest(BuildContext context) {
+  Widget _buildNewest(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -121,7 +121,7 @@ class SocialPage extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               children: <Widget>[
-                _buildNewsest(context),
+                _buildNewest(context),
                 _buildRanking(context),
                 _buildTournament(context),
                 _buildRecruit(context)

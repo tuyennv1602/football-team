@@ -134,6 +134,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                         BorderTextFormField(
                           labelText: StringRes.EMAIL,
                           validator: Validator.validEmail,
+                          inputType: TextInputType.emailAddress,
                           onSaved: (value) => _email = value.trim(),
                         ),
                         model.isChangePassword

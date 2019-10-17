@@ -34,9 +34,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
     super.build(context);
     UIHelper().init(context);
     var _user = Provider.of<User>(context);
-    var wallet = _user.wallet != null
-        ? StringUtil.formatCurrency(_user.wallet * 1000)
-        : '0đ';
+    var wallet = StringUtil.formatCurrency(_user.wallet * 1000);
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
