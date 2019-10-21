@@ -46,8 +46,10 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                 child: Column(
                   children: <Widget>[
                     BaseWidget<UserViewModel>(
-                      model:
-                          UserViewModel(sharePreferences: Provider.of(context)),
+                      model: UserViewModel(
+                        sharePreferences: Provider.of(context),
+                        teamServices: Provider.of(context),
+                      ),
                       builder: (context, model, child) => AppBarWidget(
                         leftContent: AppBarButtonWidget(
                           imageName: Images.LOGOUT,

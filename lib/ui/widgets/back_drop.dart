@@ -223,7 +223,7 @@ class BackdropState extends State<Backdrop>
     final Animation<RelativeRect> frontRelativeRect =
         _controller.drive(RelativeRectTween(
       begin: RelativeRect.fromLTRB(
-          0.0, constraints.biggest.height - _kFrontClosedHeight + 20, 0.0, 0.0),
+          0.0, constraints.biggest.height - _kFrontClosedHeight, 0.0, 0.0),
       end: RelativeRect.fromLTRB(0.0, _kBackAppBarHeight, 0.0, 0.0),
     ));
 

@@ -14,7 +14,7 @@ class Images {
   static const String DEFAULT_AVATAR = '$FOLDER/icn_man.png';
   static const String ADD_REQUEST = '$FOLDER/icn_add_request.png';
   static const String ADD_TEAM = '$FOLDER/icn_add_team.png';
-  static const String BACK = '$FOLDER/icn_back.png';
+  static const String BACK = '$FOLDER/ic_left_arrow.png';
   static const String GALLERY = '$FOLDER/icn_gallery.png';
   static const String SHIRT = '$FOLDER/icn_shirt.png';
   static const String ANALYTIC = '$FOLDER/icn_analytics.png';

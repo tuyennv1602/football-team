@@ -54,7 +54,7 @@ class SetupTeamPage extends StatelessWidget {
                 physics: ClampingScrollPhysics(),
                 children: <Widget>[
                   _buildItemSetting(context, 'Chỉnh sửa thông tin',
-                          () => Routes.routeToSetupMatchingInfo(context)),
+                          () => Routes.routeToEditTeam(context)),
                   LineWidget(),
                   BaseWidget<SetupTeamViewModel>(
                     model: SetupTeamViewModel(

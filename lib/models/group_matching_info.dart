@@ -26,7 +26,6 @@ class GroupMatchingInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['group_id'] = this.groupId;
     if (this.timeInfo != null) {
       data['time_infos'] = this.timeInfo.map((v) => v.toJson()).toList();
     }
@@ -35,6 +34,8 @@ class GroupMatchingInfo {
     }
     return data;
   }
+
+
 }
 
 class TimeInfo {
@@ -42,22 +43,24 @@ class TimeInfo {
   int status;
   double startHour;
   double endHour;
+  String dayOfWeek;
 
-  TimeInfo({this.id, this.status, this.startHour, this.endHour});
+  TimeInfo(
+      {this.id, this.status, this.startHour, this.endHour, this.dayOfWeek});
 
   TimeInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
     startHour = json['start_hour'];
     endHour = json['end_hour'];
+    dayOfWeek = json['day_of_weeks'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['status'] = this.status;
     data['start_hour'] = this.startHour;
     data['end_hour'] = this.endHour;
+    data['day_of_weeks'] = this.dayOfWeek;
     return data;
   }
 
@@ -65,7 +68,17 @@ class TimeInfo {
 
   String get getEndHour => DateUtil().getTimeStringFromDouble(endHour);
 
-  String get getTimes => '$getStartHour - $getEndHour';
+  String get getTimes {
+    if (dayOfWeek == null) {
+      return '$getStartHour - $getEndHour';
+    }
+    if (dayOfWeek.length == 13) {
+      return '$getStartHour - $getEndHour (Cả tuần)';
+    }
+    List<String> _dayOfWeeks = dayOfWeek.split(',');
+    _dayOfWeeks = _dayOfWeeks.map((day) => DateUtil().getShortDayOfWeek(int.parse(day))).toList();
+    return '$getStartHour - $getEndHour (${_dayOfWeeks.join(',')})';
+  }
 }
 
 class AddressInfo {

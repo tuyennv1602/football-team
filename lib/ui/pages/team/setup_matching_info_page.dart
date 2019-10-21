@@ -61,11 +61,9 @@ class SetupMatchingInfoPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TimeSliderWidget(
-                      onSelectedTime: (start, end) {
-                        print(start);
-                        print(end);
+                      onSelectedTime: (start, end, dayOfWeek) {
                         Navigator.of(context).pop();
-                        onAddTime(start, end);
+                        onAddTime(start, end, dayOfWeek);
                       },
                     ),
                   ],
@@ -153,8 +151,11 @@ class SetupMatchingInfoPage extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () => _showAddTime(
                                           context,
-                                          (start, end) =>
-                                              model.addTimeInfo(start, end)),
+                                          (start, end, dayOfWeek) =>
+                                              model.addTimeInfo(TimeInfo(
+                                                  startHour: start,
+                                                  endHour: end,
+                                                  dayOfWeek: dayOfWeek))),
                                       child: Image.asset(
                                         Images.ADD,
                                         width: UIHelper.size20,

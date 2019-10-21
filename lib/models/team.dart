@@ -17,6 +17,8 @@ class Team {
   List<Member> members;
   double rating;
   bool rated;
+  double point;
+  int rank;
   int isSearching;
   List<GroupMatchingInfo> groupMatchingInfo;
 
@@ -31,6 +33,8 @@ class Team {
     logo = json['logo'];
     dress = json['dress'];
     bio = json['bio'];
+    point = json['point'];
+    rank = json['rank'];
     if (json['rating'] != null) {
       rating = double.parse(json['rating'].toString());
     }

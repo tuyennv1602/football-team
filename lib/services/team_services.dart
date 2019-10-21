@@ -20,11 +20,15 @@ class TeamServices {
 
   Stream<Team> get team => _teamController.stream;
 
+  setTeam(Team team) {
+    _currentTeam = team;
+    _teamController.add(_currentTeam);
+  }
+
   Future<TeamResponse> getTeamDetail(int teamId) async {
     var resp = await _api.getTeamDetail(teamId);
     if (resp.isSuccess) {
-      _currentTeam = resp.team;
-      _teamController.add(_currentTeam);
+      setTeam(resp.team);
     }
     return resp;
   }

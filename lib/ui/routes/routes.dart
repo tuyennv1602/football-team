@@ -6,6 +6,7 @@ import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'package:myfootball/ui/pages/login/register_page.dart';
 import 'package:myfootball/ui/pages/team/add_address_page.dart';
 import 'package:myfootball/ui/pages/team/compare_team_page.dart';
+import 'package:myfootball/ui/pages/team/edit_team_page.dart';
 import 'package:myfootball/ui/pages/team/find_matching_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
@@ -94,5 +95,11 @@ class Routes {
       BuildContext context, Team team) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: CompareTeamPage(team: team)));
+  }
+
+  static Future<dynamic> routeToEditTeam(
+      BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: EditTeamPage()));
   }
 }

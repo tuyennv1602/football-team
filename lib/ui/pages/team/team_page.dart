@@ -105,12 +105,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ),
             LineWidget(),
             ItemOptionWidget(
-              Images.RANK,
-              'Thành tích',
-              iconColor: Colors.amber,
-            ),
-            LineWidget(),
-            ItemOptionWidget(
               Images.MATCH_HISTORY,
               'Lịch sử thi đấu',
               iconColor: Colors.lightGreen,
@@ -120,6 +114,12 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               Images.COMMENT,
               'Thảo luận',
               iconColor: Colors.cyan,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.WALLET_IN,
+              'Đóng quỹ',
+              iconColor: Colors.amber,
             ),
             LineWidget(),
             ItemOptionWidget(
@@ -213,13 +213,14 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     height: UIHelper.size10,
                     color: LINE_COLOR,
                   ),
-                  Text('Trình độ: Trung bình', style: textStyleRegular()),
+                  Text('Xếp hạng: ${team.rank} (${team.point} điểm)',
+                      style: textStyleRegular()),
                   Row(
                     children: <Widget>[
                       Text('Đánh giá: ', style: textStyleRegular()),
-                      team.rating != null
+                      team.rated
                           ? FlutterRatingBarIndicator(
-                              rating: 2.5,
+                              rating: team.rating,
                               itemCount: 5,
                               itemSize: UIHelper.size15,
                               emptyColor: Colors.amber.withAlpha(90),
@@ -259,10 +260,11 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     ),
                     UIHelper.horizontalSpaceMedium,
                     Expanded(
-                        child: Text(
-                      _team.name,
-                      style: textStyleRegularTitle(),
-                    ),),
+                      child: Text(
+                        _team.name,
+                        style: textStyleRegularTitle(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -353,9 +355,20 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                       },
                                     )),
                                     Container(
-                                      height: 30,
+                                      height: UIHelper.size50,
                                       decoration: BoxDecoration(
-                                        color: PRIMARY,
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 3,
+                                            // has the effect of softening the shadow
+                                            offset: Offset(
+                                              0, // horizontal, move right 10
+                                              -1, // vertical, move down 10
+                                            ),
+                                          )
+                                        ],
                                         borderRadius: BorderRadius.only(
                                           topLeft:
                                               Radius.circular(UIHelper.size15),

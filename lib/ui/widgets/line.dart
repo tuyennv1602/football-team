@@ -3,12 +3,16 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 class LineWidget extends StatelessWidget {
+  final double indent;
+
+  LineWidget({this.indent = 10});
+
   @override
   Widget build(BuildContext context) {
     return Divider(
       height: 0.7,
-      indent: UIHelper.size(10),
-      endIndent: UIHelper.size(10),
+      indent: UIHelper.size(indent),
+      endIndent: UIHelper.size(indent),
       color: LINE_COLOR,
     );
   }

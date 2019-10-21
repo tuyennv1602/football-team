@@ -5,6 +5,7 @@ import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
 import 'package:myfootball/models/responses/district_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/responses/matching_resp.dart';
 import 'package:myfootball/models/responses/notification_resp.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/responses/team_request_resp.dart';
@@ -239,6 +240,17 @@ class Api {
       return CreateMatchingResponse.success(resp.data);
     } on DioError catch (e) {
       return CreateMatchingResponse.error(e.message);
+    }
+  }
+
+  Future<MatchingResponse> findMatching(int teamId,GroupMatchingInfo groupMatchingInfo, int pageIndex) async {
+    try {
+      var resp = await _api.putApi(
+          "group/$teamId/matching?limit=10&page=$pageIndex",
+          body: groupMatchingInfo.toJson());
+      return MatchingResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MatchingResponse.error(e.message);
     }
   }
 }

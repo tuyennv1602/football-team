@@ -40,8 +40,8 @@ class SetupMatchingInfoViewModel extends BaseViewModel {
     }
   }
 
-  addTimeInfo(double start, double end) {
-    this.timeInfos.add(TimeInfo(startHour: start, endHour: end));
+  addTimeInfo(TimeInfo timeInfo) {
+    this.timeInfos.add(timeInfo);
     notifyListeners();
   }
 

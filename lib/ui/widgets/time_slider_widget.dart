@@ -5,7 +5,9 @@ import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-typedef void OnSelectedTime(double start, double end);
+typedef void OnSelectedTime(double start, double end, String dayOfWeeks);
+
+final List<String> _kDayOfWeeks = ['1', '2', '3', '4', '5', '6', '7'];
 
 class TimeSliderWidget extends StatefulWidget {
   final OnSelectedTime onSelectedTime;
@@ -21,12 +23,39 @@ class TimeSliderWidget extends StatefulWidget {
 
 class TimeSliderState extends State<TimeSliderWidget> {
   RangeValues _values = RangeValues(4, 24);
+  List<String> _selectedDay = [];
 
   @override
   Widget build(BuildContext context) {
     var formattedStart = DateUtil().getTimeStringFromDouble(_values.start);
     var formattedEnd = DateUtil().getTimeStringFromDouble(_values.end);
+    List<Widget> _children = [];
+    _kDayOfWeeks.asMap().forEach(
+      (index, title) {
+        _children.add(
+          ChoiceChip(
+            pressElevation: 0,
+            selectedColor: PRIMARY,
+            backgroundColor: Colors.grey,
+            label: Text(DateUtil().getDayOfWeek(int.parse(title)), style: textStyleRegular(color: Colors.white)),
+            selected: _selectedDay.contains(title),
+            onSelected: (isSelected) {
+              if (isSelected) {
+                this.setState(() {
+                  _selectedDay.add(title);
+                });
+              } else {
+                this.setState(() {
+                  _selectedDay.remove(title);
+                });
+              }
+            },
+          ),
+        );
+      },
+    );
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(
@@ -76,6 +105,39 @@ class TimeSliderState extends State<TimeSliderWidget> {
             },
           ),
         ),
+        UIHelper.verticalSpaceMedium,
+        Padding(
+          padding: EdgeInsets.symmetric(
+             horizontal: UIHelper.size15, vertical: UIHelper.size10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Ngày có thể chơi',
+                style: textStyleRegularTitle(),
+              ),
+              InkWell(
+                onTap: () {
+                  _selectedDay.clear();
+                  setState(() {
+                    _selectedDay.addAll(_kDayOfWeeks);
+                  });
+                },
+                child: Text(
+                  'Chọn tất cả',
+                  style: textStyleSemiBold(),
+                ),
+              )
+            ],
+          ),
+        ),
+        Align(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: UIHelper.size5,
+            children: _children,
+          ),
+        ),
         UIHelper.verticalSpaceLarge,
         ButtonWidget(
             child: Text(
@@ -83,7 +145,14 @@ class TimeSliderState extends State<TimeSliderWidget> {
               style: textStyleButton(),
             ),
             margin: EdgeInsets.all(UIHelper.size15),
-            onTap: () => widget.onSelectedTime(_values.start, _values.end)),
+            onTap: () {
+              if (_selectedDay.length == 0) {
+                UIHelper.showSimpleDialog('Vui lòng chọn ngày có thể chơi');
+              } else {
+                widget.onSelectedTime(
+                    _values.start, _values.end, _selectedDay.join(','));
+              }
+            }),
         UIHelper.verticalSpaceLarge,
       ],
     );

@@ -49,7 +49,6 @@ class CreateTeamViewModel extends BaseViewModel {
         var _imageLink = await _uploadImage(userId, name);
         if (_imageLink != null) {
           // upload image success and update team info
-          print(_imageLink);
           _team.logo = _imageLink;
           await _api.updateTeam(_team);
         }

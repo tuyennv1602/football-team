@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/progress_dialog.dart';
@@ -52,6 +51,7 @@ class UIHelper {
   static Widget horizontalSpaceLarge = SizedBox(width: size20);
 
   static double size(double size) {
+    if(size == 0) return 0;
     const double baseWidth = 375;
     double percent = screenWidth / baseWidth;
     if (percent < 1) {

@@ -32,7 +32,7 @@ class NotificationState extends State<NotificationPage>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.size15),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: UIHelper.size10, vertical: UIHelper.size10),

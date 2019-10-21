@@ -32,7 +32,7 @@ class BorderTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       autocorrect: false,
-      cursorColor: PRIMARY,
+      cursorColor: Colors.white,
       cursorWidth: 1,
       maxLines: 1,
       initialValue: initValue,

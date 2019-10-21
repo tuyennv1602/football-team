@@ -16,8 +16,7 @@ class TabBarWidget extends StatelessWidget {
     return Container(
       height: UIHelper.size50,
       decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(color: LINE_COLOR, width: 0.5))),
+          border: Border(bottom: BorderSide(color: LINE_COLOR, width: 0.5))),
       child: TabBar(
         tabs: titles
             .map(
@@ -33,8 +32,7 @@ class TabBarWidget extends StatelessWidget {
         unselectedLabelColor: BLACK_TEXT,
         indicator: UnderlineTabIndicator(
           insets: EdgeInsets.symmetric(horizontal: UIHelper.size(10)),
-          borderSide:
-              BorderSide(width: UIHelper.size(2), color: PRIMARY),
+          borderSide: BorderSide(width: UIHelper.size(2), color: PRIMARY),
         ),
       ),
     );

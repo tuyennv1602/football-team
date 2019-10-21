@@ -42,7 +42,7 @@ class SearchTeamPage extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size(2)),
                       child: Text(
-                        'Xếp hạng: 3/100 (1500 điểm)',
+                        'Xếp hạng: ${team.rank} (${team.point} điểm)',
                         style: textStyleRegularBody(),
                       ),
                     ),
@@ -53,13 +53,18 @@ class SearchTeamPage extends StatelessWidget {
                           'Đánh giá: ',
                           style: textStyleRegularBody(),
                         ),
-                        FlutterRatingBarIndicator(
-                          rating: 2.5,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.only(left: 2),
-                          itemSize: UIHelper.size(12),
-                          emptyColor: Colors.amber.withAlpha(90),
-                        ),
+                        team.rated
+                            ? FlutterRatingBarIndicator(
+                                rating: team.rating,
+                                itemCount: 5,
+                                itemPadding: EdgeInsets.only(left: 2),
+                                itemSize: UIHelper.size(12),
+                                emptyColor: Colors.amber.withAlpha(90),
+                              )
+                            : Text(
+                                'Chưa có đánh giá',
+                                style: textStyleRegularBody(),
+                              ),
                         Expanded(
                           child: Text(
                             'Có sân nhà',
