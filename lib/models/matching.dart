@@ -1,3 +1,6 @@
+import 'package:myfootball/models/matching_time_slot.dart';
+import 'package:myfootball/utils/object_utils.dart';
+
 class Matching {
   String id;
   double rating;
@@ -18,6 +21,7 @@ class Matching {
   String districtName;
   int provinceId;
   String provinceName;
+  List<MatchingTimeSlot> timeSlots;
 
   Matching(
       {this.id,
@@ -38,7 +42,8 @@ class Matching {
       this.districtId,
       this.districtName,
       this.provinceId,
-      this.provinceName});
+      this.provinceName,
+      this.timeSlots});
 
   Matching.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -60,6 +65,12 @@ class Matching {
     districtName = json['district_name'];
     provinceId = json['province_id'];
     provinceName = json['province_name'];
+    if (json['ground_time_slots'] != null) {
+      timeSlots = new List<MatchingTimeSlot>();
+      json['ground_time_slots'].forEach((v) {
+        timeSlots.add(new MatchingTimeSlot.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -85,4 +96,7 @@ class Matching {
     data['province_name'] = this.provinceName;
     return data;
   }
+
+  Map<int, List<MatchingTimeSlot>> get getMappedTimeSlot =>
+      ObjectUtil.mapMatchingTimeSlotByDayOfWeek(timeSlots);
 }

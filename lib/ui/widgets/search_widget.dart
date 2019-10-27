@@ -37,6 +37,7 @@ class SearchWidget extends StatelessWidget {
       margin: EdgeInsets.all(UIHelper.size(10)),
       alignment: Alignment.center,
       decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(_kSearchHeight / 2),
           border: Border.all(width: 0.5, color: Colors.grey)),
       child: Row(

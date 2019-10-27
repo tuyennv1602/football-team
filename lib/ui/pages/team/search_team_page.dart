@@ -65,13 +65,6 @@ class SearchTeamPage extends StatelessWidget {
                                 'Chưa có đánh giá',
                                 style: textStyleRegularBody(),
                               ),
-                        Expanded(
-                          child: Text(
-                            'Có sân nhà',
-                            textAlign: TextAlign.right,
-                            style: textStyleSemiBold(size: 12, color: PRIMARY),
-                          ),
-                        )
                       ],
                     )
                   ],

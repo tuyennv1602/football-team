@@ -48,5 +48,14 @@ class Images {
   static const String ADD = '$FOLDER/icn_add.png';
   static const String NEXT = '$FOLDER/icn_next.png';
   static const String CHECK = '$FOLDER/icn_check.png';
-
+  static const String LOCATION = '$FOLDER/icn_location.png';
+  static const String DIRECTION = '$FOLDER/ic_direction.png';
+  static const String NOTE = '$FOLDER/ic_note.png';
+  static const String STAR = '$FOLDER/ic_star.png';
+  static const String DEFAULT_GROUND = '$FOLDER/default_ground.jpg';
+  static const String MARKER = '$FOLDER/icn_marker.png';
+  static const String MY_LOCATION = '$FOLDER/icn_my_location.png';
+  static const String HISTORY = '$FOLDER/ic_history.png';
+  static const String PIN = '$FOLDER/icn_pin.png';
+  static const String FUND_NOTIFY = '$FOLDER/ic_fund_notify.png';
 }

@@ -11,4 +11,13 @@ class Constants {
   static const int SELECT_PROVINCE = 1;
   static const int SELECT_DISTRICT = 2;
   static const int SELECT_WARD = 3;
+  static const int RATIO_50_50 = 1;
+  static const int RATIO_40_60 = 2;
+  static const int RATIO_30_70 = 3;
+  static const int RATIO_20_80 = 4;
+  static const int RATIO_0_100 = 5;
+  static const int VS5 = 1;
+  static const int VS7 = 2;
+  static const int VS9 = 3;
+  static const int VS11 = 4;
 }

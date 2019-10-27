@@ -1,9 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/group_matching_info.dart';
+import 'package:myfootball/models/invite_matching_request.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
 import 'package:myfootball/models/responses/district_resp.dart';
+import 'package:myfootball/models/responses/ground_resp.dart';
+import 'package:myfootball/models/responses/invite_matching_resp.dart';
+import 'package:myfootball/models/responses/list_ground_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/responses/matching_resp.dart';
 import 'package:myfootball/models/responses/notification_resp.dart';
@@ -243,7 +247,8 @@ class Api {
     }
   }
 
-  Future<MatchingResponse> findMatching(int teamId,GroupMatchingInfo groupMatchingInfo, int pageIndex) async {
+  Future<MatchingResponse> findMatching(
+      int teamId, GroupMatchingInfo groupMatchingInfo, int pageIndex) async {
     try {
       var resp = await _api.putApi(
           "group/$teamId/matching?limit=10&page=$pageIndex",
@@ -251,6 +256,79 @@ class Api {
       return MatchingResponse.success(resp.data);
     } on DioError catch (e) {
       return MatchingResponse.error(e.message);
+    }
+  }
+
+  Future<GroundResponse> getGroundDetail(int groundId) async {
+    try {
+      var resp = await _api.getApi("ground/$groundId");
+      return GroundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return GroundResponse.error(e.message);
+    }
+  }
+
+  Future<ListGroundResponse> getGroundByLocation(double lat, double lng) async {
+    try {
+      var resp =
+          await _api.getApi("ground/distance?lat=$lat&lng=$lng&distance=5000");
+      return ListGroundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return ListGroundResponse.error(e.message);
+    }
+  }
+
+  Future<GroundResponse> getFreeTimeSlots(int groundId, String playDate) async {
+    try {
+      FormData formData = new FormData.from({
+        "playDate": playDate,
+      });
+      var resp =
+          await _api.getApi("ground/$groundId/detail", queryParams: formData);
+      return GroundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return GroundResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> bookingTimeSlot(
+      int groundId, int timeSlotId, int playDate) async {
+    try {
+      var resp = await _api.postApi("ticket", body: {
+        "group_id": groundId,
+        "time_slot_id": timeSlotId,
+        "play_date": playDate,
+        "prepayment_status": 0,
+        "payment_status": 0
+      });
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> sendInviteMatching(
+      InviteMatchingRequest matchingRequest) async {
+    try {
+      var resp = await _api.postApi('match/request',
+          body: matchingRequest.toCreateJson());
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<InviteMatchingResponse> getInviteMatchingByTeam(int teamId) async {
+    try {
+      FormData formData = new FormData.from({
+        "page": 1,
+        "limit": 10,
+      });
+      var resp = await _api.getApi('match/request/group/$teamId',
+          queryParams: formData);
+      return InviteMatchingResponse.success(resp.data);
+    } on DioError catch (e) {
+      return InviteMatchingResponse.error(e.message);
     }
   }
 }

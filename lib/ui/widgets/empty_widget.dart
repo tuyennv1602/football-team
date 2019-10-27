@@ -17,11 +17,12 @@ class EmptyWidget extends StatelessWidget {
           'assets/images/icn_empty.png',
           width: UIHelper.size50,
           height: UIHelper.size50,
+          color: Colors.grey,
         ),
         UIHelper.verticalSpaceMedium,
         Text(
           _message,
-          style: textStyleRegularTitle(),
+          style: textStyleRegularTitle(color: Colors.grey),
         )
       ],
     );

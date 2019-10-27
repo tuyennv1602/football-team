@@ -72,7 +72,7 @@ class EditTeamPage extends StatelessWidget {
     var resp = await model.updateTeam(team);
     UIHelper.hideProgressDialog;
     if(resp.isSuccess){
-      Navigator.of(context);
+      Navigator.of(context).pop();
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -210,7 +210,7 @@ class EditTeamPage extends StatelessWidget {
                                 _handleUpdate(context, model, _team);
                               }
                             },
-                            margin: EdgeInsets.all(UIHelper.size15),
+                            margin: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
                             child: Text(
                               'CẬP NHẬT',
                               style: textStyleButton(),

@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/ground.dart';
+import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/ui/pages/login/forgot_password_page.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
 import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'package:myfootball/ui/pages/login/register_page.dart';
 import 'package:myfootball/ui/pages/team/add_address_page.dart';
+import 'package:myfootball/ui/pages/team/booking_page.dart';
 import 'package:myfootball/ui/pages/team/compare_team_page.dart';
 import 'package:myfootball/ui/pages/team/edit_team_page.dart';
+import 'package:myfootball/ui/pages/team/finance_page.dart';
 import 'package:myfootball/ui/pages/team/find_matching_page.dart';
+import 'package:myfootball/ui/pages/team/ground_detail_page.dart';
+import 'package:myfootball/ui/pages/team/invite_team_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
+import 'package:myfootball/ui/pages/team/search_ground_page.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/pages/team/setup_matching_info_page.dart';
 import 'package:myfootball/ui/pages/team/setup_team_page.dart';
+import 'package:myfootball/ui/pages/team/team_fund_page.dart';
 import 'package:myfootball/ui/pages/team/user_request_page.dart';
 import 'package:myfootball/ui/pages/team/create_team_page.dart';
 import 'package:myfootball/ui/pages/team/member_manager_page.dart';
 import 'package:myfootball/ui/pages/team/request_member_page.dart';
-import 'package:myfootball/ui/routes/fade-in-route.dart';
-import 'package:myfootball/ui/routes/slide-left-route.dart';
+import 'package:myfootball/ui/routes/fade_in_route.dart';
+import 'package:myfootball/ui/routes/slide_left_route.dart';
 
 class Routes {
   static Future<dynamic> routeToHome(BuildContext context) async {
@@ -97,9 +105,47 @@ class Routes {
         .push(SlideLeftRoute(widget: CompareTeamPage(team: team)));
   }
 
-  static Future<dynamic> routeToEditTeam(
-      BuildContext context) async {
+  static Future<dynamic> routeToEditTeam(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: EditTeamPage()));
+  }
+
+  static Future<dynamic> routeToInviteTeam(BuildContext context, int fromTeamId,
+      int toTeamId, Map<int, List<MatchingTimeSlot>> mappedTimeSlots) async {
+    return await Navigator.of(context).push(SlideLeftRoute(
+        widget: InviteTeamPage(
+      mappedTimeSlots: mappedTimeSlots,
+      fromTeamId: fromTeamId,
+      toTeamId: toTeamId,
+    )));
+  }
+
+  static Future<dynamic> routeToGroundDetail(
+      BuildContext context, int groundId) async {
+    return await Navigator.of(context).push(SlideLeftRoute(
+        widget: GroundDetailPage(
+      groundId: groundId,
+    )));
+  }
+
+  static Future<dynamic> routeToSearchGround(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: SearchGroundPage()));
+  }
+
+  static Future<dynamic> routeToBooking(
+      BuildContext context, Ground ground) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: BookingPage(ground: ground)));
+  }
+
+  static Future<dynamic> routeToTeamFund(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: TeamFundPage()));
+  }
+
+  static Future<dynamic> routeToFinance(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: FinancePage()));
   }
 }

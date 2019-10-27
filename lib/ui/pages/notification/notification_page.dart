@@ -28,14 +28,13 @@ class NotificationState extends State<NotificationPage>
   Widget _buildItemNotification(
           BuildContext context, noti.Notification notification) =>
       Card(
-        elevation: 2,
+        elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.size15),
         ),
         margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: UIHelper.size10, vertical: UIHelper.size10),
+          padding: EdgeInsets.all(UIHelper.size10),
           child: Row(
             children: <Widget>[
               Container(
@@ -113,7 +112,7 @@ class NotificationState extends State<NotificationPage>
                           itemBuilder: (c, index) => _buildItemNotification(
                               context, model.notifications[index]),
                           separatorBuilder: (c, index) =>
-                              SizedBox(height: UIHelper.size15),
+                              SizedBox(height: UIHelper.size10),
                           itemCount: model.notifications.length)
                       : EmptyWidget(message: 'Không có thông báo nào');
                 },

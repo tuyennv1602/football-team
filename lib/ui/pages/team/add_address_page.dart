@@ -193,7 +193,7 @@ class AddAddressPage extends StatelessWidget {
                             Expanded(child: _child),
                             model.step == Constants.SELECT_WARD
                                 ? ButtonWidget(
-                                    margin: EdgeInsets.all(UIHelper.size15),
+                                margin: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
                                     backgroundColor:
                                         model.selectedWards.length > 0
                                             ? PRIMARY

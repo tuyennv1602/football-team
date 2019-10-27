@@ -51,7 +51,7 @@ class UIHelper {
   static Widget horizontalSpaceLarge = SizedBox(width: size20);
 
   static double size(double size) {
-    if(size == 0) return 0;
+    if (size == 0) return 0;
     const double baseWidth = 375;
     double percent = screenWidth / baseWidth;
     if (percent < 1) {
@@ -124,6 +124,64 @@ class UIHelper {
                     message,
                     style: textStyleRegular(size: 16),
                   ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () => Navigator.of(context).pop(),
+                        height: size40,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(size5)),
+                        backgroundColor: Colors.grey,
+                        child: Text(
+                          'Huỷ',
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ButtonWidget(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          onConfirmed();
+                        },
+                        height: size40,
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(size5)),
+                        child: Text(
+                          'Đồng ý',
+                          style:
+                              textStyleRegular(size: 16, color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+
+  static void showCustomizeDialog({Widget child, Function onConfirmed}) =>
+      showDialog(
+        context: _buildContext,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(size5),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            width: screenWidth * 0.9,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(size15),
+                  child: child,
                 ),
                 Row(
                   children: <Widget>[

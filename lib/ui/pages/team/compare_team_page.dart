@@ -8,6 +8,7 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
+import 'package:myfootball/ui/widgets/choose_ratio_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
@@ -48,7 +49,7 @@ class CompareTeamPage extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Container(
-              height: UIHelper.size(230) + UIHelper.paddingTop,
+              height: UIHelper.size(210) + UIHelper.paddingTop,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage(Images.GROUND), fit: BoxFit.fill),
@@ -72,7 +73,7 @@ class CompareTeamPage extends StatelessWidget {
                               ImageWidget(
                                 source: _team1.logo,
                                 placeHolder: Images.DEFAULT_LOGO,
-                                size: UIHelper.size(80),
+                                size: UIHelper.size(70),
                               ),
                               Container(
                                 height: UIHelper.size(70),
@@ -102,7 +103,7 @@ class CompareTeamPage extends StatelessWidget {
                               ImageWidget(
                                 source: _team2.logo,
                                 placeHolder: Images.DEFAULT_LOGO,
-                                size: UIHelper.size(80),
+                                size: UIHelper.size(70),
                               ),
                               Container(
                                 height: UIHelper.size(70),
@@ -125,7 +126,7 @@ class CompareTeamPage extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(
-                  top: UIHelper.size(200) + UIHelper.paddingTop),
+                  top: UIHelper.size(180) + UIHelper.paddingTop),
               child: BorderBackground(
                 child: ListView(
                   padding: EdgeInsets.symmetric(
@@ -223,19 +224,24 @@ class CompareTeamPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                      child: Text('Tỉ lệ kèo', style: textStyleRegularTitle(),),
-                    ),
                     InputWidget(
                       labelText: 'Nội dung lời mời',
-                      maxLines: 4,
+                      maxLines: 3,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                      child: ChooseRatioTypeWidget(
+                        onSelectedType: (type) => print(type),
+                      ),
                     ),
                     ButtonWidget(
                         child: Text(
                           'GỬI LỜI MỜI',
                           style: textStyleButton(),
                         ),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: UIHelper.size15,
+                            vertical: UIHelper.size10),
                         onTap: () {})
                   ],
                 ),

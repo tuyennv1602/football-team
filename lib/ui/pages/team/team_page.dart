@@ -10,7 +10,6 @@ import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/back_drop.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
@@ -118,8 +117,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             LineWidget(),
             ItemOptionWidget(
               Images.WALLET_IN,
-              'Đóng quỹ',
+              'Đóng quỹ đội bóng',
               iconColor: Colors.amber,
+              onTap: () => Routes.routeToTeamFund(context),
             ),
             LineWidget(),
             ItemOptionWidget(
@@ -154,6 +154,13 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
         LineWidget(),
         ItemOptionWidget(
+          Images.BOOKING,
+          'Đặt sân bóng',
+          iconColor: Colors.green,
+          onTap: () => Routes.routeToSearchGround(context),
+        ),
+        LineWidget(),
+        ItemOptionWidget(
           Images.FIND_MATCH,
           'Tìm đối tác',
           iconColor: Colors.red,
@@ -161,9 +168,10 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
         LineWidget(),
         ItemOptionWidget(
-          Images.BOOKING,
-          'Đặt sân bóng',
-          iconColor: Colors.green,
+          Images.STACK,
+          'Lời mời ghép đối',
+          iconColor: Colors.blueAccent,
+          onTap: () => Routes.routeToFindMatching(context),
         ),
         LineWidget(),
         ItemOptionWidget(
@@ -177,6 +185,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.BUDGET,
           'Quản lý tài chính',
           iconColor: Colors.amber,
+          onTap: () => Routes.routeToFinance(context),
         ),
         LineWidget(),
         ItemOptionWidget(
@@ -240,6 +249,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   Widget _buildSelectTeam(BuildContext context, List<Team> teams,
           Future onChangeTeam(Team team)) =>
       ListView.separated(
+          padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
           physics: BouncingScrollPhysics(),
           itemBuilder: (c, index) {
             var _team = teams[index];

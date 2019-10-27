@@ -22,7 +22,9 @@ class FindMatchingViewModel extends BaseViewModel {
     var resp = await _api.findMatching(team.id, team.groupMatchingInfo[0], 1);
     if (resp.isSuccess) {
       matchings = resp.matchings;
-      changeCurrentTeam(matchings[0]);
+      if (matchings.length > 0) {
+        changeCurrentTeam(matchings[0]);
+      }
     }
     setBusy(false);
     return resp;

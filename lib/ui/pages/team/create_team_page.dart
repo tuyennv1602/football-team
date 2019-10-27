@@ -100,7 +100,7 @@ class CreateTeamPage extends StatelessWidget {
                     child: BaseWidget<CreateTeamViewModel>(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
+                            EdgeInsets.symmetric(horizontal: UIHelper.size10),
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -214,7 +214,7 @@ class CreateTeamPage extends StatelessWidget {
                                     model, Provider.of<User>(context));
                               }
                             },
-                            margin: EdgeInsets.all(UIHelper.size15),
+                            margin: EdgeInsets.symmetric(horizontal: UIHelper.size10, vertical: UIHelper.size15),
                             child: Text(
                               StringRes.REGISTER.toUpperCase(),
                               style: textStyleButton(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/services/share_preferences.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
 import 'package:myfootball/ui/pages/login/login_page.dart';
@@ -47,6 +48,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           canvasColor: Colors.transparent,
+          primaryColor: PRIMARY,
+          accentColor: PRIMARY,
           fontFamily: 'regular',
         ),
         home: _isLogined ? HomePage() : LoginPage(),

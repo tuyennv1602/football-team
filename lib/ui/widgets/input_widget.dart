@@ -44,7 +44,7 @@ class InputWidget extends StatelessWidget {
       style: textStyle ?? textStyleInput(),
       decoration: InputDecoration(
         helperText: '',
-        contentPadding: EdgeInsets.symmetric(vertical: UIHelper.size(14)),
+        contentPadding: EdgeInsets.symmetric(vertical: UIHelper.size(7)),
         alignLabelWithHint: maxLines > 1,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(width: 0.5, color: LINE_COLOR),
