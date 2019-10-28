@@ -1,7 +1,7 @@
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/auth_services.dart';
-import 'package:myfootball/services/share_preferences.dart';
+import 'package:myfootball/services/local_storage.dart';
 import 'package:myfootball/services/sqlite_services.dart';
 import 'package:myfootball/services/team_services.dart';
 import 'package:provider/provider.dart';
@@ -18,16 +18,16 @@ List<SingleChildCloneableWidget> providers = [
 // These are classes/objects that do not depend on any other services to execute their logic
 List<SingleChildCloneableWidget> independentServices = [
   Provider.value(value: Api()),
-  Provider.value(value: SharePreferences()),
+  Provider.value(value: LocalStorage()),
   Provider.value(value: SQLiteServices())
 ];
 
 // These are classes/object that depend on previously registered services
 List<SingleChildCloneableWidget> dependentServices = [
-  ProxyProvider2<Api, SharePreferences, AuthServices>(
+  ProxyProvider2<Api, LocalStorage, AuthServices>(
       builder: (context, api, sharePref, authenticationService) =>
           AuthServices(api: api, sharePreferences: sharePref)),
-  ProxyProvider2<Api, SharePreferences, TeamServices>(
+  ProxyProvider2<Api, LocalStorage, TeamServices>(
       builder: (context, api, sharePref, teamServices) =>
           TeamServices(api: api, sharePreferences: sharePref))
 ];

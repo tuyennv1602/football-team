@@ -3,7 +3,7 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharePreferences {
+class LocalStorage {
   static const String ACCESS_TOKEN = 'token';
   static const String TEAM = 'team';
 

@@ -41,11 +41,11 @@ class MemberManagerPage extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       teamRequest.name ?? teamRequest.username,
-                      style: textStyleRegularTitle(),
+                      style: textStyleSemiBold(),
                     ),
                     Text(
                       'Giới thiệu: ${teamRequest.content}',
-                      style: textStyleRegularBody(),
+                      style: textStyleRegular(),
                     ),
                     Row(
                         children: teamRequest.getPositions
@@ -53,7 +53,7 @@ class MemberManagerPage extends StatelessWidget {
                             .toList()),
                     Text(
                       'Ngày tạo: ${teamRequest.getCreateDate}',
-                      style: textStyleItalic(color: Colors.grey),
+                      style: textStyleRegularBody(color: Colors.grey),
                     )
                   ],
                 ),

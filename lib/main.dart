@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/services/share_preferences.dart';
+import 'package:myfootball/services/local_storage.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
 import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'dart:convert';
@@ -27,7 +27,7 @@ parseJson(String text) {
 void main() async {
   timeago.setLocaleMessages('vi', ViMessage());
   _firebaseMessaging.requestNotificationPermissions();
-  var token = await SharePreferences().getToken();
+  var token = await LocalStorage().getToken();
   dio.interceptors
     ..add(LogInterceptor(
         responseBody: true, requestBody: true, responseHeader: false));

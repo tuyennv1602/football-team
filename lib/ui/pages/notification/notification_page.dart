@@ -61,12 +61,12 @@ class NotificationState extends State<NotificationPage>
                         style: textStyleRegularBody(color: Colors.grey)),
                     Text(
                       notification.title,
-                      style: textStyleRegularTitle(),
+                      style: textStyleSemiBold(),
                     ),
                     Text(
                       notification.body,
                       maxLines: 3,
-                      style: textStyleRegularBody(),
+                      style: textStyleRegular(),
                     ),
                   ],
                 ),

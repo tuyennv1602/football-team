@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/user_request.dart';
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
@@ -191,56 +192,80 @@ class UserRequestPage extends StatelessWidget {
       default:
         _status = Colors.green;
     }
-    return InkWell(
-      onTap: () {
-        if (request.status == Constants.REQUEST_REJECTED ||
-            request.status == Constants.REQUEST_ACCEPTED) return;
-        _showChooseAction(context, model, index, request);
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            ImageWidget(
-                source: request.teamLogo, placeHolder: Images.DEFAULT_LOGO),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: UIHelper.size10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Gửi tới: ${request.teamName}',
-                      style: textStyleRegularTitle(),
-                    ),
-                    Text(
-                      'Giới thiệu: ${request.content}',
-                      style: textStyleRegularBody(),
-                    ),
-                    Row(
-                        children: request.getPositions
-                            .map((pos) => ItemPosition(position: pos))
-                            .toList()),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            'Ngày tạo: ${request.getCreateDate}',
-                            style: textStyleItalic(color: Colors.grey),
-                          ),
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(UIHelper.size15),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      child: InkWell(
+        onTap: () {
+          if (request.status == Constants.REQUEST_REJECTED ||
+              request.status == Constants.REQUEST_ACCEPTED) return;
+          _showChooseAction(context, model, index, request);
+        },
+        child: Padding(
+          padding: EdgeInsets.all(UIHelper.size10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ImageWidget(
+                  source: request.teamLogo, placeHolder: Images.DEFAULT_LOGO),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: UIHelper.size10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Gửi tới: ',
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: UIHelper.size(16),
+                              ),
+                            ),
+                            TextSpan(
+                              text: request.teamName,
+                              style: TextStyle(
+                                fontFamily: SEMI_BOLD,
+                                color: Colors.black,
+                                fontSize: UIHelper.size(16),
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          request.getStatus,
-                          style: textStyleRegular(color: _status),
-                        )
-                      ],
-                    )
-                  ],
+                      ),
+                      Text(
+                        request.content,
+                        style: textStyleRegular(),
+                      ),
+                      UIHelper.verticalSpaceSmall,
+                      Row(
+                          children: request.getPositions
+                              .map((pos) => ItemPosition(position: pos))
+                              .toList()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Ngày tạo: ${request.getCreateDate}',
+                            style: textStyleRegularBody(color: Colors.grey),
+                          ),
+                          Text(
+                            request.getStatus,
+                            style: textStyleRegularBody(color: _status),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -280,7 +305,7 @@ class UserRequestPage extends StatelessWidget {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (c, index) => _buildItemRequest(
                           context, model, index, model.userRequests[index]),
-                      separatorBuilder: (c, index) => LineWidget(),
+                      separatorBuilder: (c, index) => SizedBox(height: UIHelper.size10,),
                       itemCount: model.userRequests.length);
                 },
               ),

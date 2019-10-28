@@ -98,7 +98,7 @@ class FindMatchingPage extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Text(
-                    DateUtil().getTimeStringFromDouble(timeSlot.startTime),
+                    DateUtil.getTimeStringFromDouble(timeSlot.startTime),
                     style: textStyleRegular(),
                   ),
                   Container(
@@ -108,7 +108,7 @@ class FindMatchingPage extends StatelessWidget {
                     color: PRIMARY,
                   ),
                   Text(
-                    DateUtil().getTimeStringFromDouble(timeSlot.endTime),
+                    DateUtil.getTimeStringFromDouble(timeSlot.endTime),
                     style: textStyleRegular(),
                   ),
                 ],
@@ -294,7 +294,7 @@ class FindMatchingPage extends StatelessWidget {
                               TabBarWidget(
                                 titles: team2.getMappedTimeSlot.keys
                                     .toList()
-                                    .map((item) => DateUtil().formatDate(DateUtil().getDateMatching(item), DateFormat('dd/MM')))
+                                    .map((item) => DateUtil.formatDate(DateUtil.getDateMatching(item), DateFormat('dd/MM')))
                                     .toList(),
                                 isScrollable: true,
                                 height: UIHelper.size40,
@@ -336,7 +336,7 @@ class FindMatchingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
-    Team _team = Provider.of<Team>(context);
+    Team team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -345,8 +345,8 @@ class FindMatchingPage extends StatelessWidget {
           model: FindMatchingViewModel(
               api: Provider.of(context), teamServices: Provider.of(context)),
           onModelReady: (model) {
-            if (_team.groupMatchingInfo.length > 0) {
-              model.findMatching(_team);
+            if (team.groupMatchingInfo.length > 0) {
+              model.findMatching(team);
             }
           },
           child: AppBarWidget(
@@ -380,7 +380,7 @@ class FindMatchingPage extends StatelessWidget {
                               child: Column(
                                 children: <Widget>[
                                   ImageWidget(
-                                    source: _team.logo,
+                                    source: team.logo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                     size: UIHelper.size(70),
                                   ),
@@ -388,7 +388,7 @@ class FindMatchingPage extends StatelessWidget {
                                     height: UIHelper.size(70),
                                     padding: EdgeInsets.all(UIHelper.size5),
                                     child: Text(
-                                      _team.name,
+                                      team.name,
                                       maxLines: 2,
                                       textAlign: TextAlign.center,
                                       style: textStyleSemiBold(
@@ -448,7 +448,7 @@ class FindMatchingPage extends StatelessWidget {
                   margin: EdgeInsets.only(
                       top: UIHelper.size(180) + UIHelper.paddingTop),
                   child: BorderBackground(
-                    child: _team.groupMatchingInfo.length == 0
+                    child: team.groupMatchingInfo.length == 0
                         ? _renderNoMatchingInfo(context)
                         : (model.busy
                             ? LoadingWidget()
@@ -462,7 +462,7 @@ class FindMatchingPage extends StatelessWidget {
                                           var _matching =
                                               model.matchings[index];
                                           return _buildSwiperItem(
-                                              context, _team, _matching);
+                                              context, team, _matching);
                                         },
                                         onIndexChanged: (index) =>
                                             model.changeCurrentTeam(

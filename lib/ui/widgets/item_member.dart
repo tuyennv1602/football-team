@@ -47,7 +47,7 @@ class ItemMember extends StatelessWidget {
                             children: <TextSpan>[
                               TextSpan(
                                 text: _member.userName,
-                                style: textStyleRegularTitle(),
+                                style: textStyleSemiBold(),
                               ),
                               TextSpan(
                                   text: ' (C)',
@@ -58,11 +58,11 @@ class ItemMember extends StatelessWidget {
                         )
                       : Text(
                           _member.userName,
-                          style: textStyleRegularTitle(),
+                          style: textStyleSemiBold(),
                         ),
                   Text(
                     'Điểm cá nhân: ${_member.getRating}',
-                    style: textStyleRegularBody(),
+                    style: textStyleRegular(),
                   ),
                   Row(
                     children: _member.getPositions

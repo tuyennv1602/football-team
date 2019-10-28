@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:myfootball/services/share_preferences.dart';
+import 'package:myfootball/services/local_storage.dart';
 import 'package:myfootball/services/team_services.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class UserViewModel extends BaseViewModel {
-  SharePreferences _preferences;
+  LocalStorage _preferences;
   TeamServices _teamServices;
 
   UserViewModel(
-      {@required SharePreferences sharePreferences,
+      {@required LocalStorage sharePreferences,
       @required TeamServices teamServices})
       : _preferences = sharePreferences,
         _teamServices = teamServices;

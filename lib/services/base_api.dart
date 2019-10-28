@@ -10,7 +10,12 @@ class BaseApi {
 
   BaseApi.internal();
 
-  static const HOST = "http://35.192.88.45:8080/football";
+  static BaseApi getInstance() {
+    if (_instance == null) {
+      return BaseApi();
+    }
+    return _instance;
+  }
 
   static Headers header;
 
@@ -20,31 +25,31 @@ class BaseApi {
 
   Future<Response<dynamic>> getAuthApi(String endPoint,
       {FormData queryParams}) async {
-    return await dio.get('$HOST/$endPoint',
+    return await dio.get(endPoint,
         queryParameters: queryParams,
         options: Options(headers: {'app-type': 0}));
   }
 
   Future<Response<dynamic>> postAuthApi(String endPoint, {dynamic body}) async {
-    return await dio.post('$HOST/$endPoint',
+    return await dio.post(endPoint,
         data: body, options: Options(headers: {'app-type': 0}));
   }
 
   Future<Response<dynamic>> getApi(String endPoint,
       {FormData queryParams}) async {
-    return await dio.get('$HOST/$endPoint',
+    return await dio.get(endPoint,
         queryParameters: queryParams,
         options: Options(headers: header != null ? header.toJson() : null));
   }
 
   Future<Response<dynamic>> postApi(String endPoint, {dynamic body}) async {
-    return await dio.post('$HOST/$endPoint',
+    return await dio.post(endPoint,
         data: body,
         options: Options(headers: header != null ? header.toJson() : null));
   }
 
   Future<Response<dynamic>> putApi(String endPoint, {dynamic body}) async {
-    return await dio.put('$HOST/$endPoint',
+    return await dio.put(endPoint,
         data: body,
         options: Options(headers: header != null ? header.toJson() : null));
   }

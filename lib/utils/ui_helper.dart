@@ -6,11 +6,11 @@ import 'package:myfootball/ui/widgets/progress_dialog.dart';
 class UIHelper {
   static MediaQueryData _mediaQueryData;
   static BuildContext _buildContext;
+  static ProgressDialog progressDialog;
   static double paddingTop;
   static double paddingBottom;
   static double screenWidth;
   static double screenHeight;
-  static ProgressDialog progressDialog;
   static double size5;
   static double size10;
   static double size15;

@@ -64,9 +64,9 @@ class TimeInfo {
     return data;
   }
 
-  String get getStartHour => DateUtil().getTimeStringFromDouble(startHour);
+  String get getStartHour => DateUtil.getTimeStringFromDouble(startHour);
 
-  String get getEndHour => DateUtil().getTimeStringFromDouble(endHour);
+  String get getEndHour => DateUtil.getTimeStringFromDouble(endHour);
 
   String get getTimes {
     if (dayOfWeek == null) {
@@ -76,7 +76,7 @@ class TimeInfo {
       return '$getStartHour - $getEndHour (Cả tuần)';
     }
     List<String> _dayOfWeeks = dayOfWeek.split(',');
-    _dayOfWeeks = _dayOfWeeks.map((day) => DateUtil().getShortDayOfWeek(int.parse(day))).toList();
+    _dayOfWeeks = _dayOfWeeks.map((day) => DateUtil.getShortDayOfWeek(int.parse(day))).toList();
     return '$getStartHour - $getEndHour (${_dayOfWeeks.join(',')})';
   }
 }

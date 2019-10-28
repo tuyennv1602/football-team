@@ -22,7 +22,7 @@ class BookingViewModel extends BaseViewModel {
   Future<GroundResponse> getFreeTimeSlot(int groundId) async {
     setBusy(true);
     var resp = await _api.getFreeTimeSlots(
-        groundId, DateUtil().formatDate(currentDate, DateFormat('dd/MM/yyyy')));
+        groundId, DateUtil.formatDate(currentDate, DateFormat('dd/MM/yyyy')));
     if (resp.isSuccess) {
       this.fields = resp.ground.fields;
     }
@@ -32,7 +32,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<BaseResponse> booking(int groundId, int timeSlotId) async {
     var resp = await _api.bookingTimeSlot(
-        groundId, timeSlotId, DateUtil().getDateTimeStamp(currentDate));
+        groundId, timeSlotId, DateUtil.getDateTimeStamp(currentDate));
     return resp;
   }
 }

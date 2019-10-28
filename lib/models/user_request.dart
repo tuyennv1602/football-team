@@ -45,7 +45,7 @@ class UserRequest {
     return data;
   }
 
-  String get getCreateDate => DateUtil().getDateFromTimestamp(createDate);
+  String get getCreateDate => DateUtil.getDateFromTimestamp(createDate);
 
   String get getStatus {
     if (status == Constants.REQUEST_WAITING) return 'Đang chờ';

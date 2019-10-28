@@ -8,15 +8,15 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/token.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/services/base_api.dart';
-import 'package:myfootball/services/share_preferences.dart';
+import 'package:myfootball/services/local_storage.dart';
 
 import 'api.dart';
 
 class AuthServices {
   final Api _api;
-  final SharePreferences _preferences;
+  final LocalStorage _preferences;
 
-  AuthServices({Api api, SharePreferences sharePreferences})
+  AuthServices({Api api, LocalStorage sharePreferences})
       : _api = api,
         _preferences = sharePreferences;
 

@@ -27,8 +27,8 @@ class TimeSliderState extends State<TimeSliderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var formattedStart = DateUtil().getTimeStringFromDouble(_values.start);
-    var formattedEnd = DateUtil().getTimeStringFromDouble(_values.end);
+    var formattedStart = DateUtil.getTimeStringFromDouble(_values.start);
+    var formattedEnd = DateUtil.getTimeStringFromDouble(_values.end);
     List<Widget> _children = [];
     _kDayOfWeeks.asMap().forEach(
       (index, title) {
@@ -37,7 +37,7 @@ class TimeSliderState extends State<TimeSliderWidget> {
             pressElevation: 0,
             selectedColor: PRIMARY,
             backgroundColor: Colors.grey,
-            label: Text(DateUtil().getDayOfWeek(int.parse(title)), style: textStyleRegular(color: Colors.white)),
+            label: Text(DateUtil.getDayOfWeek(int.parse(title)), style: textStyleRegular(color: Colors.white)),
             selected: _selectedDay.contains(title),
             onSelected: (isSelected) {
               if (isSelected) {

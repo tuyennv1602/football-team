@@ -54,13 +54,13 @@ class RequestMemberPage extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       team.name,
-                      style: textStyleRegularTitle(),
+                      style: textStyleSemiBold(),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size(2)),
                       child: Text(
                         'Xếp hạng: 3/100 (1500 điểm)',
-                        style: textStyleRegularBody(),
+                        style: textStyleRegular(),
                       ),
                     ),
                     Row(
@@ -68,7 +68,7 @@ class RequestMemberPage extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           'Đánh giá: ',
-                          style: textStyleRegularBody(),
+                          style: textStyleRegular(),
                         ),
                         FlutterRatingBarIndicator(
                           rating: 2.5,
@@ -81,7 +81,7 @@ class RequestMemberPage extends StatelessWidget {
                           child: Text(
                             '${team.countMember} thành viên',
                             textAlign: TextAlign.right,
-                            style: textStyleRegularBody(),
+                            style: textStyleRegular(),
                           ),
                         )
                       ],

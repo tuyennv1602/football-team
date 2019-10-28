@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/group_matching_info.dart';
-import 'package:myfootball/models/invite_matching_request.dart';
+import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
-import 'package:myfootball/models/responses/district_resp.dart';
 import 'package:myfootball/models/responses/ground_resp.dart';
-import 'package:myfootball/models/responses/invite_matching_resp.dart';
+import 'package:myfootball/models/responses/invite_request_resp.dart';
 import 'package:myfootball/models/responses/list_ground_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/responses/matching_resp.dart';
@@ -15,13 +14,12 @@ import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
 import 'package:myfootball/models/responses/user_request_resp.dart';
-import 'package:myfootball/models/responses/ward_resp.dart';
 import 'package:myfootball/models/team.dart';
 
 import 'base_api.dart';
 
 class Api {
-  final _api = BaseApi();
+  final _api = BaseApi.getInstance();
 
   Future<LoginResponse> loginEmail(String email, String password) async {
     try {
@@ -308,7 +306,7 @@ class Api {
   }
 
   Future<BaseResponse> sendInviteMatching(
-      InviteMatchingRequest matchingRequest) async {
+      InviteRequest matchingRequest) async {
     try {
       var resp = await _api.postApi('match/request',
           body: matchingRequest.toCreateJson());
@@ -318,7 +316,7 @@ class Api {
     }
   }
 
-  Future<InviteMatchingResponse> getInviteMatchingByTeam(int teamId) async {
+  Future<InviteRequestResponse> getInviteRequestsByTeam(int teamId) async {
     try {
       FormData formData = new FormData.from({
         "page": 1,
@@ -326,9 +324,9 @@ class Api {
       });
       var resp = await _api.getApi('match/request/group/$teamId',
           queryParams: formData);
-      return InviteMatchingResponse.success(resp.data);
+      return InviteRequestResponse.success(resp.data);
     } on DioError catch (e) {
-      return InviteMatchingResponse.error(e.message);
+      return InviteRequestResponse.error(e.message);
     }
   }
 }

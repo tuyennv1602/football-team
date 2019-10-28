@@ -27,9 +27,9 @@ textStyleItalic({double size, Color color}) => TextStyle(
     letterSpacing: 0.1);
 
 textStyleRegular({double size, Color color}) => TextStyle(
-    fontSize: UIHelper.size(size ?? 14),
+    fontSize: UIHelper.size(size ?? 15),
     fontFamily: REGULAR,
-    color: color ?? Colors.black,
+    color: color ?? Colors.black87,
     letterSpacing: 0.1);
 
 textStyleRegularTitle({double size, Color color}) => TextStyle(

@@ -60,7 +60,7 @@ class BookingPage extends StatelessWidget {
                 ),
                 UIHelper.horizontalSpaceMedium,
                 Text(
-                  '${DateUtil().formatDate(model.currentDate, DateFormat('dd/MM/yyyy'))}',
+                  '${DateUtil.formatDate(model.currentDate, DateFormat('dd/MM/yyyy'))}',
                   style: textStyleSemiBold(),
                 ),
               ],
@@ -131,7 +131,7 @@ class BookingPage extends StatelessWidget {
 
   Widget _buildTicket(BuildContext context, DateTime playDate,
       TimeSlot timeSlot, Function onTap) {
-    bool isAbleBooking = DateUtil().isAbleBooking(playDate, timeSlot);
+    bool isAbleBooking = DateUtil.isAbleBooking(playDate, timeSlot);
     return Opacity(
       opacity: isAbleBooking ? 1 : 0.5,
       child: DashedContainer(
@@ -338,7 +338,7 @@ class BookingPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     vertical: UIHelper.size15),
                                 child: Text(
-                                  DateUtil().formatDate(model.currentDate,
+                                  DateUtil.formatDate(model.currentDate,
                                       DateFormat('EEE, dd/MM/yyyy')),
                                   textAlign: TextAlign.right,
                                   style: textStyleSemiBold(),

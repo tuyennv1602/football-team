@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:myfootball/models/invite_matching_request.dart';
+import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -14,7 +14,6 @@ import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/choose_ratio_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
-import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
@@ -60,7 +59,7 @@ class InviteTeamPage extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Text(
-                    DateUtil().getTimeStringFromDouble(timeSlot.startTime),
+                    DateUtil.getTimeStringFromDouble(timeSlot.startTime),
                     style: textStyleRegular(),
                   ),
                   Container(
@@ -70,7 +69,7 @@ class InviteTeamPage extends StatelessWidget {
                     color: PRIMARY,
                   ),
                   Text(
-                    DateUtil().getTimeStringFromDouble(timeSlot.endTime),
+                    DateUtil.getTimeStringFromDouble(timeSlot.endTime),
                     style: textStyleRegular(),
                   ),
                 ],
@@ -112,7 +111,7 @@ class InviteTeamPage extends StatelessWidget {
       UIHelper.showSimpleDialog('Vui lòng chọn ít nhất một ngày, giờ, sân');
     } else {
       UIHelper.showProgressDialog;
-      var resp = await model.sendInvite(InviteMatchingRequest(
+      var resp = await model.sendInvite(InviteRequest(
           title: _invite,
           sendGroupId: _fromTeamId,
           receiveGroupId: _toTeamId,
@@ -206,8 +205,8 @@ class InviteTeamPage extends StatelessWidget {
                                 TabBarWidget(
                                   titles: _mappedTimeSlots.keys
                                       .toList()
-                                      .map((item) => DateUtil().formatDate(
-                                          DateUtil().getDateMatching(item),
+                                      .map((item) => DateUtil.formatDate(
+                                          DateUtil.getDateMatching(item),
                                           DateFormat('dd/MM')))
                                       .toList(),
                                   isScrollable: true,

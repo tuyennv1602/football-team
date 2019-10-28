@@ -26,11 +26,11 @@ class TeamFundPage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
-                  style: textStyleRegularTitle(),
+                  style: textStyleSemiBold(),
                 ),
                 Text(
                   content,
-                  style: textStyleRegularBody(),
+                  style: textStyleRegular(),
                 ),
                 Row(
                   children: <Widget>[

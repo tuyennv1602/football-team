@@ -44,7 +44,7 @@ class TeamRequest {
     return data;
   }
 
-  String get getCreateDate => DateUtil().getDateFromTimestamp(createDate);
+  String get getCreateDate => DateUtil.getDateFromTimestamp(createDate);
 
   List<String> get getPositions => position != null ? position.split(',') : [];
 }

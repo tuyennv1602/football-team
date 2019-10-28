@@ -171,7 +171,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.STACK,
           'Lời mời ghép đối',
           iconColor: Colors.blueAccent,
-          onTap: () => Routes.routeToFindMatching(context),
+          onTap: () => Routes.routeToInviteRequest(context),
         ),
         LineWidget(),
         ItemOptionWidget(

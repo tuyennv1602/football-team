@@ -3,13 +3,7 @@ import 'package:myfootball/models/time_slot.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DateUtil {
-  static final DateUtil _instance = DateUtil.internal();
-
-  factory DateUtil() => _instance;
-
-  DateUtil.internal();
-
-  String getDayOfWeek(int number) {
+  static String getDayOfWeek(int number) {
     switch (number) {
       case 1:
         return 'Thứ hai';
@@ -29,7 +23,7 @@ class DateUtil {
     return null;
   }
 
-  String getShortDayOfWeek(int number) {
+  static String getShortDayOfWeek(int number) {
     switch (number) {
       case 1:
         return 'T2';
@@ -49,21 +43,21 @@ class DateUtil {
     return null;
   }
 
-  String getDateFromTimestamp(int timestamp) {
+  static String getDateFromTimestamp(int timestamp) {
     return DateFormat('dd/MM/yyyy')
         .format(new DateTime.fromMillisecondsSinceEpoch(timestamp));
   }
 
-  String formatDate(DateTime date, DateFormat format) {
+  static String formatDate(DateTime date, DateFormat format) {
     return format.format(date);
   }
 
-  String getTimeAgo(int timestamp) {
+  static String getTimeAgo(int timestamp) {
     return timeago.format(new DateTime.fromMillisecondsSinceEpoch(timestamp),
         locale: 'vi');
   }
 
-  String getTimeStringFromDouble(double value) {
+  static String getTimeStringFromDouble(double value) {
     if (value < 0) return null;
     int flooredValue = value.floor();
     double decimalValue = value - flooredValue;
@@ -72,7 +66,7 @@ class DateUtil {
     return '$hourValue:$minuteString';
   }
 
-  List<int> getTimeFromDouble(double value) {
+  static List<int> getTimeFromDouble(double value) {
     if (value < 0) return null;
     int flooredValue = value.floor();
     double decimalValue = value - flooredValue;
@@ -81,20 +75,20 @@ class DateUtil {
     return [int.parse(hourValue), int.parse(minuteString)];
   }
 
-  int getDateTimeStamp(DateTime dateTime) {
+  static int getDateTimeStamp(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day)
         .millisecondsSinceEpoch;
   }
 
-  String getMinuteString(double decimalValue) {
+  static String getMinuteString(double decimalValue) {
     return '${(decimalValue * 60).toInt()}'.padLeft(2, '0');
   }
 
-  String getHourString(int flooredValue) {
+  static String getHourString(int flooredValue) {
     return '${flooredValue % 24}'.padLeft(2, '0');
   }
 
-  DateTime getDateMatching(int dayOfWeek) {
+  static DateTime getDateMatching(int dayOfWeek) {
     DateTime date = DateTime.now();
     int _weekDay = date.weekday;
     if (_weekDay < dayOfWeek) {
@@ -106,7 +100,7 @@ class DateUtil {
     }
   }
 
-  bool isAbleBooking(DateTime playDate, TimeSlot timeSlot) {
+  static bool isAbleBooking(DateTime playDate, TimeSlot timeSlot) {
     DateTime _now = DateTime.now();
     List<int> _time = getTimeFromDouble(timeSlot.startTime);
     if (_time == null) return false;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/models/invite_matching_request.dart';
+import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/services/api.dart';
@@ -26,7 +26,7 @@ class InviteTeamViewModel extends BaseViewModel {
     }
   }
 
-  Future<BaseResponse> sendInvite(InviteMatchingRequest matchingRequest) async {
+  Future<BaseResponse> sendInvite(InviteRequest matchingRequest) async {
     setBusy(true);
     var resp = await _api.sendInviteMatching(matchingRequest);
     setBusy(false);

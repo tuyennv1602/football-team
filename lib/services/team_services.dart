@@ -5,14 +5,14 @@ import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/services/api.dart';
-import 'package:myfootball/services/share_preferences.dart';
+import 'package:myfootball/services/local_storage.dart';
 
 class TeamServices {
   final Api _api;
-  final SharePreferences _sharePreferences;
+  final LocalStorage _sharePreferences;
   Team _currentTeam;
 
-  TeamServices({@required Api api, SharePreferences sharePreferences})
+  TeamServices({@required Api api, LocalStorage sharePreferences})
       : _api = api,
         _sharePreferences = sharePreferences;
 

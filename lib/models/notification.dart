@@ -52,5 +52,5 @@ class Notification {
     return data;
   }
 
-  String get getCreateTime => DateUtil().getTimeAgo(createDate);
+  String get getCreateTime => DateUtil.getTimeAgo(createDate);
 }

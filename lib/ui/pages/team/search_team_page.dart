@@ -37,7 +37,7 @@ class SearchTeamPage extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       team.name,
-                      style: textStyleRegularTitle(),
+                      style: textStyleSemiBold(),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size(2)),

@@ -55,7 +55,7 @@ class MatchingTimeSlot {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['time_slot_id'] = this.timeSlotId;
     data['play_date'] =
-        DateUtil().getDateTimeStamp(DateUtil().getDateMatching(dayOfWeek));
+        DateUtil.getDateTimeStamp(DateUtil.getDateMatching(dayOfWeek));
     return data;
   }
 
