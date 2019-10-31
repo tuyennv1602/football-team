@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
+import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/object_utils.dart';
 
 class InviteRequest {
   int id;
@@ -16,20 +18,23 @@ class InviteRequest {
   String receiveGroupLogo;
   List<MatchingTimeSlot> matchingTimeSlots;
   List<MatchingTimeSlot> groundTimeSlots;
+  int currentTeamId;
 
-  InviteRequest({this.id,
-    this.status,
-    this.title,
-    this.ratio,
-    this.createDate,
-    this.sendGroupId,
-    this.sendGroupName,
-    this.sendGroupLogo,
-    this.receiveGroupId,
-    this.receiveGroupName,
-    this.receiveGroupLogo,
-    this.matchingTimeSlots,
-    this.groundTimeSlots});
+  InviteRequest(
+      {this.id,
+      this.status,
+      this.title,
+      this.ratio,
+      this.createDate,
+      this.sendGroupId,
+      this.sendGroupName,
+      this.sendGroupLogo,
+      this.receiveGroupId,
+      this.receiveGroupName,
+      this.receiveGroupLogo,
+      this.matchingTimeSlots,
+      this.groundTimeSlots,
+      this.currentTeamId});
 
   InviteRequest.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -88,15 +93,30 @@ class InviteRequest {
   String get getCreateTime => DateUtil.getTimeAgo(createDate);
 
   String get getStatus {
-    if (status == 1) return 'Đang chờ';
-    if (status == 2) return 'Đã huỷ';
+    if (status == Constants.INVITE_CANCEL) return 'Đã huỷ';
+    if (status == Constants.INVITE_REJECTED) return 'Từ chối';
+    if (status == Constants.INVITE_WAITING) return 'Đang chờ';
+    if (status == Constants.INVITE_ACCEPTED) return 'Đã chấp nhận';
     return 'Không xác định';
   }
 
   Color get getStatusColor {
-    if (status == 1) return Colors.red;
-    if (status == 2) return Colors.grey;
+    if (status == Constants.INVITE_CANCEL ||
+        status == Constants.INVITE_REJECTED) return Colors.grey;
+    if (status == Constants.INVITE_WAITING) return Colors.red;
     return Colors.green;
   }
 
+  Map<int, List<MatchingTimeSlot>> get getMappedTimeSlot =>
+      ObjectUtil.mapMatchingTimeSlotByDayOfWeek(groundTimeSlots);
+
+  int get getTypeRequest => sendGroupId == currentTeamId ? 1 : 0;
+
+  bool get isMine => sendGroupId == currentTeamId;
+
+  String get getLogo => isMine ? receiveGroupLogo : sendGroupLogo;
+
+  String get getName => isMine ? receiveGroupName : sendGroupName;
+
+  int get getId => isMine ? receiveGroupId : sendGroupId;
 }

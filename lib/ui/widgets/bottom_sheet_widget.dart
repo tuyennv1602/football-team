@@ -77,6 +77,7 @@ class BottomSheetWidget extends StatelessWidget {
                   topRight: Radius.circular(UIHelper.size(15)),
                   topLeft: Radius.circular(UIHelper.size(15))),
             ),
+            padding: EdgeInsets.only(bottom: UIHelper.paddingBottom),
             child: Column(
               children: this.children,
               mainAxisAlignment: MainAxisAlignment.end,

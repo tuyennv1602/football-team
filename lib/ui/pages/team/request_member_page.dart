@@ -10,6 +10,7 @@ import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
@@ -36,10 +37,26 @@ class RequestMemberPage extends StatelessWidget {
     return false;
   }
 
+  void _showOptions(BuildContext context, Team team) => showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: ['Tuỳ chọn', 'Gửi yêu cầu', 'Thông tin đội bóng', 'Huỷ'],
+          onClickOption: (index) {
+            if (index == 1) {
+              _showRequestForm(context, team);
+            }
+            if (index == 2) {
+              Routes.routeToOtherTeamDetail(context, team);
+            }
+          },
+        ),
+      );
+
   Widget _buildItemTeam(BuildContext context, Team team) => InkWell(
-        onTap: () => _showRequestForm(context, team),
+        onTap: () => _showOptions(context, team),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
+          padding: EdgeInsets.symmetric(
+              horizontal: UIHelper.size15, vertical: UIHelper.size10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -59,7 +76,7 @@ class RequestMemberPage extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size(2)),
                       child: Text(
-                        'Xếp hạng: 3/100 (1500 điểm)',
+                        'Xếp hạng: ${team.rank} (${team.point} điểm)',
                         style: textStyleRegular(),
                       ),
                     ),
@@ -71,18 +88,11 @@ class RequestMemberPage extends StatelessWidget {
                           style: textStyleRegular(),
                         ),
                         FlutterRatingBarIndicator(
-                          rating: 2.5,
+                          rating: team.rating,
                           itemCount: 5,
                           itemPadding: EdgeInsets.only(left: 2),
-                          itemSize: UIHelper.size(12),
+                          itemSize: UIHelper.size15,
                           emptyColor: Colors.amber.withAlpha(90),
-                        ),
-                        Expanded(
-                          child: Text(
-                            '${team.countMember} thành viên',
-                            textAlign: TextAlign.right,
-                            style: textStyleRegular(),
-                          ),
                         )
                       ],
                     )

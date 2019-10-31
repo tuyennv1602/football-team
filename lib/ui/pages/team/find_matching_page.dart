@@ -297,7 +297,7 @@ class FindMatchingPage extends StatelessWidget {
                                     .map((item) => DateUtil.formatDate(DateUtil.getDateMatching(item), DateFormat('dd/MM')))
                                     .toList(),
                                 isScrollable: true,
-                                height: UIHelper.size40,
+                                height: UIHelper.size35,
                               ),
                             ],
                           ),

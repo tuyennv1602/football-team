@@ -23,7 +23,8 @@ class EmptyWidget extends StatelessWidget {
         Text(
           _message,
           style: textStyleRegularTitle(color: Colors.grey),
-        )
+        ),
+        SizedBox(height: UIHelper.size50)
       ],
     );
   }

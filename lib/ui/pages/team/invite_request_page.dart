@@ -8,8 +8,11 @@ import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/tabbar_widget.dart';
+import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/invite_request_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -17,58 +20,93 @@ import 'package:provider/provider.dart';
 import '../base_widget.dart';
 
 class InviteRequestPage extends StatelessWidget {
+  static const TABS = ['Lời mời', 'Đã gửi'];
+
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
-      Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size15),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
-        child: InkWell(
-          onTap: () => Routes.routeToConfirmInvite(context, inviteRequest),
-          child: Padding(
-            padding: EdgeInsets.all(UIHelper.size10),
-            child: Row(
-              children: <Widget>[
-                ImageWidget(
-                  source: inviteRequest.sendGroupLogo,
-                  placeHolder: Images.DEFAULT_LOGO,
-                ),
-                UIHelper.horizontalSpaceMedium,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        inviteRequest.sendGroupName,
-                        style: textStyleSemiBold(),
-                      ),
-                      Text(
-                        inviteRequest.title,
-                        style: textStyleRegularTitle(),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            inviteRequest.getCreateTime,
-                            style: textStyleRegularBody(color: Colors.grey),
-                          ),
-                          Text(
-                            inviteRequest.getStatus,
-                            style: textStyleRegularBody(
-                                color: inviteRequest.getStatusColor),
-                          )
-                        ],
-                      )
-                    ],
+      Opacity(
+        opacity: inviteRequest.status == Constants.INVITE_WAITING ? 1 : 0.5,
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(UIHelper.size15),
+          ),
+          margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+          child: InkWell(
+            onTap: () {
+              if (inviteRequest.status == Constants.INVITE_WAITING) {
+                _showOptions(context, inviteRequest);
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.all(UIHelper.size10),
+              child: Row(
+                children: <Widget>[
+                  ImageWidget(
+                    source: inviteRequest.getLogo,
+                    placeHolder: Images.DEFAULT_LOGO,
                   ),
-                )
-              ],
+                  UIHelper.horizontalSpaceMedium,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          inviteRequest.getName,
+                          style: textStyleSemiBold(),
+                        ),
+                        Text(
+                          inviteRequest.title,
+                          style: textStyleRegularTitle(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              inviteRequest.getCreateTime,
+                              style: textStyleRegularBody(color: Colors.grey),
+                            ),
+                            Text(
+                              inviteRequest.getStatus,
+                              style: textStyleRegularBody(
+                                  color: inviteRequest.getStatusColor),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
+        ),
+      );
+
+  void _showOptions(BuildContext context, InviteRequest inviteRequest) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: [
+            'Tuỳ chọn',
+            'Chi tiết lời mời',
+            'Thông tin đội bóng',
+            'Huỷ'
+          ],
+          onClickOption: (index) {
+            if (index == 1) {
+              Routes.routeToConfirmInvite(context, inviteRequest);
+            }
+            if (index == 2) {
+              Routes.routeToOtherTeamDetail(
+                  context,
+                  Team(
+                      id: inviteRequest.getId,
+                      name: inviteRequest.getName,
+                      logo: inviteRequest.getLogo));
+            }
+          },
         ),
       );
 
@@ -100,15 +138,40 @@ class InviteRequestPage extends StatelessWidget {
                 onModelReady: (model) => model.getAllInvites(team.id),
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
-                    : ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(vertical: UIHelper.size10),
-                        itemBuilder: (c, index) => _buildItemRequest(
-                            context, model.inviteRequests[index]),
-                        separatorBuilder: (c, index) => SizedBox(
-                              height: UIHelper.size10,
+                    : DefaultTabController(
+                        length: model.mappedInviteRequest.length,
+                        child: Column(
+                          children: <Widget>[
+                            TabBarWidget(
+                              titles: model.mappedInviteRequest.keys
+                                  .toList()
+                                  .map((item) => TABS[item])
+                                  .toList(),
+                              height: UIHelper.size45,
                             ),
-                        itemCount: model.inviteRequests.length),
+                            Expanded(
+                              child: TabBarView(
+                                children: model.mappedInviteRequest.values
+                                    .toList()
+                                    .map(
+                                      (inviteRequests) => ListView.separated(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: UIHelper.size10),
+                                          itemBuilder: (c, index) =>
+                                              _buildItemRequest(context,
+                                                  inviteRequests[index]),
+                                          separatorBuilder: (c, index) =>
+                                              SizedBox(
+                                                height: UIHelper.size10,
+                                              ),
+                                          itemCount: inviteRequests.length),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
             ),
           ),

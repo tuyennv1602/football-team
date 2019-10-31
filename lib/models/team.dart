@@ -22,7 +22,8 @@ class Team {
   int isSearching;
   List<GroupMatchingInfo> groupMatchingInfo;
 
-  Team({this.manager, this.name, this.logo, this.dress, this.bio});
+  Team({this.id, this.manager, this.name, this.logo, this.dress, this.bio});
+
 
   Team.fromJson(Map<String, dynamic> json) {
     id = json['id'];

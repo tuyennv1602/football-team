@@ -41,6 +41,7 @@ class Images {
   static const String LOADING = '$FOLDER/icn_loading.png';
   static const String LEAVE_TEAM = '$FOLDER/icn_left_team.png';
   static const String PHONE = '$FOLDER/icn_phone.png';
+  static const String CALL = '$FOLDER/ic_call.png';
   static const String MORE = '$FOLDER/icn_more.png';
   static const String ACCEPT = '$FOLDER/icn_accept.png';
   static const String DENY = '$FOLDER/icn_deny.png';

@@ -26,4 +26,19 @@ class StringUtil {
         return 'Hỗ hợp';
     }
   }
+
+  static String getRatioName(int type) {
+    switch (type) {
+      case Constants.RATIO_50_50:
+        return '50 - 50';
+      case Constants.RATIO_40_60:
+        return '40 - 60';
+      case Constants.RATIO_30_70:
+        return '30 - 70';
+      case Constants.RATIO_20_80:
+        return '20 - 80';
+      default:
+        return '0 - 100';
+    }
+  }
 }

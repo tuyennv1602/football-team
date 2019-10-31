@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
+import 'package:myfootball/models/member.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/ui/pages/login/forgot_password_page.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
@@ -10,7 +11,7 @@ import 'package:myfootball/ui/pages/login/register_page.dart';
 import 'package:myfootball/ui/pages/team/add_address_page.dart';
 import 'package:myfootball/ui/pages/team/booking_page.dart';
 import 'package:myfootball/ui/pages/team/compare_team_page.dart';
-import 'package:myfootball/ui/pages/team/confirm_invite_page.dart';
+import 'package:myfootball/ui/pages/team/invite_detail_page.dart';
 import 'package:myfootball/ui/pages/team/edit_team_page.dart';
 import 'package:myfootball/ui/pages/team/finance_page.dart';
 import 'package:myfootball/ui/pages/team/find_matching_page.dart';
@@ -18,6 +19,7 @@ import 'package:myfootball/ui/pages/team/ground_detail_page.dart';
 import 'package:myfootball/ui/pages/team/invite_request_page.dart';
 import 'package:myfootball/ui/pages/team/invite_team_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
+import 'package:myfootball/ui/pages/team/other_team_detail_page.dart';
 import 'package:myfootball/ui/pages/team/search_ground_page.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/pages/team/setup_matching_info_page.dart';
@@ -72,9 +74,13 @@ class Routes {
         .push(SlideLeftRoute(widget: MemberManagerPage()));
   }
 
-  static Future<dynamic> routeToMember(BuildContext context) async {
-    return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: MemberPage()));
+  static Future<dynamic> routeToMember(
+      BuildContext context, List<Member> members, int manageId) async {
+    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(
+        widget: MemberPage(
+      members: members,
+      managerId: manageId,
+    )));
   }
 
   static Future<dynamic> routeToFindMatching(BuildContext context) async {
@@ -160,6 +166,14 @@ class Routes {
   static Future<dynamic> routeToConfirmInvite(
       BuildContext context, InviteRequest inviteRequest) async {
     return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(
-        widget: ConfirmInvitePage(inviteRequest: inviteRequest)));
+        widget: InviteDetailPage(inviteRequest: inviteRequest)));
+  }
+
+  static Future<dynamic> routeToOtherTeamDetail(
+      BuildContext context, Team team) async {
+    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(
+        widget: OtherTeamDetailPage(
+      team: team,
+    )));
   }
 }

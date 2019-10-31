@@ -25,62 +25,56 @@ class MemberManagerPage extends StatelessWidget {
 
   Widget _buildItemRequest(BuildContext context, TeamRequest teamRequest,
           Function onAccept, Function onDeny) =>
-      InkWell(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: UIHelper.size15, vertical: UIHelper.size10),
-          child: Row(
-            children: <Widget>[
-              ImageWidget(
-                  source: teamRequest.avatar,
-                  placeHolder: Images.DEFAULT_AVATAR),
-              UIHelper.horizontalSpaceMedium,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      teamRequest.name ?? teamRequest.username,
-                      style: textStyleSemiBold(),
-                    ),
-                    Text(
-                      'Giới thiệu: ${teamRequest.content}',
-                      style: textStyleRegular(),
-                    ),
-                    Row(
-                        children: teamRequest.getPositions
-                            .map((pos) => ItemPosition(position: pos))
-                            .toList()),
-                    Text(
-                      'Ngày tạo: ${teamRequest.getCreateDate}',
-                      style: textStyleRegularBody(color: Colors.grey),
-                    )
-                  ],
-                ),
-              ),
-              Column(
-                children: <Widget>[
-                  Container(
-                    width: UIHelper.size35,
-                    height: UIHelper.size35,
-                    padding: EdgeInsets.all(UIHelper.size5),
-                    child: InkWell(
-                      onTap: onAccept,
-                      child: Image.asset(Images.ACCEPT),
-                    ),
+      Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(UIHelper.size15),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        child: InkWell(
+          onTap: () => _showRequestOptions(context, (index) {
+            if (index == 1) {
+              onAccept();
+            }
+            if (index == 2) {
+              onDeny();
+            }
+          }),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: UIHelper.size15, vertical: UIHelper.size10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ImageWidget(
+                    source: teamRequest.avatar,
+                    placeHolder: Images.DEFAULT_AVATAR),
+                UIHelper.horizontalSpaceMedium,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        teamRequest.name ?? teamRequest.username,
+                        style: textStyleSemiBold(),
+                      ),
+                      Text(
+                        'Giới thiệu: ${teamRequest.content}',
+                        style: textStyleRegular(),
+                      ),
+                      Row(
+                          children: teamRequest.getPositions
+                              .map((pos) => ItemPosition(position: pos))
+                              .toList()),
+                      Text(
+                        'Ngày tạo: ${teamRequest.getCreateDate}',
+                        style: textStyleRegularBody(color: Colors.grey),
+                      )
+                    ],
                   ),
-                  Container(
-                    width: UIHelper.size35,
-                    height: UIHelper.size35,
-                    padding: EdgeInsets.all(UIHelper.size5),
-                    child: InkWell(
-                      onTap: onDeny,
-                      child: Image.asset(Images.DENY),
-                    ),
-                  )
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -109,7 +103,7 @@ class MemberManagerPage extends StatelessWidget {
       List<TeamRequest> teamRequests, Function onApproved, Function onReject) {
     return teamRequests.length > 0
         ? ListView.separated(
-            padding: EdgeInsets.only(bottom: UIHelper.size5),
+            padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
             itemBuilder: (c, index) {
               TeamRequest _request = teamRequests[index];
               return _buildItemRequest(
@@ -118,16 +112,41 @@ class MemberManagerPage extends StatelessWidget {
                   () => onApproved(index, _request.idRequest),
                   () => onReject(index, _request.idRequest));
             },
-            separatorBuilder: (c, index) => LineWidget(),
+            separatorBuilder: (c, index) => SizedBox(height: UIHelper.size10),
             itemCount: teamRequests.length)
         : EmptyWidget(message: 'Không có yêu cầu nào');
   }
+
+  Widget _buildTeamMembers(
+          BuildContext context, int managerId, List<Member> members) =>
+      ListView.separated(
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+          itemBuilder: (c, index) {
+            Member _member = members[index];
+            return ItemMember(
+              member: _member,
+              isCaptain: _member.id == managerId,
+              onTap: () => _showMemberOptions(context, _member),
+            );
+          },
+          separatorBuilder: (c, index) => LineWidget(),
+          itemCount: members.length);
 
   void _showClearPoints(BuildContext context) => showModalBottomSheet(
       context: context,
       builder: (c) => BottomSheetWidget(
             options: ['Tuỳ chọn', 'Reset điểm thành viên', 'Huỷ'],
           ));
+
+  void _showRequestOptions(BuildContext context, Function onSelected) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: ['Tuỳ chọn', 'Chấp nhận', 'Từ chối', 'Huỷ'],
+          onClickOption: (index) => onSelected(index),
+        ),
+      );
 
   void _showMemberOptions(BuildContext context, Member member) =>
       showModalBottomSheet(
@@ -184,21 +203,7 @@ class MemberManagerPage extends StatelessWidget {
                         child: TabBarView(
                           physics: BouncingScrollPhysics(),
                           children: <Widget>[
-                            ListView.separated(
-                                physics: BouncingScrollPhysics(),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size5),
-                                itemBuilder: (c, index) {
-                                  Member _member = _team.members[index];
-                                  return ItemMember(
-                                    member: _member,
-                                    isCaptain: _member.id == _team.manager,
-                                    onTap: () =>
-                                        _showMemberOptions(context, _member),
-                                  );
-                                },
-                                separatorBuilder: (c, index) => LineWidget(),
-                                itemCount: _team.members.length),
+                            _buildTeamMembers(context, _team.manager, _team.members),
                             _buildTeamRequests(
                                 context,
                                 model.teamRequests,

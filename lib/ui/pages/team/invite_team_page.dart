@@ -94,7 +94,7 @@ class InviteTeamPage extends StatelessWidget {
               ),
               SizedBox(
                 height: UIHelper.size40,
-                width: UIHelper.size40,
+                width: UIHelper.size50,
                 child: Checkbox(
                     value: isSelected,
                     activeColor: PRIMARY,
@@ -210,7 +210,7 @@ class InviteTeamPage extends StatelessWidget {
                                           DateFormat('dd/MM')))
                                       .toList(),
                                   isScrollable: true,
-                                  height: UIHelper.size40,
+                                  height: UIHelper.size35,
                                 ),
                                 Expanded(
                                   child: TabBarView(

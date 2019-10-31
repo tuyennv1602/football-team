@@ -89,7 +89,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.MEMBER,
           'Thành viên',
           iconColor: Colors.green,
-          onTap: () => Routes.routeToMember(context),
+          onTap: () => Routes.routeToMember(context, team.members, team.manager),
         ),
         LineWidget(),
       ]);
@@ -200,14 +200,13 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
 
   Widget _buildHeaderWidget(BuildContext context, Team team) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: UIHelper.size15, vertical: UIHelper.size10),
+      padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
       child: Row(
         children: <Widget>[
           ImageWidget(
               source: team.logo,
               placeHolder: Images.DEFAULT_LOGO,
-              size: UIHelper.size(80)),
+              size: UIHelper.size(90)),
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(left: UIHelper.size15),
@@ -215,27 +214,39 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    team.bio,
-                    style: textStyleRegular(size: 16),
+                    'Điểm: ${team.point}',
+                    style: textStyleRegular(),
+                  ),
+                  Text(
+                    'Xếp hạng: ${team.rank}',
+                    style: textStyleRegular(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Đánh giá: ',
+                        style: textStyleRegular(),
+                      ),
+                      FlutterRatingBarIndicator(
+                        rating: team.rating,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.only(left: UIHelper.size(3)),
+                        itemSize: UIHelper.size(18),
+                        emptyColor: Colors.amber.withAlpha(90),
+                      ),
+                    ],
                   ),
                   Divider(
-                    height: UIHelper.size10,
+                    height: UIHelper.size15,
                     color: LINE_COLOR,
                   ),
-                  Text('Xếp hạng: ${team.rank} (${team.point} điểm)',
-                      style: textStyleRegular()),
-                  Row(
-                    children: <Widget>[
-                      Text('Đánh giá: ', style: textStyleRegular()),
-                      team.rated
-                          ? FlutterRatingBarIndicator(
-                              rating: team.rating,
-                              itemCount: 5,
-                              itemSize: UIHelper.size15,
-                              emptyColor: Colors.amber.withAlpha(90),
-                            )
-                          : Text('Chưa có đánh giá', style: textStyleRegular()),
-                    ],
+                  Align(
+                    child: Text(
+                      '\" ${team.bio} \"',
+                      textAlign: TextAlign.center,
+                      style: textStyleItalic(size: 14, color: Colors.grey),
+                    ),
                   ),
                 ],
               ),
@@ -338,7 +349,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                 color: Colors.white,
                                 child: ListView(
                                   padding:
-                                      EdgeInsets.only(top: UIHelper.size10),
+                                      EdgeInsets.only(top: UIHelper.size15),
                                   physics: BouncingScrollPhysics(),
                                   children: <Widget>[
                                     _buildHeaderWidget(context, _team),
@@ -381,9 +392,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                         ],
                                         borderRadius: BorderRadius.only(
                                           topLeft:
-                                              Radius.circular(UIHelper.size15),
+                                              Radius.circular(UIHelper.size20),
                                           topRight:
-                                              Radius.circular(UIHelper.size15),
+                                              Radius.circular(UIHelper.size20),
                                         ),
                                       ),
                                     )

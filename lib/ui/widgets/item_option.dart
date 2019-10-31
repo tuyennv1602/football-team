@@ -12,6 +12,7 @@ class ItemOptionWidget extends StatelessWidget {
   final double iconHeight;
   final double iconWidth;
   final Color iconColor;
+  final Widget rightContent;
 
   ItemOptionWidget(this.image, this.title,
       {Key key,
@@ -19,7 +20,8 @@ class ItemOptionWidget extends StatelessWidget {
       this.titleStyle,
       this.iconHeight,
       this.iconWidth,
-      this.iconColor})
+      this.iconColor,
+      this.rightContent})
       : super(key: key);
 
   @override
@@ -50,12 +52,13 @@ class ItemOptionWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Image.asset(
-                  Images.NEXT,
-                  width: UIHelper.size10,
-                  height: UIHelper.size10,
-                  color: LINE_COLOR,
-                )
+                rightContent ??
+                    Image.asset(
+                      Images.NEXT,
+                      width: UIHelper.size10,
+                      height: UIHelper.size10,
+                      color: LINE_COLOR,
+                    )
               ],
             ),
           ),

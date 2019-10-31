@@ -14,10 +14,16 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class MemberPage extends StatelessWidget {
+  final List<Member> _members;
+  final int _managerId;
+
+  MemberPage({@required List<Member> members, @required int managerId})
+      : _members = members,
+        _managerId = managerId;
+
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
-    Team _team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -35,19 +41,19 @@ class MemberPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: _team.members.length > 0
+              child: _members.length > 0
                   ? ListView.separated(
                       physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size5),
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       itemBuilder: (c, index) {
-                        Member _member = _team.members[index];
+                        Member _member = _members[index];
                         return ItemMember(
                           member: _member,
-                          isCaptain: _member.id == _team.manager,
+                          isCaptain: _member.id == _managerId,
                         );
                       },
-                      separatorBuilder: (c, index) => LineWidget(),
-                      itemCount: _team.members.length)
+                      separatorBuilder: (c, index) => SizedBox(height: UIHelper.size10),
+                      itemCount: _members.length)
                   : EmptyWidget(message: 'Không có thành viên nào'),
             ),
           ),

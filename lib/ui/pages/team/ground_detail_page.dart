@@ -7,6 +7,7 @@ import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
@@ -138,22 +139,23 @@ class GroundDetailPage extends StatelessWidget {
                                       style: textStyleRegularTitle(),
                                     ),
                                   ),
-                                  ground.rated
-                                      ? FlutterRatingBarIndicator(
-                                          rating: ground.rating,
-                                          itemCount: 5,
-                                          itemPadding: EdgeInsets.only(left: 2),
-                                          itemSize: UIHelper.size15,
-                                          emptyColor:
-                                              Colors.amber.withAlpha(90),
-                                        )
-                                      : Text(
-                                          'Chưa có đánh giá',
-                                          style: textStyleRegular(),
-                                        ),
+                                  FlutterRatingBarIndicator(
+                                    rating: ground.rating,
+                                    itemCount: 5,
+                                    itemPadding: EdgeInsets.only(left: 2),
+                                    itemSize: UIHelper.size15,
+                                    emptyColor: Colors.amber.withAlpha(90),
+                                  ),
+                                  UIHelper.horizontalSpaceLarge,
+                                  Image.asset(
+                                    Images.EDIT_PROFILE,
+                                    width: UIHelper.size20,
+                                    height: UIHelper.size20,
+                                    color: Colors.green,
+                                  )
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                 ),

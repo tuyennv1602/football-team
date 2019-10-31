@@ -50,6 +50,9 @@ class UIHelper {
   static Widget horizontalSpaceMedium = SizedBox(width: size10);
   static Widget horizontalSpaceLarge = SizedBox(width: size20);
 
+  static Widget homeButtonSpace =
+      SizedBox(height: paddingBottom, width: screenWidth);
+
   static double size(double size) {
     if (size == 0) return 0;
     const double baseWidth = 375;

@@ -2,24 +2,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-final double _kFrontHeadingHeight =
-    UIHelper.size(15); // front layer beveled rectangle
 final double _kFrontClosedHeight =
     UIHelper.size(50); // front layer height when closed
 final double _kBackAppBarHeight =
     UIHelper.size(50); // back layer (options) appbar height
-
-// The size of the front layer heading's left and right beveled corners.
-final Animatable<BorderRadius> _kFrontHeadingBevelRadius = BorderRadiusTween(
-  begin: BorderRadius.only(
-    topLeft: Radius.circular(_kFrontHeadingHeight / 2),
-    topRight: Radius.circular(_kFrontHeadingHeight / 2),
-  ),
-  end: BorderRadius.only(
-    topLeft: Radius.circular(_kFrontHeadingHeight),
-    topRight: Radius.circular(_kFrontHeadingHeight),
-  ),
-);
 
 class _TapableWhileStatus extends StatefulWidget {
   const _TapableWhileStatus(
@@ -266,8 +252,10 @@ class BackdropState extends State<Backdrop>
           builder: (BuildContext context, Widget child) {
             return ClipRRect(
               child: child,
-              borderRadius:
-                  _kFrontHeadingBevelRadius.transform(_controller.value),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(UIHelper.size20),
+                topRight: Radius.circular(UIHelper.size20),
+              ),
               clipBehavior: Clip.antiAlias,
             );
           },

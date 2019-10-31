@@ -20,4 +20,9 @@ class Constants {
   static const int VS7 = 2;
   static const int VS9 = 3;
   static const int VS11 = 4;
+
+  static const int INVITE_CANCEL = -2;
+  static const int INVITE_REJECTED = -1;
+  static const int INVITE_WAITING = 1;
+  static const int INVITE_ACCEPTED = 2;
 }

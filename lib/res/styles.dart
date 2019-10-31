@@ -35,7 +35,7 @@ textStyleRegular({double size, Color color}) => TextStyle(
 textStyleRegularTitle({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 16),
     fontFamily: REGULAR,
-    color: color ?? Colors.black,
+    color: color ?? Colors.black87,
     letterSpacing: 0.1);
 
 textStyleRegularBody({double size, Color color}) => TextStyle(
@@ -47,13 +47,13 @@ textStyleRegularBody({double size, Color color}) => TextStyle(
 textStyleSemiBold({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 16),
     fontFamily: SEMI_BOLD,
-    color: color ?? Colors.black,
+    color: color ?? Colors.black87,
     letterSpacing: 0.1);
 
 textStyleBold({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 18),
     fontFamily: BOLD,
-    color: color ?? Colors.black,
+    color: color ?? Colors.black87,
     letterSpacing: 0.1);
 
 textStyleInput({double size, Color color}) => TextStyle(

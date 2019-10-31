@@ -1,3 +1,4 @@
+import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:queries/collections.dart';
 import 'package:queries/queries.dart';
@@ -5,8 +6,14 @@ import 'package:queries/queries.dart';
 class ObjectUtil {
   static Map<int, List<MatchingTimeSlot>> mapMatchingTimeSlotByDayOfWeek(
       List<MatchingTimeSlot> timeSlots) {
-    return _mapCollectionToIntMap(
-        Collection<MatchingTimeSlot>(timeSlots).groupBy((item) => item.dayOfWeek));
+    return _mapCollectionToIntMap(Collection<MatchingTimeSlot>(timeSlots)
+        .groupBy((item) => item.dayOfWeek));
+  }
+
+  static Map<int, List<InviteRequest>> mapInviteRequestById(
+      List<InviteRequest> invites) {
+    return _mapCollectionToIntMap(Collection<InviteRequest>(invites)
+        .groupBy((item) => item.getTypeRequest));
   }
 
   static _mapCollectionToIntMap<T>(IEnumerable<IGrouping<int, T>> item) {

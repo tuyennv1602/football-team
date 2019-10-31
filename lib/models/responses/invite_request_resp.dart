@@ -4,12 +4,14 @@ import '../invite_request.dart';
 class InviteRequestResponse extends BaseResponse {
   List<InviteRequest> requests;
 
-  InviteRequestResponse.success(Map<String, dynamic> json)
+  InviteRequestResponse.success(int currentTeamId, Map<String, dynamic> json)
       : super.success(json) {
     if (json['object'] != null) {
       requests = new List<InviteRequest>();
       json['object'].forEach((v) {
-        requests.add(new InviteRequest.fromJson(v));
+        var request = InviteRequest.fromJson(v);
+        request.currentTeamId = currentTeamId;
+        requests.add(request);
       });
     }
   }

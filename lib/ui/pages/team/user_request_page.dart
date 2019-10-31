@@ -224,6 +224,7 @@ class UserRequestPage extends StatelessWidget {
                               text: 'Gửi tới: ',
                               style: TextStyle(
                                 color: Colors.black87,
+                                fontFamily: REGULAR,
                                 fontSize: UIHelper.size(16),
                               ),
                             ),

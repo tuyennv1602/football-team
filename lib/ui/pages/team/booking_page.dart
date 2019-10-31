@@ -275,10 +275,12 @@ class BookingPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  _ground.name,
-                                  maxLines: 2,
-                                  style: textStyleSemiBold(),
+                                Expanded(
+                                  child: Text(
+                                    _ground.name,
+                                    maxLines: 2,
+                                    style: textStyleSemiBold(),
+                                  ),
                                 ),
                                 UIHelper.verticalSpaceSmall,
                                 Text(
@@ -288,22 +290,27 @@ class BookingPage extends StatelessWidget {
                                   style: textStyleRegular(),
                                 ),
                                 UIHelper.verticalSpaceSmall,
-                                _ground.rated
-                                    ? FlutterRatingBarIndicator(
-                                        rating: _ground.rating,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.only(left: 2),
-                                        itemSize: UIHelper.size15,
-                                        emptyColor: Colors.amber.withAlpha(90),
-                                      )
-                                    : Text(
-                                        'Chưa có đánh giá',
-                                        style: textStyleRegular(),
-                                      ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      'Đánh giá',
+                                      style: textStyleRegular(),
+                                    ),
+                                    FlutterRatingBarIndicator(
+                                      rating: _ground.rating,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.only(left: 2),
+                                      itemSize: UIHelper.size15,
+                                      emptyColor: Colors.amber.withAlpha(90),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
                         ),
+                        UIHelper.horizontalSpaceSmall,
                         Image.asset(
                           Images.NEXT,
                           width: UIHelper.size15,

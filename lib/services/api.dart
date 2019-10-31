@@ -305,8 +305,7 @@ class Api {
     }
   }
 
-  Future<BaseResponse> sendInviteMatching(
-      InviteRequest matchingRequest) async {
+  Future<BaseResponse> sendInviteMatching(InviteRequest matchingRequest) async {
     try {
       var resp = await _api.postApi('match/request',
           body: matchingRequest.toCreateJson());
@@ -320,13 +319,42 @@ class Api {
     try {
       FormData formData = new FormData.from({
         "page": 1,
-        "limit": 10,
+        "limit": 100,
       });
       var resp = await _api.getApi('match/request/group/$teamId',
           queryParams: formData);
-      return InviteRequestResponse.success(resp.data);
+      return InviteRequestResponse.success(teamId, resp.data);
     } on DioError catch (e) {
       return InviteRequestResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> cancelInviteRequest(int inviteId) async {
+    try {
+      var resp = await _api.putApi('match/request/$inviteId/cancel');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> rejectInviteRequest(int inviteId) async {
+    try {
+      var resp = await _api.putApi('match/request/$inviteId/reject');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> acceptInviteRequest(
+      int inviteId, int timeSlotId, int playDate) async {
+    try {
+      var resp = await _api.putApi('match/request/$inviteId/accept',
+          body: {"time_slot_id": timeSlotId, "play_date": playDate});
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
     }
   }
 }

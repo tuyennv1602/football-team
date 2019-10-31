@@ -34,7 +34,7 @@ class TabBarWidget extends StatelessWidget {
         labelColor: PRIMARY,
         unselectedLabelColor: BLACK_TEXT,
         indicator: UnderlineTabIndicator(
-          insets: EdgeInsets.symmetric(horizontal: UIHelper.size(10)),
+          insets: EdgeInsets.symmetric(horizontal: UIHelper.size5),
           borderSide: BorderSide(width: UIHelper.size(2), color: PRIMARY),
         ),
       ),
