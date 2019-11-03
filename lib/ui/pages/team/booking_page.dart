@@ -297,13 +297,17 @@ class BookingPage extends StatelessWidget {
                                       'Đánh giá',
                                       style: textStyleRegular(),
                                     ),
-                                    FlutterRatingBarIndicator(
+                                    RatingBarIndicator(
                                       rating: _ground.rating,
                                       itemCount: 5,
                                       itemPadding: EdgeInsets.only(left: 2),
-                                      itemSize: UIHelper.size15,
-                                      emptyColor: Colors.amber.withAlpha(90),
+                                      itemSize: UIHelper.size20,
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
                                     ),
+
                                   ],
                                 ),
                               ],

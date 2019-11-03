@@ -130,7 +130,7 @@ class MemberManagerPage extends StatelessWidget {
               onTap: () => _showMemberOptions(context, _member),
             );
           },
-          separatorBuilder: (c, index) => LineWidget(),
+          separatorBuilder: (c, index) => SizedBox(height: UIHelper.size10),
           itemCount: members.length);
 
   void _showClearPoints(BuildContext context) => showModalBottomSheet(

@@ -53,13 +53,16 @@ class SearchTeamPage extends StatelessWidget {
                           'Đánh giá: ',
                           style: textStyleRegular(),
                         ),
-                        FlutterRatingBarIndicator(
+                        RatingBarIndicator(
                           rating: team.rating,
                           itemCount: 5,
                           itemPadding: EdgeInsets.only(left: 2),
                           itemSize: UIHelper.size15,
-                          emptyColor: Colors.amber.withAlpha(90),
-                        )
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ],
                     )
                   ],

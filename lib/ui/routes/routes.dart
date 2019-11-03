@@ -29,6 +29,7 @@ import 'package:myfootball/ui/pages/team/user_request_page.dart';
 import 'package:myfootball/ui/pages/team/create_team_page.dart';
 import 'package:myfootball/ui/pages/team/member_manager_page.dart';
 import 'package:myfootball/ui/pages/team/request_member_page.dart';
+import 'package:myfootball/ui/pages/user/input_money_page.dart';
 import 'package:myfootball/ui/routes/fade_in_route.dart';
 import 'package:myfootball/ui/routes/slide_left_route.dart';
 
@@ -176,4 +177,10 @@ class Routes {
       team: team,
     )));
   }
+
+  static Future<dynamic> routeToInputMoney(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: InputMoneyPage()));
+  }
+
 }

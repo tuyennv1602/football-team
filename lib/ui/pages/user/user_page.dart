@@ -82,7 +82,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                 child: Column(children: <Widget>[
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: UIHelper.size20, vertical: UIHelper.size10),
+                        horizontal: UIHelper.size20, vertical: UIHelper.size15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -103,8 +103,12 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       padding: EdgeInsets.zero,
                       children: <Widget>[
                         LineWidget(),
-                        ItemOptionWidget(Images.WALLET_IN, 'Nạp tiền vào ví',
-                            iconColor: Colors.green),
+                        ItemOptionWidget(
+                          Images.WALLET_IN,
+                          'Nạp tiền vào ví',
+                          iconColor: Colors.green,
+                          onTap: () => Routes.routeToInputMoney(context),
+                        ),
                         LineWidget(),
                         ItemOptionWidget(Images.WALLET_OUT, 'Rút tiền',
                             iconColor: Colors.red),

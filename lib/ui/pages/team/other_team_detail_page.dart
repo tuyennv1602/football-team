@@ -15,6 +15,7 @@ import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/review_dialog.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/other_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -24,11 +25,29 @@ class OtherTeamDetailPage extends StatelessWidget {
 
   OtherTeamDetailPage({Key key, this.team}) : super(key: key);
 
+  _writeReview(BuildContext context, Team team) => showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(UIHelper.size5),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: ReviewDialog(
+            onSubmitReview: (rating, comment) {
+              print(rating);
+              print(comment);
+            },
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
+      resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
           AppBarWidget(
@@ -70,31 +89,11 @@ class OtherTeamDetailPage extends StatelessWidget {
                                   children: <Widget>[
                                     Text(
                                       'Điểm: ${_team != null ? _team.point : 0}',
-                                      style: textStyleRegular(),
+                                      style: textStyleRegularTitle(),
                                     ),
                                     Text(
                                       'Xếp hạng: ${_team != null ? _team.rank : 0}',
-                                      style: textStyleRegular(),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          'Đánh giá: ',
-                                          style: textStyleRegular(),
-                                        ),
-                                        FlutterRatingBarIndicator(
-                                          rating:
-                                              _team != null ? _team.rating : 0,
-                                          itemCount: 5,
-                                          itemPadding: EdgeInsets.only(
-                                              left: UIHelper.size(3)),
-                                          itemSize: UIHelper.size(18),
-                                          emptyColor:
-                                              Colors.amber.withAlpha(90),
-                                        ),
-                                      ],
+                                      style: textStyleRegularTitle(),
                                     ),
                                     Divider(
                                       height: UIHelper.size15,
@@ -130,20 +129,47 @@ class OtherTeamDetailPage extends StatelessWidget {
                                         context, _team.members, _team.manager),
                                   ),
                                   LineWidget(),
-                                  ItemOptionWidget(
-                                    Images.STAR,
-                                    'Đánh giá',
-                                    iconColor: Colors.amber,
-                                    rightContent: Image.asset(
-                                      Images.EDIT_PROFILE,
-                                      width: UIHelper.size20,
-                                      height: UIHelper.size20,
-                                      color: Colors.green,
+                                  InkWell(
+                                    onTap: () => _writeReview(context, _team),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: UIHelper.size20,
+                                          vertical: UIHelper.size15),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            Images.EDIT_PROFILE,
+                                            width: UIHelper.size20,
+                                            height: UIHelper.size20,
+                                            color: Colors.amber,
+                                          ),
+                                          UIHelper.horizontalSpaceLarge,
+                                          Expanded(
+                                            child: Text(
+                                              'Đánh giá & nhận xét',
+                                              style: textStyleRegularTitle(),
+                                            ),
+                                          ),
+                                          RatingBarIndicator(
+                                            rating: _team.rating,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.only(
+                                                right: UIHelper.size(2)),
+                                            itemSize: UIHelper.size20,
+                                            itemBuilder: (context, index) =>
+                                                Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Expanded(
-                                      child: EmptyWidget(
-                                          message: 'Chưa có đánh giá'))
+                                    child: EmptyWidget(
+                                        message: 'Chưa có đánh giá'),
+                                  ),
                                 ],
                               ),
                       )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
@@ -7,10 +8,10 @@ import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/review_dialog.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/ground_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -21,11 +22,29 @@ class GroundDetailPage extends StatelessWidget {
 
   GroundDetailPage({@required int groundId}) : _groundId = groundId;
 
+  _writeReview(BuildContext context, Ground ground) => showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(UIHelper.size5),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: ReviewDialog(
+            onSubmitReview: (rating, comment) {
+              print(rating);
+              print(comment);
+            },
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
+      resizeToAvoidBottomPadding: false,
       body: BaseWidget<GroundDetailViewModel>(
         model: GroundDetailViewModel(api: Provider.of(context)),
         onModelReady: (model) => model.getGroundDetail(_groundId),
@@ -120,40 +139,40 @@ class GroundDetailPage extends StatelessWidget {
                             ),
                             UIHelper.verticalSpaceSmall,
                             LineWidget(),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: UIHelper.size20,
-                                  vertical: UIHelper.size15),
-                              child: Row(
-                                children: <Widget>[
-                                  Image.asset(
-                                    Images.STAR,
-                                    width: UIHelper.size20,
-                                    height: UIHelper.size20,
-                                    color: Colors.amber,
-                                  ),
-                                  UIHelper.horizontalSpaceLarge,
-                                  Expanded(
-                                    child: Text(
-                                      'Đánh giá',
-                                      style: textStyleRegularTitle(),
+                            InkWell(
+                              onTap: () => _writeReview(context, ground),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: UIHelper.size20,
+                                    vertical: UIHelper.size15),
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      Images.EDIT_PROFILE,
+                                      width: UIHelper.size20,
+                                      height: UIHelper.size20,
+                                      color: Colors.amber,
                                     ),
-                                  ),
-                                  FlutterRatingBarIndicator(
-                                    rating: ground.rating,
-                                    itemCount: 5,
-                                    itemPadding: EdgeInsets.only(left: 2),
-                                    itemSize: UIHelper.size15,
-                                    emptyColor: Colors.amber.withAlpha(90),
-                                  ),
-                                  UIHelper.horizontalSpaceLarge,
-                                  Image.asset(
-                                    Images.EDIT_PROFILE,
-                                    width: UIHelper.size20,
-                                    height: UIHelper.size20,
-                                    color: Colors.green,
-                                  )
-                                ],
+                                    UIHelper.horizontalSpaceLarge,
+                                    Expanded(
+                                      child: Text(
+                                        'Đánh giá & nhận xét',
+                                        style: textStyleRegularTitle(),
+                                      ),
+                                    ),
+                                    RatingBarIndicator(
+                                      rating: ground.rating,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.only(
+                                          right: UIHelper.size(2)),
+                                      itemSize: UIHelper.size20,
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],

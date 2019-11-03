@@ -89,7 +89,8 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.MEMBER,
           'Thành viên',
           iconColor: Colors.green,
-          onTap: () => Routes.routeToMember(context, team.members, team.manager),
+          onTap: () =>
+              Routes.routeToMember(context, team.members, team.manager),
         ),
         LineWidget(),
       ]);
@@ -215,25 +216,28 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 children: <Widget>[
                   Text(
                     'Điểm: ${team.point}',
-                    style: textStyleRegular(),
+                    style: textStyleRegularTitle(),
                   ),
                   Text(
                     'Xếp hạng: ${team.rank}',
-                    style: textStyleRegular(),
+                    style: textStyleRegularTitle(),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
                         'Đánh giá: ',
-                        style: textStyleRegular(),
+                        style: textStyleRegularTitle(),
                       ),
-                      FlutterRatingBarIndicator(
+                      RatingBarIndicator(
                         rating: team.rating,
                         itemCount: 5,
-                        itemPadding: EdgeInsets.only(left: UIHelper.size(3)),
-                        itemSize: UIHelper.size(18),
-                        emptyColor: Colors.amber.withAlpha(90),
+                        itemPadding: EdgeInsets.only(left: 2),
+                        itemSize: UIHelper.size25,
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
                       ),
                     ],
                   ),

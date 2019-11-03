@@ -143,23 +143,29 @@ class CompareTeamPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          FlutterRatingBarIndicator(
+                          RatingBarIndicator(
                             rating: 2.5,
                             itemCount: 5,
-                            itemPadding: EdgeInsets.only(left: 2),
-                            itemSize: UIHelper.size(15),
-                            emptyColor: Colors.amber.withAlpha(90),
+                            itemPadding: EdgeInsets.only(right: 2),
+                            itemSize: UIHelper.size15,
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
                           ),
                           Text(
                             'Đánh giá',
                             style: textStyleRegular(),
                           ),
-                          FlutterRatingBarIndicator(
+                          RatingBarIndicator(
                             rating: 2.5,
                             itemCount: 5,
                             itemPadding: EdgeInsets.only(left: 2),
-                            itemSize: UIHelper.size(15),
-                            emptyColor: Colors.amber.withAlpha(90),
+                            itemSize: UIHelper.size15,
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
                           ),
                         ],
                       ),

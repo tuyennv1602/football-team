@@ -51,7 +51,7 @@ class UIHelper {
   static Widget horizontalSpaceLarge = SizedBox(width: size20);
 
   static Widget homeButtonSpace =
-      SizedBox(height: paddingBottom, width: screenWidth);
+  SizedBox(height: paddingBottom, width: screenWidth);
 
   static double size(double size) {
     if (size == 0) return 0;
@@ -67,163 +67,127 @@ class UIHelper {
 
   static get hideProgressDialog => progressDialog.hide();
 
-  static void showSimpleDialog(String message, {Function onTap}) => showDialog(
-      context: _buildContext,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(size5),
-            ),
-            contentPadding: EdgeInsets.zero,
-            content: Container(
-              width: screenWidth * 0.9,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(size15),
-                    child: Text(message, style: textStyleRegular(size: 16)),
-                  ),
-                  Align(
-                    child: ButtonWidget(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        if (onTap != null) {
-                          onTap();
-                        }
-                      },
-                      height: size40,
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(size5),
-                          bottomRight: Radius.circular(size5)),
-                      child: Text(
-                        'Xong',
-                        style: textStyleRegular(size: 16, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ));
-
-  static void showConfirmDialog(String message, {Function onConfirmed}) =>
+  static void showSimpleDialog(String message, {Function onTap}) =>
       showDialog(
-        context: _buildContext,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(size5),
-          ),
-          contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: screenWidth * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(size15),
-                  child: Text(
-                    message,
-                    style: textStyleRegular(size: 16),
+          context: _buildContext,
+          barrierDismissible: false,
+          builder: (context) =>
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(size5),
+                ),
+                contentPadding: EdgeInsets.zero,
+                content: Container(
+                  width: screenWidth * 0.9,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(size15),
+                        child: Text('Thông báo', style: textStyleSemiBold()),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: size15),
+                        child: Text(message, style: textStyleRegular(size: 16)),
+                      ),
+                      UIHelper.verticalSpaceLarge,
+                      Align(
+                        child: ButtonWidget(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            if (onTap != null) {
+                              onTap();
+                            }
+                          },
+                          height: size40,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(size5),
+                              bottomRight: Radius.circular(size5)),
+                          child: Text(
+                            'Xong',
+                            style: textStyleRegular(
+                                size: 16, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () => Navigator.of(context).pop(),
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(size5)),
-                        backgroundColor: Colors.grey,
-                        child: Text(
-                          'Huỷ',
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          onConfirmed();
-                        },
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(size5)),
-                        child: Text(
-                          'Đồng ý',
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+              ));
+
+  static void showConfirmDialog(String message, {Function onConfirmed}) =>
+      UIHelper.showCustomizeDialog(
+        child: Column(
+          children: <Widget>[
+            Text('Xác nhận', style: textStyleSemiBold()),
+            UIHelper.verticalSpaceMedium,
+            Text(
+              message,
+              style: textStyleRegular(size: 16),
             ),
-          ),
+            UIHelper.verticalSpaceLarge,
+          ],
         ),
+        onConfirmed: () => onConfirmed(),
       );
 
   static void showCustomizeDialog({Widget child, Function onConfirmed}) =>
       showDialog(
         context: _buildContext,
         barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(size5),
-          ),
-          contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: screenWidth * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(size15),
-                  child: child,
-                ),
-                Row(
+        builder: (context) =>
+            AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(size5),
+              ),
+              contentPadding: EdgeInsets.zero,
+              content: Container(
+                width: screenWidth * 0.9,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () => Navigator.of(context).pop(),
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(size5)),
-                        backgroundColor: Colors.grey,
-                        child: Text(
-                          'Huỷ',
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
-                        ),
-                      ),
+                    Padding(
+                      padding: EdgeInsets.all(size15),
+                      child: child,
                     ),
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          onConfirmed();
-                        },
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(size5)),
-                        child: Text(
-                          'Đồng ý',
-                          style:
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: ButtonWidget(
+                            onTap: () => Navigator.of(context).pop(),
+                            height: size40,
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(size5)),
+                            backgroundColor: Colors.grey,
+                            child: Text(
+                              'Huỷ',
+                              style:
                               textStyleRegular(size: 16, color: Colors.white),
+                            ),
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: ButtonWidget(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              onConfirmed();
+                            },
+                            height: size40,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(size5)),
+                            child: Text(
+                              'Đồng ý',
+                              style:
+                              textStyleRegular(size: 16, color: Colors.white),
+                            ),
+                          ),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
+                ),
+              ),
             ),
-          ),
-        ),
       );
 
   static void hideKeyBoard() =>

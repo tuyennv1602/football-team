@@ -12,8 +12,8 @@ final List<String> _kDayOfWeeks = ['1', '2', '3', '4', '5', '6', '7'];
 class TimeSliderWidget extends StatefulWidget {
   final OnSelectedTime onSelectedTime;
 
-  TimeSliderWidget({@required OnSelectedTime onSelectedTime})
-      : this.onSelectedTime = onSelectedTime;
+  const TimeSliderWidget({Key key, @required this.onSelectedTime})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -37,7 +37,8 @@ class TimeSliderState extends State<TimeSliderWidget> {
             pressElevation: 0,
             selectedColor: PRIMARY,
             backgroundColor: Colors.grey,
-            label: Text(DateUtil.getDayOfWeek(int.parse(title)), style: textStyleRegular(color: Colors.white)),
+            label: Text(DateUtil.getDayOfWeek(int.parse(title)),
+                style: textStyleRegular(color: Colors.white)),
             selected: _selectedDay.contains(title),
             onSelected: (isSelected) {
               if (isSelected) {
@@ -108,7 +109,7 @@ class TimeSliderState extends State<TimeSliderWidget> {
         UIHelper.verticalSpaceMedium,
         Padding(
           padding: EdgeInsets.symmetric(
-             horizontal: UIHelper.size15, vertical: UIHelper.size10),
+              horizontal: UIHelper.size15, vertical: UIHelper.size10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

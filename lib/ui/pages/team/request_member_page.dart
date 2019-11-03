@@ -26,7 +26,6 @@ class RequestMemberPage extends StatelessWidget {
   String _content;
   List<String> _positions;
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -87,13 +86,16 @@ class RequestMemberPage extends StatelessWidget {
                           'Đánh giá: ',
                           style: textStyleRegular(),
                         ),
-                        FlutterRatingBarIndicator(
+                        RatingBarIndicator(
                           rating: team.rating,
                           itemCount: 5,
                           itemPadding: EdgeInsets.only(left: 2),
                           itemSize: UIHelper.size15,
-                          emptyColor: Colors.amber.withAlpha(90),
-                        )
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ],
                     )
                   ],
@@ -219,7 +221,6 @@ class RequestMemberPage extends StatelessWidget {
   Widget build(BuildContext context) {
     UIHelper().init(context);
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
