@@ -131,56 +131,46 @@ class BookingPage extends StatelessWidget {
 
   Widget _buildTicket(BuildContext context, DateTime playDate,
       TimeSlot timeSlot, Function onTap) {
-    bool isAbleBooking = DateUtil.isAbleBooking(playDate, timeSlot);
-    return Opacity(
-      opacity: isAbleBooking ? 1 : 0.5,
-      child: DashedContainer(
-        child: InkWell(
-          onTap: () {
-            if (isAbleBooking) {
-              onTap();
-            } else {
-              UIHelper.showSimpleDialog('Đã quá giờ đặt sân');
-            }
-          },
-          child: Container(
-            margin: EdgeInsets.all(1),
-            width: UIHelper.size(135),
-            height: UIHelper.size(110),
-            padding: EdgeInsets.all(UIHelper.size10),
-            decoration: BoxDecoration(
-                color: GREY_BACKGROUND,
-                borderRadius: BorderRadius.circular(UIHelper.size5)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Khung giờ',
-                  style: textStyleRegularBody(color: Colors.grey),
-                ),
-                Text(
-                  timeSlot.getTime,
-                  style: textStyleRegularTitle(),
-                ),
-                UIHelper.verticalSpaceSmall,
-                Text(
-                  'Giá thuê sân',
-                  style: textStyleRegularBody(color: Colors.grey),
-                ),
-                Text(
-                  StringUtil.formatCurrency(timeSlot.price),
-                  style: textStyleRegularTitle(),
-                )
-              ],
-            ),
+    return DashedContainer(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          margin: EdgeInsets.all(1),
+          width: UIHelper.size(135),
+          height: UIHelper.size(110),
+          padding: EdgeInsets.all(UIHelper.size10),
+          decoration: BoxDecoration(
+              color: GREY_BACKGROUND,
+              borderRadius: BorderRadius.circular(UIHelper.size5)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Khung giờ',
+                style: textStyleRegularBody(color: Colors.grey),
+              ),
+              Text(
+                timeSlot.getTime,
+                style: textStyleRegularTitle(),
+              ),
+              UIHelper.verticalSpaceSmall,
+              Text(
+                'Giá thuê sân',
+                style: textStyleRegularBody(color: Colors.grey),
+              ),
+              Text(
+                StringUtil.formatCurrency(timeSlot.price),
+                style: textStyleRegularTitle(),
+              )
+            ],
           ),
         ),
-        dashColor: PRIMARY,
-        borderRadius: UIHelper.size5,
-        dashedLength: UIHelper.size10,
-        blankLength: UIHelper.size10,
-        strokeWidth: 1,
       ),
+      dashColor: PRIMARY,
+      borderRadius: UIHelper.size5,
+      dashedLength: UIHelper.size10,
+      blankLength: UIHelper.size10,
+      strokeWidth: 1,
     );
   }
 
@@ -291,7 +281,8 @@ class BookingPage extends StatelessWidget {
                                 ),
                                 UIHelper.verticalSpaceSmall,
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text(
                                       'Đánh giá',
@@ -307,7 +298,6 @@ class BookingPage extends StatelessWidget {
                                         color: Colors.amber,
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ],

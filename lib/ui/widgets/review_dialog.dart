@@ -11,7 +11,7 @@ typedef void OnSubmitReview(double rate, String comment);
 class ReviewDialog extends StatelessWidget {
   static final _formKey = GlobalKey<FormState>();
   String comment;
-  double rating;
+  double rating = 5;
   final OnSubmitReview onSubmitReview;
 
   ReviewDialog({Key key, @required this.onSubmitReview}) : super(key: key);

@@ -6,46 +6,24 @@ import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/authentication_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/input_price_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:local_auth/error_codes.dart' as auth_error;
 
 class InputMoneyPage extends StatelessWidget {
-  Future<void> _authentication(BuildContext context) async {
-    var _localAuth = LocalAuthentication();
-    var _canCheck = await _localAuth.canCheckBiometrics;
-    try {
-      if (_canCheck) {
-        bool didAuthenticate = await _localAuth.authenticateWithBiometrics(
-            stickyAuth: true,
-            localizedReason: 'Vui lòng xác thực để thực hiện giao dịch',
-          androidAuthStrings: AndroidAuthMessages(
-            signInTitle: 'Xác thực',
-            cancelButton: 'Huỷ',
-            fingerprintHint: 'Đặt tay vào cảm biến',
-            fingerprintSuccess: 'Xác thực thành công',
-            fingerprintNotRecognized: 'Không khớp',
-          ),
-          iOSAuthStrings: IOSAuthMessages(
-            cancelButton: 'Huỷ',
-            goToSettingsButton: 'Cài đặt'
-          )
-        );
-        print(didAuthenticate);
-      }else{
-        UIHelper.showSimpleDialog('Không thể xác thực');
-      }
-    } on PlatformException catch (e) {
-      print(e);
-      if (e.code == auth_error.notAvailable) {
-        // Handle this exception here.
-      }
-    }
-  }
+  _showAuthenticationBottomSheet(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (c) => AuthenticationWidget(
+          onAuthentication: (isSuccess) {
+            if (isSuccess) {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+      );
 
   Widget _buildItemResource(
           BuildContext context, String iconRes, String name) =>
@@ -90,6 +68,7 @@ class InputMoneyPage extends StatelessWidget {
     UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
+      resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
           AppBarWidget(
@@ -124,8 +103,9 @@ class InputMoneyPage extends StatelessWidget {
                                 child: InputPriceWidget(
                                   onChangedText: (text) {},
                                   textStyle: textStyleSemiBold(size: 22),
-                                  hintTextStyle:
-                                      textStyleRegularTitle(size: 22),
+                                  hintTextStyle: textStyleRegularTitle(
+                                      size: 22, color: Colors.grey),
+                                  hint: '0đ',
                                 ),
                               ),
                             ],
@@ -163,7 +143,8 @@ class InputMoneyPage extends StatelessWidget {
                       margin: EdgeInsets.symmetric(
                           horizontal: UIHelper.size15,
                           vertical: UIHelper.size10),
-                      onTap: () => _authentication(context))
+                      onTap: () => _showAuthenticationBottomSheet(context)),
+                  UIHelper.homeButtonSpace
                 ],
               ),
             ),

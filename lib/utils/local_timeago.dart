@@ -2,34 +2,34 @@ import 'package:timeago/timeago.dart';
 
 class ViMessage implements LookupMessages {
   @override
-  String aDay(int hours) => '1 ngày';
+  String aDay(int hours) => '1 ngày trước';
 
   @override
-  String aboutAMinute(int minutes) => '1 phút';
+  String aboutAMinute(int minutes) => '1 phút trước';
 
   @override
-  String aboutAMonth(int days) => '1 tháng';
+  String aboutAMonth(int days) => '1 tháng trước';
 
   @override
-  String aboutAYear(int year) => '1 năm';
+  String aboutAYear(int year) => '1 năm trước';
 
   @override
-  String aboutAnHour(int minutes) => '1 giờ';
+  String aboutAnHour(int minutes) => '1 giờ trước';
 
   @override
-  String days(int days) => '$days ngày';
+  String days(int days) => '$days ngày trước';
 
   @override
-  String hours(int hours) => '$hours giờ';
+  String hours(int hours) => '$hours giờ trước';
 
   @override
   String lessThanOneMinute(int seconds) => 'vừa xong';
 
   @override
-  String minutes(int minutes) => '$minutes phút';
+  String minutes(int minutes) => '$minutes phút trước';
 
   @override
-  String months(int months) => '$months tháng';
+  String months(int months) => '$months tháng trước';
 
   @override
   String prefixAgo() => '';
@@ -38,7 +38,7 @@ class ViMessage implements LookupMessages {
   String prefixFromNow() => '';
 
   @override
-  String suffixAgo() => 'trước';
+  String suffixAgo() => '';
 
   @override
   String suffixFromNow() => '';

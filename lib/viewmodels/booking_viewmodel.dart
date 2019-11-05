@@ -25,6 +25,8 @@ class BookingViewModel extends BaseViewModel {
         groundId, DateUtil.formatDate(currentDate, DateFormat('dd/MM/yyyy')));
     if (resp.isSuccess) {
       this.fields = resp.ground.fields;
+      this.fields.forEach((field) => field.timeSlots = field.timeSlots
+          .where((timeSlot) => DateUtil.isAbleBooking(currentDate, timeSlot)).toList());
     }
     setBusy(false);
     return resp;

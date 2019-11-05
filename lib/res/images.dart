@@ -59,4 +59,8 @@ class Images {
   static const String HISTORY = '$FOLDER/ic_history.png';
   static const String PIN = '$FOLDER/icn_pin.png';
   static const String FUND_NOTIFY = '$FOLDER/ic_fund_notify.png';
+  static const String CLOSE = '$FOLDER/ic_close.png';
+  static const String FINGERPRINT = '$FOLDER/ic_fingerprint.png';
+  static const String DELETE = '$FOLDER/ic_delete.png';
+
 }

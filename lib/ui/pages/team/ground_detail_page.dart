@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:myfootball/models/ground.dart';
+import 'package:myfootball/models/comment.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
@@ -8,6 +8,8 @@ import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/item_comment_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
@@ -22,7 +24,7 @@ class GroundDetailPage extends StatelessWidget {
 
   GroundDetailPage({@required int groundId}) : _groundId = groundId;
 
-  _writeReview(BuildContext context, Ground ground) => showDialog(
+  _writeReview(BuildContext context, GroundDetailViewModel model) => showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
@@ -31,12 +33,21 @@ class GroundDetailPage extends StatelessWidget {
           ),
           contentPadding: EdgeInsets.zero,
           content: ReviewDialog(
-            onSubmitReview: (rating, comment) {
-              print(rating);
-              print(comment);
+            onSubmitReview: (rating, comment) async {
+              UIHelper.showProgressDialog;
+              var resp = await model.submitReview(rating, comment);
+              UIHelper.hideProgressDialog;
+              if (!resp.isSuccess) {
+                UIHelper.showSimpleDialog(resp.errorMessage);
+              }
             },
           ),
         ),
+      );
+
+  Widget _buildItemComment(BuildContext context, Comment comment) => Padding(
+        padding: EdgeInsets.all(UIHelper.size10),
+        child: Text(comment.comment),
       );
 
   @override
@@ -46,8 +57,12 @@ class GroundDetailPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,
       body: BaseWidget<GroundDetailViewModel>(
-        model: GroundDetailViewModel(api: Provider.of(context)),
-        onModelReady: (model) => model.getGroundDetail(_groundId),
+        model: GroundDetailViewModel(
+            api: Provider.of(context), groundId: _groundId),
+        onModelReady: (model) {
+          model.getGroundDetail();
+          model.getComments();
+        },
         child: AppBarWidget(
           centerContent: Text(
             '',
@@ -140,7 +155,7 @@ class GroundDetailPage extends StatelessWidget {
                             UIHelper.verticalSpaceSmall,
                             LineWidget(),
                             InkWell(
-                              onTap: () => _writeReview(context, ground),
+                              onTap: () => _writeReview(context, model),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: UIHelper.size20,
@@ -168,13 +183,33 @@ class GroundDetailPage extends StatelessWidget {
                                       itemSize: UIHelper.size20,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
-                                        color: Colors.amber,
+                                        color: PRIMARY,
                                       ),
                                     )
                                   ],
                                 ),
                               ),
                             ),
+                            model.comments == null
+                                ? LoadingWidget(
+                                    type: LOADING_TYPE.WAVE,
+                                  )
+                                : model.comments.length == 0
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            top: UIHelper.size20),
+                                        child: EmptyWidget(
+                                            message: 'Chưa có nhận xét nào'),
+                                      )
+                                    : ListView.separated(
+                                        padding: EdgeInsets.only(
+                                            left: UIHelper.size50,
+                                            right: UIHelper.size10),
+                                        itemBuilder: (c, index) => ItemComment(
+                                            comment: model.comments[index]),
+                                        separatorBuilder: (c, index) =>
+                                            LineWidget(),
+                                        itemCount: model.comments.length)
                           ],
                         ),
                 ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
 
 class ExpandableTextWidget extends StatefulWidget {
   final String text;
   final TextStyle textStyle;
+  final numberLine;
 
-  ExpandableTextWidget(this.text, {this.textStyle});
+  ExpandableTextWidget(this.text, {this.textStyle, this.numberLine = 2});
 
   @override
   _ExpandableTextState createState() => new _ExpandableTextState();
@@ -34,10 +34,10 @@ class _ExpandableTextState extends State<ExpandableTextWidget>
           children: <Widget>[
             Text(widget.text,
                 softWrap: true,
-                maxLines: isExpanded ? 1000 : 2,
+                maxLines: isExpanded ? 1000 : widget.numberLine,
                 overflow: TextOverflow.fade,
                 style: widget.textStyle ?? textStyleRegularTitle()),
-            boxes.length > 2
+            boxes.length > widget.numberLine
                 ? InkWell(
                     onTap: () {
                       setState(() {
@@ -49,7 +49,8 @@ class _ExpandableTextState extends State<ExpandableTextWidget>
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Text(isExpanded ? "Thu gọn" : "Xem thêm",
-                            style: textStyleItalic(size: 14, color: PRIMARY)),
+                            style:
+                                textStyleItalic(size: 13, color: Colors.grey)),
                       ),
                     ),
                   )

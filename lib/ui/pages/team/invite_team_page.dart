@@ -133,143 +133,142 @@ class InviteTeamPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: PRIMARY,
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: <Widget>[
-            AppBarWidget(
-              centerContent: Text(
-                'Mời đối tác',
-                textAlign: TextAlign.center,
-                style: textStyleTitle(),
-              ),
-              leftContent: AppBarButtonWidget(
-                imageName: Images.BACK,
-                onTap: () => Navigator.of(context).pop(),
-              ),
+      body: Column(
+        children: <Widget>[
+          AppBarWidget(
+            centerContent: Text(
+              'Mời đối tác',
+              textAlign: TextAlign.center,
+              style: textStyleTitle(),
             ),
-            Expanded(
-              child: BorderBackground(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Form(
-                        key: _formKey,
-                        child: InputWidget(
-                          validator: (value) {
-                            if (value.isEmpty) return 'Vui lòng nhập lời mời';
-                            return null;
-                          },
-                          maxLines: 3,
-                          inputType: TextInputType.text,
-                          inputAction: TextInputAction.done,
-                          labelText: 'Nội dung lời mời',
-                          onSaved: (text) => _invite = text,
+            leftContent: AppBarButtonWidget(
+              imageName: Images.BACK,
+              onTap: () => Navigator.of(context).pop(),
+            ),
+          ),
+          Expanded(
+            child: BorderBackground(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: InputWidget(
+                        validator: (value) {
+                          if (value.isEmpty) return 'Vui lòng nhập lời mời';
+                          return null;
+                        },
+                        maxLines: 3,
+                        inputType: TextInputType.text,
+                        inputAction: TextInputAction.done,
+                        labelText: 'Nội dung lời mời',
+                        onSaved: (text) => _invite = text,
+                      ),
+                    ),
+                    ChooseRatioTypeWidget(
+                      onSelectedType: (type) => _ratio = type,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: UIHelper.size20, bottom: UIHelper.size5),
+                          child: Text(
+                            'Chọn ngày, giờ, sân',
+                            style: textStyleRegularTitle(),
+                          ),
                         ),
-                      ),
-                      ChooseRatioTypeWidget(
-                        onSelectedType: (type) => _ratio = type,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
+                        InkWell(
+                          child: Padding(
                             padding: EdgeInsets.only(
                                 top: UIHelper.size20, bottom: UIHelper.size5),
                             child: Text(
-                              'Chọn ngày, giờ, sân',
+                              'Chọn tất cả',
                               style: textStyleRegularTitle(),
                             ),
                           ),
-                          InkWell(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: UIHelper.size20, bottom: UIHelper.size5),
-                              child: Text(
-                                'Chọn tất cả',
-                                style: textStyleRegularTitle(),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: BaseWidget<InviteTeamViewModel>(
+                        model: InviteTeamViewModel(api: Provider.of(context)),
+                        builder: (c, model, child) => DefaultTabController(
+                          length: _mappedTimeSlots.length,
+                          child: Column(
+                            children: <Widget>[
+                              TabBarWidget(
+                                titles: _mappedTimeSlots.keys
+                                    .toList()
+                                    .map((item) => DateUtil.formatDate(
+                                        DateUtil.getDateMatching(item),
+                                        DateFormat('dd/MM')))
+                                    .toList(),
+                                isScrollable: true,
+                                height: UIHelper.size35,
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: BaseWidget<InviteTeamViewModel>(
-                          model: InviteTeamViewModel(api: Provider.of(context)),
-                          builder: (c, model, child) => DefaultTabController(
-                            length: _mappedTimeSlots.length,
-                            child: Column(
-                              children: <Widget>[
-                                TabBarWidget(
-                                  titles: _mappedTimeSlots.keys
+                              Expanded(
+                                child: TabBarView(
+                                  children: _mappedTimeSlots.values
                                       .toList()
-                                      .map((item) => DateUtil.formatDate(
-                                          DateUtil.getDateMatching(item),
-                                          DateFormat('dd/MM')))
+                                      .map(
+                                        (timeSlots) => ListView.separated(
+                                            physics: BouncingScrollPhysics(),
+                                            padding: EdgeInsets.zero,
+                                            itemBuilder: (c, index) =>
+                                                _buildItemTimeSlot(
+                                                    context,
+                                                    index,
+                                                    model.selectedTimeSlots
+                                                        .contains(
+                                                            timeSlots[index]),
+                                                    timeSlots[index],
+                                                    (isSelected, timeSlot) {
+                                                  if (isSelected) {
+                                                    model
+                                                        .addTimeSlots(timeSlot);
+                                                  } else {
+                                                    model.removeTimeSlot(
+                                                        timeSlot);
+                                                  }
+                                                }),
+                                            separatorBuilder: (c, index) =>
+                                                LineWidget(
+                                                  indent: 0,
+                                                ),
+                                            itemCount: timeSlots.length),
+                                      )
                                       .toList(),
-                                  isScrollable: true,
-                                  height: UIHelper.size35,
                                 ),
-                                Expanded(
-                                  child: TabBarView(
-                                    children: _mappedTimeSlots.values
-                                        .toList()
-                                        .map(
-                                          (timeSlots) => ListView.separated(
-                                              physics: BouncingScrollPhysics(),
-                                              padding: EdgeInsets.zero,
-                                              itemBuilder: (c, index) =>
-                                                  _buildItemTimeSlot(
-                                                      context,
-                                                      index,
-                                                      model.selectedTimeSlots
-                                                          .contains(
-                                                              timeSlots[index]),
-                                                      timeSlots[index],
-                                                      (isSelected, timeSlot) {
-                                                    if (isSelected) {
-                                                      model.addTimeSlots(
-                                                          timeSlot);
-                                                    } else {
-                                                      model.removeTimeSlot(
-                                                          timeSlot);
-                                                    }
-                                                  }),
-                                              separatorBuilder: (c, index) =>
-                                                  LineWidget(
-                                                    indent: 0,
-                                                  ),
-                                              itemCount: timeSlots.length),
-                                        )
-                                        .toList(),
-                                  ),
+                              ),
+                              ButtonWidget(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: UIHelper.size10),
+                                child: Text(
+                                  'GỬI LỜI MỜI',
+                                  style: textStyleButton(),
                                 ),
-                                ButtonWidget(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: UIHelper.size10),
-                                    child: Text(
-                                      'GỬI LỜI MỜI',
-                                      style: textStyleButton(),
-                                    ),
-                                    onTap: () {
-                                      if (validateAndSave()) {
-                                        _handleSendInvite(context, model);
-                                      }
-                                    })
-                              ],
-                            ),
+                                onTap: () {
+                                  if (validateAndSave()) {
+                                    _handleSendInvite(context, model);
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    UIHelper.homeButtonSpace
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

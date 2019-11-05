@@ -12,6 +12,7 @@ import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
+import 'package:myfootball/ui/widgets/item_comment_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
@@ -25,7 +26,7 @@ class OtherTeamDetailPage extends StatelessWidget {
 
   OtherTeamDetailPage({Key key, this.team}) : super(key: key);
 
-  _writeReview(BuildContext context, Team team) => showDialog(
+  _writeReview(BuildContext context, OtherTeamViewModel model) => showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
@@ -34,9 +35,13 @@ class OtherTeamDetailPage extends StatelessWidget {
           ),
           contentPadding: EdgeInsets.zero,
           content: ReviewDialog(
-            onSubmitReview: (rating, comment) {
-              print(rating);
-              print(comment);
+            onSubmitReview: (rating, comment) async {
+              UIHelper.showProgressDialog;
+              var resp = await model.submitReview(rating, comment);
+              UIHelper.hideProgressDialog;
+              if (!resp.isSuccess) {
+                UIHelper.showSimpleDialog(resp.errorMessage);
+              }
             },
           ),
         ),
@@ -64,8 +69,12 @@ class OtherTeamDetailPage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: BaseWidget<OtherTeamViewModel>(
-                model: OtherTeamViewModel(api: Provider.of(context)),
-                onModelReady: (model) => model.getTeamDetail(team.id),
+                model:
+                    OtherTeamViewModel(api: Provider.of(context), team: team),
+                onModelReady: (model) {
+                  model.getTeamDetail();
+                  model.getComments();
+                },
                 child: ImageWidget(
                   source: team.logo,
                   placeHolder: Images.DEFAULT_LOGO,
@@ -130,7 +139,7 @@ class OtherTeamDetailPage extends StatelessWidget {
                                   ),
                                   LineWidget(),
                                   InkWell(
-                                    onTap: () => _writeReview(context, _team),
+                                    onTap: () => _writeReview(context, model),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: UIHelper.size20,
@@ -159,7 +168,7 @@ class OtherTeamDetailPage extends StatelessWidget {
                                             itemBuilder: (context, index) =>
                                                 Icon(
                                               Icons.star,
-                                              color: Colors.amber,
+                                              color: PRIMARY,
                                             ),
                                           )
                                         ],
@@ -167,8 +176,21 @@ class OtherTeamDetailPage extends StatelessWidget {
                                     ),
                                   ),
                                   Expanded(
-                                    child: EmptyWidget(
-                                        message: 'Chưa có đánh giá'),
+                                    child: model.comments == null
+                                        ? LoadingWidget(type: LOADING_TYPE.WAVE)
+                                        : model.comments.length == 0
+                                            ? EmptyWidget(
+                                                message: 'Chưa có nhận xét nào')
+                                            : ListView.separated(
+                                                padding: EdgeInsets.only(left: UIHelper.size50, right: UIHelper.size10),
+                                                itemBuilder: (c, index) =>
+                                                    ItemComment(
+                                                        comment: model
+                                                            .comments[index]),
+                                                separatorBuilder: (c, index) =>
+                                                    LineWidget(),
+                                                itemCount:
+                                                    model.comments.length),
                                   ),
                                 ],
                               ),

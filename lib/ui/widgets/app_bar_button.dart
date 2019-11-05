@@ -6,8 +6,9 @@ class AppBarButtonWidget extends StatelessWidget {
   final Function onTap;
   final double padding;
   final double _kButtonAppbarHeight = UIHelper.size(50);
+  final Color iconColor;
 
-  AppBarButtonWidget({Key key, this.imageName, this.onTap, this.padding})
+  AppBarButtonWidget({Key key, this.imageName, this.onTap, this.padding, this.iconColor = Colors.white})
       : super(key: key);
 
   @override
@@ -22,7 +23,7 @@ class AppBarButtonWidget extends StatelessWidget {
                 padding: EdgeInsets.all(this.padding ?? UIHelper.size(15)),
                 child: Image.asset(
                   imageName,
-                  color: Colors.white,
+                  color: iconColor,
                 ),
               ),
             )

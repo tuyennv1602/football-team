@@ -3,6 +3,7 @@ import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/responses/base_response.dart';
+import 'package:myfootball/models/responses/comments_resp.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
 import 'package:myfootball/models/responses/ground_resp.dart';
 import 'package:myfootball/models/responses/invite_request_resp.dart';
@@ -10,6 +11,7 @@ import 'package:myfootball/models/responses/list_ground_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/responses/matching_resp.dart';
 import 'package:myfootball/models/responses/notification_resp.dart';
+import 'package:myfootball/models/responses/review_resp.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
@@ -355,6 +357,79 @@ class Api {
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<ReviewResponse> reviewTeam(
+      int teamId, double rating, String comment) async {
+    try {
+      var resp = await _api.postApi('rate/group/$teamId',
+          body: {"rating": rating, "comment": comment});
+      return ReviewResponse.success(resp.data);
+    } on DioError catch (e) {
+      return ReviewResponse.error(e.message);
+    }
+  }
+
+  Future<ReviewResponse> reviewGround(
+      int groundId, double rating, String comment) async {
+    try {
+      var resp = await _api.postApi('rate/ground/$groundId',
+          body: {"rating": rating, "comment": comment});
+      return ReviewResponse.success(resp.data);
+    } on DioError catch (e) {
+      return ReviewResponse.error(e.message);
+    }
+  }
+
+  Future<ReviewResponse> reviewUser(
+      int userId, double rating, String comment) async {
+    try {
+      var resp = await _api.postApi('rate/user/$userId',
+          body: {"rating": rating, "comment": comment});
+      return ReviewResponse.success(resp.data);
+    } on DioError catch (e) {
+      return ReviewResponse.error(e.message);
+    }
+  }
+
+  Future<CommentResponse> getCommentByTeamId(int teamId, int page) async {
+    try {
+      FormData formData = new FormData.from({
+        "page": page,
+        "size": 50,
+      });
+      var resp = await _api.getApi('rate/group/$teamId', queryParams: formData);
+      return CommentResponse.success(resp.data);
+    } on DioError catch (e) {
+      return CommentResponse.error(e.message);
+    }
+  }
+
+  Future<CommentResponse> getCommentByGroundId(int groundId, int page) async {
+    try {
+      FormData formData = new FormData.from({
+        "page": page,
+        "size": 50,
+      });
+      var resp =
+          await _api.getApi('rate/ground/$groundId', queryParams: formData);
+      return CommentResponse.success(resp.data);
+    } on DioError catch (e) {
+      return CommentResponse.error(e.message);
+    }
+  }
+
+  Future<CommentResponse> getCommentByUserId(int userId, int page) async {
+    try {
+      FormData formData = new FormData.from({
+        "page": page,
+        "size": 50,
+      });
+      var resp = await _api.getApi('rate/user/$userId', queryParams: formData);
+      return CommentResponse.success(resp.data);
+    } on DioError catch (e) {
+      return CommentResponse.error(e.message);
     }
   }
 }
