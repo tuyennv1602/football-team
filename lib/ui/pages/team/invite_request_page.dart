@@ -30,7 +30,7 @@ class InviteRequestPage extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(UIHelper.size15),
           ),
-          margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+          margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
           child: InkWell(
             onTap: () {
               if (inviteRequest.status == Constants.INVITE_WAITING) {
@@ -156,14 +156,12 @@ class InviteRequestPage extends StatelessWidget {
                                     .map(
                                       (inviteRequests) => ListView.separated(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size10),
+                                              vertical: UIHelper.size15),
                                           itemBuilder: (c, index) =>
                                               _buildItemRequest(context,
                                                   inviteRequests[index]),
                                           separatorBuilder: (c, index) =>
-                                              SizedBox(
-                                                height: UIHelper.size10,
-                                              ),
+                                              UIHelper.verticalIndicator,
                                           itemCount: inviteRequests.length),
                                     )
                                     .toList(),

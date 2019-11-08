@@ -1,40 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/models/responses/base_response.dart';
-import 'package:myfootball/models/responses/search_team_resp.dart';
-import 'package:myfootball/models/team.dart';
+import 'package:myfootball/models/responses/team_request_resp.dart';
+import 'package:myfootball/models/team_request.dart';
 import 'package:myfootball/services/api.dart';
+import 'package:myfootball/services/team_services.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class RequestMemberViewModel extends BaseViewModel {
   Api _api;
-  List<Team> teams;
-  String key;
-  bool isLoading = false;
+  TeamServices _teamServices;
+  List<TeamRequest> teamRequests = [];
 
-  RequestMemberViewModel({@required Api api}) : _api = api;
+  RequestMemberViewModel(
+      {@required Api api, @required TeamServices teamServices})
+      : _api = api,
+        _teamServices = teamServices;
 
-  Future<SearchTeamResponse> searchTeamByKey(String key) async {
-    this.key = key;
-    _setLoading((true));
-    var resp = await _api.searchTeamByKey(key);
+  Future<TeamRequestResponse> getTeamRequests(int teamId) async {
+    setBusy(true);
+    var resp = await _api.getTeamRequest(teamId);
     if (resp.isSuccess) {
-      teams = resp.teams;
+      teamRequests = resp.teamRequests;
     }
-    _setLoading(false);
+    setBusy(false);
     return resp;
   }
 
-  void _setLoading(bool isLoading) {
-    this.isLoading = isLoading;
+  Future<BaseResponse> acceptRequest(
+      int index, int requestId, int teamId) async {
+    var resp = await _api.approveRequestMember(requestId);
+    await _teamServices.getTeamDetail(teamId);
+    teamRequests.removeAt(index);
     notifyListeners();
+    return resp;
   }
 
-  Future<BaseResponse> createRequest(
-      int teamId, String content, List<String> positions) async {
-    setBusy(true);
-    var resp =
-        await _api.createRequestMember(teamId, content, positions.join(','));
-    setBusy(false);
+  Future<BaseResponse> rejectRequest(int index, int requestId) async {
+    var resp = await _api.rejectRequestMember(requestId);
+    teamRequests.removeAt(index);
+    notifyListeners();
     return resp;
   }
 }

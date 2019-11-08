@@ -17,6 +17,7 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/create_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class CreateTeamPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String _teamName;
@@ -150,7 +151,9 @@ class CreateTeamPage extends StatelessWidget {
                             margin:
                                 EdgeInsets.symmetric(vertical: UIHelper.size10),
                             decoration: BoxDecoration(
-                                border: Border.all(color: LINE_COLOR, width: 1),
+                                border: Border.all(
+                                    color: LINE_COLOR,
+                                    width: model.image != null ? 0 : 1),
                                 borderRadius:
                                     BorderRadius.circular(UIHelper.size5)),
                             child: InkWell(
@@ -214,7 +217,9 @@ class CreateTeamPage extends StatelessWidget {
                                     model, Provider.of<User>(context));
                               }
                             },
-                            margin: EdgeInsets.symmetric(horizontal: UIHelper.size10, vertical: UIHelper.size15),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: UIHelper.size10,
+                                vertical: UIHelper.size15),
                             child: Text(
                               StringRes.REGISTER.toUpperCase(),
                               style: textStyleButton(),

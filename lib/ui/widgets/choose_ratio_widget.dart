@@ -30,7 +30,7 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
         },
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: UIHelper.size(60), vertical: UIHelper.size(7)),
+              horizontal: UIHelper.size50, vertical: UIHelper.size(7)),
           child: Text(
             StringUtil.getRatioName(type),
             style: textStyleRegular(),

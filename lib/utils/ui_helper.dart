@@ -45,6 +45,7 @@ class UIHelper {
   static Widget verticalSpaceSmall = SizedBox(height: size5);
   static Widget verticalSpaceMedium = SizedBox(height: size10);
   static Widget verticalSpaceLarge = SizedBox(height: size20);
+  static Widget verticalIndicator = SizedBox(height: size15);
 
   static Widget horizontalSpaceSmall = SizedBox(width: size5);
   static Widget horizontalSpaceMedium = SizedBox(width: size10);

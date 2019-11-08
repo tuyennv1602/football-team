@@ -18,6 +18,8 @@ import 'package:myfootball/ui/pages/team/find_matching_page.dart';
 import 'package:myfootball/ui/pages/team/ground_detail_page.dart';
 import 'package:myfootball/ui/pages/team/invite_request_page.dart';
 import 'package:myfootball/ui/pages/team/invite_team_page.dart';
+import 'package:myfootball/ui/pages/team/match_history_page.dart';
+import 'package:myfootball/ui/pages/team/match_schedule_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
 import 'package:myfootball/ui/pages/team/other_team_detail_page.dart';
 import 'package:myfootball/ui/pages/team/search_ground_page.dart';
@@ -27,7 +29,6 @@ import 'package:myfootball/ui/pages/team/setup_team_page.dart';
 import 'package:myfootball/ui/pages/team/team_fund_page.dart';
 import 'package:myfootball/ui/pages/team/user_request_page.dart';
 import 'package:myfootball/ui/pages/team/create_team_page.dart';
-import 'package:myfootball/ui/pages/team/member_manager_page.dart';
 import 'package:myfootball/ui/pages/team/request_member_page.dart';
 import 'package:myfootball/ui/pages/user/input_money_page.dart';
 import 'package:myfootball/ui/routes/fade_in_route.dart';
@@ -55,14 +56,9 @@ class Routes {
         .push(SlideLeftRoute(widget: RegisterPage()));
   }
 
-  static Future<dynamic> routeToCreateGroup(BuildContext context) async {
+  static Future<dynamic> routeToCreateTeam(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: CreateTeamPage()));
-  }
-
-  static Future<dynamic> routeToRequestMember(BuildContext context) async {
-    return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: RequestMemberPage()));
   }
 
   static Future<dynamic> routeToUserRequest(BuildContext context) async {
@@ -70,9 +66,9 @@ class Routes {
         .push(SlideLeftRoute(widget: UserRequestPage()));
   }
 
-  static Future<dynamic> routeToMemberManager(BuildContext context) async {
+  static Future<dynamic> routeToRequestMember(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: MemberManagerPage()));
+        .push(SlideLeftRoute(widget: RequestMemberPage()));
   }
 
   static Future<dynamic> routeToMember(
@@ -104,9 +100,10 @@ class Routes {
         .push(SlideLeftRoute(widget: SetupTeamPage()));
   }
 
-  static Future<dynamic> routeToSearchTeam(BuildContext context) async {
+  static Future<dynamic> routeToSearchTeam(
+      BuildContext context, SEARCH_TYPE type) async {
     return await Navigator.of(context, rootNavigator: true)
-        .push(SlideLeftRoute(widget: SearchTeamPage()));
+        .push(SlideLeftRoute(widget: SearchTeamPage(type: type)));
   }
 
   static Future<dynamic> routeToCompareTeam(
@@ -166,8 +163,8 @@ class Routes {
 
   static Future<dynamic> routeToConfirmInvite(
       BuildContext context, InviteRequest inviteRequest) async {
-    return await Navigator.of(context, rootNavigator: true).push(SlideLeftRoute(
-        widget: InviteDetailPage(inviteRequest: inviteRequest)));
+    return await Navigator.of(context, rootNavigator: true).push(
+        SlideLeftRoute(widget: InviteDetailPage(inviteRequest: inviteRequest)));
   }
 
   static Future<dynamic> routeToOtherTeamDetail(
@@ -183,4 +180,13 @@ class Routes {
         .push(SlideLeftRoute(widget: InputMoneyPage()));
   }
 
+  static Future<dynamic> routeToMatchSchedule(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: MatchSchedulePage()));
+  }
+
+  static Future<dynamic> routeToMatchHistory(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: MatchHistoryPage()));
+  }
 }

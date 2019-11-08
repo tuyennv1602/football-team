@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/member.dart';
-import 'package:myfootball/models/team.dart';
+import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
 import 'package:myfootball/ui/widgets/item_member.dart';
-import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class MemberPage extends StatelessWidget {
-  final List<Member> _members;
-  final int _managerId;
+  final List<Member> members;
+  final int managerId;
 
-  MemberPage({@required List<Member> members, @required int managerId})
-      : _members = members,
-        _managerId = managerId;
+  MemberPage({@required this.members, @required this.managerId});
+
+  void _showClearPoints(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: ['Tuỳ chọn', 'Reset điểm thành viên', 'Huỷ'],
+        ),
+      );
+
+  void _showManagerOptions(BuildContext context, Member member) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: [
+            'Tuỳ chọn',
+            'Xem chi tiết',
+            'Đánh giá',
+            'Xoá khỏi đội',
+            'Huỷ'
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
+    var isManager = Provider.of<User>(context).id == managerId;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -38,23 +57,31 @@ class MemberPage extends StatelessWidget {
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
+            rightContent: isManager
+                ? AppBarButtonWidget(
+                    imageName: Images.MORE,
+                    onTap: () => _showClearPoints(context),
+                  )
+                : AppBarButtonWidget(),
           ),
           Expanded(
             child: BorderBackground(
-              child: _members.length > 0
-                  ? ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                      itemBuilder: (c, index) {
-                        Member _member = _members[index];
-                        return ItemMember(
-                          member: _member,
-                          isCaptain: _member.id == _managerId,
-                        );
-                      },
-                      separatorBuilder: (c, index) => SizedBox(height: UIHelper.size10),
-                      itemCount: _members.length)
-                  : EmptyWidget(message: 'Không có thành viên nào'),
+              child: ListView.separated(
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
+                  itemBuilder: (c, index) {
+                    Member _member = members[index];
+                    return ItemMember(
+                        member: _member,
+                        isCaptain: _member.id == managerId,
+                        onTap: () {
+                          if (isManager) {
+                            _showManagerOptions(context, _member);
+                          }
+                        });
+                  },
+                  separatorBuilder: (c, index) => UIHelper.verticalIndicator,
+                  itemCount: members.length),
             ),
           ),
         ],

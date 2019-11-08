@@ -9,6 +9,7 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
+import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
@@ -364,7 +365,7 @@ class FindMatchingPage extends StatelessWidget {
             ),
             rightContent: AppBarButtonWidget(
               imageName: Images.SEARCH,
-              onTap: () => Routes.routeToSearchTeam(context),
+              onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.SEARCH_TEAM),
             ),
             backgroundColor: Colors.transparent,
           ),

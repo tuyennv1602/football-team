@@ -15,7 +15,6 @@ import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/ui/widgets/item_position.dart';
-import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/utils/constants.dart';
@@ -23,6 +22,7 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/user_request_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class UserRequestPage extends StatelessWidget {
   String _content;
   List<String> _positions;
@@ -197,7 +197,7 @@ class UserRequestPage extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(UIHelper.size15),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
       child: InkWell(
         onTap: () {
           if (request.status == Constants.REQUEST_REJECTED ||
@@ -302,11 +302,11 @@ class UserRequestPage extends StatelessWidget {
                       model.userRequests.length == 0)
                     return EmptyWidget(message: 'Chưa có yêu cầu nào');
                   return ListView.separated(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (c, index) => _buildItemRequest(
                           context, model, index, model.userRequests[index]),
-                      separatorBuilder: (c, index) => SizedBox(height: UIHelper.size10,),
+                      separatorBuilder: (c, index) => UIHelper.verticalIndicator,
                       itemCount: model.userRequests.length);
                 },
               ),

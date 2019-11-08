@@ -10,7 +10,7 @@ class LineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(
-      height: 0.7,
+      height: 1,
       indent: UIHelper.size(indent),
       endIndent: UIHelper.size(indent),
       color: LINE_COLOR,

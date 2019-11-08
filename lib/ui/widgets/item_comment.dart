@@ -36,7 +36,7 @@ class ItemComment extends StatelessWidget {
                     Expanded(
                       child: Text(
                         comment.userName,
-                        style: textStyleRegularTitle(),
+                        style: textStyleSemiBold(),
                       ),
                     ),
                     UIHelper.horizontalSpaceMedium,

@@ -3,6 +3,7 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
+import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:flutter/material.dart';
@@ -129,14 +130,14 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           Images.ADD_REQUEST,
                           'Tham gia đội bóng',
                           iconColor: Colors.cyan,
-                          onTap: () => Routes.routeToRequestMember(context),
+                          onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.REQUEST_MEMBER),
                         ),
                         LineWidget(),
                         ItemOptionWidget(
                           Images.ADD_TEAM,
                           'Thành lập đội bóng',
                           iconColor: Colors.indigoAccent,
-                          onTap: () => Routes.routeToCreateGroup(context),
+                          onTap: () => Routes.routeToCreateTeam(context),
                         ),
                         LineWidget(),
                         ItemOptionWidget(

@@ -18,7 +18,7 @@ class TeamFundPage extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(UIHelper.size15),
           ),
-          margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+          margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
           child: Padding(
             padding: EdgeInsets.all(UIHelper.size10),
             child: Column(
@@ -79,14 +79,14 @@ class TeamFundPage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: ListView(
-                padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
                 children: <Widget>[
                   _buildItemFund(context, 'Đóng quỹ tháng 10/2019',
                       'Vui lòng hoàn thành trước 15/10', 100000, 1),
-                  SizedBox(height: UIHelper.size10),
+                  UIHelper.verticalIndicator,
                   _buildItemFund(context, 'Đóng quỹ tháng 09/2019',
                       'Vui lòng hoàn thành trước 15/09', 100000, 2),
-                  SizedBox(height: UIHelper.size10),
+                  UIHelper.verticalIndicator,
                   _buildItemFund(context, 'Đóng quỹ tháng 08/2019',
                       'Vui lòng hoàn thành trước 15/08', 100000, 2)
                 ],

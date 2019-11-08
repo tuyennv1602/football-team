@@ -14,6 +14,7 @@ class InputWidget extends StatelessWidget {
   final Function(String) onSaved;
   final TextStyle textStyle;
   final int maxLines;
+  final int maxLength;
 
   InputWidget(
       {Key key,
@@ -25,6 +26,7 @@ class InputWidget extends StatelessWidget {
       this.labelText,
       this.onSaved,
       this.maxLines = 1,
+      this.maxLength = 200,
       this.textStyle})
       : super(key: key);
 
@@ -35,7 +37,7 @@ class InputWidget extends StatelessWidget {
       cursorColor: PRIMARY,
       cursorWidth: 1,
       maxLines: maxLines,
-      maxLength: 200,
+      maxLength: maxLength,
       initialValue: initValue,
       validator: validator,
       keyboardType: inputType ?? TextInputType.text,

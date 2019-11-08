@@ -6,6 +6,7 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
+import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/back_drop.dart';
@@ -37,7 +38,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           children: <Widget>[
             Expanded(
               child: InkWell(
-                onTap: () => Routes.routeToCreateGroup(context),
+                onTap: () => Routes.routeToCreateTeam(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -58,7 +59,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ),
             Expanded(
               child: InkWell(
-                onTap: () => Routes.routeToRequestMember(context),
+                onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.REQUEST_MEMBER),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -81,79 +82,11 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
       );
 
-  Widget _buildTeamMember(BuildContext context, Team team) {
+  Widget _buildTeamOptions(BuildContext context, Team team) {
     List<Widget> _children = [];
-    if (team.manager != Provider.of<User>(context).id) {
-      _children.addAll([
-        ItemOptionWidget(
-          Images.MEMBER,
-          'Thành viên',
-          iconColor: Colors.green,
-          onTap: () =>
-              Routes.routeToMember(context, team.members, team.manager),
-        ),
-        LineWidget(),
-      ]);
-    }
-    return Column(
-        children: _children
-          ..addAll([
-            ItemOptionWidget(
-              Images.SCHEDULE,
-              'Lịch thi đấu',
-              iconColor: Colors.deepOrange,
-            ),
-            LineWidget(),
-            ItemOptionWidget(
-              Images.MATCH_HISTORY,
-              'Lịch sử thi đấu',
-              iconColor: Colors.lightGreen,
-            ),
-            LineWidget(),
-            ItemOptionWidget(
-              Images.COMMENT,
-              'Thảo luận',
-              iconColor: Colors.cyan,
-            ),
-            LineWidget(),
-            ItemOptionWidget(
-              Images.WALLET_IN,
-              'Đóng quỹ đội bóng',
-              iconColor: Colors.amber,
-              onTap: () => Routes.routeToTeamFund(context),
-            ),
-            LineWidget(),
-            ItemOptionWidget(
-              Images.INVITE,
-              'Mời bạn bè vào đội',
-              iconColor: Colors.indigoAccent,
-            ),
-            LineWidget(),
-            ItemOptionWidget(
-              Images.LEAVE_TEAM,
-              'Rời đội bóng',
-              iconColor: Colors.blueGrey,
-            ),
-            LineWidget(),
-          ]));
-  }
-
-  Widget _buildTeamManager(BuildContext context, Team team) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(
-              top: UIHelper.size20,
-              left: UIHelper.size10,
-              right: UIHelper.size10,
-              bottom: UIHelper.size10),
-          child: Text(
-            'Quản trị đội bóng',
-            style: textStyleSemiBold(color: PRIMARY),
-          ),
-        ),
-        LineWidget(),
+    List<Widget> _manager = [];
+    if (team.manager == Provider.of<User>(context).id) {
+      _manager.addAll([
         ItemOptionWidget(
           Images.BOOKING,
           'Đặt sân bóng',
@@ -177,9 +110,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         LineWidget(),
         ItemOptionWidget(
           Images.MEMBER_MANAGE,
-          'Quản lý thành viên & yêu cầu',
-          iconColor: Colors.amberAccent,
-          onTap: () => Routes.routeToMemberManager(context),
+          'Yêu cầu gia nhập đội bóng',
+          iconColor: Colors.green,
+          onTap: () => Routes.routeToRequestMember(context),
         ),
         LineWidget(),
         ItemOptionWidget(
@@ -195,7 +128,63 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           iconColor: Colors.orange,
           onTap: () => Routes.routeToSetupTeam(context),
         ),
-      ],
+      ]);
+    }
+    return Column(
+      children: _children
+        ..addAll(
+          [
+            ItemOptionWidget(
+              Images.MEMBER,
+              'Danh sách thành viên',
+              iconColor: Colors.green,
+              onTap: () =>
+                  Routes.routeToMember(context, team.members, team.manager),
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.SCHEDULE,
+              'Lịch thi đấu',
+              iconColor: Colors.deepOrange,
+              onTap: () => Routes.routeToMatchSchedule(context),
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.MATCH_HISTORY,
+              'Lịch sử thi đấu',
+              iconColor: Colors.lightGreen,
+              onTap: () => Routes.routeToMatchHistory(context),
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.COMMENT,
+              'Thảo luận',
+              iconColor: Colors.cyan,
+            ),
+            LineWidget(),
+            ItemOptionWidget(
+              Images.WALLET_IN,
+              'Đóng quỹ đội bóng',
+              iconColor: Colors.amber,
+              onTap: () => Routes.routeToTeamFund(context),
+            ),
+            LineWidget(),
+          ]
+            ..addAll(_manager)
+            ..addAll([
+              ItemOptionWidget(
+                Images.INVITE,
+                'Mời bạn bè vào đội',
+                iconColor: Colors.pinkAccent,
+              ),
+              LineWidget(),
+              ItemOptionWidget(
+                Images.LEAVE_TEAM,
+                'Rời đội bóng',
+                iconColor: Colors.blueGrey,
+              ),
+            ]),
+        ),
     );
   }
 
@@ -358,11 +347,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   children: <Widget>[
                                     _buildHeaderWidget(context, _team),
                                     UIHelper.verticalSpaceSmall,
-                                    _buildTeamMember(context, _team),
-                                    _team.manager ==
-                                            Provider.of<User>(context).id
-                                        ? _buildTeamManager(context, _team)
-                                        : SizedBox()
+                                    _buildTeamOptions(context, _team),
                                   ],
                                 ),
                               ),

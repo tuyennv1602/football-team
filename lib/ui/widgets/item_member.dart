@@ -28,12 +28,11 @@ class ItemMember extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(UIHelper.size15),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
       child: InkWell(
         onTap: _onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: UIHelper.size15, vertical: UIHelper.size10),
+          padding: EdgeInsets.all(UIHelper.size10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

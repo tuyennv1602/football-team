@@ -65,6 +65,7 @@ class ReviewDialog extends StatelessWidget {
                   child: InputWidget(
                     onSaved: (value) => comment = value,
                     maxLines: 3,
+                    maxLength: 500,
                     inputType: TextInputType.text,
                     inputAction: TextInputAction.done,
                     labelText: 'Viết nhận xét',

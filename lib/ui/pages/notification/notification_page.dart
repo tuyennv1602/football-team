@@ -32,7 +32,7 @@ class NotificationState extends State<NotificationPage>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.size15),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
         child: Padding(
           padding: EdgeInsets.all(UIHelper.size10),
           child: Row(
@@ -108,11 +108,10 @@ class NotificationState extends State<NotificationPage>
                       ? ListView.separated(
                           physics: BouncingScrollPhysics(),
                           padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size10),
+                              EdgeInsets.symmetric(vertical: UIHelper.size15),
                           itemBuilder: (c, index) => _buildItemNotification(
                               context, model.notifications[index]),
-                          separatorBuilder: (c, index) =>
-                              SizedBox(height: UIHelper.size10),
+                          separatorBuilder: (c, index) => UIHelper.verticalIndicator,
                           itemCount: model.notifications.length)
                       : EmptyWidget(message: 'Không có thông báo nào');
                 },

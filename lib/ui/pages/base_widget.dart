@@ -7,7 +7,12 @@ class BaseWidget<T extends ChangeNotifier> extends StatefulWidget {
   final T model;
   final Widget child;
 
-  BaseWidget({Key key, this.model, this.builder, this.child, this.onModelReady})
+  BaseWidget(
+      {Key key,
+      @required this.model,
+      @required this.builder,
+      this.child,
+      this.onModelReady})
       : super(key: key);
 
   @override

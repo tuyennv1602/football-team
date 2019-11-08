@@ -9,7 +9,7 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
-import 'package:myfootball/ui/widgets/item_comment_widget.dart';
+import 'package:myfootball/ui/widgets/item_comment.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
@@ -191,9 +191,7 @@ class GroundDetailPage extends StatelessWidget {
                               ),
                             ),
                             model.comments == null
-                                ? LoadingWidget(
-                                    type: LOADING_TYPE.WAVE,
-                                  )
+                                ? LoadingWidget(type: LOADING_TYPE.WAVE)
                                 : model.comments.length == 0
                                     ? Padding(
                                         padding: EdgeInsets.only(

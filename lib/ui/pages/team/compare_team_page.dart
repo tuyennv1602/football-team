@@ -4,6 +4,7 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
@@ -128,116 +129,128 @@ class CompareTeamPage extends StatelessWidget {
               margin: EdgeInsets.only(
                   top: UIHelper.size(180) + UIHelper.paddingTop),
               child: BorderBackground(
-                child: ListView(
-                  padding: EdgeInsets.symmetric(
-                      vertical: UIHelper.size10, horizontal: UIHelper.size15),
+                child: Column(
                   children: <Widget>[
-                    UIHelper.verticalSpaceSmall,
-                    _buildItemCompare(
-                        'Điểm', '${_team1.point}', '${_team2.point}'),
-                    _buildItemCompare(
-                        'Xếp hạng', '${_team1.rank}', '${_team2.rank}'),
-                    _buildItemCompare('Đối đầu', '0', '0'),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(
+                            vertical: UIHelper.size5,
+                            horizontal: UIHelper.size15),
                         children: <Widget>[
-                          RatingBarIndicator(
-                            rating: 2.5,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.only(right: 2),
-                            itemSize: UIHelper.size15,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                          UIHelper.verticalSpaceSmall,
+                          _buildItemCompare(
+                              'Điểm', '${_team1.point}', '${_team2.point}'),
+                          _buildItemCompare(
+                              'Xếp hạng', '${_team1.rank}', '${_team2.rank}'),
+                          _buildItemCompare('Đối đầu', '0', '0'),
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: UIHelper.size5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                RatingBarIndicator(
+                                  rating: _team1.rating,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.only(right: 2),
+                                  itemSize: UIHelper.size15,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: PRIMARY,
+                                  ),
+                                ),
+                                Text(
+                                  'Đánh giá',
+                                  style: textStyleRegular(),
+                                ),
+                                RatingBarIndicator(
+                                  rating: _team2.rating,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.only(left: 2),
+                                  itemSize: UIHelper.size15,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: PRIMARY,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                            'Đánh giá',
-                            style: textStyleRegular(),
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: UIHelper.size5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  height: UIHelper.size10,
+                                  width: 100,
+                                  child: ClipPath(
+                                    clipper: ClipperLeftWidget(),
+                                    child: Container(
+                                      color: parseColor(_team1.dress),
+                                      child: SizedBox(),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'Màu áo',
+                                  style: textStyleRegular(),
+                                ),
+                                Container(
+                                  height: UIHelper.size10,
+                                  width: 100,
+                                  child: ClipPath(
+                                    clipper: ClipperRightWidget(),
+                                    child: Container(
+                                      color: parseColor(_team2.dress),
+                                      child: SizedBox(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          RatingBarIndicator(
-                            rating: 2.5,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.only(left: 2),
-                            itemSize: UIHelper.size15,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () => Routes.routeToOtherTeamDetail(
+                                  context, _team2),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: UIHelper.size5),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      'Xem thêm',
+                                      style: textStyleItalic(
+                                          size: 14, color: PRIMARY),
+                                    ),
+                                    UIHelper.horizontalSpaceSmall,
+                                    Image.asset(
+                                      Images.NEXT,
+                                      width: UIHelper.size10,
+                                      height: UIHelper.size10,
+                                      color: LINE_COLOR,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          InputWidget(
+                            labelText: 'Nội dung lời mời',
+                            maxLines: 3,
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.only(bottom: UIHelper.size10),
+                            child: ChooseRatioTypeWidget(
+                              onSelectedType: (type) => print(type),
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            height: UIHelper.size10,
-                            width: 100,
-                            child: ClipPath(
-                              clipper: ClipperLeftWidget(),
-                              child: Container(
-                                color: parseColor(_team1.dress),
-                                child: SizedBox(),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Màu áo',
-                            style: textStyleRegular(),
-                          ),
-                          Container(
-                            height: UIHelper.size10,
-                            width: 100,
-                            child: ClipPath(
-                              clipper: ClipperRightWidget(),
-                              child: Container(
-                                color: parseColor(_team2.dress),
-                                child: SizedBox(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size5),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                'Xem thêm đánh giá',
-                                style:
-                                    textStyleItalic(size: 14, color: PRIMARY),
-                              ),
-                              UIHelper.horizontalSpaceSmall,
-                              Image.asset(
-                                Images.NEXT,
-                                width: UIHelper.size10,
-                                height: UIHelper.size10,
-                                color: LINE_COLOR,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    InputWidget(
-                      labelText: 'Nội dung lời mời',
-                      maxLines: 3,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                      child: ChooseRatioTypeWidget(
-                        onSelectedType: (type) => print(type),
                       ),
                     ),
                     ButtonWidget(

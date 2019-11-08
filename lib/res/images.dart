@@ -62,5 +62,7 @@ class Images {
   static const String CLOSE = '$FOLDER/ic_close.png';
   static const String FINGERPRINT = '$FOLDER/ic_fingerprint.png';
   static const String DELETE = '$FOLDER/ic_delete.png';
-
+  static const String CLOCK = '$FOLDER/ic_clock.png';
+  static const String UP = '$FOLDER/ic_up.png';
+  static const String DOWN = '$FOLDER/ic_down.png';
 }
