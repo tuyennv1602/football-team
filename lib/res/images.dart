@@ -65,4 +65,5 @@ class Images {
   static const String CLOCK = '$FOLDER/ic_clock.png';
   static const String UP = '$FOLDER/ic_up.png';
   static const String DOWN = '$FOLDER/ic_down.png';
+  static const String FRAME = '$FOLDER/ic_frame.png';
 }

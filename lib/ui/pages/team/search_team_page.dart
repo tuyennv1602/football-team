@@ -16,14 +16,13 @@ import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
-import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/search_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-enum SEARCH_TYPE { REQUEST_MEMBER, SEARCH_TEAM }
+enum SEARCH_TYPE { REQUEST_MEMBER, COMPARE_TEAM, SELECT_OPPONENT_TEAM }
 
 // ignore: must_be_immutable
 class SearchTeamPage extends StatelessWidget {
@@ -32,7 +31,7 @@ class SearchTeamPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final SEARCH_TYPE type;
 
-  SearchTeamPage({Key key, this.type = SEARCH_TYPE.SEARCH_TEAM})
+  SearchTeamPage({Key key, this.type = SEARCH_TYPE.COMPARE_TEAM})
       : super(key: key);
 
   bool validateAndSave() {
@@ -52,10 +51,12 @@ class SearchTeamPage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: InkWell(
           onTap: () {
-            if (type == SEARCH_TYPE.SEARCH_TEAM) {
+            if (type == SEARCH_TYPE.COMPARE_TEAM) {
               Routes.routeToCompareTeam(context, team);
-            } else {
+            } else if(type == SEARCH_TYPE.REQUEST_MEMBER) {
               _showOptions(context, team);
+            } else {
+              Navigator.of(context).pop(team);
             }
           },
           child: Row(

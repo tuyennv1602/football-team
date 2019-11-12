@@ -365,7 +365,7 @@ class FindMatchingPage extends StatelessWidget {
             ),
             rightContent: AppBarButtonWidget(
               imageName: Images.SEARCH,
-              onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.SEARCH_TEAM),
+              onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.COMPARE_TEAM),
             ),
             backgroundColor: Colors.transparent,
           ),

@@ -249,8 +249,8 @@ class BookingPage extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(UIHelper.size5),
                           child: Container(
-                            width: UIHelper.size(110),
-                            height: UIHelper.size(100),
+                            width: UIHelper.size(90),
+                            height: UIHelper.size(70),
                             child: FadeInImage.assetNetwork(
                               placeholder: Images.DEFAULT_GROUND,
                               image: _ground.avatar,
@@ -261,44 +261,43 @@ class BookingPage extends StatelessWidget {
                         UIHelper.horizontalSpaceMedium,
                         Expanded(
                           child: SizedBox(
-                            height: UIHelper.size(100),
+                            height: UIHelper.size(70),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    _ground.name,
-                                    maxLines: 2,
-                                    style: textStyleSemiBold(),
-                                  ),
+                                Text(
+                                  _ground.name,
+                                  maxLines: 1,
+                                  style: textStyleSemiBold(),
                                 ),
-                                UIHelper.verticalSpaceSmall,
                                 Text(
                                   _ground.address,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: textStyleRegular(),
                                 ),
-                                UIHelper.verticalSpaceSmall,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Đánh giá',
-                                      style: textStyleRegular(),
-                                    ),
-                                    RatingBarIndicator(
-                                      rating: _ground.rating,
-                                      itemCount: 5,
-                                      itemPadding: EdgeInsets.only(left: 2),
-                                      itemSize: UIHelper.size20,
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        'Đánh giá',
+                                        style: textStyleRegular(),
                                       ),
-                                    ),
-                                  ],
+                                      RatingBarIndicator(
+                                        rating: _ground.rating,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.only(left: 2),
+                                        itemSize: UIHelper.size20,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

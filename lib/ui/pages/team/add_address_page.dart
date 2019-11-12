@@ -157,7 +157,7 @@ class AddAddressPage extends StatelessWidget {
                   itemCount: model.wards.length);
               break;
           }
-          bool isSelecedAll = model.wards.length == model.selectedWards.length;
+          bool isSelectedAll = model.wards.length == model.selectedWards.length;
           return Column(
             children: <Widget>[
               AppBarWidget(
@@ -172,9 +172,9 @@ class AddAddressPage extends StatelessWidget {
                 ),
                 rightContent: model.step == Constants.SELECT_WARD
                     ? AppBarButtonWidget(
-                        imageName: isSelecedAll ? Images.CLEAR : Images.CHECK,
+                        imageName: isSelectedAll ? Images.CLEAR : Images.CHECK,
                         onTap: () {
-                          if (isSelecedAll) {
+                          if (isSelectedAll) {
                             model.removeAllWards();
                           } else {
                             model.selectAllWards();

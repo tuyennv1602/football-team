@@ -113,7 +113,7 @@ class _AuthenticationState extends State<AuthenticationWidget>
 
   @override
   Widget build(BuildContext context) {
-    final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 25)
+    final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 25.0)
         .chain(CurveTween(curve: Curves.elasticIn))
         .animate(controller)
           ..addStatusListener((status) {

@@ -20,6 +20,7 @@ import 'package:myfootball/ui/pages/team/invite_request_page.dart';
 import 'package:myfootball/ui/pages/team/invite_team_page.dart';
 import 'package:myfootball/ui/pages/team/match_history_page.dart';
 import 'package:myfootball/ui/pages/team/match_schedule_page.dart';
+import 'package:myfootball/ui/pages/team/matching_info_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
 import 'package:myfootball/ui/pages/team/other_team_detail_page.dart';
 import 'package:myfootball/ui/pages/team/search_ground_page.dart';
@@ -188,5 +189,10 @@ class Routes {
   static Future<dynamic> routeToMatchHistory(BuildContext context) async {
     return await Navigator.of(context, rootNavigator: true)
         .push(SlideLeftRoute(widget: MatchHistoryPage()));
+  }
+
+  static Future<dynamic> routeToMatchingInfo(BuildContext context) async {
+    return await Navigator.of(context, rootNavigator: true)
+        .push(SlideLeftRoute(widget: MatchingInfoPage()));
   }
 }

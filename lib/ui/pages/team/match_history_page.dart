@@ -9,6 +9,7 @@ import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
+import 'package:myfootball/ui/widgets/input_score_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/match_history_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,79 @@ class MatchHistoryPage extends StatelessWidget {
             'Thông tin trận đấu',
             'Huỷ'
           ],
-          onClickOption: (index) {},
+          onClickOption: (index) {
+            if (index == 1) {
+              _showUpdateScore(context);
+            }
+          },
+        ),
+      );
+
+  void _showUpdateScore(BuildContext context) => UIHelper.showCustomizeDialog(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    children: <Widget>[
+                      ImageWidget(
+                        source:
+                            'https://firebasestorage.googleapis.com/v0/b/footballteam-eb70d.appspot.com/o/team%2F5-%C4%90%E1%BB%99i-b%C3%B3ng-c%E1%BB%A7a-Tuy%E1%BB%83n?alt=media',
+                        placeHolder: Images.DEFAULT_LOGO,
+                        size: UIHelper.size35,
+                      ),
+                      UIHelper.horizontalSpaceMedium,
+                      Expanded(
+                        child: Text(
+                          'Acazia FC',
+                          style: textStyleRegularTitle(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(child: SizedBox())
+              ],
+            ),
+            InputScoreWidget(
+              onChangedText: (text) {},
+            ),
+            UIHelper.verticalSpaceMedium,
+            InputScoreWidget(
+              onChangedText: (text) {},
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(child: SizedBox()),
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          'Lion FC',
+                          textAlign: TextAlign.right,
+                          style: textStyleRegularTitle(),
+                        ),
+                      ),
+                      UIHelper.horizontalSpaceMedium,
+                      ImageWidget(
+                        source:
+                            'https://firebasestorage.googleapis.com/v0/b/footballteam-eb70d.appspot.com/o/team%2F5-%C4%90%E1%BB%99i-b%C3%B3ng-c%E1%BB%A7a-Tuy%E1%BB%83n?alt=media',
+                        placeHolder: Images.DEFAULT_LOGO,
+                        size: UIHelper.size35,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       );
 

@@ -5,6 +5,8 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
+import 'package:myfootball/ui/pages/team/search_team_page.dart';
+import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
@@ -16,45 +18,45 @@ import 'package:myfootball/viewmodels/match_schedule_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MatchSchedulePage extends StatelessWidget {
-  void _showManagerOptions(BuildContext context) =>
-      showModalBottomSheet(
+  void _showManagerOptions(BuildContext context) => showModalBottomSheet(
         context: context,
-        builder: (c) =>
-            BottomSheetWidget(
-              options: [
-                'Tuỳ chọn',
-                'Cập nhật đối tác',
-                'Thông tin trận đấu',
-                'Thông tin đặt sân',
-                'Đăng ký thi đấu',
-                'Huỷ'
-              ],
-              onClickOption: (index) {},
-            ),
+        builder: (c) => BottomSheetWidget(
+          options: [
+            'Tuỳ chọn',
+            'Thêm đối tác',
+            'Thông tin trận đấu',
+            'Đăng ký thi đấu',
+            'Huỷ đặt sân',
+            'Huỷ'
+          ],
+          onClickOption: (index) {
+            if (index == 1) {
+              handleUpdateOpponentTeam(context);
+            }
+            if (index == 2) {
+              Routes.routeToMatchingInfo(context);
+            }
+          },
+        ),
       );
 
-  void _showMemberOptions(BuildContext context) =>
-      showModalBottomSheet(
+  Future<void> handleUpdateOpponentTeam(BuildContext context) async {
+    var result = await Routes.routeToSearchTeam(
+        context, SEARCH_TYPE.SELECT_OPPONENT_TEAM);
+    print(result.name);
+  }
+
+  void _showMemberOptions(BuildContext context) => showModalBottomSheet(
         context: context,
-        builder: (c) =>
-            BottomSheetWidget(
-              options: [
-                'Tuỳ chọn',
-                'Thông tin trận đấu',
-                'Đăng ký thi đấu',
-                'Huỷ'
-              ],
-              onClickOption: (index) {},
-            ),
+        builder: (c) => BottomSheetWidget(
+          options: ['Tuỳ chọn', 'Thông tin trận đấu', 'Đăng ký thi đấu', 'Huỷ'],
+          onClickOption: (index) {},
+        ),
       );
 
   Widget _buildItemSchedule(BuildContext context, int index, Team team) {
     bool isCaptain =
-        Provider
-            .of<Team>(context)
-            .manager == Provider
-            .of<User>(context)
-            .id;
+        Provider.of<Team>(context).manager == Provider.of<User>(context).id;
     return InkWell(
       onTap: () {
         if (isCaptain) {
@@ -77,8 +79,7 @@ class MatchSchedulePage extends StatelessWidget {
                   right: UIHelper.size35,
                   child: Container(
                     height: UIHelper.size40,
-                    padding:
-                    EdgeInsets.symmetric(horizontal: UIHelper.size20),
+                    padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
                     color: SHADOW_GREEN,
                     child: Row(
                       children: <Widget>[
@@ -98,7 +99,7 @@ class MatchSchedulePage extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: Colors.green,
                               borderRadius:
-                              BorderRadius.circular(UIHelper.size10)),
+                                  BorderRadius.circular(UIHelper.size10)),
                           child: Text(
                             'VS',
                             style: textStyleSemiBold(
@@ -107,7 +108,7 @@ class MatchSchedulePage extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            team.name,
+                            index == 0 ? 'Lion FC' : '',
                             textAlign: TextAlign.right,
                             style: textStyleSemiBold(size: 13),
                             maxLines: 2,
@@ -135,11 +136,10 @@ class MatchSchedulePage extends StatelessWidget {
                         ),
                       ),
                       padding:
-                      EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                          EdgeInsets.symmetric(horizontal: UIHelper.size10),
                       child: Text(
                         '16:00 18/11',
-                        style:
-                        textStyleSemiBold(color: Colors.white, size: 15),
+                        style: textStyleSemiBold(color: Colors.white, size: 15),
                       ),
                     ),
                   ),
@@ -154,8 +154,7 @@ class MatchSchedulePage extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: SHADOW_GREEN,
                           border: Border.all(width: 2, color: Colors.white),
-                          borderRadius:
-                          BorderRadius.circular(UIHelper.size25)),
+                          borderRadius: BorderRadius.circular(UIHelper.size25)),
                       child: ImageWidget(
                         source: team.logo,
                         placeHolder: Images.DEFAULT_LOGO,
@@ -170,14 +169,15 @@ class MatchSchedulePage extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: SHADOW_GREEN,
                           border: Border.all(width: 2, color: Colors.white),
-                          borderRadius:
-                          BorderRadius.circular(UIHelper.size25)),
-                      child: ImageWidget(
-                        source: team.logo,
-                        placeHolder: Images.DEFAULT_LOGO,
-                        size: UIHelper.size40,
-                        radius: UIHelper.size20,
-                      ),
+                          borderRadius: BorderRadius.circular(UIHelper.size25)),
+                      child: index == 0
+                          ? ImageWidget(
+                              source: team.logo,
+                              placeHolder: Images.DEFAULT_LOGO,
+                              size: UIHelper.size40,
+                              radius: UIHelper.size20,
+                            )
+                          : SizedBox(),
                     ),
                   ],
                 ),
@@ -217,14 +217,12 @@ class MatchSchedulePage extends StatelessWidget {
             child: BorderBackground(
               child: BaseWidget<MatchScheduleViewModel>(
                 model: MatchScheduleViewModel(api: Provider.of(context)),
-                builder: (c, model, child) =>
-                    ListView.separated(
-                        padding: EdgeInsets.symmetric(
-                            vertical: UIHelper.size10),
-                        itemBuilder: (c, index) =>
-                            _buildItemSchedule(context, index, _team),
-                        separatorBuilder: (c, index) => LineWidget(),
-                        itemCount: 2),
+                builder: (c, model, child) => ListView.separated(
+                    padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                    itemBuilder: (c, index) =>
+                        _buildItemSchedule(context, index, _team),
+                    separatorBuilder: (c, index) => LineWidget(),
+                    itemCount: 2),
               ),
             ),
           ),
