@@ -9,6 +9,7 @@ import 'package:myfootball/models/responses/ground_resp.dart';
 import 'package:myfootball/models/responses/invite_request_resp.dart';
 import 'package:myfootball/models/responses/list_ground_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/responses/match_schedule_resp.dart';
 import 'package:myfootball/models/responses/matching_resp.dart';
 import 'package:myfootball/models/responses/notification_resp.dart';
 import 'package:myfootball/models/responses/review_resp.dart';
@@ -292,10 +293,10 @@ class Api {
   }
 
   Future<BaseResponse> bookingTimeSlot(
-      int groundId, int timeSlotId, int playDate) async {
+      int teamId, int timeSlotId, int playDate) async {
     try {
       var resp = await _api.postApi("ticket", body: {
-        "group_id": groundId,
+        "group_id": teamId,
         "time_slot_id": timeSlotId,
         "play_date": playDate,
         "prepayment_status": 0,
@@ -430,6 +431,18 @@ class Api {
       return CommentResponse.success(resp.data);
     } on DioError catch (e) {
       return CommentResponse.error(e.message);
+    }
+  }
+
+  Future<MatchScheduleResponse> getMatchSchedules(int teamId) async {
+    try {
+      FormData formData = new FormData.from({
+        "groupId": teamId,
+      });
+      var resp = await _api.getApi('match', queryParams: formData);
+      return MatchScheduleResponse.success(teamId, resp.data);
+    } on DioError catch (e) {
+      return MatchScheduleResponse.error(e.message);
     }
   }
 }

@@ -9,6 +9,7 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
@@ -138,38 +139,48 @@ class InviteRequestPage extends StatelessWidget {
                 onModelReady: (model) => model.getAllInvites(team.id),
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
-                    : DefaultTabController(
-                        length: model.mappedInviteRequest.length,
-                        child: Column(
-                          children: <Widget>[
-                            TabBarWidget(
-                              titles: model.mappedInviteRequest.keys
-                                  .toList()
-                                  .map((item) => TABS[item])
-                                  .toList(),
-                              height: UIHelper.size45,
+                    : model.mappedInviteRequest.length == 0
+                        ? EmptyWidget(
+                            message: 'Không có lời mời nào'
+                          )
+                        : DefaultTabController(
+                            length: model.mappedInviteRequest.length,
+                            child: Column(
+                              children: <Widget>[
+                                TabBarWidget(
+                                  titles: model.mappedInviteRequest.keys
+                                      .toList()
+                                      .map((item) => TABS[item])
+                                      .toList(),
+                                  height: UIHelper.size45,
+                                ),
+                                Expanded(
+                                  child: TabBarView(
+                                    children: model.mappedInviteRequest.values
+                                        .toList()
+                                        .map(
+                                          (inviteRequests) =>
+                                              ListView.separated(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          UIHelper.size15),
+                                                  itemBuilder: (c, index) =>
+                                                      _buildItemRequest(
+                                                          context,
+                                                          inviteRequests[
+                                                              index]),
+                                                  separatorBuilder:
+                                                      (c, index) => UIHelper
+                                                          .verticalIndicator,
+                                                  itemCount:
+                                                      inviteRequests.length),
+                                        )
+                                        .toList(),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              child: TabBarView(
-                                children: model.mappedInviteRequest.values
-                                    .toList()
-                                    .map(
-                                      (inviteRequests) => ListView.separated(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size15),
-                                          itemBuilder: (c, index) =>
-                                              _buildItemRequest(context,
-                                                  inviteRequests[index]),
-                                          separatorBuilder: (c, index) =>
-                                              UIHelper.verticalIndicator,
-                                          itemCount: inviteRequests.length),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          ),
               ),
             ),
           ),

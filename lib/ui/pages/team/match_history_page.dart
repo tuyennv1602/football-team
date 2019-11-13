@@ -119,88 +119,75 @@ class MatchHistoryPage extends StatelessWidget {
           } else {}
         },
         child: Padding(
-          padding: EdgeInsets.all(UIHelper.size10),
+          padding: EdgeInsets.all(UIHelper.size15),
           child: Column(
             children: <Widget>[
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: ImageWidget(
-                      source: team.logo,
-                      placeHolder: Images.DEFAULT_LOGO,
-                      size: UIHelper.size30,
+                    child: Column(
+                      children: <Widget>[
+                        ImageWidget(
+                          source: team.logo,
+                          placeHolder: Images.DEFAULT_LOGO,
+                          size: UIHelper.size30,
+                        ),
+                        UIHelper.verticalSpaceSmall,
+                        Text(
+                          team.name,
+                          textAlign: TextAlign.center,
+                          style: textStyleSemiBold(),
+                        )
+                      ],
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      '1 - 1',
-                      textAlign: TextAlign.center,
-                      style: textStyleBold(size: 22),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          '1 - 1',
+                          textAlign: TextAlign.center,
+                          style: textStyleBold(size: 22),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image.asset(
+                              index == 0 ? Images.UP : Images.DOWN,
+                              width: UIHelper.size(12),
+                              height: UIHelper.size(12),
+                              color: index == 0 ? Colors.green : Colors.red,
+                            ),
+                            Text(
+                              '32.1',
+                              style: textStyleSemiBold(
+                                  size: 14,
+                                  color: index == 0 ? Colors.green : Colors.red),
+                            )
+                          ],
+                        )
+                      ],
                     ),
                   ),
                   Expanded(
-                    child: ImageWidget(
-                      source: team.logo,
-                      placeHolder: Images.DEFAULT_LOGO,
-                      size: UIHelper.size30,
+                    child: Column(
+                      children: <Widget>[
+                        ImageWidget(
+                          source: team.logo,
+                          placeHolder: Images.DEFAULT_LOGO,
+                          size: UIHelper.size30,
+                        ),
+                        UIHelper.verticalSpaceSmall,
+                        Text(
+                          team.name,
+                          textAlign: TextAlign.center,
+                          style: textStyleSemiBold(),
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
-              UIHelper.verticalSpaceSmall,
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      team.name,
-                      style: textStyleSemiBold(),
-                    ),
-                  ),
-                  SizedBox(
-                    width: UIHelper.size(100),
-                  ),
-                  Expanded(
-                    child: Text(
-                      team.name,
-                      style: textStyleSemiBold(),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Image.asset(
-                    index == 0 ? Images.UP : Images.DOWN,
-                    width: UIHelper.size(12),
-                    height: UIHelper.size(12),
-                    color: index == 0 ? Colors.green : Colors.red,
-                  ),
-                  Text(
-                    '32.1',
-                    style: textStyleSemiBold(
-                        size: 14,
-                        color: index == 0 ? Colors.green : Colors.red),
-                  )
-                ],
-              ),
-              UIHelper.verticalSpaceMedium,
-              Row(
-                children: <Widget>[
-                  Image.asset(
-                    Images.CLOCK,
-                    width: UIHelper.size15,
-                    height: UIHelper.size15,
-                    color: Colors.grey,
-                  ),
-                  UIHelper.horizontalSpaceMedium,
-                  Expanded(
-                    child: Text(
-                      '16:00 - 17:30  18/11/19',
-                      style: textStyleRegular(color: Colors.grey),
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),

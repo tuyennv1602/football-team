@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/models/field.dart';
 import 'package:myfootball/models/ground.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/time_slot.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -117,7 +118,7 @@ class BookingPage extends StatelessWidget {
         ),
         onConfirmed: () async {
           UIHelper.showProgressDialog;
-          var resp = await model.booking(_ground.id, timeSlot.id);
+          var resp = await model.booking(Provider.of<Team>(context).id, timeSlot.id);
           UIHelper.hideProgressDialog;
           if (resp.isSuccess) {
             UIHelper.showSimpleDialog(

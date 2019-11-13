@@ -45,7 +45,7 @@ class DateUtil {
 
   static String getDateFromTimestamp(int timestamp) {
     return DateFormat('dd/MM/yyyy')
-        .format(new DateTime.fromMillisecondsSinceEpoch(timestamp));
+        .format(DateTime.fromMillisecondsSinceEpoch(timestamp));
   }
 
   static String formatDate(DateTime date, DateFormat format) {

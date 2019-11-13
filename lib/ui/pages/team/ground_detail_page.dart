@@ -45,11 +45,6 @@ class GroundDetailPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemComment(BuildContext context, Comment comment) => Padding(
-        padding: EdgeInsets.all(UIHelper.size10),
-        child: Text(comment.comment),
-      );
-
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);

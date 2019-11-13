@@ -32,9 +32,9 @@ class BookingViewModel extends BaseViewModel {
     return resp;
   }
 
-  Future<BaseResponse> booking(int groundId, int timeSlotId) async {
+  Future<BaseResponse> booking(int teamId, int timeSlotId) async {
     var resp = await _api.bookingTimeSlot(
-        groundId, timeSlotId, DateUtil.getDateTimeStamp(currentDate));
+        teamId, timeSlotId, DateUtil.getDateTimeStamp(currentDate));
     return resp;
   }
 }

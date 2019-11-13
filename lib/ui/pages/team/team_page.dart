@@ -59,7 +59,8 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ),
             Expanded(
               child: InkWell(
-                onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.REQUEST_MEMBER),
+                onTap: () => Routes.routeToSearchTeam(
+                    context, SEARCH_TYPE.REQUEST_MEMBER),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -104,7 +105,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ItemOptionWidget(
           Images.STACK,
           'Lời mời ghép đối',
-          iconColor: Colors.blueAccent,
+          iconColor: Colors.lightBlue,
           onTap: () => Routes.routeToInviteRequest(context),
         ),
         LineWidget(),
@@ -355,17 +356,19 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                 child: Column(
                                   children: <Widget>[
                                     Expanded(
-                                        child: _buildSelectTeam(
-                                      context,
-                                      _teams,
-                                      (team) async {
-                                        UIHelper.showProgressDialog;
-                                        await model.changeTeam(team);
-                                        UIHelper.hideProgressDialog;
-                                      },
-                                    )),
+                                      child: _buildSelectTeam(
+                                        context,
+                                        _teams,
+                                        (team) async {
+                                          UIHelper.showProgressDialog;
+                                          await model.changeTeam(team);
+                                          UIHelper.hideProgressDialog;
+                                        },
+                                      ),
+                                    ),
                                     Container(
                                       height: UIHelper.size50,
+                                      width: UIHelper.screenWidth,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         boxShadow: [
@@ -385,7 +388,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                           topRight:
                                               Radius.circular(UIHelper.size20),
                                         ),
-                                      ),
+                                      )
                                     )
                                   ],
                                 ),

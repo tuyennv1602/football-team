@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:myfootball/models/match_schedule.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -17,8 +18,14 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/matching_info_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class MatchingInfoPage extends StatelessWidget {
+class MatchDetailPage extends StatelessWidget {
   static const TABS = ['ACAZIA FC', 'Lion FC'];
+
+  final MatchSchedule _matchSchedule;
+
+  MatchDetailPage({Key key, @required MatchSchedule matchSchedule})
+      : _matchSchedule = matchSchedule,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,79 +53,45 @@ class MatchingInfoPage extends StatelessWidget {
                 builder: (c, model, child) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(UIHelper.size15),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          ImageWidget(
-                            source: team.logo,
-                            placeHolder: Images.DEFAULT_LOGO,
-                          ),
-                          UIHelper.horizontalSpaceLarge,
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(UIHelper.size15),
-                                  bottomRight: Radius.circular(UIHelper.size15),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    _matchSchedule.receiveTeam != null
+                        ? InkWell(
+                            onTap: () => Routes.routeToOtherTeamDetail(context, _matchSchedule.receiveTeam),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: UIHelper.size10,
+                                  horizontal: UIHelper.size15),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(
-                                    team.name,
-                                    style: textStyleSemiBold(),
+                                  ImageWidget(
+                                    source: _matchSchedule.receiveTeam.logo,
+                                    placeHolder: Images.DEFAULT_LOGO,
+                                    size: UIHelper.size40,
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: UIHelper.size(2)),
+                                  UIHelper.horizontalSpaceMedium,
+                                  Expanded(
                                     child: Text(
-                                      'Xếp hạng: ${team.rank} (${team.point} điểm)',
-                                      style: textStyleRegular(),
+                                      _matchSchedule.receiveTeam.name,
+                                      style: textStyleSemiBold(size: 18),
                                     ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Đánh giá: ',
-                                        style: textStyleRegular(),
-                                      ),
-                                      RatingBarIndicator(
-                                        rating: team.rating,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.only(left: 2),
-                                        itemSize: UIHelper.size15,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star,
-                                          color: PRIMARY,
-                                        ),
-                                      ),
-                                    ],
+                                  UIHelper.horizontalSpaceSmall,
+                                  Image.asset(
+                                    Images.NEXT,
+                                    width: UIHelper.size10,
+                                    height: UIHelper.size10,
+                                    color: LINE_COLOR,
                                   )
                                 ],
                               ),
                             ),
-                          ),
-                          UIHelper.horizontalSpaceSmall,
-                          Image.asset(
-                            Images.NEXT,
-                            width: UIHelper.size15,
-                            height: UIHelper.size15,
-                            color: Colors.grey,
                           )
-                        ],
-                      ),
-                    ),
+                        : SizedBox(),
                     LineWidget(),
                     ItemOptionWidget(
                       Images.CLOCK,
-                      '16:00 18/11/2019',
-                      iconColor: Colors.red,
+                      _matchSchedule.getFullPlayTime,
+                      iconColor: Colors.blue,
                       rightContent: SizedBox(),
                     ),
                     LineWidget(),
@@ -132,7 +105,7 @@ class MatchingInfoPage extends StatelessWidget {
                     ItemOptionWidget(
                       Images.FRAME,
                       'Tỉ lệ 50-50',
-                      iconColor: Colors.amber,
+                      iconColor: Colors.red,
                       rightContent: SizedBox(),
                       onTap: () => Routes.routeToGroundDetail(context, 13),
                     ),

@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../base_widget.dart';
 
+// ignore: must_be_immutable
 class EditTeamPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String _teamName;
