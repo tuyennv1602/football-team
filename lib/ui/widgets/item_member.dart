@@ -11,15 +11,13 @@ import 'image_widget.dart';
 import 'item_position.dart';
 
 class ItemMember extends StatelessWidget {
-  final Member _member;
-  final bool _isCaptain;
-  final Function _onTap;
+  final Member member;
+  final bool isCaptain;
+  final Function onTap;
 
-  ItemMember(
-      {@required Member member, @required bool isCaptain, Function onTap})
-      : _member = member,
-        _isCaptain = isCaptain,
-        _onTap = onTap;
+  const ItemMember(
+      {Key key, @required this.member, @required this.isCaptain, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +28,14 @@ class ItemMember extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
       child: InkWell(
-        onTap: _onTap,
+        onTap: onTap,
         child: Padding(
           padding: EdgeInsets.all(UIHelper.size10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ImageWidget(
-                source: _member.avatar,
+                source: member.avatar,
                 placeHolder: Images.DEFAULT_AVATAR,
                 size: UIHelper.size50,
                 radius: UIHelper.size25,
@@ -47,12 +45,12 @@ class ItemMember extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _isCaptain
+                    isCaptain
                         ? RichText(
                             text: TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: _member.userName,
+                                  text: member.userName,
                                   style: textStyleSemiBold(),
                                 ),
                                 TextSpan(
@@ -62,16 +60,18 @@ class ItemMember extends StatelessWidget {
                             ),
                           )
                         : Text(
-                            _member.userName,
+                            member.userName,
                             style: textStyleSemiBold(),
                           ),
-                    Text(
-                      'Điểm cá nhân: ${_member.getRating}',
-                      style: textStyleRegular(),
-                    ),
-                    _member.position != null && _member.position.length > 0
+                    member.rating != null
+                        ? Text(
+                            'Điểm cá nhân: ${member.rating}',
+                            style: textStyleRegular(),
+                          )
+                        : SizedBox(),
+                    member.position != null && member.position.length > 0
                         ? Row(
-                            children: _member.getPositions
+                            children: member.getPositions
                                 .map<Widget>(
                                   (pos) => ItemPosition(
                                     position: pos,
@@ -96,7 +96,7 @@ class ItemMember extends StatelessWidget {
                       color: PRIMARY,
                     ),
                   ),
-                  onTap: () => launch('tel://${_member.phone}'))
+                  onTap: () => launch('tel://${member.phone}'))
             ],
           ),
         ),

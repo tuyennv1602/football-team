@@ -55,4 +55,10 @@ class MatchSchedule {
 
   String get getFullPlayTime =>
       '${DateUtil.getTimeStringFromDouble(startTime)} ${DateUtil.getDateFromTimestamp(playDate)}';
+
+  String get getOpponentLogo => isSender ? receiveTeam.logo : sendTeam.logo;
+
+  String get getOpponentName => isSender ? receiveTeam.name : sendTeam.name;
+
+  Team get getOpponentTeam => isSender ? receiveTeam : sendTeam;
 }

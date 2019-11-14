@@ -30,7 +30,6 @@ class MatchSchedulePage extends StatelessWidget {
             'Thêm đối tác',
             'Thông tin trận đấu',
             'Đăng ký thi đấu',
-            'Huỷ đặt sân',
             'Huỷ'
           ],
           onClickOption: (index) {

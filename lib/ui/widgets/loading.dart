@@ -16,11 +16,11 @@ class LoadingWidget extends StatelessWidget {
                 width: UIHelper.size50,
                 height: UIHelper.size50,
                 widget: Image.asset(
-                  'assets/images/icn_loading.png',
+                  'assets/images/ic_loading.png',
                 ),
               )
             : Image.asset(
-                'assets/images/icn_loading.gif',
+                'assets/images/ic_loading.gif',
                 width: UIHelper.size50,
                 height: UIHelper.size50,
               ),

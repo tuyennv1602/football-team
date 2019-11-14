@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/match_schedule.dart';
+import 'package:myfootball/models/member.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -10,22 +10,35 @@ import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
+import 'package:myfootball/ui/widgets/item_member.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
+import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodels/matching_info_viewmodel.dart';
+import 'package:myfootball/viewmodels/matching_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MatchDetailPage extends StatelessWidget {
-  static const TABS = ['ACAZIA FC', 'Lion FC'];
-
   final MatchSchedule _matchSchedule;
 
   MatchDetailPage({Key key, @required MatchSchedule matchSchedule})
       : _matchSchedule = matchSchedule,
         super(key: key);
+
+  Widget _buildTeamMembers(BuildContext context, List<Member> members) {
+    if (members == null) return LoadingWidget();
+    return members.length == 0
+        ? EmptyWidget(message: 'Chưa có thành viên nào')
+        : ListView.separated(
+            padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+            itemBuilder: (c, index) => ItemMember(
+                member: members[index], isCaptain: members[index].isManager),
+            separatorBuilder: (c, index) => UIHelper.verticalIndicator,
+            itemCount: members.length);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +61,22 @@ class MatchDetailPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: BaseWidget<MatchingInfoViewModel>(
-                model: MatchingInfoViewModel(api: Provider.of(context)),
+              child: BaseWidget<MatchingDetailViewModel>(
+                model: MatchingDetailViewModel(api: Provider.of(context)),
+                onModelReady: (model) {
+                  model.getMyTeamMembers(1, team.id);
+                  if (_matchSchedule.receiveTeam != null) {
+                    model.getOpponentTeamMembers(
+                        1, _matchSchedule.getOpponentTeam.id);
+                  }
+                },
                 builder: (c, model, child) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _matchSchedule.receiveTeam != null
                         ? InkWell(
-                            onTap: () => Routes.routeToOtherTeamDetail(context, _matchSchedule.receiveTeam),
+                            onTap: () => Routes.routeToOtherTeamDetail(
+                                context, _matchSchedule.getOpponentTeam),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: UIHelper.size10,
@@ -64,14 +85,14 @@ class MatchDetailPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   ImageWidget(
-                                    source: _matchSchedule.receiveTeam.logo,
+                                    source: _matchSchedule.getOpponentLogo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                     size: UIHelper.size40,
                                   ),
                                   UIHelper.horizontalSpaceMedium,
                                   Expanded(
                                     child: Text(
-                                      _matchSchedule.receiveTeam.name,
+                                      _matchSchedule.getOpponentName,
                                       style: textStyleSemiBold(size: 18),
                                     ),
                                   ),
@@ -115,28 +136,35 @@ class MatchDetailPage extends StatelessWidget {
                           horizontal: UIHelper.size15,
                           vertical: UIHelper.size10),
                       child: Text(
-                        'Danh sách thi đấu',
+                        'Danh sách đăng ký thi đấu',
                         style: textStyleRegularTitle(),
                       ),
                     ),
                     Expanded(
-                      child: DefaultTabController(
-                        length: 2,
-                        child: Column(
-                          children: <Widget>[
-                            TabBarWidget(
-                              titles: TABS,
-                              height: UIHelper.size30,
-                            ),
-                            Expanded(
-                              child: TabBarView(children: [
-                                Text('Danh sách 1'),
-                                Text('Danh sách 2'),
-                              ]),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _matchSchedule.receiveTeam != null
+                          ? DefaultTabController(
+                              length: 2,
+                              child: Column(
+                                children: <Widget>[
+                                  TabBarWidget(
+                                    titles: [
+                                      team.name,
+                                      _matchSchedule.getOpponentName
+                                    ],
+                                    height: UIHelper.size30,
+                                  ),
+                                  Expanded(
+                                    child: TabBarView(children: [
+                                      _buildTeamMembers(
+                                          context, model.myTeamMembers),
+                                      _buildTeamMembers(
+                                          context, model.opponentTeamMembers)
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : _buildTeamMembers(context, model.myTeamMembers),
                     )
                   ],
                 ),

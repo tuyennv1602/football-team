@@ -97,11 +97,11 @@ class OtherTeamDetailPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'Điểm: ${_team != null ? _team.point : 0}',
+                                      'Điểm: ${_team.point ?? 0}',
                                       style: textStyleRegularTitle(),
                                     ),
                                     Text(
-                                      'Xếp hạng: ${_team != null ? _team.rank : 0}',
+                                      'Xếp hạng: ${_team.rank ?? 0}',
                                       style: textStyleRegularTitle(),
                                     ),
                                     Divider(
@@ -182,7 +182,9 @@ class OtherTeamDetailPage extends StatelessWidget {
                                             ? EmptyWidget(
                                                 message: 'Chưa có nhận xét nào')
                                             : ListView.separated(
-                                                padding: EdgeInsets.only(left: UIHelper.size50, right: UIHelper.size10),
+                                                padding: EdgeInsets.only(
+                                                    left: UIHelper.size50,
+                                                    right: UIHelper.size10),
                                                 itemBuilder: (c, index) =>
                                                     ItemComment(
                                                         comment: model

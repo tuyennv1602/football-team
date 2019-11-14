@@ -175,12 +175,12 @@ class _LoginState extends State<LoginPage> {
                       IconButton(
                         iconSize: UIHelper.size40,
                         onPressed: () => print('facebook'),
-                        icon: Image.asset('assets/images/icn_facebook.png'),
+                        icon: Image.asset('assets/images/ic_facebook.png'),
                       ),
                       IconButton(
                         iconSize: UIHelper.size40,
                         onPressed: () => print('google'),
-                        icon: Image.asset('assets/images/icn_google.png'),
+                        icon: Image.asset('assets/images/ic_google.png'),
                       )
                     ],
                   ),

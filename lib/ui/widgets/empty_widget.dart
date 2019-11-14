@@ -14,7 +14,7 @@ class EmptyWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Image.asset(
-          'assets/images/icn_empty.png',
+          'assets/images/ic_empty.png',
           width: UIHelper.size50,
           height: UIHelper.size50,
           color: Colors.grey,

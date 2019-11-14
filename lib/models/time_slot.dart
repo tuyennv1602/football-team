@@ -45,5 +45,5 @@ class TimeSlot {
   }
 
   String get getTime =>
-      '${DateUtil.getTimeStringFromDouble(startTime)}-${DateUtil.getTimeStringFromDouble(endTime)}';
+      '${DateUtil.getTimeStringFromDouble(startTime)} - ${DateUtil.getTimeStringFromDouble(endTime)}';
 }

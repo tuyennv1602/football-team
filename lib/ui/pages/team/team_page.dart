@@ -103,9 +103,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
         LineWidget(),
         ItemOptionWidget(
-          Images.STACK,
+          Images.INVITE,
           'Lời mời ghép đối',
-          iconColor: Colors.lightBlue,
+          iconColor: Colors.pinkAccent,
           onTap: () => Routes.routeToInviteRequest(context),
         ),
         LineWidget(),
@@ -153,7 +153,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ItemOptionWidget(
               Images.MATCH_HISTORY,
               'Lịch sử thi đấu',
-              iconColor: Colors.lightGreen,
+              iconColor: Colors.blue,
               onTap: () => Routes.routeToMatchHistory(context),
             ),
             LineWidget(),
@@ -174,9 +174,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ..addAll(_manager)
             ..addAll([
               ItemOptionWidget(
-                Images.INVITE,
+                Images.CONNECT,
                 'Mời bạn bè vào đội',
-                iconColor: Colors.pinkAccent,
+                iconColor: Colors.blueAccent,
               ),
               LineWidget(),
               ItemOptionWidget(

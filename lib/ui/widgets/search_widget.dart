@@ -80,7 +80,7 @@ class SearchWidget extends StatelessWidget {
               }
             },
             child: this.isLoading
-                ? Image.asset('assets/images/icn_loading.gif')
+                ? Image.asset('assets/images/ic_loading.gif')
                 : Icon(
                     length > 0 ? Icons.close : Icons.search,
                     color: Colors.grey,

@@ -7,7 +7,7 @@ BuildContext _context, _dismissingContext;
 bool _barrierDismissible = true;
 
 Widget _progressWidget = RotationWidget(
-  widget: Image.asset('assets/images/icn_loading.png'),
+  widget: Image.asset('assets/images/ic_loading.png'),
 );
 
 class ProgressDialog {

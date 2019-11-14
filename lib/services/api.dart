@@ -11,11 +11,13 @@ import 'package:myfootball/models/responses/list_ground_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/models/responses/match_schedule_resp.dart';
 import 'package:myfootball/models/responses/matching_resp.dart';
+import 'package:myfootball/models/responses/member_resp.dart';
 import 'package:myfootball/models/responses/notification_resp.dart';
 import 'package:myfootball/models/responses/review_resp.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
+import 'package:myfootball/models/responses/ticket_resp.dart';
 import 'package:myfootball/models/responses/user_request_resp.dart';
 import 'package:myfootball/models/team.dart';
 
@@ -443,6 +445,42 @@ class Api {
       return MatchScheduleResponse.success(teamId, resp.data);
     } on DioError catch (e) {
       return MatchScheduleResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> joinMatch(int matchId) async {
+    try {
+      var resp = await _api.putApi('match/$matchId/join');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> leaveMatch(int matchId) async {
+    try {
+      var resp = await _api.putApi('match/$matchId/leave');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<MemberResponse> getJoinedMember(int matchId, int teamId) async {
+    try {
+      var resp = await _api.getApi('match/$matchId/group/$teamId/user');
+      return MemberResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MemberResponse.error(e.message);
+    }
+  }
+
+  Future<TicketResponse> getTickets(int teamId) async {
+    try {
+      var resp = await _api.getApi('ticket/group/$teamId');
+      return TicketResponse.success(resp.data);
+    } on DioError catch (e) {
+      return TicketResponse.error(e.message);
     }
   }
 }

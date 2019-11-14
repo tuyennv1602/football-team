@@ -8,8 +8,7 @@ class WardResponse extends BaseResponse {
     if (json['object'] != null) {
       wards = new List<Ward>();
       json['object'].forEach((v) {
-        var ward = new Ward.fromJson(v);
-        wards.add(ward);
+        wards.add(new Ward.fromJson(v));
       });
     }
   }

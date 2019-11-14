@@ -11,49 +11,46 @@ import 'package:myfootball/utils/ui_helper.dart';
 class TeamFundPage extends StatelessWidget {
   Widget _buildItemFund(BuildContext context, String title, String content,
           double price, int status) =>
-      Opacity(
-        opacity: status % 2 == 0 ? 0.5 : 1,
-        child: Card(
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(UIHelper.size15),
-          ),
-          margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
-          child: Padding(
-            padding: EdgeInsets.all(UIHelper.size10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: textStyleSemiBold(),
-                ),
-                Text(
-                  content,
-                  style: textStyleRegular(),
-                ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      'Số tiền: ',
-                      style: textStyleRegular(),
+      Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(UIHelper.size15),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        child: Padding(
+          padding: EdgeInsets.all(UIHelper.size10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                style: textStyleSemiBold(),
+              ),
+              Text(
+                content,
+                style: textStyleRegular(),
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Số tiền: ',
+                    style: textStyleRegular(),
+                  ),
+                  Text(
+                    StringUtil.formatCurrency(price),
+                    style: textStyleSemiBold(),
+                  ),
+                  Expanded(
+                    child: Text(
+                      status % 2 == 0 ? 'Đã đóng' : 'Chưa đóng',
+                      textAlign: TextAlign.right,
+                      style: textStyleRegularBody(
+                          color: status % 2 == 0 ? Colors.green : Colors.red),
                     ),
-                    Text(
-                      StringUtil.formatCurrency(price),
-                      style: textStyleSemiBold(),
-                    ),
-                    Expanded(
-                      child: Text(
-                        status % 2 == 0 ? 'Đã đóng' : 'Chưa đóng',
-                        textAlign: TextAlign.right,
-                        style: textStyleRegularBody(
-                            color: status % 2 == 0 ? Colors.green : Colors.red),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
+                  )
+                ],
+              )
+            ],
           ),
         ),
       );

@@ -24,62 +24,59 @@ class InviteRequestPage extends StatelessWidget {
   static const TABS = ['Lời mời', 'Đã gửi'];
 
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
-      Opacity(
-        opacity: inviteRequest.status == Constants.INVITE_WAITING ? 1 : 0.5,
-        child: Card(
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(UIHelper.size15),
-          ),
-          margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
-          child: InkWell(
-            onTap: () {
-              if (inviteRequest.status == Constants.INVITE_WAITING) {
-                _showOptions(context, inviteRequest);
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.all(UIHelper.size10),
-              child: Row(
-                children: <Widget>[
-                  ImageWidget(
-                    source: inviteRequest.getLogo,
-                    placeHolder: Images.DEFAULT_LOGO,
+      Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(UIHelper.size15),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        child: InkWell(
+          onTap: () {
+            if (inviteRequest.status == Constants.INVITE_WAITING) {
+              _showOptions(context, inviteRequest);
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.all(UIHelper.size10),
+            child: Row(
+              children: <Widget>[
+                ImageWidget(
+                  source: inviteRequest.getLogo,
+                  placeHolder: Images.DEFAULT_LOGO,
+                ),
+                UIHelper.horizontalSpaceMedium,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        inviteRequest.getName,
+                        style: textStyleSemiBold(),
+                      ),
+                      Text(
+                        inviteRequest.title,
+                        style: textStyleRegularTitle(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            inviteRequest.getCreateTime,
+                            style: textStyleRegularBody(color: Colors.grey),
+                          ),
+                          Text(
+                            inviteRequest.getStatus,
+                            style: textStyleRegularBody(
+                                color: inviteRequest.getStatusColor),
+                          )
+                        ],
+                      )
+                    ],
                   ),
-                  UIHelper.horizontalSpaceMedium,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          inviteRequest.getName,
-                          style: textStyleSemiBold(),
-                        ),
-                        Text(
-                          inviteRequest.title,
-                          style: textStyleRegularTitle(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              inviteRequest.getCreateTime,
-                              style: textStyleRegularBody(color: Colors.grey),
-                            ),
-                            Text(
-                              inviteRequest.getStatus,
-                              style: textStyleRegularBody(
-                                  color: inviteRequest.getStatusColor),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),

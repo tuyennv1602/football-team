@@ -56,7 +56,7 @@ class SetupTeamPage extends StatelessWidget {
                       model.initActive(_team.isSearching);
                     },
                     builder: (c, model, child) => ItemOptionWidget(
-                      Images.STACK,
+                      Images.RECEIVE_INVITE,
                       'Nhận yêu cầu ghép đối',
                       iconColor: Colors.lightBlue,
                       rightContent: SizedBox(
