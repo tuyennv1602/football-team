@@ -5,10 +5,10 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
@@ -17,35 +17,27 @@ import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/review_dialog.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/other_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class OtherTeamDetailPage extends StatelessWidget {
+class TeamDetailPage extends StatelessWidget {
   final Team team;
 
-  OtherTeamDetailPage({Key key, this.team}) : super(key: key);
+  TeamDetailPage({Key key, this.team}) : super(key: key);
 
-  _writeReview(BuildContext context, OtherTeamViewModel model) => showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(UIHelper.size5),
-          ),
-          contentPadding: EdgeInsets.zero,
-          content: ReviewDialog(
-            onSubmitReview: (rating, comment) async {
-              UIHelper.showProgressDialog;
-              var resp = await model.submitReview(rating, comment);
-              UIHelper.hideProgressDialog;
-              if (!resp.isSuccess) {
-                UIHelper.showSimpleDialog(resp.errorMessage);
-              }
-            },
-          ),
-        ),
-      );
+  _writeReview(BuildContext context, {Function onSubmit}) => showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(UIHelper.size5),
+            ),
+            contentPadding: EdgeInsets.zero,
+            content: ReviewDialog(
+                onSubmitReview: (rating, comment) => onSubmit(rating, comment)),
+          ));
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +55,7 @@ class OtherTeamDetailPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -134,12 +126,16 @@ class OtherTeamDetailPage extends StatelessWidget {
                                     Images.MEMBER,
                                     'Thành viên',
                                     iconColor: Colors.green,
-                                    onTap: () => Routes.routeToMember(
-                                        context, _team.members, _team.manager),
+                                    onTap: () => NavigationService.instance()
+                                        .navigateTo(MEMBERS, arguments: _team),
                                   ),
                                   LineWidget(),
                                   InkWell(
-                                    onTap: () => _writeReview(context, model),
+                                    onTap: () => _writeReview(
+                                      context,
+                                      onSubmit: (rating, comment) =>
+                                          model.submitReview(rating, comment),
+                                    ),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: UIHelper.size20,

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 final double _kFrontClosedHeight =
-    UIHelper.size(50); // front layer height when closed
+UIHelper.size(50); // front layer height when closed
 final double _kBackAppBarHeight =
-    UIHelper.size(50); // back layer (options) appbar height
+UIHelper.size(50); // back layer (options) appbar height
 
 class _TapableWhileStatus extends StatefulWidget {
   const _TapableWhileStatus(
-    this.status, {
-    Key key,
-    this.controller,
-    this.child,
-  }) : super(key: key);
+      this.status, {
+        Key key,
+        this.controller,
+        this.child,
+      }) : super(key: key);
 
   final AnimationController controller;
   final AnimationStatus status;
@@ -150,13 +150,13 @@ class _BackAppBar extends StatelessWidget {
 class Backdrop extends StatefulWidget {
   Backdrop(
       {Key key,
-      this.frontLeading,
-      this.frontTitle,
-      this.frontTrailing,
-      this.frontLayer,
-      this.backTitle,
-      this.backLayer,
-      this.color})
+        this.frontLeading,
+        this.frontTitle,
+        this.frontTrailing,
+        this.frontLayer,
+        this.backTitle,
+        this.backLayer,
+        this.color})
       : super(key: key);
 
   final Widget frontLeading;
@@ -178,8 +178,8 @@ class BackdropState extends State<Backdrop>
   Animation<double> _frontOpacity;
 
   static final Animatable<double> _frontOpacityTween =
-      Tween<double>(begin: 0.2, end: 1.0).chain(
-          CurveTween(curve: const Interval(0.0, 0.4, curve: Curves.easeInOut)));
+  Tween<double>(begin: 0.2, end: 1.0).chain(
+      CurveTween(curve: const Interval(0.0, 0.4, curve: Curves.easeInOut)));
 
   @override
   void initState() {
@@ -207,7 +207,7 @@ class BackdropState extends State<Backdrop>
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     final Animation<RelativeRect> frontRelativeRect =
-        _controller.drive(RelativeRectTween(
+    _controller.drive(RelativeRectTween(
       begin: RelativeRect.fromLTRB(
           0.0, constraints.biggest.height - _kFrontClosedHeight, 0.0, 0.0),
       end: RelativeRect.fromLTRB(0.0, _kBackAppBarHeight, 0.0, 0.0),
@@ -253,8 +253,8 @@ class BackdropState extends State<Backdrop>
             return ClipRRect(
               child: child,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(UIHelper.size20),
-                topRight: Radius.circular(UIHelper.size20),
+                topLeft: Radius.circular(UIHelper.size15),
+                topRight: Radius.circular(UIHelper.size15),
               ),
               clipBehavior: Clip.antiAlias,
             );

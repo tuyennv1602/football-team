@@ -4,6 +4,7 @@ import 'package:myfootball/models/responses/team_request_resp.dart';
 import 'package:myfootball/models/team_request.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/team_services.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class RequestMemberViewModel extends BaseViewModel {
@@ -26,19 +27,28 @@ class RequestMemberViewModel extends BaseViewModel {
     return resp;
   }
 
-  Future<BaseResponse> acceptRequest(
-      int index, int requestId, int teamId) async {
+  Future<void> acceptRequest(int index, int requestId, int teamId) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.approveRequestMember(requestId);
-    await _teamServices.getTeamDetail(teamId);
-    teamRequests.removeAt(index);
-    notifyListeners();
-    return resp;
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      await _teamServices.getTeamDetail(teamId);
+      teamRequests.removeAt(index);
+      notifyListeners();
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
-  Future<BaseResponse> rejectRequest(int index, int requestId) async {
+  Future<void> rejectRequest(int index, int requestId) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.rejectRequestMember(requestId);
-    teamRequests.removeAt(index);
-    notifyListeners();
-    return resp;
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      teamRequests.removeAt(index);
+      notifyListeners();
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 }

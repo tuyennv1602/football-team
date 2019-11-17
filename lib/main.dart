@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/services/local_storage.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
 import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:myfootball/ui/routes/router.dart';
 import 'package:myfootball/utils/local_timeago.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:provider/provider.dart';
 import 'http.dart'; // make dio as global top-level variable
 import 'package:timeago/timeago.dart' as timeago;
@@ -46,11 +50,13 @@ class MyApp extends StatelessWidget {
       providers: setupProvider.providers,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorKey: NavigationService().navigatorKey,
+        onGenerateRoute: generateRoute,
         theme: ThemeData(
           canvasColor: Colors.transparent,
           primaryColor: PRIMARY,
           accentColor: PRIMARY,
-          fontFamily: 'regular',
+          fontFamily: REGULAR,
         ),
         home: _isLogined ? HomePage() : LoginPage(),
       ),

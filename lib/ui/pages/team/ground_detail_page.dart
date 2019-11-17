@@ -4,9 +4,10 @@ import 'package:myfootball/models/comment.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/item_comment.dart';
@@ -24,7 +25,7 @@ class GroundDetailPage extends StatelessWidget {
 
   GroundDetailPage({@required int groundId}) : _groundId = groundId;
 
-  _writeReview(BuildContext context, GroundDetailViewModel model) => showDialog(
+  _writeReview(BuildContext context, {Function onSubmit}) => showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
@@ -33,15 +34,7 @@ class GroundDetailPage extends StatelessWidget {
           ),
           contentPadding: EdgeInsets.zero,
           content: ReviewDialog(
-            onSubmitReview: (rating, comment) async {
-              UIHelper.showProgressDialog;
-              var resp = await model.submitReview(rating, comment);
-              UIHelper.hideProgressDialog;
-              if (!resp.isSuccess) {
-                UIHelper.showSimpleDialog(resp.errorMessage);
-              }
-            },
-          ),
+              onSubmitReview: (rating, comment) => onSubmit(rating, comment)),
         ),
       );
 
@@ -66,7 +59,7 @@ class GroundDetailPage extends StatelessWidget {
           ),
           leftContent: AppBarButtonWidget(
             imageName: Images.BACK,
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => NavigationService.instance().goBack(),
           ),
           backgroundColor: Colors.transparent,
         ),
@@ -150,7 +143,8 @@ class GroundDetailPage extends StatelessWidget {
                             UIHelper.verticalSpaceSmall,
                             LineWidget(),
                             InkWell(
-                              onTap: () => _writeReview(context, model),
+                              onTap: () => _writeReview(context, onSubmit: (rating, comment) => model.submitReview(
+                                  rating, comment)),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: UIHelper.size20,

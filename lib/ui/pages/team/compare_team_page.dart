@@ -4,9 +4,9 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/routes/routes.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/choose_ratio_widget.dart';
@@ -14,6 +14,7 @@ import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -214,8 +215,7 @@ class CompareTeamPage extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: InkWell(
-                              onTap: () => Routes.routeToOtherTeamDetail(
-                                  context, _team2),
+                              onTap: () => NavigationService.instance().navigateTo(TEAM_DETAIL, arguments: _team2),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: UIHelper.size5),

@@ -5,7 +5,7 @@ import 'package:myfootball/res/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
@@ -28,49 +28,27 @@ class NotificationState extends State<NotificationPage>
   Widget _buildItemNotification(
           BuildContext context, noti.Notification notification) =>
       Card(
-        elevation: 3,
+        elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size15),
+          borderRadius: BorderRadius.circular(UIHelper.size10),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: Padding(
           padding: EdgeInsets.all(UIHelper.size10),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                width: UIHelper.size10,
-                height: UIHelper.size10,
-                margin: EdgeInsets.only(
-                    left: UIHelper.size5, right: UIHelper.size15),
-                decoration: BoxDecoration(
-                    color: PRIMARY,
-                    borderRadius: BorderRadius.circular(UIHelper.size5),
-                    boxShadow: [
-                      BoxShadow(
-                          color: SHADOW_GREEN,
-                          offset: Offset(0, 0),
-                          blurRadius: UIHelper.size5,
-                          spreadRadius: UIHelper.size5)
-                    ]),
+              Text(
+                notification.title,
+                style: textStyleSemiBold(),
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(notification.getCreateTime,
-                        style: textStyleRegularBody(color: Colors.grey)),
-                    Text(
-                      notification.title,
-                      style: textStyleSemiBold(),
-                    ),
-                    Text(
-                      notification.body,
-                      maxLines: 3,
-                      style: textStyleRegular(),
-                    ),
-                  ],
-                ),
-              )
+              Text(notification.getCreateTime,
+                  style: textStyleRegularBody(color: Colors.grey)),
+              Text(
+                notification.body,
+                maxLines: 3,
+                style: textStyleRegular(),
+              ),
             ],
           ),
         ),
@@ -108,10 +86,11 @@ class NotificationState extends State<NotificationPage>
                       ? ListView.separated(
                           physics: BouncingScrollPhysics(),
                           padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size15),
+                              EdgeInsets.symmetric(vertical: UIHelper.size10),
                           itemBuilder: (c, index) => _buildItemNotification(
                               context, model.notifications[index]),
-                          separatorBuilder: (c, index) => UIHelper.verticalIndicator,
+                          separatorBuilder: (c, index) =>
+                              UIHelper.verticalIndicator,
                           itemCount: model.notifications.length)
                       : EmptyWidget(message: 'Không có thông báo nào');
                 },

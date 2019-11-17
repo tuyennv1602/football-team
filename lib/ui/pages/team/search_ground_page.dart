@@ -6,12 +6,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/search_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/search_ground_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -79,11 +80,11 @@ class _SearchGroundState extends State<SearchGroundPage> {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
             rightContent: AppBarButtonWidget(
               imageName: Images.HISTORY,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().navigateTo(TICKETS),
             ),
           ),
           Expanded(
@@ -108,11 +109,11 @@ class _SearchGroundState extends State<SearchGroundPage> {
                                   ground.id.toString(),
                                 ),
                                 infoWindow: InfoWindow(
-                                  title: ground.name,
-                                  snippet: ground.address,
-                                  onTap: () =>
-                                      Routes.routeToBooking(context, ground),
-                                ),
+                                    title: ground.name,
+                                    snippet: ground.address,
+                                    onTap: () => NavigationService.instance()
+                                        .navigateTo(BOOKING,
+                                            arguments: ground)),
                                 position: LatLng(ground.lat, ground.lng),
                                 icon: _groundMarker),
                           )

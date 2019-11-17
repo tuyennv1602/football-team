@@ -48,10 +48,6 @@ class DateUtil {
         .format(DateTime.fromMillisecondsSinceEpoch(timestamp));
   }
 
-  static String formatDate(DateTime date, DateFormat format) {
-    return format.format(date);
-  }
-
   static String getTimeAgo(int timestamp) {
     return timeago.format(new DateTime.fromMillisecondsSinceEpoch(timestamp),
         locale: 'vi');
@@ -100,13 +96,22 @@ class DateUtil {
     }
   }
 
-  static bool isAbleBooking(DateTime playDate, TimeSlot timeSlot) {
+  static Duration getDiffTime(double startTime, DateTime playDate) {
     DateTime _now = DateTime.now();
-    List<int> _time = getTimeFromDouble(timeSlot.startTime);
-    if (_time == null) return false;
+    List<int> _time = getTimeFromDouble(startTime);
+    if (_time == null) return null;
     DateTime _timeSlot = DateTime(
         playDate.year, playDate.month, playDate.day, _time[0], _time[1]);
-    Duration difference = _timeSlot.difference(_now);
-    return difference.inMinutes > 0;
+    return _timeSlot.difference(_now);
+  }
+
+  static bool isAbleBooking(double startTime, DateTime playDate) {
+    return getDiffTime(startTime, playDate).inMinutes > 0;
+  }
+
+  static bool isOverTimeCancel(double startTime, int playDate) {
+    return getDiffTime(startTime, DateTime.fromMillisecondsSinceEpoch(playDate))
+            .inDays <
+        1;
   }
 }

@@ -294,8 +294,7 @@ class Api {
     }
   }
 
-  Future<BaseResponse> bookingTimeSlot(
-      int teamId, int timeSlotId, int playDate) async {
+  Future<BaseResponse> booking(int teamId, int timeSlotId, int playDate) async {
     try {
       var resp = await _api.postApi("ticket", body: {
         "group_id": teamId,
@@ -310,7 +309,16 @@ class Api {
     }
   }
 
-  Future<BaseResponse> sendInviteMatching(InviteRequest matchingRequest) async {
+  Future<BaseResponse> cancelBooking(int ticketId) async {
+    try {
+      var resp = await _api.putApi('ticket/$ticketId/cancel');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> sendInvite(InviteRequest matchingRequest) async {
     try {
       var resp = await _api.postApi('match/request',
           body: matchingRequest.toCreateJson());
@@ -320,7 +328,7 @@ class Api {
     }
   }
 
-  Future<InviteRequestResponse> getInviteRequestsByTeam(int teamId) async {
+  Future<InviteRequestResponse> getInviteRequests(int teamId) async {
     try {
       FormData formData = new FormData.from({
         "page": 1,
@@ -436,11 +444,10 @@ class Api {
     }
   }
 
-  Future<MatchScheduleResponse> getMatchSchedules(int teamId) async {
+  Future<MatchScheduleResponse> getMatchSchedules(int teamId, int page) async {
     try {
-      FormData formData = new FormData.from({
-        "groupId": teamId,
-      });
+      FormData formData =
+          new FormData.from({"groupId": teamId, "page": page, "limit": 20});
       var resp = await _api.getApi('match', queryParams: formData);
       return MatchScheduleResponse.success(teamId, resp.data);
     } on DioError catch (e) {
@@ -481,6 +488,19 @@ class Api {
       return TicketResponse.success(resp.data);
     } on DioError catch (e) {
       return TicketResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> updateScore(
+      int historyId, int sendTeamScore, int receiveTeamScore) async {
+    try {
+      var resp = await _api.putApi('match/history/$historyId/score', body: {
+        'send_group_score': sendTeamScore,
+        'receive_group_score': receiveTeamScore
+      });
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
     }
   }
 }

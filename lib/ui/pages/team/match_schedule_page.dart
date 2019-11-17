@@ -5,76 +5,119 @@ import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/match_schedule_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MatchSchedulePage extends StatelessWidget {
-  _showManagerOptions(BuildContext context, {Function onDetail}) =>
+  _showManagerOptions(BuildContext context, bool hasOpponent, bool isJoined,
+          {Function onDetail, Function onRegister}) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: hasOpponent
+              ? [
+                  'Tuỳ chọn',
+                  'Thông tin trận đấu',
+                  isJoined ? 'Huỷ đăng ký thi đấu' : 'Đăng ký thi đấu',
+                  'Huỷ'
+                ]
+              : [
+                  'Tuỳ chọn',
+                  'Thông tin trận đấu',
+                  isJoined ? 'Huỷ đăng ký thi đấu' : 'Đăng ký thi đấu',
+                  'Thêm đối tác',
+                  'Huỷ'
+                ],
+          onClickOption: (index) {
+            if (index == 1) {
+              onDetail();
+            }
+            if (index == 2) {
+              onRegister(isJoined);
+            }
+            if (index == 3) {
+              handleUpdateOpponentTeam(context);
+            }
+          },
+        ),
+      );
+
+  _showMemberOptions(BuildContext context, bool isJoined,
+          {Function onDetail, Function onRegister}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
           options: [
             'Tuỳ chọn',
-            'Thêm đối tác',
             'Thông tin trận đấu',
-            'Đăng ký thi đấu',
+            isJoined ? 'Huỷ đăng ký thi đấu' : 'Đăng ký thi đấu',
             'Huỷ'
           ],
           onClickOption: (index) {
             if (index == 1) {
-              handleUpdateOpponentTeam(context);
+              onDetail();
             }
             if (index == 2) {
-              onDetail();
+              onRegister(isJoined);
             }
           },
         ),
       );
 
-  Future<void> handleUpdateOpponentTeam(BuildContext context) async {
-    var result = await Routes.routeToSearchTeam(
-        context, SEARCH_TYPE.SELECT_OPPONENT_TEAM);
-    print(result.name);
+  handleUpdateOpponentTeam(BuildContext context) async {
+//    var result = await Routes.routeToSearchTeam(
+//        context, SEARCH_TYPE.SELECT_OPPONENT_TEAM);
+//    print(result.name);
   }
 
-  _showMemberOptions(BuildContext context, {Function onDetail}) =>
-      showModalBottomSheet(
-        context: context,
-        builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Thông tin trận đấu', 'Đăng ký thi đấu', 'Huỷ'],
-          onClickOption: (index) {
-            if (index == 1) {
-              onDetail();
-            }
-          },
-        ),
-      );
-
-  Widget _buildItemSchedule(
-      BuildContext context, bool isCaptain, MatchSchedule matchSchedule) {
+  Widget _buildItemSchedule(BuildContext context, bool isCaptain, int index,
+      MatchScheduleViewModel model) {
+    MatchSchedule matchSchedule = model.matchSchedules[index];
     var _hasReceiveTeam = matchSchedule.receiveTeam != null;
     return InkWell(
       onTap: () {
         if (isCaptain) {
-          _showManagerOptions(context,
-              onDetail: () =>
-                  Routes.routeToMatchDetail(context, matchSchedule));
+          _showManagerOptions(
+            context,
+            matchSchedule.receiveTeam != null,
+            matchSchedule.isJoined,
+            onDetail: () => NavigationService.instance()
+                .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
+            onRegister: (isJoined) => !isJoined
+                ? model.joinMatch(index, matchSchedule.matchId)
+                : UIHelper.showConfirmDialog(
+                    'Bạn có chắc muốn huỷ tham gia trận đấu này?',
+                    onConfirmed: () =>
+                        model.leaveMatch(index, matchSchedule.matchId),
+                  ),
+          );
         } else {
-          _showMemberOptions(context,
-              onDetail: () =>
-                  Routes.routeToMatchDetail(context, matchSchedule));
+          _showMemberOptions(
+            context,
+            matchSchedule.isJoined,
+            onDetail: () => NavigationService.instance()
+                .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
+            onRegister: (isJoined) => !isJoined
+                ? model.joinMatch(index, matchSchedule.matchId)
+                : UIHelper.showConfirmDialog(
+                    'Bạn có chắc muốn huỷ tham gia trận đấu này?',
+                    onConfirmed: () =>
+                        model.leaveMatch(index, matchSchedule.matchId),
+                  ),
+          );
         }
       },
       child: Column(
@@ -199,7 +242,7 @@ class MatchSchedulePage extends StatelessWidget {
             ),
           ),
           Text(
-            'Sân bóng Thạch Cầu',
+            matchSchedule.groundName,
             style: textStyleRegular(),
           ),
           UIHelper.verticalIndicator
@@ -225,7 +268,7 @@ class MatchSchedulePage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -241,9 +284,7 @@ class MatchSchedulePage extends StatelessWidget {
                             padding:
                                 EdgeInsets.symmetric(vertical: UIHelper.size10),
                             itemBuilder: (c, index) => _buildItemSchedule(
-                                context,
-                                isCaptain,
-                                model.matchSchedules[index]),
+                                context, isCaptain, index, model),
                             separatorBuilder: (c, index) => LineWidget(),
                             itemCount: model.matchSchedules.length),
               ),

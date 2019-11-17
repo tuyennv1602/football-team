@@ -7,10 +7,10 @@ import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -64,17 +64,6 @@ class CreateTeamPage extends StatelessWidget {
           ),
         ),
       );
-
-  void _handleSubmit(CreateTeamViewModel model, User user) async {
-    UIHelper.showProgressDialog;
-    var resp = await model.createTeam(user, _teamName, _bio);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công');
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,8 +203,8 @@ class CreateTeamPage extends StatelessWidget {
                           ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {
-                                _handleSubmit(
-                                    model, Provider.of<User>(context));
+                                model.createTeam(Provider.of<User>(context),
+                                    _teamName, _bio);
                               }
                             },
                             margin: EdgeInsets.symmetric(

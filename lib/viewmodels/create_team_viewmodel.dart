@@ -11,6 +11,7 @@ import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/auth_services.dart';
 import 'package:myfootball/services/firebase_services.dart';
 import 'package:myfootball/services/local_storage.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class CreateTeamViewModel extends BaseViewModel {
@@ -35,7 +36,7 @@ class CreateTeamViewModel extends BaseViewModel {
 
   Future<TeamResponse> createTeam(User user, String name, String bio) async {
     int userId = user.id;
-    setBusy(true);
+    UIHelper.showProgressDialog;
     var resp = await _api.createTeam(
         userId,
         Team(
@@ -47,6 +48,7 @@ class CreateTeamViewModel extends BaseViewModel {
       var _team = resp.team;
       if (image != null) {
         var _imageLink = await _uploadImage(userId, name);
+        UIHelper.hideProgressDialog;
         if (_imageLink != null) {
           // upload image success and update team info
           _team.logo = _imageLink;
@@ -56,8 +58,11 @@ class CreateTeamViewModel extends BaseViewModel {
       _sharePreferences.setLastTeam(_team);
       user.addTeam(_team);
       _authServices.updateUser(user);
+      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công');
+    }else{
+      UIHelper.hideProgressDialog;
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    setBusy(false);
     return resp;
   }
 

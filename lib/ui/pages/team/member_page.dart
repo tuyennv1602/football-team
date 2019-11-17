@@ -4,10 +4,11 @@ import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/item_member.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class MemberPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
             rightContent: isManager
                 ? AppBarButtonWidget(
@@ -68,7 +69,7 @@ class MemberPage extends StatelessWidget {
             child: BorderBackground(
               child: ListView.separated(
                   physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
+                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                   itemBuilder: (c, index) {
                     Member _member = members[index];
                     return ItemMember(

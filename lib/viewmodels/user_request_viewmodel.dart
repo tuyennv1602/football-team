@@ -4,6 +4,7 @@ import 'package:myfootball/models/responses/user_request_resp.dart';
 import 'package:myfootball/models/user_request.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/utils/constants.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class UserRequestModel extends BaseViewModel {
@@ -22,18 +23,23 @@ class UserRequestModel extends BaseViewModel {
     return resp;
   }
 
-  Future<BaseResponse> updateRequest(int index, int requestId, int teamId,
+  Future<void> updateRequest(int index, int requestId, int teamId,
       String content, List<String> positions) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.updateRequestMember(
         requestId, teamId, content, positions.join(','));
+
+    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       var _userRequest = userRequests[index];
       _userRequest.status = Constants.REQUEST_WAITING;
       _userRequest.content = content;
       userRequests[index] = _userRequest;
       notifyListeners();
+      UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!');
+    }else{
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return resp;
   }
 
   Future<BaseResponse> cancelRequest(int index, int requestId) async {
@@ -43,6 +49,9 @@ class UserRequestModel extends BaseViewModel {
       _userRequest.status = Constants.REQUEST_CANCEL;
       userRequests[index] = _userRequest;
       notifyListeners();
+      UIHelper.showSimpleDialog('Đã huỷ yêu cầu');
+    }else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     return resp;
   }

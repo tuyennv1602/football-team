@@ -3,6 +3,7 @@ import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/search_team_resp.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/services/api.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class SearchTeamViewModel extends BaseViewModel {
@@ -29,12 +30,16 @@ class SearchTeamViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<BaseResponse> createRequest(
+  Future<void> createRequest(
       int teamId, String content, List<String> positions) async {
-    setBusy(true);
+    UIHelper.showProgressDialog;
     var resp =
     await _api.createRequestMember(teamId, content, positions.join(','));
-    setBusy(false);
-    return resp;
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã gửi đăng ký!');
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 }

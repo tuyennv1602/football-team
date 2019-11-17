@@ -2,16 +2,17 @@ import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:flutter/material.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/viewmodels/user_viewmodel.dart';
@@ -54,12 +55,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       builder: (context, model, child) => AppBarWidget(
                         leftContent: AppBarButtonWidget(
                           imageName: Images.LOGOUT,
-                          onTap: () async {
-                            UIHelper.showProgressDialog;
-                            await model.logout();
-                            UIHelper.hideProgressDialog;
-                            Routes.routeToLogin(_scaffoldKey.currentContext);
-                          },
+                          onTap: () => model.logout(),
                         ),
                         centerContent: Text(_user.name ?? _user.userName,
                             textAlign: TextAlign.center,
@@ -108,7 +104,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           Images.WALLET_IN,
                           'Nạp tiền vào ví',
                           iconColor: Colors.green,
-                          onTap: () => Routes.routeToInputMoney(context),
+                          onTap: () => NavigationService.instance()
+                              .navigateTo(INPUT_MONEY),
                         ),
                         LineWidget(),
                         ItemOptionWidget(Images.WALLET_OUT, 'Rút tiền',
@@ -130,14 +127,17 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           Images.ADD_REQUEST,
                           'Tham gia đội bóng',
                           iconColor: Colors.cyan,
-                          onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.REQUEST_MEMBER),
+                          onTap: () => NavigationService.instance().navigateTo(
+                              SEARCH_TEAM,
+                              arguments: SEARCH_TYPE.REQUEST_MEMBER),
                         ),
                         LineWidget(),
                         ItemOptionWidget(
                           Images.ADD_TEAM,
                           'Thành lập đội bóng',
                           iconColor: Colors.indigoAccent,
-                          onTap: () => Routes.routeToCreateTeam(context),
+                          onTap: () => NavigationService.instance()
+                              .navigateTo(CREATE_TEAM),
                         ),
                         LineWidget(),
                         ItemOptionWidget(

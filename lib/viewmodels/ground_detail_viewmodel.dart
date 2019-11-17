@@ -5,6 +5,7 @@ import 'package:myfootball/models/responses/comments_resp.dart';
 import 'package:myfootball/models/responses/ground_resp.dart';
 import 'package:myfootball/models/responses/review_resp.dart';
 import 'package:myfootball/services/api.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class GroundDetailViewModel extends BaseViewModel {
@@ -38,14 +39,17 @@ class GroundDetailViewModel extends BaseViewModel {
     return resp;
   }
 
-  Future<ReviewResponse> submitReview(double rating, String comment) async {
+  Future<void> submitReview(double rating, String comment) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.reviewGround(_groundId, rating, comment);
+    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.ground.rating = resp.review.rating;
       this.comments.add(resp.review.comment);
       notifyListeners();
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return resp;
   }
 
   setLoading(bool isLoading) {

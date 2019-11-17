@@ -5,9 +5,9 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_score_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -20,13 +20,7 @@ class MatchHistoryPage extends StatelessWidget {
   void _showManagerOptions(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
-          options: [
-            'Tuỳ chọn',
-            'Cập nhật tỉ số',
-            'Thanh toán tiền sân',
-            'Thông tin trận đấu',
-            'Huỷ'
-          ],
+          options: ['Tuỳ chọn', 'Cập nhật tỉ số', 'Thông tin trận đấu', 'Huỷ'],
           onClickOption: (index) {
             if (index == 1) {
               _showUpdateScore(context);
@@ -42,7 +36,6 @@ class MatchHistoryPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Expanded(
-                  flex: 2,
                   child: Row(
                     children: <Widget>[
                       ImageWidget(
@@ -61,41 +54,37 @@ class MatchHistoryPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(child: SizedBox())
+                InputScoreWidget(
+                  onChangedText: (text) {},
+                )
               ],
             ),
-            InputScoreWidget(
-              onChangedText: (text) {},
-            ),
-            UIHelper.verticalSpaceMedium,
-            InputScoreWidget(
-              onChangedText: (text) {},
-            ),
+            UIHelper.verticalSpaceLarge,
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Expanded(child: SizedBox()),
                 Expanded(
-                  flex: 2,
-                  child: Row(
+                  child:Row(
                     children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          'Lion FC',
-                          textAlign: TextAlign.right,
-                          style: textStyleRegularTitle(),
-                        ),
-                      ),
-                      UIHelper.horizontalSpaceMedium,
                       ImageWidget(
                         source:
-                            'https://firebasestorage.googleapis.com/v0/b/footballteam-eb70d.appspot.com/o/team%2F5-%C4%90%E1%BB%99i-b%C3%B3ng-c%E1%BB%A7a-Tuy%E1%BB%83n?alt=media',
+                        'https://firebasestorage.googleapis.com/v0/b/footballteam-eb70d.appspot.com/o/team%2F5-%C4%90%E1%BB%99i-b%C3%B3ng-c%E1%BB%A7a-Tuy%E1%BB%83n?alt=media',
                         placeHolder: Images.DEFAULT_LOGO,
                         size: UIHelper.size35,
                       ),
+                      UIHelper.horizontalSpaceMedium,
+                      Expanded(
+                        child: Text(
+                          'Acazia FC',
+                          style: textStyleRegularTitle(),
+                        ),
+                      )
                     ],
                   ),
+                ),
+                InputScoreWidget(
+                  onChangedText: (text) {},
                 )
               ],
             )
@@ -107,11 +96,11 @@ class MatchHistoryPage extends StatelessWidget {
     bool isCaptain =
         Provider.of<Team>(context).manager == Provider.of<User>(context).id;
     return Card(
-      elevation: 3,
+      elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size15),
+        borderRadius: BorderRadius.circular(UIHelper.size10),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
       child: InkWell(
         onTap: () {
           if (isCaptain) {
@@ -162,7 +151,8 @@ class MatchHistoryPage extends StatelessWidget {
                               '32.1',
                               style: textStyleSemiBold(
                                   size: 14,
-                                  color: index == 0 ? Colors.green : Colors.red),
+                                  color:
+                                      index == 0 ? Colors.green : Colors.red),
                             )
                           ],
                         )
@@ -219,7 +209,7 @@ class MatchHistoryPage extends StatelessWidget {
               child: BaseWidget<MatchHistoryViewModel>(
                 model: MatchHistoryViewModel(api: Provider.of(context)),
                 builder: (c, model, child) => ListView.separated(
-                    padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
+                    padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                     itemBuilder: (c, index) =>
                         _buildItemSchedule(context, index, _team),
                     separatorBuilder: (c, index) => UIHelper.verticalIndicator,

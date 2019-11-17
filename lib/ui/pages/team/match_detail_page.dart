@@ -5,10 +5,10 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
@@ -17,6 +17,7 @@ import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/matching_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +57,7 @@ class MatchDetailPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -75,8 +76,9 @@ class MatchDetailPage extends StatelessWidget {
                   children: <Widget>[
                     _matchSchedule.receiveTeam != null
                         ? InkWell(
-                            onTap: () => Routes.routeToOtherTeamDetail(
-                                context, _matchSchedule.getOpponentTeam),
+                            onTap: () => NavigationService.instance()
+                                .navigateTo(TEAM_DETAIL,
+                                    arguments: _matchSchedule.getOpponentTeam),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: UIHelper.size10,
@@ -118,18 +120,21 @@ class MatchDetailPage extends StatelessWidget {
                     LineWidget(),
                     ItemOptionWidget(
                       Images.MARKER,
-                      'Sân bóng Thạch Cầu',
+                      _matchSchedule.groundName,
                       iconColor: Colors.green,
-                      onTap: () => Routes.routeToGroundDetail(context, 13),
+                      onTap: () => NavigationService.instance().navigateTo(
+                          GROUND_DETAIL,
+                          arguments: _matchSchedule.groundId),
                     ),
-                    LineWidget(),
-                    ItemOptionWidget(
-                      Images.FRAME,
-                      'Tỉ lệ 50-50',
-                      iconColor: Colors.red,
-                      rightContent: SizedBox(),
-                      onTap: () => Routes.routeToGroundDetail(context, 13),
-                    ),
+                    _matchSchedule.getRatio != null ? LineWidget() : SizedBox(),
+                    _matchSchedule.getRatio != null
+                        ? ItemOptionWidget(
+                            Images.FRAME,
+                            'Tỉ lệ (thắng-thua) ${_matchSchedule.getRatio}',
+                            iconColor: Colors.red,
+                            rightContent: SizedBox(),
+                          )
+                        : SizedBox(),
                     LineWidget(),
                     Padding(
                       padding: EdgeInsets.symmetric(

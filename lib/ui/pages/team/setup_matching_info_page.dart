@@ -4,14 +4,15 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/time_slider_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/setup_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -194,8 +195,8 @@ class SetupMatchingInfoPage extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () async {
                                         var result =
-                                            await Routes.routeToSetupAddAddress(
-                                                context);
+                                            await NavigationService.instance()
+                                                .navigateTo(SETUP_ADDRESS);
                                         if (result != null) {
                                           model.addAddressInfos(result);
                                         }
@@ -227,18 +228,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                           style: textStyleButton(),
                         ),
                         margin: EdgeInsets.all(UIHelper.size15),
-                        onTap: () async {
-                          UIHelper.showProgressDialog;
-                          var resp = await model.saveMatchingInfo(_team.id);
-                          UIHelper.hideProgressDialog;
-                          if (resp.isSuccess) {
-                            UIHelper.showSimpleDialog(
-                                'Đã cập nhật thông tin ghép đối',
-                                onTap: () => Navigator.of(context).pop());
-                          } else {
-                            UIHelper.showSimpleDialog(resp.errorMessage);
-                          }
-                        },
+                        onTap: () => model.saveMatchingInfo(_team.id),
                       ),
                     ],
                   );

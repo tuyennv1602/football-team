@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:myfootball/models/group_matching_info.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
 import 'package:myfootball/services/api.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/services/team_services.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class SetupMatchingInfoViewModel extends BaseViewModel {
@@ -50,13 +52,19 @@ class SetupMatchingInfoViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<CreateMatchingResponse> saveMatchingInfo(int groupId) async {
+  Future<void> saveMatchingInfo(int groupId) async {
+    UIHelper.showProgressDialog;
     GroupMatchingInfo _groupMatchingInfo = GroupMatchingInfo(
         groupId: groupId, timeInfo: timeInfos, addressInfo: addressInfos);
     var resp = await _api.createMatchingInfo(_groupMatchingInfo);
+    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       _teamServices.updateMatchingInfo(resp.groupMatchingInfos);
+      UIHelper.showSimpleDialog(
+          'Đã cập nhật thông tin ghép đối',
+          onTap: () => NavigationService.instance().goBack());
+    }else{
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return resp;
   }
 }

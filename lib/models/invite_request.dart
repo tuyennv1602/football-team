@@ -108,7 +108,7 @@ class InviteRequest {
   }
 
   Map<int, List<MatchingTimeSlot>> get getMappedTimeSlot =>
-      ObjectUtil.mapMatchingTimeSlotByDayOfWeek(groundTimeSlots);
+      ObjectUtil.mapMatchingTimeSlotByPlayDate(groundTimeSlots);
 
   int get getTypeRequest => sendGroupId == currentTeamId ? 1 : 0;
 

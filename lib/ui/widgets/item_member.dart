@@ -22,11 +22,11 @@ class ItemMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size15),
+        borderRadius: BorderRadius.circular(UIHelper.size10),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
       child: InkWell(
         onTap: onTap,
         child: Padding(

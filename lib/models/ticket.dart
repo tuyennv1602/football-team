@@ -1,13 +1,15 @@
+import 'package:myfootball/utils/date_util.dart';
+
 class Ticket {
   int id;
   int status;
   int type;
   int groundId;
   String groundName;
-  int rating;
+  double rating;
   int fieldId;
   String fieldName;
-  int price;
+  double price;
   double startTime;
   double endTime;
   int createDate;
@@ -77,4 +79,10 @@ class Ticket {
     data['payment_status'] = this.paymentStatus;
     return data;
   }
+
+  String get getFullPlayTime =>
+      '${DateUtil.getTimeStringFromDouble(startTime)} - ${DateUtil.getTimeStringFromDouble(endTime)}  ${DateUtil.getDateFromTimestamp(playDate)}';
+
+  bool get isOverTime => DateUtil.isOverTimeCancel(startTime, playDate);
+
 }

@@ -6,18 +6,19 @@ import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/search_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -44,17 +45,21 @@ class SearchTeamPage extends StatelessWidget {
   }
 
   Widget _buildItemTeam(BuildContext context, Team team) => Card(
-        elevation: 3,
+        elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size15),
+          borderRadius: BorderRadius.circular(UIHelper.size10),
         ),
         margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: InkWell(
           onTap: () {
             if (type == SEARCH_TYPE.COMPARE_TEAM) {
-              Routes.routeToCompareTeam(context, team);
-            } else if(type == SEARCH_TYPE.REQUEST_MEMBER) {
-              _showOptions(context, team);
+              NavigationService.instance()
+                  .navigateTo(COMPARE_TEAM, arguments: team);
+            } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
+              _showOptions(context,
+                  onDetail: () => NavigationService.instance()
+                      .navigateTo(TEAM_DETAIL, arguments: team),
+                  onRequest: () => _showRequestForm(context, team));
             } else {
               Navigator.of(context).pop(team);
             }
@@ -123,33 +128,28 @@ class SearchTeamPage extends StatelessWidget {
         ),
       );
 
-  void _showOptions(BuildContext context, Team team) => showModalBottomSheet(
-        context: context,
-        builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Gửi yêu cầu', 'Thông tin đội bóng', 'Huỷ'],
-          onClickOption: (index) {
-            if (index == 1) {
-              _showRequestForm(context, team);
-            }
-            if (index == 2) {
-              Routes.routeToOtherTeamDetail(context, team);
-            }
-          },
-        ),
-      );
+   _showOptions(BuildContext context,
+          {Function onRequest, Function onDetail}) =>
+      showModalBottomSheet(
+          context: context,
+          builder: (c) => BottomSheetWidget(
+                options: [
+                  'Tuỳ chọn',
+                  'Gửi yêu cầu',
+                  'Thông tin đội bóng',
+                  'Huỷ'
+                ],
+                onClickOption: (index) {
+                  if (index == 1) {
+                    onRequest();
+                  }
+                  if (index == 2) {
+                    onDetail();
+                  }
+                },
+              ));
 
-  _handleSubmit(SearchTeamViewModel model, int teamId) async {
-    UIHelper.showProgressDialog;
-    var resp = await model.createRequest(teamId, _content, _positions);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đã gửi đăng ký!');
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
-
-  void _showRequestForm(BuildContext context, Team team) => showDialog(
+   _showRequestForm(BuildContext context, Team team) => showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
@@ -243,7 +243,8 @@ class SearchTeamPage extends StatelessWidget {
                                     'Bạn chưa chọn vị trí có thể chơi');
                               } else {
                                 Navigator.of(context).pop();
-                                _handleSubmit(model, team.id);
+                                model.createRequest(
+                                    team.id, _content, _positions);
                               }
                             }
                           },
@@ -281,13 +282,13 @@ class SearchTeamPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
             rightContent: type == SEARCH_TYPE.REQUEST_MEMBER
                 ? AppBarButtonWidget(
                     imageName: Images.STACK,
-                    onTap: () => Routes.routeToUserRequest(context),
-                  )
+                    onTap: () =>
+                        NavigationService.instance().navigateTo(USER_REQUESTS))
                 : AppBarButtonWidget(),
           ),
           Expanded(
@@ -311,10 +312,10 @@ class SearchTeamPage extends StatelessWidget {
                                 ? EmptyWidget(message: 'Không tìm thấy kết quả')
                                 : ListView.separated(
                                     physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                                     itemCount: model.teams.length,
                                     separatorBuilder: (c, index) =>
-                                        UIHelper.verticalSpaceMedium,
+                                        UIHelper.verticalIndicator,
                                     itemBuilder: (c, index) => _buildItemTeam(
                                         context, model.teams[index]),
                                   ),

@@ -4,16 +4,17 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/routes/routes.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/constants.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/invite_request_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -25,15 +26,25 @@ class InviteRequestPage extends StatelessWidget {
 
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
       Card(
-        elevation: 3,
+        elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size15),
+          borderRadius: BorderRadius.circular(UIHelper.size10),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: InkWell(
           onTap: () {
             if (inviteRequest.status == Constants.INVITE_WAITING) {
-              _showOptions(context, inviteRequest);
+              _showOptions(
+                context,
+                onInviteDetail: () => NavigationService.instance()
+                    .navigateTo(INVITE_DETAIL, arguments: inviteRequest),
+                onTeamDetail: () => NavigationService.instance().navigateTo(
+                    TEAM_DETAIL,
+                    arguments: Team(
+                        id: inviteRequest.getId,
+                        name: inviteRequest.getName,
+                        logo: inviteRequest.getLogo)),
+              );
             }
           },
           child: Padding(
@@ -82,7 +93,8 @@ class InviteRequestPage extends StatelessWidget {
         ),
       );
 
-  void _showOptions(BuildContext context, InviteRequest inviteRequest) =>
+  void _showOptions(BuildContext context,
+          {Function onInviteDetail, Function onTeamDetail}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
@@ -94,15 +106,10 @@ class InviteRequestPage extends StatelessWidget {
           ],
           onClickOption: (index) {
             if (index == 1) {
-              Routes.routeToConfirmInvite(context, inviteRequest);
+              onInviteDetail();
             }
             if (index == 2) {
-              Routes.routeToOtherTeamDetail(
-                  context,
-                  Team(
-                      id: inviteRequest.getId,
-                      name: inviteRequest.getName,
-                      logo: inviteRequest.getLogo));
+              onTeamDetail();
             }
           },
         ),
@@ -124,7 +131,7 @@ class InviteRequestPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -137,9 +144,7 @@ class InviteRequestPage extends StatelessWidget {
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
                     : model.mappedInviteRequest.length == 0
-                        ? EmptyWidget(
-                            message: 'Không có lời mời nào'
-                          )
+                        ? EmptyWidget(message: 'Không có lời mời nào')
                         : DefaultTabController(
                             length: model.mappedInviteRequest.length,
                             child: Column(
@@ -160,7 +165,7 @@ class InviteRequestPage extends StatelessWidget {
                                               ListView.separated(
                                                   padding: EdgeInsets.symmetric(
                                                       vertical:
-                                                          UIHelper.size15),
+                                                          UIHelper.size10),
                                                   itemBuilder: (c, index) =>
                                                       _buildItemRequest(
                                                           context,

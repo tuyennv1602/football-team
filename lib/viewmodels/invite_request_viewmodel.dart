@@ -14,7 +14,7 @@ class InviteRequestViewModel extends BaseViewModel {
 
   Future<InviteRequestResponse> getAllInvites(int teamId) async {
     setBusy(true);
-    var resp = await _api.getInviteRequestsByTeam(teamId);
+    var resp = await _api.getInviteRequests(teamId);
     if (resp.isSuccess) {
       this.mappedInviteRequest = ObjectUtil.mapInviteRequestById(resp.requests);
     }

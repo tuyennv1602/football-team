@@ -5,9 +5,10 @@ import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/routes/routes.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/border_textformfield.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
 import 'package:myfootball/viewmodels/login_viewmodel.dart';
@@ -34,23 +35,6 @@ class _LoginState extends State<LoginPage> {
       return true;
     }
     return false;
-  }
-
-  void _handleSubmit(LoginViewModel model) async {
-    UIHelper.showProgressDialog;
-    var _loginResp = await model.loginEmail(_email, _password);
-    if (_loginResp.isSuccess) {
-      var _registerDeviceResp = await model.registerDevice();
-      UIHelper.hideProgressDialog;
-      if (_registerDeviceResp.isSuccess) {
-        Routes.routeToHome(context);
-      } else {
-        UIHelper.showSimpleDialog(_registerDeviceResp.errorMessage);
-      }
-    } else {
-      UIHelper.hideProgressDialog;
-      UIHelper.showSimpleDialog(_loginResp.errorMessage);
-    }
   }
 
   @override
@@ -115,8 +99,7 @@ class _LoginState extends State<LoginPage> {
                           Align(
                             alignment: Alignment.topRight,
                             child: InkWell(
-                              onTap: () =>
-                                  Routes.routeToForgotPassword(context),
+                              onTap: () => NavigationService.instance().navigateTo(FORGOT_PASSWORD),
                               child: Text(
                                 'Quên mật khẩu?',
                                 style: textStyleRegular(color: Colors.white),
@@ -135,7 +118,7 @@ class _LoginState extends State<LoginPage> {
                               ),
                               onTap: () {
                                 if (validateAndSave()) {
-                                  _handleSubmit(model);
+                                  model.loginEmail(_email, _password);
                                 }
                               },
                             ),
@@ -204,7 +187,7 @@ class _LoginState extends State<LoginPage> {
                                     fontSize: UIHelper.size(16)),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap =
-                                      () => Routes.routeToRegister(context)),
+                                      () => NavigationService.instance().navigateTo(REGISTER)),
                           ],
                         ),
                       ),

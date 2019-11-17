@@ -68,7 +68,7 @@ class _AuthenticationState extends State<AuthenticationWidget>
         width: 12,
         height: 12,
         margin: EdgeInsets.symmetric(
-            horizontal: UIHelper.size5, vertical: UIHelper.size25),
+            horizontal: UIHelper.size10, vertical: UIHelper.size25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           color: isSelected ? (error ? Colors.red : PRIMARY) : Colors.grey[300],
@@ -130,8 +130,8 @@ class _AuthenticationState extends State<AuthenticationWidget>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(UIHelper.size20),
-                  topLeft: Radius.circular(UIHelper.size20)),
+                  topRight: Radius.circular(UIHelper.size15),
+                  topLeft: Radius.circular(UIHelper.size15)),
             ),
             padding: EdgeInsets.only(bottom: UIHelper.paddingBottom),
             child: Column(
@@ -142,7 +142,7 @@ class _AuthenticationState extends State<AuthenticationWidget>
                     AppBarButtonWidget(),
                     Expanded(
                       child: Text(
-                        'Mật khẩu giao dịch',
+                        'Xác thực',
                         style: textStyleSemiBold(size: 17),
                         textAlign: TextAlign.center,
                       ),

@@ -3,11 +3,12 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/team_request.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_position.dart';
@@ -18,22 +19,16 @@ import 'package:provider/provider.dart';
 
 class RequestMemberPage extends StatelessWidget {
   Widget _buildItemRequest(BuildContext context, TeamRequest teamRequest,
-          Function onAccept, Function onDeny) =>
+          {Function onAccept, Function onReject}) =>
       Card(
-        elevation: 3,
+        elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size15),
+          borderRadius: BorderRadius.circular(UIHelper.size10),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
         child: InkWell(
-          onTap: () => _showRequestOptions(context, (index) {
-            if (index == 1) {
-              onAccept();
-            }
-            if (index == 2) {
-              onDeny();
-            }
-          }),
+          onTap: () => _showRequestOptions(context,
+              onAccept: onAccept, onReject: onReject),
           child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: UIHelper.size15, vertical: UIHelper.size10),
@@ -73,34 +68,21 @@ class RequestMemberPage extends StatelessWidget {
         ),
       );
 
-  void _handleApprovedRequest(
-      RequestMemberViewModel model, int index, int idRequest, int teamId) async {
-    UIHelper.showProgressDialog;
-    var resp = await model.acceptRequest(index, idRequest, teamId);
-    UIHelper.hideProgressDialog;
-    if (!resp.isSuccess) {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
-
-  void _handleRejectRequest(
-      RequestMemberViewModel model, int index, int idRequest) async {
-    UIHelper.showProgressDialog;
-    var resp = await model.rejectRequest(index, idRequest);
-    UIHelper.hideProgressDialog;
-    if (!resp.isSuccess) {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
-
-  void _showRequestOptions(BuildContext context, Function onSelected) =>
+  _showRequestOptions(BuildContext context,
+          {Function onAccept, Function onReject}) =>
       showModalBottomSheet(
-        context: context,
-        builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Chấp nhận', 'Từ chối', 'Huỷ'],
-          onClickOption: (index) => onSelected(index),
-        ),
-      );
+          context: context,
+          builder: (c) => BottomSheetWidget(
+                options: ['Tuỳ chọn', 'Chấp nhận', 'Từ chối', 'Huỷ'],
+                onClickOption: (index) {
+                  if (index == 1) {
+                    onAccept();
+                  }
+                  if (index == 2) {
+                    onReject();
+                  }
+                },
+              ));
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +95,7 @@ class RequestMemberPage extends StatelessWidget {
           AppBarWidget(
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
             centerContent: Text(
               'Yêu cầu gia nhập đội bóng',
@@ -131,19 +113,20 @@ class RequestMemberPage extends StatelessWidget {
                   builder: (c, model, child) => model.teamRequests.length > 0
                       ? ListView.separated(
                           padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size15),
+                              EdgeInsets.symmetric(vertical: UIHelper.size10),
                           itemBuilder: (c, index) {
                             TeamRequest _request = model.teamRequests[index];
                             return _buildItemRequest(
                               context,
                               _request,
-                              () => _handleApprovedRequest(
-                                  model, index, _request.idRequest, _team.id),
-                              () => _handleRejectRequest(
-                                  model, index, _request.idRequest),
+                              onAccept: () => model.acceptRequest(
+                                  index, _request.idRequest, _team.id),
+                              onReject: () => model.rejectRequest(
+                                  index, _request.idRequest),
                             );
                           },
-                          separatorBuilder: (c, index) => UIHelper.verticalIndicator,
+                          separatorBuilder: (c, index) =>
+                              UIHelper.verticalIndicator,
                           itemCount: model.teamRequests.length)
                       : EmptyWidget(message: 'Không có yêu cầu nào')),
             ),

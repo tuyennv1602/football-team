@@ -6,15 +6,16 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/routes/routes.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/expandable_text_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/confirm_invite_viewmodel.dart';
@@ -36,7 +37,8 @@ class InviteDetailPage extends StatelessWidget {
     bool isSelected = selectedTimeSlot != null &&
         selectedTimeSlot.timeSlotId == timeSlot.timeSlotId;
     return InkWell(
-      onTap: () => Routes.routeToGroundDetail(context, timeSlot.groundId),
+      onTap: () => NavigationService.instance()
+          .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
         child: Row(
@@ -94,55 +96,6 @@ class InviteDetailPage extends StatelessWidget {
     );
   }
 
-  _handleRejectRequest(BuildContext context, ConfirmInviteViewModel model) {
-    UIHelper.showConfirmDialog('Bạn có chắc muốn từ chối lời mời',
-        onConfirmed: () async {
-      UIHelper.showProgressDialog;
-      var resp = await model.rejectInviteRequest(_inviteRequest.id);
-      UIHelper.hideProgressDialog;
-      if (resp.isSuccess) {
-        UIHelper.showSimpleDialog('Đã huỷ lời mời',
-            onTap: () => Navigator.of(context).pop());
-      } else {
-        UIHelper.showSimpleDialog(resp.errorMessage);
-      }
-    });
-  }
-
-  _handleCancelRequest(BuildContext context, ConfirmInviteViewModel model) {
-    UIHelper.showConfirmDialog('Bạn có chắc muốn huỷ lời mời',
-        onConfirmed: () async {
-      UIHelper.showProgressDialog;
-      var resp = await model.cancelInviteRequest(_inviteRequest.id);
-      UIHelper.hideProgressDialog;
-      if (resp.isSuccess) {
-        UIHelper.showSimpleDialog('Đã huỷ lời mời',
-            onTap: () => Navigator.of(context).pop());
-      } else {
-        UIHelper.showSimpleDialog(resp.errorMessage);
-      }
-    });
-  }
-
-  _handleAcceptRequest(BuildContext context, ConfirmInviteViewModel model) {
-    if (model.selectedTimeSlot == null) {
-      UIHelper.showSimpleDialog('Vui lòng chọn ngày, giờ, sân thi đấu');
-    } else {
-      UIHelper.showConfirmDialog('Xác nhận lời mời', onConfirmed: () async {
-        UIHelper.showProgressDialog;
-        var resp = await model.acceptInviteRequest(_inviteRequest.id);
-        UIHelper.hideProgressDialog;
-        if (resp.isSuccess) {
-          UIHelper.showSimpleDialog(
-              'Thành công. Vui lòng kiểm tra lịch thi đấu',
-              onTap: () => Navigator.of(context).pop());
-        } else {
-          UIHelper.showSimpleDialog(resp.errorMessage);
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
@@ -158,7 +111,7 @@ class InviteDetailPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -220,9 +173,8 @@ class InviteDetailPage extends StatelessWidget {
                               TabBarWidget(
                                 titles: _inviteRequest.getMappedTimeSlot.keys
                                     .toList()
-                                    .map((item) => DateUtil.formatDate(
-                                        DateUtil.getDateMatching(item),
-                                        DateFormat('dd/MM')))
+                                    .map((item) => DateFormat('dd/MM')
+                                        .format(DateTime.fromMillisecondsSinceEpoch(item)))
                                     .toList(),
                                 isScrollable: true,
                                 height: UIHelper.size35,
@@ -261,8 +213,11 @@ class InviteDetailPage extends StatelessWidget {
                                         'HUỶ LỜI MỜI',
                                         style: textStyleButton(),
                                       ),
-                                      onTap: () =>
-                                          _handleCancelRequest(context, model),
+                                      onTap: () => UIHelper.showConfirmDialog(
+                                          'Bạn có chắc muốn huỷ lời mời',
+                                          onConfirmed: () =>
+                                              model.cancelInviteRequest(
+                                                  _inviteRequest.id)),
                                       backgroundColor: Colors.grey,
                                       height: UIHelper.size45,
                                     )
@@ -274,8 +229,12 @@ class InviteDetailPage extends StatelessWidget {
                                               'TỪ CHỐI',
                                               style: textStyleButton(),
                                             ),
-                                            onTap: () => _handleRejectRequest(
-                                                context, model),
+                                            onTap: () => UIHelper.showConfirmDialog(
+                                                'Bạn có chắc muốn từ chối lời mời',
+                                                onConfirmed: () {
+                                              model.rejectInviteRequest(
+                                                  _inviteRequest.id);
+                                            }),
                                             backgroundColor: Colors.grey,
                                             height: UIHelper.size45,
                                           ),
@@ -287,8 +246,19 @@ class InviteDetailPage extends StatelessWidget {
                                               'ĐỒNG Ý',
                                               style: textStyleButton(),
                                             ),
-                                            onTap: () => _handleAcceptRequest(
-                                                context, model),
+                                            onTap: () {
+                                              if (model.selectedTimeSlot ==
+                                                  null) {
+                                                UIHelper.showSimpleDialog(
+                                                    'Vui lòng chọn ngày, giờ, sân thi đấu');
+                                              } else {
+                                                UIHelper.showConfirmDialog(
+                                                    'Xác nhận lời mời',
+                                                    onConfirmed: () => model
+                                                        .acceptInviteRequest(
+                                                            _inviteRequest.id));
+                                              }
+                                            },
                                             height: UIHelper.size45,
                                           ),
                                         )

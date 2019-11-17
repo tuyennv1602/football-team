@@ -19,7 +19,7 @@ List<SingleChildCloneableWidget> providers = [
 List<SingleChildCloneableWidget> independentServices = [
   Provider.value(value: Api()),
   Provider.value(value: LocalStorage()),
-  Provider.value(value: SQLiteServices())
+  Provider.value(value: SQLiteServices()),
 ];
 
 // These are classes/object that depend on previously registered services

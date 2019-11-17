@@ -3,13 +3,14 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/setup_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class SetupTeamPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -45,7 +46,7 @@ class SetupTeamPage extends StatelessWidget {
                     Images.EDIT_TEAM,
                     'Chỉnh sửa thông tin',
                     iconColor: Colors.green,
-                    onTap: () => Routes.routeToEditTeam(context),
+                    onTap: () => NavigationService.instance().navigateTo(EDIT_TEAM_INFO),
                   ),
                   LineWidget(),
                   BaseWidget<SetupTeamViewModel>(
@@ -87,7 +88,7 @@ class SetupTeamPage extends StatelessWidget {
                     Images.FIND_MATCH,
                     'Thiết lập thông tin ghép đối',
                     iconColor: Colors.red,
-                    onTap: () => Routes.routeToSetupMatchingInfo(context),
+                    onTap: () => NavigationService.instance().navigateTo(SETUP_MATCHING),
                   ),
                   LineWidget()
                 ],

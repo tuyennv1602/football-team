@@ -9,6 +9,11 @@ class ObjectUtil {
     return _mapCollectionToIntMap(Collection<MatchingTimeSlot>(timeSlots)
         .groupBy((item) => item.dayOfWeek));
   }
+  static Map<int, List<MatchingTimeSlot>> mapMatchingTimeSlotByPlayDate(
+      List<MatchingTimeSlot> timeSlots) {
+    return _mapCollectionToIntMap(Collection<MatchingTimeSlot>(timeSlots)
+        .groupBy((item) => item.playDate));
+  }
 
   static Map<int, List<InviteRequest>> mapInviteRequestById(
       List<InviteRequest> invites) {

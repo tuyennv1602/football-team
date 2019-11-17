@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
+import 'package:myfootball/models/invite_team_argument.dart';
 import 'package:myfootball/models/matching.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
@@ -23,6 +24,7 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/find_matching_viewmodel.dart';
@@ -66,7 +68,8 @@ class FindMatchingPage extends StatelessWidget {
                   style: textStyleButton(),
                 ),
                 margin: EdgeInsets.only(top: UIHelper.size40),
-                onTap: () => Routes.routeToSetupMatchingInfo(context))
+                onTap: () =>
+                    NavigationService.instance().navigateTo(SETUP_MATCHING))
           ],
         ),
       );
@@ -90,7 +93,8 @@ class FindMatchingPage extends StatelessWidget {
 
   Widget _buildItemTimeSlot(BuildContext context, MatchingTimeSlot timeSlot) =>
       InkWell(
-        onTap: () => Routes.routeToGroundDetail(context, timeSlot.groundId),
+        onTap: () => NavigationService.instance()
+            .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
           child: Row(
@@ -165,7 +169,8 @@ class FindMatchingPage extends StatelessWidget {
                             padding: EdgeInsets.zero,
                             itemBuilder: (c, index) =>
                                 _buildItemTimeSlot(context, timeSlots[index]),
-                            separatorBuilder: (c, index) => LineWidget(indent: 0),
+                            separatorBuilder: (c, index) =>
+                                LineWidget(indent: 0),
                             itemCount: timeSlots.length))
                         .toList(),
                   ),
@@ -207,7 +212,6 @@ class FindMatchingPage extends StatelessWidget {
                                         color: Colors.amber,
                                       ),
                                     ),
-
                                     Text(
                                       'Đánh giá',
                                       style: textStyleRegular(),
@@ -302,7 +306,8 @@ class FindMatchingPage extends StatelessWidget {
                               TabBarWidget(
                                 titles: team2.getMappedTimeSlot.keys
                                     .toList()
-                                    .map((item) => DateUtil.formatDate(DateUtil.getDateMatching(item), DateFormat('dd/MM')))
+                                    .map((item) => DateFormat('dd/MM')
+                                        .format(DateUtil.getDateMatching(item)))
                                     .toList(),
                                 isScrollable: true,
                                 height: UIHelper.size35,
@@ -318,7 +323,11 @@ class FindMatchingPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () => Routes.routeToInviteTeam(context, team1.id, team2.groupId, team2.getMappedTimeSlot),
+            onTap: () => NavigationService.instance().navigateTo(INVITE_TEAM,
+                arguments: InviteTeamArgument(
+                    fromTeamId: team1.id,
+                    toTeamId: int.parse(team2.id),
+                    mappedTimeSlots: team2.getMappedTimeSlot)),
             child: Container(
               width: double.infinity,
               alignment: Alignment.center,
@@ -361,11 +370,12 @@ class FindMatchingPage extends StatelessWidget {
             centerContent: SizedBox(),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
             rightContent: AppBarButtonWidget(
               imageName: Images.SEARCH,
-              onTap: () => Routes.routeToSearchTeam(context, SEARCH_TYPE.COMPARE_TEAM),
+              onTap: () => NavigationService.instance()
+                  .navigateTo(SEARCH_TEAM, arguments: SEARCH_TYPE.COMPARE_TEAM),
             ),
             backgroundColor: Colors.transparent,
           ),

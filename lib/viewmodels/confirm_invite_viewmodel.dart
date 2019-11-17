@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/services/api.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/utils/object_utils.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class ConfirmInviteViewModel extends BaseViewModel {
@@ -22,19 +24,40 @@ class ConfirmInviteViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<BaseResponse> acceptInviteRequest(int inviteId) async {
+  Future<void> acceptInviteRequest(int inviteId) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.acceptInviteRequest(
         inviteId, selectedTimeSlot.timeSlotId, selectedTimeSlot.playDate);
-    return resp;
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
+          onTap: () => NavigationService.instance().goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
-  Future<BaseResponse> rejectInviteRequest(int inviteId) async {
+  Future<void> rejectInviteRequest(int inviteId) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.rejectInviteRequest(inviteId);
-    return resp;
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã huỷ lời mời',
+          onTap: () => NavigationService.instance().goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
-  Future<BaseResponse> cancelInviteRequest(int inviteId) async {
+  Future<void> cancelInviteRequest(int inviteId) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.cancelInviteRequest(inviteId);
-    return resp;
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã huỷ lời mời',
+          onTap: () => NavigationService.instance().goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 }

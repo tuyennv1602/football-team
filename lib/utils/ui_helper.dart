@@ -45,7 +45,7 @@ class UIHelper {
   static Widget verticalSpaceSmall = SizedBox(height: size5);
   static Widget verticalSpaceMedium = SizedBox(height: size10);
   static Widget verticalSpaceLarge = SizedBox(height: size20);
-  static Widget verticalIndicator = SizedBox(height: size15);
+  static Widget verticalIndicator = SizedBox(height: size10);
 
   static Widget horizontalSpaceSmall = SizedBox(width: size5);
   static Widget horizontalSpaceMedium = SizedBox(width: size10);
@@ -82,14 +82,16 @@ class UIHelper {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(size15),
-                    child: Text('Thông báo', style: textStyleSemiBold()),
+                    padding: EdgeInsets.all(UIHelper.size15),
+                    child: Column(
+                      children: <Widget>[
+                        Text('Thông báo', style: textStyleSemiBold()),
+                        UIHelper.verticalSpaceMedium,
+                        Text(message, style: textStyleRegular(size: 16)),
+                        UIHelper.verticalSpaceMedium,
+                      ],
+                    ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size15),
-                    child: Text(message, style: textStyleRegular(size: 16)),
-                  ),
-                  UIHelper.verticalSpaceLarge,
                   Align(
                     child: ButtonWidget(
                       onTap: () {
@@ -104,7 +106,7 @@ class UIHelper {
                           bottomRight: Radius.circular(size5)),
                       child: Text(
                         'Xong',
-                        style: textStyleRegular(size: 16, color: Colors.white),
+                        style: textStyleSemiBold(size: 16, color: Colors.white),
                       ),
                     ),
                   ),
@@ -123,7 +125,7 @@ class UIHelper {
               message,
               style: textStyleRegular(size: 16),
             ),
-            UIHelper.verticalSpaceLarge,
+            UIHelper.verticalSpaceMedium,
           ],
         ),
         onConfirmed: () => onConfirmed(),
@@ -158,8 +160,7 @@ class UIHelper {
                         backgroundColor: Colors.grey,
                         child: Text(
                           'Huỷ',
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
+                          style: textStyleSemiBold(color: Colors.white),
                         ),
                       ),
                     ),
@@ -174,8 +175,7 @@ class UIHelper {
                             bottomRight: Radius.circular(size5)),
                         child: Text(
                           'Đồng ý',
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
+                          style: textStyleSemiBold(color: Colors.white),
                         ),
                       ),
                     )

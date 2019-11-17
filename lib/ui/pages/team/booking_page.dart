@@ -9,14 +9,14 @@ import 'package:myfootball/models/time_slot.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/booking_viewmodel.dart';
@@ -61,7 +61,7 @@ class BookingPage extends StatelessWidget {
                 ),
                 UIHelper.horizontalSpaceMedium,
                 Text(
-                  '${DateUtil.formatDate(model.currentDate, DateFormat('dd/MM/yyyy'))}',
+                  '${DateFormat('dd/MM/yyyy').format(model.currentDate)}',
                   style: textStyleSemiBold(),
                 ),
               ],
@@ -116,18 +116,8 @@ class BookingPage extends StatelessWidget {
             )
           ],
         ),
-        onConfirmed: () async {
-          UIHelper.showProgressDialog;
-          var resp = await model.booking(Provider.of<Team>(context).id, timeSlot.id);
-          UIHelper.hideProgressDialog;
-          if (resp.isSuccess) {
-            UIHelper.showSimpleDialog(
-                'Đặt sân thành công. Bạn có thể lên lịch cho đội bóng trong mục quản trị đội bóng',
-                onTap: () => Navigator.of(context).pop());
-          } else {
-            UIHelper.showSimpleDialog(resp.errorMessage);
-          }
-        });
+        onConfirmed: () =>
+            model.booking(Provider.of<Team>(context).id, timeSlot.id));
   }
 
   Widget _buildTicket(BuildContext context, DateTime playDate,
@@ -232,7 +222,7 @@ class BookingPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -243,8 +233,8 @@ class BookingPage extends StatelessWidget {
                   model: BookingViewModel(api: Provider.of(context)),
                   onModelReady: (model) => model.getFreeTimeSlot(_ground.id),
                   child: InkWell(
-                    onTap: () =>
-                        Routes.routeToGroundDetail(context, _ground.id),
+                    onTap: () => NavigationService.instance()
+                        .navigateTo(GROUND_DETAIL, arguments: _ground.id),
                     child: Row(
                       children: <Widget>[
                         ClipRRect(
@@ -339,8 +329,8 @@ class BookingPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     vertical: UIHelper.size15),
                                 child: Text(
-                                  DateUtil.formatDate(model.currentDate,
-                                      DateFormat('EEE, dd/MM/yyyy')),
+                                  DateFormat('EEE, dd/MM/yyyy')
+                                      .format(model.currentDate),
                                   textAlign: TextAlign.right,
                                   style: textStyleSemiBold(),
                                 ),

@@ -5,16 +5,17 @@ import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
-import 'package:myfootball/ui/routes/routes.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
-import 'package:myfootball/ui/widgets/back_drop.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
+import 'package:myfootball/ui/widgets/backdrop.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,8 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           children: <Widget>[
             Expanded(
               child: InkWell(
-                onTap: () => Routes.routeToCreateTeam(context),
+                onTap: () =>
+                    NavigationService.instance().navigateTo(CREATE_TEAM),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -59,8 +61,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ),
             Expanded(
               child: InkWell(
-                onTap: () => Routes.routeToSearchTeam(
-                    context, SEARCH_TYPE.REQUEST_MEMBER),
+                onTap: () => NavigationService.instance().navigateTo(
+                    SEARCH_TEAM,
+                    arguments: SEARCH_TYPE.REQUEST_MEMBER),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -92,42 +95,42 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           Images.BOOKING,
           'Đặt sân bóng',
           iconColor: Colors.green,
-          onTap: () => Routes.routeToSearchGround(context),
+          onTap: () => NavigationService.instance().navigateTo(SEARCH_GROUND),
         ),
         LineWidget(),
         ItemOptionWidget(
           Images.FIND_MATCH,
           'Tìm đối tác',
           iconColor: Colors.red,
-          onTap: () => Routes.routeToFindMatching(context),
+          onTap: () => NavigationService.instance().navigateTo(FIND_MATCHING),
         ),
         LineWidget(),
         ItemOptionWidget(
           Images.INVITE,
           'Lời mời ghép đối',
           iconColor: Colors.pinkAccent,
-          onTap: () => Routes.routeToInviteRequest(context),
+          onTap: () => NavigationService.instance().navigateTo(INVITE_REQUESTS),
         ),
         LineWidget(),
         ItemOptionWidget(
           Images.MEMBER_MANAGE,
           'Yêu cầu gia nhập đội bóng',
           iconColor: Colors.green,
-          onTap: () => Routes.routeToRequestMember(context),
+          onTap: () => NavigationService.instance().navigateTo(REQUEST_MEMBER),
         ),
         LineWidget(),
         ItemOptionWidget(
           Images.BUDGET,
           'Quản lý tài chính',
           iconColor: Colors.amber,
-          onTap: () => Routes.routeToFinance(context),
+          onTap: () => NavigationService.instance().navigateTo(FINANCE),
         ),
         LineWidget(),
         ItemOptionWidget(
           Images.SETTING,
           'Thiết lập đội bóng',
           iconColor: Colors.orange,
-          onTap: () => Routes.routeToSetupTeam(context),
+          onTap: () => NavigationService.instance().navigateTo(SETUP_TEAM),
         ),
       ]);
     }
@@ -135,26 +138,25 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       children: _children
         ..addAll(
           [
-            ItemOptionWidget(
-              Images.MEMBER,
-              'Danh sách thành viên',
-              iconColor: Colors.green,
-              onTap: () =>
-                  Routes.routeToMember(context, team.members, team.manager),
-            ),
+            ItemOptionWidget(Images.MEMBER, 'Danh sách thành viên',
+                iconColor: Colors.green,
+                onTap: () => NavigationService.instance()
+                    .navigateTo(MEMBERS, arguments: team)),
             LineWidget(),
             ItemOptionWidget(
               Images.SCHEDULE,
               'Lịch thi đấu',
               iconColor: Colors.deepOrange,
-              onTap: () => Routes.routeToMatchSchedule(context),
+              onTap: () =>
+                  NavigationService.instance().navigateTo(MATCH_SCHEDULE),
             ),
             LineWidget(),
             ItemOptionWidget(
               Images.MATCH_HISTORY,
               'Lịch sử thi đấu',
               iconColor: Colors.blue,
-              onTap: () => Routes.routeToMatchHistory(context),
+              onTap: () =>
+                  NavigationService.instance().navigateTo(MATCH_HISTORY),
             ),
             LineWidget(),
             ItemOptionWidget(
@@ -167,7 +169,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               Images.WALLET_IN,
               'Đóng quỹ đội bóng',
               iconColor: Colors.amber,
-              onTap: () => Routes.routeToTeamFund(context),
+              onTap: () => NavigationService.instance().navigateTo(TEAM_FUND),
             ),
             LineWidget(),
           ]
@@ -296,16 +298,11 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       backgroundColor: PRIMARY,
       body: BaseWidget<TeamViewModel>(
         model: TeamViewModel(
-            authServices: Provider.of(context),
-            teamServices: Provider.of(context),
-            api: Provider.of(context)),
-        onModelReady: (model) async {
-          var resp = await model.refreshToken();
-          if (!resp.isSuccess) {
-            UIHelper.showSimpleDialog(resp.getErrorMessage,
-                onTap: () => Routes.routeToLogin(context));
-          }
-        },
+          authServices: Provider.of(context),
+          teamServices: Provider.of(context),
+          api: Provider.of(context),
+        ),
+        onModelReady: (model) => model.refreshToken(),
         builder: (context, model, child) {
           var _teams = model.teams;
           var _team = Provider.of<Team>(context);
@@ -353,44 +350,14 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                 ),
                               ),
                               backLayer: BorderBackground(
-                                child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: _buildSelectTeam(
-                                        context,
-                                        _teams,
-                                        (team) async {
-                                          UIHelper.showProgressDialog;
-                                          await model.changeTeam(team);
-                                          UIHelper.hideProgressDialog;
-                                        },
-                                      ),
-                                    ),
-                                    Container(
-                                      height: UIHelper.size50,
-                                      width: UIHelper.screenWidth,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 3,
-                                            // has the effect of softening the shadow
-                                            offset: Offset(
-                                              0, // horizontal, move right 10
-                                              -1, // vertical, move down 10
-                                            ),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.only(
-                                          topLeft:
-                                              Radius.circular(UIHelper.size20),
-                                          topRight:
-                                              Radius.circular(UIHelper.size20),
-                                        ),
-                                      )
-                                    )
-                                  ],
+                                child: _buildSelectTeam(
+                                  context,
+                                  _teams,
+                                  (team) async {
+                                    UIHelper.showProgressDialog;
+                                    await model.changeTeam(team);
+                                    UIHelper.hideProgressDialog;
+                                  },
                                 ),
                               ),
                               frontTitle: Align(

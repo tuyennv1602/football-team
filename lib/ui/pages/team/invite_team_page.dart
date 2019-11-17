@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/models/invite_request.dart';
+import 'package:myfootball/models/invite_team_argument.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/routes/routes.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/choose_ratio_widget.dart';
@@ -17,6 +18,7 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/invite_team_viewmodel.dart';
@@ -24,19 +26,12 @@ import 'package:provider/provider.dart';
 
 class InviteTeamPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final Map<int, List<MatchingTimeSlot>> _mappedTimeSlots;
-  final int _fromTeamId;
-  final int _toTeamId;
+  final InviteTeamArgument _inviteTeamArgument;
   int _ratio = Constants.RATIO_50_50;
   String _invite;
 
-  InviteTeamPage(
-      {@required int fromTeamId,
-      @required int toTeamId,
-      @required Map<int, List<MatchingTimeSlot>> mappedTimeSlots})
-      : _mappedTimeSlots = mappedTimeSlots,
-        _fromTeamId = fromTeamId,
-        _toTeamId = toTeamId;
+  InviteTeamPage({@required InviteTeamArgument inviteTeamArgument})
+      : _inviteTeamArgument = inviteTeamArgument;
 
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -50,7 +45,8 @@ class InviteTeamPage extends StatelessWidget {
   Widget _buildItemTimeSlot(BuildContext context, int index, bool isSelected,
           MatchingTimeSlot timeSlot, Function onTap) =>
       InkWell(
-        onTap: () => Routes.routeToGroundDetail(context, timeSlot.groundId),
+        onTap: () => NavigationService.instance()
+            .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
           child: Row(
@@ -106,27 +102,6 @@ class InviteTeamPage extends StatelessWidget {
         ),
       );
 
-  _handleSendInvite(BuildContext context, InviteTeamViewModel model) async {
-    if (model.selectedTimeSlots.length == 0) {
-      UIHelper.showSimpleDialog('Vui lòng chọn ít nhất một ngày, giờ, sân');
-    } else {
-      UIHelper.showProgressDialog;
-      var resp = await model.sendInvite(InviteRequest(
-          title: _invite,
-          sendGroupId: _fromTeamId,
-          receiveGroupId: _toTeamId,
-          ratio: _ratio,
-          matchingTimeSlots: model.selectedTimeSlots));
-      UIHelper.hideProgressDialog;
-      if (resp.isSuccess) {
-        UIHelper.showSimpleDialog('Đã gửi lời mời',
-            onTap: () => Navigator.of(context).pop());
-      } else {
-        UIHelper.showSimpleDialog(resp.errorMessage);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
@@ -143,7 +118,7 @@ class InviteTeamPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -197,22 +172,22 @@ class InviteTeamPage extends StatelessWidget {
                       child: BaseWidget<InviteTeamViewModel>(
                         model: InviteTeamViewModel(api: Provider.of(context)),
                         builder: (c, model, child) => DefaultTabController(
-                          length: _mappedTimeSlots.length,
+                          length: _inviteTeamArgument.mappedTimeSlots.length,
                           child: Column(
                             children: <Widget>[
                               TabBarWidget(
-                                titles: _mappedTimeSlots.keys
+                                titles: _inviteTeamArgument.mappedTimeSlots.keys
                                     .toList()
-                                    .map((item) => DateUtil.formatDate(
-                                        DateUtil.getDateMatching(item),
-                                        DateFormat('dd/MM')))
+                                    .map((item) => DateFormat('dd/MM')
+                                        .format(DateUtil.getDateMatching(item)))
                                     .toList(),
                                 isScrollable: true,
                                 height: UIHelper.size35,
                               ),
                               Expanded(
                                 child: TabBarView(
-                                  children: _mappedTimeSlots.values
+                                  children: _inviteTeamArgument
+                                      .mappedTimeSlots.values
                                       .toList()
                                       .map(
                                         (timeSlots) => ListView.separated(
@@ -253,7 +228,12 @@ class InviteTeamPage extends StatelessWidget {
                                 ),
                                 onTap: () {
                                   if (validateAndSave()) {
-                                    _handleSendInvite(context, model);
+                                    model.sendInvite(InviteRequest(
+                                        title: _invite,
+                                        sendGroupId: _inviteTeamArgument.fromTeamId,
+                                        receiveGroupId: _inviteTeamArgument.toTeamId,
+                                        ratio: _ratio,
+                                        matchingTimeSlots: model.selectedTimeSlots));
                                   }
                                 },
                               ),

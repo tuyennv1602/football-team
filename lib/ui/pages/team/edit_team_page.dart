@@ -5,10 +5,11 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_widget.dart';
@@ -66,19 +67,6 @@ class EditTeamPage extends StatelessWidget {
         ),
       );
 
-  _handleUpdate(BuildContext context, UpdateTeamViewModel model, Team team) async {
-    UIHelper.showProgressDialog;
-    team.name = _teamName;
-    team.bio = _bio;
-    var resp = await model.updateTeam(team);
-    UIHelper.hideProgressDialog;
-    if(resp.isSuccess){
-      Navigator.of(context).pop();
-    }else{
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var _team = Provider.of<Team>(context);
@@ -89,7 +77,7 @@ class EditTeamPage extends StatelessWidget {
           AppBarWidget(
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
             centerContent: Text('Chỉnh sửa thông tin',
                 textAlign: TextAlign.center, style: textStyleTitle()),
@@ -208,7 +196,9 @@ class EditTeamPage extends StatelessWidget {
                           ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {
-                                _handleUpdate(context, model, _team);
+                                _team.name = _teamName;
+                                _team.bio = _bio;
+                                model.updateTeam(_team);
                               }
                             },
                             margin: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),

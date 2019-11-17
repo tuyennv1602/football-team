@@ -5,11 +5,12 @@ import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
-import 'package:myfootball/ui/widgets/app_bar_widget.dart';
+import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/ui/widgets/bottom_sheet_widget.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
@@ -38,51 +39,21 @@ class UserRequestPage extends StatelessWidget {
     return false;
   }
 
-  void _showChooseAction(BuildContext context, UserRequestModel model,
-          int index, UserRequest userRequest) =>
+   _showChooseAction(BuildContext context,
+          {Function onEdit, Function onCancel}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
           options: ['Tuỳ chọn', 'Sửa đăng ký', 'Huỷ đăng ký', 'Huỷ'],
           onClickOption: (position) async {
             if (position == 1) {
-              _showEditForm(_scaffoldKey.currentContext, userRequest, () {
-                _handleUpdateRequest(
-                    model, index, userRequest.idRequest, userRequest.idName);
-              });
+              onEdit();
             } else if (position == 2) {
-              UIHelper.showConfirmDialog('Bạn có chắc chắn muốn xoá yêu cầu?',
-                  onConfirmed: () => _handleCancelRequest(
-                      model, index, userRequest.idRequest));
+              onCancel();
             }
           },
         ),
       );
-
-  void _handleCancelRequest(
-      UserRequestModel model, int index, int requestId) async {
-    UIHelper.showProgressDialog;
-    var resp = await model.cancelRequest(index, requestId);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đã huỷ yêu cầu');
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
-
-  void _handleUpdateRequest(
-      UserRequestModel model, int index, int requestId, int teamId) async {
-    UIHelper.showProgressDialog;
-    var resp = await model.updateRequest(
-        index, requestId, teamId, _content, _positions);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!');
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
 
   void _showEditForm(
           BuildContext context, UserRequest userRequest, Function onSubmit) =>
@@ -178,14 +149,13 @@ class UserRequestPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemRequest(BuildContext context, UserRequestModel model,
-      int index, UserRequest request) {
+  Widget _buildItemRequest(
+      BuildContext context, UserRequestModel model, int index) {
+    UserRequest request = model.userRequests[index];
     Color _status;
     switch (request.status) {
       case Constants.REQUEST_REJECTED:
       case Constants.REQUEST_CANCEL:
-        _status = Colors.red;
-        break;
       case Constants.REQUEST_WAITING:
         _status = Colors.grey;
         break;
@@ -193,21 +163,32 @@ class UserRequestPage extends StatelessWidget {
         _status = Colors.green;
     }
     return Card(
-      elevation: 3,
+      elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size15),
+        borderRadius: BorderRadius.circular(UIHelper.size10),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
       child: InkWell(
         onTap: () {
           if (request.status == Constants.REQUEST_REJECTED ||
               request.status == Constants.REQUEST_ACCEPTED) return;
-          _showChooseAction(context, model, index, request);
+          _showChooseAction(
+            context,
+            onEdit: () => _showEditForm(
+                _scaffoldKey.currentContext,
+                request,
+                () => model.updateRequest(index, request.idRequest,
+                    request.idName, _content, _positions)),
+            onCancel: () => UIHelper.showConfirmDialog(
+              'Bạn có chắc chắn muốn xoá yêu cầu?',
+              onConfirmed: () => model.cancelRequest(index, request.idRequest),
+            ),
+          );
         },
         child: Padding(
           padding: EdgeInsets.all(UIHelper.size10),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ImageWidget(
                   source: request.teamLogo, placeHolder: Images.DEFAULT_LOGO),
@@ -252,7 +233,7 @@ class UserRequestPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            'Ngày tạo: ${request.getCreateDate}',
+                            'Ngày gửi: ${request.getCreateDate}',
                             style: textStyleRegularBody(color: Colors.grey),
                           ),
                           Text(
@@ -288,7 +269,7 @@ class UserRequestPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.instance().goBack(),
             ),
           ),
           Expanded(
@@ -302,11 +283,12 @@ class UserRequestPage extends StatelessWidget {
                       model.userRequests.length == 0)
                     return EmptyWidget(message: 'Chưa có yêu cầu nào');
                   return ListView.separated(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       physics: BouncingScrollPhysics(),
-                      itemBuilder: (c, index) => _buildItemRequest(
-                          context, model, index, model.userRequests[index]),
-                      separatorBuilder: (c, index) => UIHelper.verticalIndicator,
+                      itemBuilder: (c, index) =>
+                          _buildItemRequest(context, model, index),
+                      separatorBuilder: (c, index) =>
+                          UIHelper.verticalIndicator,
                       itemCount: model.userRequests.length);
                 },
               ),

@@ -2,24 +2,36 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/responses/base_response.dart';
-import 'package:myfootball/models/responses/login_resp.dart';
 import 'package:myfootball/services/auth_services.dart';
+import 'package:myfootball/services/navigation_services.dart';
+import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class LoginViewModel extends BaseViewModel {
-  AuthServices _authServices;
+  final AuthServices _authServices;
 
   LoginViewModel({@required AuthServices authServices})
       : _authServices = authServices;
 
-  Future<LoginResponse> loginEmail(String email, String password) async {
-    setBusy(true);
+  Future<void> loginEmail(String email, String password) async {
+    UIHelper.showProgressDialog;
     var resp = await _authServices.loginEmail(email, password);
-    setBusy(false);
-    return resp;
+    if (resp.isSuccess) {
+      var _registerDeviceResp = await registerDevice();
+      UIHelper.hideProgressDialog;
+      if (_registerDeviceResp.isSuccess) {
+        NavigationService.instance().navigateAndRemove(HOME);
+      } else {
+        UIHelper.showSimpleDialog(_registerDeviceResp.errorMessage);
+      }
+    } else {
+      UIHelper.hideProgressDialog;
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
   Future<BaseResponse> registerDevice() async {
