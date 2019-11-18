@@ -56,19 +56,25 @@ flutter:
   fonts:
   - family: regular
     fonts:
-      - asset: assets/fonts/sans-regular.ttf
+      - asset: assets/fonts/Muli-Regular.ttf
   - family: italic
     fonts:
-      - asset: assets/fonts/sans_italic.ttf
+      - asset: assets/fonts/Muli-Italic.ttf
+  - family: medium
+    fonts:
+      - asset: assets/fonts/Muli-Medium.ttf
+  - family: medium-italic
+    fonts:
+      - asset: assets/fonts/Muli-MediumItalic.ttf
   - family: semi-bold
     fonts:
-      - asset: assets/fonts/sans_semibold.ttf
+      - asset: assets/fonts/Muli-SemiBold.ttf
   - family: semi-bold-italic
     fonts:
-      - asset: assets/fonts/sans_semibold_italic.ttf
+      - asset: assets/fonts/Muli-SemiBoldItalic.ttf
   - family: bold
     fonts:
-      - asset: assets/fonts/sans_bold.ttf
+      - asset: assets/fonts/Muli-Bold.ttf
   - family: bold-italic
     fonts:
-      - asset: assets/fonts/sans_bold_italic.ttf
+      - asset: assets/fonts/Muli-BoldItalic.ttf

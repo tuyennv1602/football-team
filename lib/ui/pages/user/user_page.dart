@@ -55,7 +55,9 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       builder: (context, model, child) => AppBarWidget(
                         leftContent: AppBarButtonWidget(
                           imageName: Images.LOGOUT,
-                          onTap: () => model.logout(),
+                          onTap: () => UIHelper.showConfirmDialog(
+                              'Bạn có chắc muốn đăng xuất?',
+                              onConfirmed: () => model.logout()),
                         ),
                         centerContent: Text(_user.name ?? _user.userName,
                             textAlign: TextAlign.center,
@@ -94,12 +96,12 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       ],
                     ),
                   ),
+                  LineWidget(),
                   Expanded(
                     child: ListView(
                       physics: BouncingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: <Widget>[
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.WALLET_IN,
                           'Nạp tiền vào ví',
@@ -107,22 +109,18 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           onTap: () => NavigationService.instance()
                               .navigateTo(INPUT_MONEY),
                         ),
-                        LineWidget(),
                         ItemOptionWidget(Images.WALLET_OUT, 'Rút tiền',
                             iconColor: Colors.red),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.TRANSACTIONS,
                           'Chuyển tiền',
                           iconColor: Colors.amber,
                         ),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.TRANSACTION_HISTORY,
                           'Lịch sử giao dịch',
                           iconColor: Colors.teal,
                         ),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.ADD_REQUEST,
                           'Tham gia đội bóng',
@@ -131,7 +129,6 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                               SEARCH_TEAM,
                               arguments: SEARCH_TYPE.REQUEST_MEMBER),
                         ),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.ADD_TEAM,
                           'Thành lập đội bóng',
@@ -139,19 +136,16 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           onTap: () => NavigationService.instance()
                               .navigateTo(CREATE_TEAM),
                         ),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.SHARE,
                           'Chia sẻ ứng dụng',
                           iconColor: Colors.blueAccent,
                         ),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.INFO,
                           'Thông tin ứng dụng',
                           iconColor: Colors.blue,
                         ),
-                        LineWidget(),
                         ItemOptionWidget(
                           Images.SETTING,
                           'Cài đặt',

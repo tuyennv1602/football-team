@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/border_textformfield.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
@@ -31,30 +32,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
     return false;
   }
 
-  void _handleSubmit(ForgotPasswordViewModel model) async {
-    UIHelper.showProgressDialog;
-    if (!model.isChangePassword) {
-      var _resp = await model.forgotPassword(_email);
-      UIHelper.hideProgressDialog;
-      if (_resp.isSuccess) {
-        UIHelper.showSimpleDialog('Mã xác thực đã được gửi');
-      } else {
-        UIHelper.showSimpleDialog(_resp.errorMessage);
-      }
-    } else {
-      var _resp = await model.changePassword(_email, _password, _code);
-      UIHelper.hideProgressDialog;
-      if (_resp.isSuccess) {
-        UIHelper.showSimpleDialog(
-          'Mật khẩu đã được thay đổi',
-          onTap: () => Navigator.pop(context),
-        );
-      } else {
-        UIHelper.showSimpleDialog(_resp.errorMessage);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
@@ -77,7 +54,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                     ButtonWidget(
                       width: UIHelper.size50,
                       height: UIHelper.size50,
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () => NavigationService.instance().goBack(),
                       margin: EdgeInsets.only(top: UIHelper.paddingTop),
                       backgroundColor: Colors.transparent,
                       child: Padding(
@@ -174,7 +151,12 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                               ),
                               onTap: () {
                                 if (validateAndSave()) {
-                                  _handleSubmit(model);
+                                  if (model.isChangePassword) {
+                                    model.changePassword(
+                                        _email, _password, _code);
+                                  } else {
+                                    model.forgotPassword(_email);
+                                  }
                                 }
                               },
                             ),

@@ -13,6 +13,7 @@ import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
+import 'package:myfootball/ui/widgets/authentication_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
@@ -43,82 +44,97 @@ class BookingPage extends StatelessWidget {
   _handleBooking(
       BuildContext context, BookingViewModel model, TimeSlot timeSlot) async {
     UIHelper.showCustomizeDialog(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Align(
-              child: Text(
-                'Xác nhận đặt sân',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Align(
+            child: Text(
+              'Xác nhận đặt sân',
+              style: textStyleSemiBold(),
+            ),
+          ),
+          UIHelper.verticalSpaceMedium,
+          Row(
+            children: <Widget>[
+              Text(
+                'Ngày đá:',
+                style: textStyleRegularTitle(),
+              ),
+              UIHelper.horizontalSpaceMedium,
+              Text(
+                '${DateFormat('dd/MM/yyyy').format(model.currentDate)}',
                 style: textStyleSemiBold(),
               ),
-            ),
-            UIHelper.verticalSpaceMedium,
-            Row(
-              children: <Widget>[
-                Text(
-                  'Ngày đá:',
-                  style: textStyleRegularTitle(),
-                ),
-                UIHelper.horizontalSpaceMedium,
-                Text(
-                  '${DateFormat('dd/MM/yyyy').format(model.currentDate)}',
-                  style: textStyleSemiBold(),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  'Giờ đá:',
-                  style: textStyleRegularTitle(),
-                ),
-                UIHelper.horizontalSpaceMedium,
-                Text(
-                  '${timeSlot.getTime}',
-                  style: textStyleSemiBold(),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  'Giá thuê sân:',
-                  style: textStyleRegularTitle(),
-                ),
-                UIHelper.horizontalSpaceMedium,
-                Text(
-                  '${StringUtil.formatCurrency(timeSlot.price)}',
-                  style: textStyleSemiBold(),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  'Tiền đặt cọc:',
-                  style: textStyleRegularTitle(),
-                ),
-                UIHelper.horizontalSpaceMedium,
-                Text(
-                  '${StringUtil.formatCurrency(_ground.deposit)}',
-                  style: textStyleSemiBold(),
-                ),
-              ],
-            ),
-            UIHelper.verticalSpaceMedium,
-            Text(
-              '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
-              style: textStyleItalic(),
-            ),
-            Text(
-              '- Vui lòng đọc kỹ nội quy của sân bóng trước khi đặt sân',
-              style: textStyleItalic(),
-            )
-          ],
-        ),
-        onConfirmed: () =>
-            model.booking(Provider.of<Team>(context).id, timeSlot.id));
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Giờ đá:',
+                style: textStyleRegularTitle(),
+              ),
+              UIHelper.horizontalSpaceMedium,
+              Text(
+                '${timeSlot.getTime}',
+                style: textStyleSemiBold(),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Tiền sân:',
+                style: textStyleRegularTitle(),
+              ),
+              UIHelper.horizontalSpaceMedium,
+              Text(
+                '${StringUtil.formatCurrency(timeSlot.price)}',
+                style: textStyleSemiBold(),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Tiền đặt cọc:',
+                style: textStyleRegularTitle(),
+              ),
+              UIHelper.horizontalSpaceMedium,
+              Text(
+                '${StringUtil.formatCurrency(_ground.deposit)}',
+                style: textStyleSemiBold(),
+              ),
+            ],
+          ),
+          UIHelper.verticalSpaceMedium,
+          Text(
+            '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
+            style: textStyleItalic(),
+          ),
+          Text(
+            '- Vui lòng đọc kỹ nội quy của sân bóng trước khi đặt sân',
+            style: textStyleItalic(),
+          )
+        ],
+      ),
+      onConfirmed: () => _showAuthenticationBottomSheet(
+        context,
+        onSuccess: () =>
+            model.booking(Provider.of<Team>(context).id, timeSlot.id),
+      ),
+    );
   }
+
+  _showAuthenticationBottomSheet(BuildContext context, {Function onSuccess}) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => AuthenticationWidget(onAuthentication: (isSuccess) {
+          if (isSuccess) {
+            Navigator.of(context).pop();
+            onSuccess();
+          }
+        }),
+      );
 
   Widget _buildTicket(BuildContext context, DateTime playDate,
       TimeSlot timeSlot, Function onTap) {

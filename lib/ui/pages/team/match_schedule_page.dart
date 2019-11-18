@@ -7,7 +7,6 @@ import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
@@ -140,7 +139,7 @@ class MatchSchedulePage extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            matchSchedule.sendTeam.name,
+                            matchSchedule.getMyTeamName,
                             style: textStyleSemiBold(size: 13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -164,7 +163,7 @@ class MatchSchedulePage extends StatelessWidget {
                         Expanded(
                           child: Text(
                             _hasReceiveTeam
-                                ? matchSchedule.receiveTeam.name
+                                ? matchSchedule.getOpponentName
                                 : '',
                             textAlign: TextAlign.right,
                             style: textStyleSemiBold(size: 13),
@@ -213,7 +212,7 @@ class MatchSchedulePage extends StatelessWidget {
                           border: Border.all(width: 2, color: Colors.white),
                           borderRadius: BorderRadius.circular(UIHelper.size25)),
                       child: ImageWidget(
-                        source: matchSchedule.sendTeam.logo,
+                        source: matchSchedule.getMyTeamLogo,
                         placeHolder: Images.DEFAULT_LOGO,
                         size: UIHelper.size40,
                         radius: UIHelper.size20,
@@ -229,7 +228,7 @@ class MatchSchedulePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(UIHelper.size25)),
                       child: _hasReceiveTeam
                           ? ImageWidget(
-                              source: matchSchedule.receiveTeam.logo,
+                              source: matchSchedule.getOpponentLogo,
                               placeHolder: Images.DEFAULT_LOGO,
                               size: UIHelper.size40,
                               radius: UIHelper.size20,

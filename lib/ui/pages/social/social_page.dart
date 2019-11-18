@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/top_ranking.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:provider/provider.dart';
 
 class SocialPage extends StatelessWidget {
   Widget _buildCateTitle(String title) => Text(
         title,
-        style: textStyleSemiBold(color: PRIMARY),
+        style: textStyleSemiBold(color: PRIMARY, size: 17),
       );
 
   Widget _buildItemNew(BuildContext context, int index) => Container(
@@ -45,18 +48,32 @@ class SocialPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _buildCateTitle('Bảng xếp hạng'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            _buildCateTitle('Bảng xếp hạng'),
+            InkWell(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                child: Text(
+                  'Xem Top 100',
+                  style: textStyleSemiBold(color: Colors.grey, size: 15),
+                ),
+              ),
+            )
+          ],
+        ),
         UIHelper.verticalSpaceMedium,
         Container(
-            margin: EdgeInsets.only(bottom: UIHelper.size10),
-            height: UIHelper.size(150),
-            child: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (c, index) => _buildItemNew(context, index),
-            )),
+          margin: EdgeInsets.only(bottom: UIHelper.size10),
+          height: UIHelper.size(200),
+          child: TopRankingWidget(
+            firstTeam: Provider.of<Team>(context),
+            secondTeam: Provider.of<Team>(context),
+            thirdTeam: Provider.of<Team>(context),
+          ),
+        ),
       ],
     );
   }
@@ -121,9 +138,9 @@ class SocialPage extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               children: <Widget>[
-                _buildNewest(context),
                 _buildRanking(context),
-                _buildTournament(context),
+                _buildNewest(context),
+//                _buildTournament(context),
                 _buildRecruit(context)
               ],
             ),

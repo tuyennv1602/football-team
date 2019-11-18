@@ -228,7 +228,6 @@ class _AuthenticationState extends State<AuthenticationWidget>
                               password =
                                   password.substring(0, password.length - 1);
                             });
-                            print(password);
                           }
                         },
                         child: Padding(

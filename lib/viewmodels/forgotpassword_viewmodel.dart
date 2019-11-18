@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/services/api.dart';
+import 'package:myfootball/services/navigation_services.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class ForgotPasswordViewModel extends BaseViewModel {
@@ -9,21 +11,31 @@ class ForgotPasswordViewModel extends BaseViewModel {
 
   ForgotPasswordViewModel({@required Api api}) : this._api = api;
 
-  Future<BaseResponse> forgotPassword(String email) async {
-    setBusy(true);
+  Future<void> forgotPassword(String email) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.forgotPassword(email);
+    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       isChangePassword = true;
+      notifyListeners();
+      UIHelper.showSimpleDialog('Mã xác thực đã được gửi');
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    setBusy(false);
-    return resp;
   }
 
-  Future<BaseResponse> changePassword(
+  Future<void> changePassword(
       String email, String password, String code) async {
-    setBusy(true);
+    UIHelper.showProgressDialog;
     var resp = await _api.changePassword(email, password, code);
-    setBusy(false);
-    return resp;
+    UIHelper.hideProgressDialog;
+    if(resp.isSuccess){
+      UIHelper.showSimpleDialog(
+        'Mật khẩu đã được thay đổi',
+        onTap: () => NavigationService.instance().goBack(),
+      );
+    }else{
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 }

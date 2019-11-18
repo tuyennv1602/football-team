@@ -34,7 +34,7 @@ class UpdateTeamViewModel extends BaseViewModel {
   Future<void> updateTeam(Team team) async {
     UIHelper.showProgressDialog;
     if (image != null) {
-      var _imageLink = await _uploadImage(team.manager, team.name);
+      var _imageLink = await _uploadImage(team.id, team.name);
       if (_imageLink != null) {
         // upload image success and update team info
         team.logo = _imageLink;
@@ -53,9 +53,9 @@ class UpdateTeamViewModel extends BaseViewModel {
     }
   }
 
-  Future<String> _uploadImage(int managerId, String teamName) async {
+  Future<String> _uploadImage(int teamId, String teamName) async {
     if (image == null) return null;
-    var name = '$managerId-${teamName.trim().replaceAll(" ", "-")}';
+    var name = 'id_$teamId';
     return FirebaseServices().uploadImage(image, 'team', name);
   }
 }

@@ -92,40 +92,35 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
     if (team.manager == Provider.of<User>(context).id) {
       _manager.addAll([
         ItemOptionWidget(
-          Images.BOOKING,
-          'Đặt sân bóng',
-          iconColor: Colors.green,
-          onTap: () => NavigationService.instance().navigateTo(SEARCH_GROUND),
-        ),
-        LineWidget(),
-        ItemOptionWidget(
           Images.FIND_MATCH,
           'Tìm đối tác',
           iconColor: Colors.red,
           onTap: () => NavigationService.instance().navigateTo(FIND_MATCHING),
         ),
-        LineWidget(),
         ItemOptionWidget(
           Images.INVITE,
           'Lời mời ghép đối',
           iconColor: Colors.pinkAccent,
           onTap: () => NavigationService.instance().navigateTo(INVITE_REQUESTS),
         ),
-        LineWidget(),
+        ItemOptionWidget(
+          Images.BOOKING,
+          'Đặt sân bóng',
+          iconColor: Colors.green,
+          onTap: () => NavigationService.instance().navigateTo(SEARCH_GROUND),
+        ),
         ItemOptionWidget(
           Images.MEMBER_MANAGE,
           'Yêu cầu gia nhập đội bóng',
           iconColor: Colors.green,
           onTap: () => NavigationService.instance().navigateTo(REQUEST_MEMBER),
         ),
-        LineWidget(),
         ItemOptionWidget(
           Images.BUDGET,
           'Quản lý tài chính',
           iconColor: Colors.amber,
           onTap: () => NavigationService.instance().navigateTo(FINANCE),
         ),
-        LineWidget(),
         ItemOptionWidget(
           Images.SETTING,
           'Thiết lập đội bóng',
@@ -142,7 +137,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 iconColor: Colors.green,
                 onTap: () => NavigationService.instance()
                     .navigateTo(MEMBERS, arguments: team)),
-            LineWidget(),
             ItemOptionWidget(
               Images.SCHEDULE,
               'Lịch thi đấu',
@@ -150,7 +144,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               onTap: () =>
                   NavigationService.instance().navigateTo(MATCH_SCHEDULE),
             ),
-            LineWidget(),
             ItemOptionWidget(
               Images.MATCH_HISTORY,
               'Lịch sử thi đấu',
@@ -158,20 +151,17 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               onTap: () =>
                   NavigationService.instance().navigateTo(MATCH_HISTORY),
             ),
-            LineWidget(),
             ItemOptionWidget(
               Images.COMMENT,
               'Thảo luận',
               iconColor: Colors.cyan,
             ),
-            LineWidget(),
             ItemOptionWidget(
               Images.WALLET_IN,
               'Đóng quỹ đội bóng',
               iconColor: Colors.amber,
               onTap: () => NavigationService.instance().navigateTo(TEAM_FUND),
             ),
-            LineWidget(),
           ]
             ..addAll(_manager)
             ..addAll([
@@ -180,7 +170,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 'Mời bạn bè vào đội',
                 iconColor: Colors.blueAccent,
               ),
-              LineWidget(),
               ItemOptionWidget(
                 Images.LEAVE_TEAM,
                 'Rời đội bóng',
@@ -208,18 +197,18 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 children: <Widget>[
                   Text(
                     'Điểm: ${team.point}',
-                    style: textStyleRegularTitle(),
+                    style: textStyleSemiBold(),
                   ),
                   Text(
                     'Xếp hạng: ${team.rank}',
-                    style: textStyleRegularTitle(),
+                    style: textStyleSemiBold(),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
                         'Đánh giá: ',
-                        style: textStyleRegularTitle(),
+                        style: textStyleSemiBold(),
                       ),
                       RatingBarIndicator(
                         rating: team.rating,

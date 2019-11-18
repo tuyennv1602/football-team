@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/utils/ui_helper.dart';
 
 final double _kButtonHeight = 48;
 
@@ -33,7 +34,7 @@ class ButtonWidget extends StatelessWidget {
         margin: this.margin ?? EdgeInsets.zero,
         child: ClipRRect(
           borderRadius:
-              borderRadius ?? BorderRadius.circular(_kButtonHeight / 2),
+              borderRadius ?? BorderRadius.circular(UIHelper.size10),
           child: Material(
             color: this.backgroundColor ?? PRIMARY,
             child: InkWell(

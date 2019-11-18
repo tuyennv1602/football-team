@@ -114,7 +114,7 @@ class InputMoneyPage extends StatelessWidget {
                           padding: EdgeInsets.all(UIHelper.size15),
                           child: Text(
                             'Chọn nguồn tiền',
-                            style: textStyleRegularTitle(color: PRIMARY),
+                            style: textStyleSemiBold(color: PRIMARY),
                           ),
                         ),
                         _buildItemResource(context, 'assets/images/ic_momo.png',

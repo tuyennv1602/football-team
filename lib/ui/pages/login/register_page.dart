@@ -33,21 +33,6 @@ class _RegisterState extends State<RegisterPage> {
     return false;
   }
 
-  void _handleSubmit(RegisterViewModel model) async {
-    UIHelper.showProgressDialog;
-    var _resp = await model.registerWithEmail(
-        _name, _email, _password, _phone, [Constants.TEAM_LEADER]);
-    UIHelper.hideProgressDialog;
-    if (_resp.isSuccess) {
-      UIHelper.showSimpleDialog(
-          'Đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản',
-          onTap: () => Navigator.pop(context));
-    } else {
-      UIHelper.showSimpleDialog(_resp.errorMessage,
-          onTap: () => Navigator.of(context).pop());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     UIHelper().init(context);
@@ -169,7 +154,12 @@ class _RegisterState extends State<RegisterPage> {
                               ),
                               onTap: () {
                                 if (validateAndSave()) {
-                                  _handleSubmit(model);
+                                  model.registerWithEmail(
+                                      _name,
+                                      _email,
+                                      _password,
+                                      _phone,
+                                      [Constants.TEAM_LEADER]);
                                 }
                               },
                             ),

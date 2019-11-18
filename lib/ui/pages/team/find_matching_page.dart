@@ -179,7 +179,7 @@ class FindMatchingPage extends StatelessWidget {
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),
                       child: SliverAppBar(
-                        expandedHeight: 200,
+                        expandedHeight: 210,
                         forceElevated: false,
                         backgroundColor: Colors.white,
                         flexibleSpace: FlexibleSpaceBar(
@@ -230,8 +230,7 @@ class FindMatchingPage extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size5),
+                                padding: EdgeInsets.only(top: UIHelper.size5),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -268,9 +267,21 @@ class FindMatchingPage extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
+                                  onTap: () =>
+                                      NavigationService.instance().navigateTo(
+                                    TEAM_DETAIL,
+                                    arguments: Team(
+                                      id: team2.groupId,
+                                      name: team2.groupName,
+                                      rank: team2.rank,
+                                      rating: team2.rating,
+                                      logo: team2.logo
+                                    ),
+                                  ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: UIHelper.size5),
+                                    padding: EdgeInsets.only(
+                                        top: UIHelper.size10,
+                                        bottom: UIHelper.size5),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[

@@ -37,16 +37,18 @@ class TicketPage extends StatelessWidget {
         ),
       );
 
-  _showAuthenticationBottomSheet(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (c) => AuthenticationWidget(
-      onAuthentication: (isSuccess) {
-        if (isSuccess) {
-          Navigator.of(context).pop();
-        }
-      },
-    ),
-  );
+  _showAuthenticationBottomSheet(BuildContext context, {Function onSuccess}) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => AuthenticationWidget(
+          onAuthentication: (isSuccess) {
+            if (isSuccess) {
+              Navigator.of(context).pop();
+              onSuccess();
+            }
+          },
+        ),
+      );
 
   Widget _buildItemTicket(
       BuildContext context, TicketViewModel model, int index) {
@@ -58,12 +60,17 @@ class TicketPage extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
       child: InkWell(
-        onTap: () => _showOptions(context,
-            onCancel: () => UIHelper.showConfirmDialog(
-                  '${ticket.isOverTime ? 'Đã quá giờ huỷ vé. Nếu tiếp tục huỷ, bạn sẽ không được hoàn tiền cọc.\n' : ''}Bạn có chắc muốn huỷ vé #${ticket.id}?',
-                  onConfirmed: () => model.cancelBooking(index, ticket.id),
-                ),
-            onPay: () => _showAuthenticationBottomSheet(context)),
+        onTap: () => _showOptions(
+          context,
+          onCancel: () => UIHelper.showConfirmDialog(
+            '${ticket.isOverTime ? 'Đã quá giờ huỷ vé. Nếu tiếp tục huỷ, bạn sẽ không được hoàn tiền cọc.\n' : ''}Bạn có chắc muốn huỷ vé #${ticket.id}?',
+            onConfirmed: () => _showAuthenticationBottomSheet(
+              context,
+              onSuccess: () => model.cancelBooking(index, ticket.id),
+            ),
+          ),
+          onPay: () => _showAuthenticationBottomSheet(context),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

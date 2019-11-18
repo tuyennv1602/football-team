@@ -35,19 +35,21 @@ class CreateTeamViewModel extends BaseViewModel {
   }
 
   Future<TeamResponse> createTeam(User user, String name, String bio) async {
-    int userId = user.id;
     UIHelper.showProgressDialog;
     var resp = await _api.createTeam(
-        userId,
-        Team(
-            manager: userId,
-            name: name,
-            bio: bio,
-            dress: getColorValue(dressColor.toString())));
+      Team(
+        manager: user.id,
+        name: name,
+        bio: bio,
+        dress: getColorValue(
+          dressColor.toString(),
+        ),
+      ),
+    );
     if (resp.isSuccess) {
       var _team = resp.team;
       if (image != null) {
-        var _imageLink = await _uploadImage(userId, name);
+        var _imageLink = await _uploadImage(_team.id, name);
         UIHelper.hideProgressDialog;
         if (_imageLink != null) {
           // upload image success and update team info
@@ -59,16 +61,16 @@ class CreateTeamViewModel extends BaseViewModel {
       user.addTeam(_team);
       _authServices.updateUser(user);
       UIHelper.showSimpleDialog('Đăng ký đội bóng thành công');
-    }else{
+    } else {
       UIHelper.hideProgressDialog;
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
     return resp;
   }
 
-  Future<String> _uploadImage(int managerId, String teamName) async {
+  Future<String> _uploadImage(int teamId, String teamName) async {
     if (image == null) return null;
-    var name = '$managerId-${teamName.trim().replaceAll(" ", "-")}';
+    var name = 'id_$teamId';
     return FirebaseServices().uploadImage(image, 'team', name);
   }
 

@@ -90,11 +90,11 @@ class TeamDetailPage extends StatelessWidget {
                                   children: <Widget>[
                                     Text(
                                       'Điểm: ${_team.point ?? 0}',
-                                      style: textStyleRegularTitle(),
+                                      style: textStyleSemiBold(),
                                     ),
                                     Text(
                                       'Xếp hạng: ${_team.rank ?? 0}',
-                                      style: textStyleRegularTitle(),
+                                      style: textStyleSemiBold(),
                                     ),
                                     Divider(
                                       height: UIHelper.size15,

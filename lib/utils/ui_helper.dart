@@ -87,7 +87,11 @@ class UIHelper {
                       children: <Widget>[
                         Text('Thông báo', style: textStyleSemiBold()),
                         UIHelper.verticalSpaceMedium,
-                        Text(message, style: textStyleRegular(size: 16)),
+                        Text(
+                          message,
+                          style: textStyleRegular(size: 16),
+                          textAlign: TextAlign.center,
+                        ),
                         UIHelper.verticalSpaceMedium,
                       ],
                     ),
@@ -124,6 +128,7 @@ class UIHelper {
             Text(
               message,
               style: textStyleRegular(size: 16),
+              textAlign: TextAlign.center,
             ),
             UIHelper.verticalSpaceMedium,
           ],

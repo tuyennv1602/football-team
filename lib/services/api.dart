@@ -9,6 +9,7 @@ import 'package:myfootball/models/responses/ground_resp.dart';
 import 'package:myfootball/models/responses/invite_request_resp.dart';
 import 'package:myfootball/models/responses/list_ground_resp.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
+import 'package:myfootball/models/responses/match_history_resp.dart';
 import 'package:myfootball/models/responses/match_schedule_resp.dart';
 import 'package:myfootball/models/responses/matching_resp.dart';
 import 'package:myfootball/models/responses/member_resp.dart';
@@ -171,7 +172,7 @@ class Api {
     }
   }
 
-  Future<TeamResponse> createTeam(int userId, Team team) async {
+  Future<TeamResponse> createTeam(Team team) async {
     try {
       var response =
           await _api.postApi('group/create', body: team.createTeamJson());
@@ -332,7 +333,7 @@ class Api {
     try {
       FormData formData = new FormData.from({
         "page": 1,
-        "limit": 100,
+        "limit": 50,
       });
       var resp = await _api.getApi('match/request/group/$teamId',
           queryParams: formData);
@@ -447,7 +448,7 @@ class Api {
   Future<MatchScheduleResponse> getMatchSchedules(int teamId, int page) async {
     try {
       FormData formData =
-          new FormData.from({"groupId": teamId, "page": page, "limit": 20});
+          new FormData.from({"groupId": teamId, "page": page, "limit": 50});
       var resp = await _api.getApi('match', queryParams: formData);
       return MatchScheduleResponse.success(teamId, resp.data);
     } on DioError catch (e) {
@@ -501,6 +502,17 @@ class Api {
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<MatchHistoryResponse> getHistories(int teamId, int page) async {
+    try {
+      FormData formData =
+          new FormData.from({"groupId": teamId, "page": page, "limit": 50});
+      var resp = await _api.getApi('match/history', queryParams: formData);
+      return MatchHistoryResponse.success(teamId, resp.data);
+    } on DioError catch (e) {
+      return MatchHistoryResponse.error(e.message);
     }
   }
 }

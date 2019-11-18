@@ -66,7 +66,7 @@ class InviteRequestPage extends StatelessWidget {
                       ),
                       Text(
                         inviteRequest.title,
-                        style: textStyleRegularTitle(),
+                        style: textStyleRegular(),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

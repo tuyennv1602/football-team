@@ -19,7 +19,8 @@ class MatchSchedule {
   int teamId;
 
   MatchSchedule(
-      {this.ratio,
+      {
+      this.ratio,
       this.joined,
       this.ticketId,
       this.playDate,
@@ -46,7 +47,7 @@ class MatchSchedule {
         ? new Team.fromJson(json['receive_group'])
         : null;
     groundName = json['ground_name'];
-    groundId = int.parse(json['ground_id']);
+    groundId = json['ground_id'] != null ? int.parse(json['ground_id']) : -1;
     isJoined = json['is_joined'];
     matchId = json['match_id'];
     this.teamId = teamId;
@@ -87,14 +88,20 @@ class MatchSchedule {
 
   Team get getOpponentTeam => isSender ? receiveTeam : sendTeam;
 
-  String get getRatio  {
-    if(ratio == null) return null;
+  String get getMyTeamLogo => isSender ? sendTeam.logo : receiveTeam.logo;
+
+  String get getMyTeamName => isSender ? sendTeam.name : receiveTeam.name;
+
+  Team get getMyTeam => isSender ? sendTeam : receiveTeam;
+
+  String get getRatio {
+    if (ratio == null) return null;
     int _ratio = int.parse(ratio);
-    if(_ratio == Constants.RATIO_0_100) return '0-100';
-    if(_ratio == Constants.RATIO_20_80) return '20-80';
-    if(_ratio == Constants.RATIO_30_70) return '30-70';
-    if(_ratio == Constants.RATIO_40_60) return '40-60';
-    if(_ratio == Constants.RATIO_50_50) return '50-50';
+    if (_ratio == Constants.RATIO_0_100) return '0-100';
+    if (_ratio == Constants.RATIO_20_80) return '20-80';
+    if (_ratio == Constants.RATIO_30_70) return '30-70';
+    if (_ratio == Constants.RATIO_40_60) return '40-60';
+    if (_ratio == Constants.RATIO_50_50) return '50-50';
     return null;
   }
 }
