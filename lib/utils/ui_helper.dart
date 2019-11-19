@@ -42,14 +42,14 @@ class UIHelper {
     progressDialog = new ProgressDialog(context, isDismissible: false);
   }
 
-  static Widget verticalSpaceSmall = SizedBox(height: size5);
-  static Widget verticalSpaceMedium = SizedBox(height: size10);
-  static Widget verticalSpaceLarge = SizedBox(height: size20);
-  static Widget verticalIndicator = SizedBox(height: size10);
+  static Widget verticalSpaceSmall = SizedBox(height: size5, width: 1);
+  static Widget verticalSpaceMedium = SizedBox(height: size10, width: 1);
+  static Widget verticalSpaceLarge = SizedBox(height: size20, width: 1);
+  static Widget verticalIndicator = SizedBox(height: size10, width: 1);
 
-  static Widget horizontalSpaceSmall = SizedBox(width: size5);
-  static Widget horizontalSpaceMedium = SizedBox(width: size10);
-  static Widget horizontalSpaceLarge = SizedBox(width: size20);
+  static Widget horizontalSpaceSmall = SizedBox(width: size5, height: 1);
+  static Widget horizontalSpaceMedium = SizedBox(width: size10, height: 1);
+  static Widget horizontalSpaceLarge = SizedBox(width: size20, height: 1);
 
   static Widget homeButtonSpace =
       SizedBox(height: paddingBottom, width: screenWidth);

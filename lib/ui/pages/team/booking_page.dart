@@ -240,6 +240,10 @@ class BookingPage extends StatelessWidget {
               imageName: Images.BACK,
               onTap: () => NavigationService.instance().goBack(),
             ),
+            rightContent: AppBarButtonWidget(
+              imageName: Images.INFO,
+              onTap: () => Navigator.of(context).pop(),
+            ),
           ),
           Expanded(
             child: BorderBackground(

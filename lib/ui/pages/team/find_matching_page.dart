@@ -203,13 +203,13 @@ class FindMatchingPage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     RatingBarIndicator(
-                                      rating: 2.5,
+                                      rating: team1.rating,
                                       itemCount: 5,
                                       itemPadding: EdgeInsets.only(right: 2),
                                       itemSize: UIHelper.size15,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
-                                        color: Colors.amber,
+                                        color: PRIMARY,
                                       ),
                                     ),
                                     Text(
@@ -217,13 +217,13 @@ class FindMatchingPage extends StatelessWidget {
                                       style: textStyleRegular(),
                                     ),
                                     RatingBarIndicator(
-                                      rating: 2.5,
+                                      rating: team2.rating,
                                       itemCount: 5,
                                       itemPadding: EdgeInsets.only(left: 2),
                                       itemSize: UIHelper.size15,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
-                                        color: Colors.amber,
+                                        color: PRIMARY,
                                       ),
                                     ),
                                   ],
@@ -271,12 +271,11 @@ class FindMatchingPage extends StatelessWidget {
                                       NavigationService.instance().navigateTo(
                                     TEAM_DETAIL,
                                     arguments: Team(
-                                      id: team2.groupId,
-                                      name: team2.groupName,
-                                      rank: team2.rank,
-                                      rating: team2.rating,
-                                      logo: team2.logo
-                                    ),
+                                        id: team2.groupId,
+                                        name: team2.groupName,
+                                        rank: team2.rank,
+                                        rating: team2.rating,
+                                        logo: team2.logo),
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.only(
@@ -383,18 +382,13 @@ class FindMatchingPage extends StatelessWidget {
               imageName: Images.BACK,
               onTap: () => NavigationService.instance().goBack(),
             ),
-            rightContent: AppBarButtonWidget(
-              imageName: Images.SEARCH,
-              onTap: () => NavigationService.instance()
-                  .navigateTo(SEARCH_TEAM, arguments: SEARCH_TYPE.COMPARE_TEAM),
-            ),
             backgroundColor: Colors.transparent,
           ),
           builder: (c, model, child) {
             return Stack(
               children: <Widget>[
                 Container(
-                  height: UIHelper.size(210) + UIHelper.paddingTop,
+                  height: UIHelper.size(200) + UIHelper.paddingTop,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(Images.GROUND), fit: BoxFit.fill),
@@ -475,7 +469,7 @@ class FindMatchingPage extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(
-                      top: UIHelper.size(180) + UIHelper.paddingTop),
+                      top: UIHelper.size(170) + UIHelper.paddingTop),
                   child: BorderBackground(
                     child: team.groupMatchingInfo.length == 0
                         ? _renderNoMatchingInfo(context)

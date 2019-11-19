@@ -19,8 +19,7 @@ class MatchSchedule {
   int teamId;
 
   MatchSchedule(
-      {
-      this.ratio,
+      {this.ratio,
       this.joined,
       this.ticketId,
       this.playDate,
@@ -47,7 +46,7 @@ class MatchSchedule {
         ? new Team.fromJson(json['receive_group'])
         : null;
     groundName = json['ground_name'];
-    groundId = json['ground_id'] != null ? int.parse(json['ground_id']) : -1;
+    groundId = json['ground_id'];
     isJoined = json['is_joined'];
     matchId = json['match_id'];
     this.teamId = teamId;

@@ -64,7 +64,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                             style: textStyleTitle()),
                         rightContent: AppBarButtonWidget(
                           imageName: Images.EDIT,
-                          onTap: () {},
+                          onTap: () => NavigationService.instance()
+                              .navigateTo(EDIT_PROFILE),
                         ),
                       ),
                     ),

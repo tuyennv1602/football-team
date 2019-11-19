@@ -30,8 +30,11 @@ class EditProfilePage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: BaseWidget<EditProfileViewModel>(
-                  model: EditProfileViewModel(api: Provider.of(context)),
-                  builder: (c, model, child) {}),
+                model: EditProfileViewModel(api: Provider.of(context)),
+                builder: (c, model, child) => Column(
+                  children: <Widget>[],
+                ),
+              ),
             ),
           )
         ],

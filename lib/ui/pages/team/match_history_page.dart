@@ -261,6 +261,10 @@ class MatchHistoryPage extends StatelessWidget {
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
+            rightContent: AppBarButtonWidget(
+              imageName: Images.INFO,
+              onTap: () => Navigator.of(context).pop(),
+            ),
           ),
           Expanded(
             child: BorderBackground(

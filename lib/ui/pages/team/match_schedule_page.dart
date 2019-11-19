@@ -121,14 +121,14 @@ class MatchSchedulePage extends StatelessWidget {
       },
       child: Column(
         children: <Widget>[
-          UIHelper.verticalSpaceMedium,
+          UIHelper.verticalSpaceSmall,
           Container(
             height: UIHelper.size(80),
             padding: EdgeInsets.all(UIHelper.size5),
             child: Stack(
               children: <Widget>[
                 Positioned(
-                  top: UIHelper.size5,
+                  top: UIHelper.size25,
                   left: UIHelper.size35,
                   right: UIHelper.size35,
                   child: Container(
@@ -176,7 +176,7 @@ class MatchSchedulePage extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: UIHelper.size45,
+                  top: 0,
                   left: 0,
                   right: 0,
                   child: Align(
@@ -187,8 +187,8 @@ class MatchSchedulePage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(UIHelper.size15),
-                          bottomRight: Radius.circular(UIHelper.size15),
+                          topRight: Radius.circular(UIHelper.size15),
+                          topLeft: Radius.circular(UIHelper.size15),
                         ),
                       ),
                       padding:
@@ -200,42 +200,45 @@ class MatchSchedulePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      height: UIHelper.size50,
-                      width: UIHelper.size50,
-                      padding: EdgeInsets.all(UIHelper.size5),
-                      decoration: BoxDecoration(
-                          color: SHADOW_GREEN,
-                          border: Border.all(width: 2, color: Colors.white),
-                          borderRadius: BorderRadius.circular(UIHelper.size25)),
-                      child: ImageWidget(
-                        source: matchSchedule.getMyTeamLogo,
-                        placeHolder: Images.DEFAULT_LOGO,
-                        size: UIHelper.size40,
-                        radius: UIHelper.size20,
+                Container(
+                  margin: EdgeInsets.only(top: UIHelper.size20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        height: UIHelper.size50,
+                        width: UIHelper.size50,
+                        padding: EdgeInsets.all(UIHelper.size5),
+                        decoration: BoxDecoration(
+                            color: SHADOW_GREEN,
+                            border: Border.all(width: 2, color: Colors.white),
+                            borderRadius: BorderRadius.circular(UIHelper.size25)),
+                        child: ImageWidget(
+                          source: matchSchedule.getMyTeamLogo,
+                          placeHolder: Images.DEFAULT_LOGO,
+                          size: UIHelper.size40,
+                          radius: UIHelper.size20,
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: UIHelper.size50,
-                      width: UIHelper.size50,
-                      padding: EdgeInsets.all(UIHelper.size5),
-                      decoration: BoxDecoration(
-                          color: SHADOW_GREEN,
-                          border: Border.all(width: 2, color: Colors.white),
-                          borderRadius: BorderRadius.circular(UIHelper.size25)),
-                      child: _hasReceiveTeam
-                          ? ImageWidget(
-                              source: matchSchedule.getOpponentLogo,
-                              placeHolder: Images.DEFAULT_LOGO,
-                              size: UIHelper.size40,
-                              radius: UIHelper.size20,
-                            )
-                          : SizedBox(),
-                    ),
-                  ],
+                      Container(
+                        height: UIHelper.size50,
+                        width: UIHelper.size50,
+                        padding: EdgeInsets.all(UIHelper.size5),
+                        decoration: BoxDecoration(
+                            color: SHADOW_GREEN,
+                            border: Border.all(width: 2, color: Colors.white),
+                            borderRadius: BorderRadius.circular(UIHelper.size25)),
+                        child: _hasReceiveTeam
+                            ? ImageWidget(
+                                source: matchSchedule.getOpponentLogo,
+                                placeHolder: Images.DEFAULT_LOGO,
+                                size: UIHelper.size40,
+                                radius: UIHelper.size20,
+                              )
+                            : SizedBox(),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -244,7 +247,7 @@ class MatchSchedulePage extends StatelessWidget {
             matchSchedule.groundName,
             style: textStyleRegular(),
           ),
-          UIHelper.verticalIndicator
+          UIHelper.verticalSpaceLarge
         ],
       ),
     );

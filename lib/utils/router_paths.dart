@@ -27,6 +27,7 @@ const String MATCH_SCHEDULE = 'MATCH_SCHEDULE';
 const String MATCH_HISTORY = 'MATCH_HISTORY';
 const String MATCH_DETAIL = 'MATCH_DETAIL';
 const String TICKETS = 'TICKETS';
+const String EDIT_PROFILE = 'EDIT_PROFILE';
 
 
 

@@ -33,6 +33,7 @@ import 'package:myfootball/ui/pages/team/setup_team_page.dart';
 import 'package:myfootball/ui/pages/team/team_fund_page.dart';
 import 'package:myfootball/ui/pages/team/ticket_page.dart';
 import 'package:myfootball/ui/pages/team/user_request_page.dart';
+import 'package:myfootball/ui/pages/user/edit_profile_page.dart';
 import 'package:myfootball/ui/pages/user/input_money_page.dart';
 import 'package:myfootball/ui/routes/fade_in_router.dart';
 import 'package:myfootball/ui/routes/slide_left_router.dart';
@@ -109,6 +110,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: TicketPage());
     case INVITE_REQUESTS:
       return SlideLeftRoute(widget: InviteRequestPage());
+    case EDIT_PROFILE:
+      return SlideLeftRoute(widget: EditProfilePage());
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(
