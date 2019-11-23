@@ -9,6 +9,7 @@ import 'package:myfootball/ui/pages/home_page.dart';
 import 'package:myfootball/ui/pages/login/forgot_password_page.dart';
 import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'package:myfootball/ui/pages/login/register_page.dart';
+import 'package:myfootball/ui/pages/social/ranking_page.dart';
 import 'package:myfootball/ui/pages/team/add_address_page.dart';
 import 'package:myfootball/ui/pages/team/booking_page.dart';
 import 'package:myfootball/ui/pages/team/compare_team_page.dart';
@@ -33,8 +34,8 @@ import 'package:myfootball/ui/pages/team/setup_team_page.dart';
 import 'package:myfootball/ui/pages/team/team_fund_page.dart';
 import 'package:myfootball/ui/pages/team/ticket_page.dart';
 import 'package:myfootball/ui/pages/team/user_request_page.dart';
-import 'package:myfootball/ui/pages/user/edit_profile_page.dart';
 import 'package:myfootball/ui/pages/user/input_money_page.dart';
+import 'package:myfootball/ui/pages/user/transaction_history_page.dart';
 import 'package:myfootball/ui/routes/fade_in_router.dart';
 import 'package:myfootball/ui/routes/slide_left_router.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -110,8 +111,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: TicketPage());
     case INVITE_REQUESTS:
       return SlideLeftRoute(widget: InviteRequestPage());
-    case EDIT_PROFILE:
-      return SlideLeftRoute(widget: EditProfilePage());
+    case USER_TRANSACTION_HISTORY:
+      return SlideLeftRoute(widget: TransactionHistoryPage());
+    case RANKING:
+      return SlideLeftRoute(widget: RankingPage());
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

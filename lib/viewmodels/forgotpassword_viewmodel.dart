@@ -18,7 +18,7 @@ class ForgotPasswordViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       isChangePassword = true;
       notifyListeners();
-      UIHelper.showSimpleDialog('Mã xác thực đã được gửi');
+      UIHelper.showSimpleDialog('Mã xác thực đã được gửi', isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -32,7 +32,8 @@ class ForgotPasswordViewModel extends BaseViewModel {
     if(resp.isSuccess){
       UIHelper.showSimpleDialog(
         'Mật khẩu đã được thay đổi',
-        onTap: () => NavigationService.instance().goBack(),
+        isSuccess: true,
+        onConfirmed: () => NavigationService.instance().goBack(),
       );
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);

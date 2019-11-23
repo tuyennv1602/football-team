@@ -37,7 +37,7 @@ class SearchTeamViewModel extends BaseViewModel {
     await _api.createRequestMember(teamId, content, positions.join(','));
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đã gửi đăng ký!');
+      UIHelper.showSimpleDialog('Đã gửi đăng ký!', isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

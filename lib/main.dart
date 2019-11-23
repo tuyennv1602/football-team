@@ -11,7 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:myfootball/ui/routes/router.dart';
 import 'package:myfootball/utils/local_timeago.dart';
-import 'package:myfootball/utils/router_paths.dart';
 import 'package:provider/provider.dart';
 import 'http.dart'; // make dio as global top-level variable
 import 'package:timeago/timeago.dart' as timeago;

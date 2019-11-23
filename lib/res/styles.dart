@@ -16,7 +16,7 @@ textStyleAppName({Color color}) => TextStyle(
 
 textStyleButton({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 16),
-    fontFamily: SEMI_BOLD,
+    fontFamily: MEDIUM,
     color: color ?? Colors.white,
     letterSpacing: 0.1);
 
@@ -57,7 +57,13 @@ textStyleBold({double size, Color color}) => TextStyle(
     letterSpacing: 0.1);
 
 textStyleInput({double size, Color color}) => TextStyle(
-    fontSize: UIHelper.size(size ?? 15),
+    fontSize: UIHelper.size(size ?? 16),
     fontFamily: REGULAR,
     color: color ?? Colors.black,
+    letterSpacing: 0.1);
+
+textStyleAlert({double size, Color color}) => TextStyle(
+    fontFamily: MEDIUM,
+    fontSize: UIHelper.size(size ?? 18),
+    color: color ?? Colors.white,
     letterSpacing: 0.1);

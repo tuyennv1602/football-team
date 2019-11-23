@@ -13,6 +13,7 @@ class SearchGroundViewModel extends BaseViewModel {
   Api _api;
   LatLng myPosition = LatLng(21.026099, 105.833273);
   List<Ground> grounds = [];
+  Ground currentGround;
 
   SearchGroundViewModel({@required Api api}) : _api = api;
 
@@ -30,6 +31,7 @@ class SearchGroundViewModel extends BaseViewModel {
         myPosition.latitude, myPosition.longitude);
     if (resp.isSuccess) {
       this.grounds = resp.grounds;
+      this.currentGround = this.grounds[0];
     }
     setBusy(false);
     return resp;
@@ -51,5 +53,10 @@ class SearchGroundViewModel extends BaseViewModel {
     );
 
     return bounds;
+  }
+
+  changeCurrentGround(Ground ground) {
+    this.currentGround = ground;
+    notifyListeners();
   }
 }

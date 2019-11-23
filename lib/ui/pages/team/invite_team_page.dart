@@ -13,7 +13,7 @@ import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/choose_ratio_widget.dart';
-import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/input_text_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/constants.dart';
@@ -128,9 +128,10 @@ class InviteTeamPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    UIHelper.verticalSpaceMedium,
                     Form(
                       key: _formKey,
-                      child: InputWidget(
+                      child: InputTextWidget(
                         validator: (value) {
                           if (value.isEmpty) return 'Vui lòng nhập lời mời';
                           return null;

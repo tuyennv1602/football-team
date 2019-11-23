@@ -17,6 +17,7 @@ import 'package:myfootball/ui/widgets/authentication_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/select_date.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -28,92 +29,37 @@ class BookingPage extends StatelessWidget {
 
   BookingPage({@required Ground ground}) : _ground = ground;
 
-  _showDatePicker(
-      BuildContext context, DateTime selectedDate, Function onSelected) async {
-    var _now = DateTime.now();
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate ?? _now,
-        firstDate: DateTime(_now.year, _now.month, _now.day),
-        lastDate: _now.add(Duration(days: 365)));
-    if (picked != null && picked != selectedDate) {
-      onSelected(picked);
-    }
-  }
-
   _handleBooking(
       BuildContext context, BookingViewModel model, TimeSlot timeSlot) async {
-    UIHelper.showCustomizeDialog(
+    UIHelper.showConfirmDialog(
+      'confirm_booking',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Align(
-            child: Text(
-              'Xác nhận đặt sân',
-              style: textStyleSemiBold(),
-            ),
+          Text(
+            'Ngày đá:  ${DateFormat('dd/MM/yyyy').format(model.currentDate)}',
+            style: textStyleAlert(),
           ),
-          UIHelper.verticalSpaceMedium,
-          Row(
-            children: <Widget>[
-              Text(
-                'Ngày đá:',
-                style: textStyleRegularTitle(),
-              ),
-              UIHelper.horizontalSpaceMedium,
-              Text(
-                '${DateFormat('dd/MM/yyyy').format(model.currentDate)}',
-                style: textStyleSemiBold(),
-              ),
-            ],
+          Text(
+            'Giờ đá:  ${timeSlot.getTime}',
+            style: textStyleAlert(),
           ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Giờ đá:',
-                style: textStyleRegularTitle(),
-              ),
-              UIHelper.horizontalSpaceMedium,
-              Text(
-                '${timeSlot.getTime}',
-                style: textStyleSemiBold(),
-              ),
-            ],
+          Text(
+            'Tiền sân:  ${StringUtil.formatCurrency(timeSlot.price)}',
+            style: textStyleAlert(),
           ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Tiền sân:',
-                style: textStyleRegularTitle(),
-              ),
-              UIHelper.horizontalSpaceMedium,
-              Text(
-                '${StringUtil.formatCurrency(timeSlot.price)}',
-                style: textStyleSemiBold(),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Tiền đặt cọc:',
-                style: textStyleRegularTitle(),
-              ),
-              UIHelper.horizontalSpaceMedium,
-              Text(
-                '${StringUtil.formatCurrency(_ground.deposit)}',
-                style: textStyleSemiBold(),
-              ),
-            ],
+          Text(
+            'Tiền đặt cọc:  ${StringUtil.formatCurrency(_ground.deposit)}',
+            style: textStyleAlert(),
           ),
           UIHelper.verticalSpaceMedium,
           Text(
             '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
-            style: textStyleItalic(),
+            style: textStyleItalic(color: Colors.white),
           ),
           Text(
             '- Vui lòng đọc kỹ nội quy của sân bóng trước khi đặt sân',
-            style: textStyleItalic(),
+            style: textStyleItalic(color: Colors.white),
           )
         ],
       ),
@@ -257,15 +203,18 @@ class BookingPage extends StatelessWidget {
                         .navigateTo(GROUND_DETAIL, arguments: _ground.id),
                     child: Row(
                       children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(UIHelper.size5),
-                          child: Container(
-                            width: UIHelper.size(90),
-                            height: UIHelper.size(70),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: Images.DEFAULT_GROUND,
-                              image: _ground.avatar,
-                              fit: BoxFit.cover,
+                        Hero(
+                          tag: _ground.id,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(UIHelper.size5),
+                            child: Container(
+                              width: UIHelper.size(90),
+                              height: UIHelper.size(70),
+                              child: FadeInImage.assetNetwork(
+                                placeholder: Images.DEFAULT_GROUND,
+                                image: _ground.avatar,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -304,7 +253,7 @@ class BookingPage extends StatelessWidget {
                                         itemSize: UIHelper.size20,
                                         itemBuilder: (context, index) => Icon(
                                           Icons.star,
-                                          color: Colors.amber,
+                                          color: PRIMARY,
                                         ),
                                       ),
                                     ],
@@ -333,29 +282,18 @@ class BookingPage extends StatelessWidget {
                       LineWidget(indent: 0),
                       Row(
                         children: <Widget>[
-                          Text(
-                            'Chọn ngày đá',
-                            style: textStyleRegularTitle(),
-                          ),
                           Expanded(
-                            child: InkWell(
-                              onTap: () => _showDatePicker(
-                                context,
-                                model.currentDate,
-                                (dateTime) =>
-                                    model.setDate(_ground.id, dateTime),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size15),
-                                child: Text(
-                                  DateFormat('EEE, dd/MM/yyyy')
-                                      .format(model.currentDate),
-                                  textAlign: TextAlign.right,
-                                  style: textStyleSemiBold(),
-                                ),
-                              ),
+                            child: Text(
+                              'Chọn ngày đá',
+                              style: textStyleRegularTitle(),
                             ),
+                          ),
+                          SelectDateWidget(
+                            padding:
+                                EdgeInsets.symmetric(vertical: UIHelper.size15),
+                            onSelectedDate: (date) =>
+                                model.setDate(_ground.id, date),
+                            formatDate: 'EEE, dd/MM/yyyy',
                           ),
                         ],
                       ),

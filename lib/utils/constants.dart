@@ -25,4 +25,7 @@ class Constants {
   static const int INVITE_REJECTED = -1;
   static const int INVITE_WAITING = 1;
   static const int INVITE_ACCEPTED = 2;
+
+  static const int TRANSACTION_IN = 0;
+  static const int TRANSACTION_OUT = 1;
 }

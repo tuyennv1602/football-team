@@ -13,7 +13,7 @@ import 'package:myfootball/ui/widgets/choose_ratio_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/input_text_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
@@ -239,7 +239,7 @@ class CompareTeamPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          InputWidget(
+                          InputTextWidget(
                             labelText: 'Nội dung lời mời',
                             maxLines: 3,
                           ),

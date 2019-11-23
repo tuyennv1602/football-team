@@ -9,6 +9,7 @@ import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/pages/team/search_team_page.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
+import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/backdrop.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/line.dart';
@@ -116,12 +117,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           onTap: () => NavigationService.instance().navigateTo(REQUEST_MEMBER),
         ),
         ItemOptionWidget(
-          Images.BUDGET,
-          'Quản lý tài chính',
-          iconColor: Colors.amber,
-          onTap: () => NavigationService.instance().navigateTo(FINANCE),
-        ),
-        ItemOptionWidget(
           Images.SETTING,
           'Thiết lập đội bóng',
           iconColor: Colors.orange,
@@ -156,15 +151,21 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               'Thảo luận',
               iconColor: Colors.cyan,
             ),
-            ItemOptionWidget(
-              Images.WALLET_IN,
-              'Đóng quỹ đội bóng',
-              iconColor: Colors.amber,
-              onTap: () => NavigationService.instance().navigateTo(TEAM_FUND),
-            ),
           ]
             ..addAll(_manager)
             ..addAll([
+              ItemOptionWidget(
+                Images.WALLET_IN,
+                'Đóng quỹ đội bóng',
+                iconColor: Colors.red,
+                onTap: () => NavigationService.instance().navigateTo(TEAM_FUND),
+              ),
+              ItemOptionWidget(
+                Images.TRANSACTION_HISTORY,
+                'Tài chính đội bóng',
+                iconColor: Colors.amber,
+                onTap: () => NavigationService.instance().navigateTo(FINANCE),
+              ),
               ItemOptionWidget(
                 Images.CONNECT,
                 'Mời bạn bè vào đội',
@@ -217,7 +218,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                         itemSize: UIHelper.size25,
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: PRIMARY,
                         ),
                       ),
                     ],
@@ -353,6 +354,49 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                 child: Text(
                                   _team.name,
                                   style: textStyleTitle(),
+                                ),
+                              ),
+                              frontTrailing: AppBarButtonWidget(
+                                imageName: Images.SEARCH,
+                                iconColor: Colors.white,
+                                onTap: () => NavigationService.instance()
+                                    .navigateTo(SEARCH_TEAM,
+                                        arguments: SEARCH_TYPE.TEAM_DETAIL),
+                              ),
+                              frontHeading: Container(
+                                width: double.infinity,
+                                height: UIHelper.size40,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: PRIMARY,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(UIHelper.size15),
+                                    topRight: Radius.circular(UIHelper.size15),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 3,
+                                      offset: Offset(0, -1),
+                                    )
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      'Phóng to',
+                                      style:
+                                          textStyleRegular(color: Colors.white),
+                                    ),
+                                    UIHelper.horizontalSpaceMedium,
+                                    Image.asset(
+                                      Images.EXPAND,
+                                      color: Colors.white,
+                                      width: UIHelper.size10,
+                                      height: UIHelper.size10,
+                                    )
+                                  ],
                                 ),
                               ),
                             ),

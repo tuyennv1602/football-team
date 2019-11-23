@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/top_ranking.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class SocialPage extends StatelessWidget {
   Widget _buildCateTitle(String title) => Text(
         title,
-        style: textStyleSemiBold(color: PRIMARY, size: 17),
+        style: textStyleSemiBold(size: 17),
       );
 
   Widget _buildItemNew(BuildContext context, int index) => Container(
@@ -54,6 +56,7 @@ class SocialPage extends StatelessWidget {
           children: <Widget>[
             _buildCateTitle('Bảng xếp hạng'),
             InkWell(
+              onTap: () => NavigationService.instance().navigateTo(RANKING),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
                 child: Text(
@@ -66,8 +69,8 @@ class SocialPage extends StatelessWidget {
         ),
         UIHelper.verticalSpaceMedium,
         Container(
-          margin: EdgeInsets.only(bottom: UIHelper.size10),
-          height: UIHelper.size(200),
+          margin: EdgeInsets.only(bottom: UIHelper.size20),
+          height: UIHelper.size(210),
           child: TopRankingWidget(
             firstTeam: Provider.of<Team>(context),
             secondTeam: Provider.of<Team>(context),

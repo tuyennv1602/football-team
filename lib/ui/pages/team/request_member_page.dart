@@ -56,7 +56,7 @@ class RequestMemberPage extends StatelessWidget {
                               .map((pos) => ItemPosition(position: pos))
                               .toList()),
                       Text(
-                        'Ngày tạo: ${teamRequest.getCreateDate}',
+                        'Ngày gửi: ${teamRequest.getCreateDate}',
                         style: textStyleRegularBody(color: Colors.grey),
                       )
                     ],
@@ -71,18 +71,19 @@ class RequestMemberPage extends StatelessWidget {
   _showRequestOptions(BuildContext context,
           {Function onAccept, Function onReject}) =>
       showModalBottomSheet(
-          context: context,
-          builder: (c) => BottomSheetWidget(
-                options: ['Tuỳ chọn', 'Chấp nhận', 'Từ chối', 'Huỷ'],
-                onClickOption: (index) {
-                  if (index == 1) {
-                    onAccept();
-                  }
-                  if (index == 2) {
-                    onReject();
-                  }
-                },
-              ));
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: ['Tuỳ chọn', 'Chấp nhận', 'Từ chối', 'Huỷ'],
+          onClickOption: (index) {
+            if (index == 1) {
+              onAccept();
+            }
+            if (index == 2) {
+              onReject();
+            }
+          },
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {

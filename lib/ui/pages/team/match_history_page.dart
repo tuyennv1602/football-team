@@ -50,11 +50,11 @@ class MatchHistoryPage extends StatelessWidget {
       {Function onSubmit}) {
     String firstScore;
     String secondScore;
-    return UIHelper.showCustomizeDialog(
+    return UIHelper.showConfirmDialog(
+      'update_score',
+      icon: Images.EDIT_PROFILE,
       child: Column(
         children: <Widget>[
-          Text('Cập nhật tỉ số', style: textStyleSemiBold()),
-          UIHelper.verticalSpaceLarge,
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -70,7 +70,7 @@ class MatchHistoryPage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         matchHistory.getMyTeamName,
-                        style: textStyleRegularTitle(),
+                        style: textStyleAlert(),
                       ),
                     )
                   ],
@@ -98,7 +98,7 @@ class MatchHistoryPage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         matchHistory.getOpponentName,
-                        style: textStyleRegularTitle(),
+                        style: textStyleAlert(),
                       ),
                     )
                   ],
@@ -109,7 +109,6 @@ class MatchHistoryPage extends StatelessWidget {
               )
             ],
           ),
-          UIHelper.verticalSpaceMedium
         ],
       ),
       onConfirmed: () => matchHistory.isSender

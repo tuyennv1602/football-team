@@ -1,29 +1,30 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'dart:math' as math;
 
 final double _kFrontClosedHeight =
-UIHelper.size(50); // front layer height when closed
+    UIHelper.size40; // front layer height when closed
 final double _kBackAppBarHeight =
-UIHelper.size(50); // back layer (options) appbar height
+    UIHelper.size50; // back layer (options) appbar height
 
-class _TapableWhileStatus extends StatefulWidget {
-  const _TapableWhileStatus(
-      this.status, {
-        Key key,
-        this.controller,
-        this.child,
-      }) : super(key: key);
+class _TappableWhileStatusIs extends StatefulWidget {
+  const _TappableWhileStatusIs(
+    this.status, {
+    Key key,
+    this.controller,
+    this.child,
+  }) : super(key: key);
 
   final AnimationController controller;
   final AnimationStatus status;
   final Widget child;
 
   @override
-  _TapableWhileStatusState createState() => _TapableWhileStatusState();
+  _TappableWhileStatusIsState createState() => _TappableWhileStatusIsState();
 }
 
-class _TapableWhileStatusState extends State<_TapableWhileStatus> {
+class _TappableWhileStatusIsState extends State<_TappableWhileStatusIs> {
   bool _active;
 
   @override
@@ -50,10 +51,18 @@ class _TapableWhileStatusState extends State<_TapableWhileStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return AbsorbPointer(
+    Widget child = AbsorbPointer(
       absorbing: !_active,
       child: widget.child,
     );
+
+    if (!_active) {
+      child = FocusScope(
+        debugLabel: '$_TappableWhileStatusIs',
+        child: child,
+      );
+    }
+    return child;
   }
 }
 
@@ -150,21 +159,21 @@ class _BackAppBar extends StatelessWidget {
 class Backdrop extends StatefulWidget {
   Backdrop(
       {Key key,
-        this.frontLeading,
-        this.frontTitle,
-        this.frontTrailing,
-        this.frontLayer,
-        this.backTitle,
-        this.backLayer,
-        this.color})
+      this.frontTrailing,
+      this.frontTitle,
+      this.frontHeading,
+      this.frontLayer,
+      this.backTitle,
+      this.backLayer,
+      this.color})
       : super(key: key);
 
-  final Widget frontLeading;
+  final Widget frontTrailing;
   final Widget frontTitle;
   final Widget frontLayer;
   final Widget backTitle;
   final Widget backLayer;
-  final Widget frontTrailing;
+  final Widget frontHeading;
   final Color color;
 
   @override
@@ -176,26 +185,57 @@ class BackdropState extends State<Backdrop>
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
   Animation<double> _frontOpacity;
+  Animation<double> _frontHeadingOpacity;
 
   static final Animatable<double> _frontOpacityTween =
-  Tween<double>(begin: 0.2, end: 1.0).chain(
-      CurveTween(curve: const Interval(0.0, 0.4, curve: Curves.easeInOut)));
+      Tween<double>(begin: 0.2, end: 1.0).chain(
+          CurveTween(curve: const Interval(0.0, 0.2, curve: Curves.easeInOut)));
+
+  static final Animatable<double> _frontHeadingOpacityTween = Tween<double>(
+          begin: 0.8, end: 0)
+      .chain(CurveTween(curve: const Interval(0, 0.2, curve: Curves.easeOut)));
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 500),
       value: 1.0,
       vsync: this,
     );
     _frontOpacity = _controller.drive(_frontOpacityTween);
+    _frontHeadingOpacity = _controller.drive(_frontHeadingOpacityTween);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  double get _backdropHeight {
+    final RenderBox renderBox = _backdropKey.currentContext.findRenderObject();
+    return math.max(
+        0.0, renderBox.size.height - _kBackAppBarHeight - _kFrontClosedHeight);
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    _controller.value -=
+        details.primaryDelta / (_backdropHeight ?? details.primaryDelta);
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    if (_controller.isAnimating ||
+        _controller.status == AnimationStatus.completed) return;
+
+    final double flingVelocity =
+        details.velocity.pixelsPerSecond.dy / _backdropHeight;
+    if (flingVelocity < 0.0)
+      _controller.fling(velocity: math.max(2.0, -flingVelocity));
+    else if (flingVelocity > 0.0)
+      _controller.fling(velocity: math.min(-2.0, -flingVelocity));
+    else
+      _controller.fling(velocity: _controller.value < 0.5 ? -2.0 : 2.0);
   }
 
   void toggleFrontLayer() {
@@ -207,7 +247,7 @@ class BackdropState extends State<Backdrop>
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     final Animation<RelativeRect> frontRelativeRect =
-    _controller.drive(RelativeRectTween(
+        _controller.drive(RelativeRectTween(
       begin: RelativeRect.fromLTRB(
           0.0, constraints.biggest.height - _kFrontClosedHeight, 0.0, 0.0),
       end: RelativeRect.fromLTRB(0.0, _kBackAppBarHeight, 0.0, 0.0),
@@ -219,12 +259,7 @@ class BackdropState extends State<Backdrop>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _BackAppBar(
-            leading: widget.frontLeading ??
-                SizedBox(
-                  width: _kBackAppBarHeight,
-                  height: _kBackAppBarHeight,
-                ),
-            trailing: IconButton(
+            leading: IconButton(
               onPressed: toggleFrontLayer,
               icon: AnimatedIcon(
                 color: widget.color,
@@ -232,6 +267,11 @@ class BackdropState extends State<Backdrop>
                 progress: _controller,
               ),
             ),
+            trailing: widget.frontTrailing ??
+                SizedBox(
+                  width: _kBackAppBarHeight,
+                  height: _kBackAppBarHeight,
+                ),
             title: _CrossFadeTransition(
               progress: _controller,
               alignment: AlignmentDirectional.centerStart,
@@ -240,26 +280,23 @@ class BackdropState extends State<Backdrop>
             ),
           ),
           Expanded(
-            child: widget.backLayer,
+            child: _TappableWhileStatusIs(
+              AnimationStatus.dismissed,
+              controller: _controller,
+              child: Visibility(
+                child: widget.backLayer,
+                visible: _controller.status != AnimationStatus.completed,
+                maintainState: true,
+              ),
+            ),
           ),
         ],
       ),
       // Front layer
       PositionedTransition(
         rect: frontRelativeRect,
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (BuildContext context, Widget child) {
-            return ClipRRect(
-              child: child,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(UIHelper.size15),
-                topRight: Radius.circular(UIHelper.size15),
-              ),
-              clipBehavior: Clip.antiAlias,
-            );
-          },
-          child: _TapableWhileStatus(
+        child: ClipRRect(
+          child: _TappableWhileStatusIs(
             AnimationStatus.completed,
             controller: _controller,
             child: FadeTransition(
@@ -267,8 +304,35 @@ class BackdropState extends State<Backdrop>
               child: widget.frontLayer,
             ),
           ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(UIHelper.size15),
+            topRight: Radius.circular(UIHelper.size15),
+          ),
+          clipBehavior: Clip.antiAlias,
         ),
       ),
+      if (widget.frontHeading != null)
+        PositionedTransition(
+          rect: frontRelativeRect,
+          child: Visibility(
+            visible: _controller.status != AnimationStatus.completed,
+            child: ExcludeSemantics(
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: toggleFrontLayer,
+                  onVerticalDragUpdate: _handleDragUpdate,
+                  onVerticalDragEnd: _handleDragEnd,
+                  child: FadeTransition(
+                    child: widget.frontHeading,
+                    opacity: _frontHeadingOpacity,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
     ];
     return Stack(
       key: _backdropKey,

@@ -32,7 +32,7 @@ class TeamViewModel extends BaseViewModel {
       await _teamServices.checkCurrentTeam(resp.user.teams);
     } else {
       UIHelper.showSimpleDialog(resp.getErrorMessage,
-          onTap: () => NavigationService.instance().navigateAndRemove(LOGIN));
+          onConfirmed: () => NavigationService.instance().navigateAndRemove(LOGIN));
     }
     setBusy(false);
   }

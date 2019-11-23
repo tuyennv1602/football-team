@@ -68,4 +68,11 @@ class Images {
   static const String FRAME = '$FOLDER/ic_frame.png';
   static const String CONNECT = '$FOLDER/ic_connect.png';
   static const String RECEIVE_INVITE = '$FOLDER/ic_add_invite.png';
+  static const String PASSWORD = '$FOLDER/ic_password.png';
+  static const String CAMERA = '$FOLDER/ic_camera.png';
+  static const String EXPAND = '$FOLDER/ic_expand.png';
+  static const String SUCCESS = '$FOLDER/ic_success.png';
+  static const String CANCEL = '$FOLDER/ic_cancel.png';
+  static const String QUESTION = '$FOLDER/ic_question.png';
+
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/match_schedule.dart';
-import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/match_schedule_resp.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -29,7 +28,7 @@ class MatchScheduleViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       matchSchedules[index].isJoined = true;
       notifyListeners();
-      UIHelper.showSimpleDialog('Đăng ký thành công!');
+      UIHelper.showSimpleDialog('Đăng ký thành công!', isSuccess: true);
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -42,7 +41,7 @@ class MatchScheduleViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       matchSchedules[index].isJoined = false;
       notifyListeners();
-      UIHelper.showSimpleDialog('Đã huỷ đăng ký thi đấu!');
+      UIHelper.showSimpleDialog('Đã huỷ đăng ký thi đấu!', isSuccess: true);
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

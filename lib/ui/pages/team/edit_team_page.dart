@@ -12,7 +12,7 @@ import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/input_text_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/update_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -99,7 +99,7 @@ class EditTeamPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              InputWidget(
+                              InputTextWidget(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập tên đội bóng';
@@ -111,7 +111,7 @@ class EditTeamPage extends StatelessWidget {
                                 labelText: 'Tên đội bóng',
                                 onSaved: (value) => _teamName = value,
                               ),
-                              InputWidget(
+                              InputTextWidget(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập giới thiệu';
@@ -144,7 +144,7 @@ class EditTeamPage extends StatelessWidget {
                             height: UIHelper.size(100),
                             width: UIHelper.size(100),
                             margin:
-                                EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                EdgeInsets.symmetric(vertical: UIHelper.size15),
                             decoration: BoxDecoration(
                                 border: Border.all(color: LINE_COLOR, width: 1),
                                 borderRadius:

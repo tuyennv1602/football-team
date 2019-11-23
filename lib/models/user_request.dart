@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
 
@@ -6,7 +8,7 @@ class UserRequest {
   int status;
   int createDate;
   int idRequest;
-  int idName;
+  int idTeam;
   String teamName;
   String teamLogo;
   String position;
@@ -16,7 +18,7 @@ class UserRequest {
       this.status,
       this.createDate,
       this.idRequest,
-      this.idName,
+      this.idTeam,
       this.teamName,
       this.teamLogo,
       this.position});
@@ -26,7 +28,7 @@ class UserRequest {
     status = json['status'];
     createDate = json['createDate'];
     idRequest = json['id_request'];
-    idName = json['id_name'];
+    idTeam = json['id_team'];
     teamName = json['team_name'];
     teamLogo = json['team_logo'];
     position = json['position'];
@@ -38,7 +40,7 @@ class UserRequest {
     data['status'] = this.status;
     data['createDate'] = this.createDate;
     data['id_request'] = this.idRequest;
-    data['id_name'] = this.idName;
+    data['id_name'] = this.idTeam;
     data['team_name'] = this.teamName;
     data['team_logo'] = this.teamLogo;
     data['position'] = this.position;
@@ -56,4 +58,16 @@ class UserRequest {
   }
 
   List<String> get getPositions => position != null ? position.split(',') : [];
+
+  Color get getStatusColor {
+    switch (status) {
+      case Constants.REQUEST_REJECTED:
+      case Constants.REQUEST_CANCEL:
+      case Constants.REQUEST_WAITING:
+        return Colors.grey;
+        break;
+      default:
+        return Colors.green;
+    }
+  }
 }

@@ -27,17 +27,20 @@ class TeamDetailPage extends StatelessWidget {
 
   TeamDetailPage({Key key, this.team}) : super(key: key);
 
-  _writeReview(BuildContext context, {Function onSubmit}) => showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(UIHelper.size5),
-            ),
-            contentPadding: EdgeInsets.zero,
-            content: ReviewDialog(
-                onSubmitReview: (rating, comment) => onSubmit(rating, comment)),
-          ));
+  _writeReview(BuildContext context, {Function onSubmit}) => showGeneralDialog(
+        barrierLabel: 'review_team',
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.6),
+        transitionDuration: Duration(milliseconds: 300),
+        context: context,
+        pageBuilder: (context, anim1, anim2) => ReviewDialog(
+            onSubmitReview: (rating, comment) => onSubmit(rating, comment)),
+        transitionBuilder: (context, anim1, anim2, child) => SlideTransition(
+          position:
+              Tween(begin: Offset(0, -1), end: Offset(0, 0)).animate(anim1),
+          child: child,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +70,13 @@ class TeamDetailPage extends StatelessWidget {
                   model.getTeamDetail();
                   model.getComments();
                 },
-                child: ImageWidget(
-                  source: team.logo,
-                  placeHolder: Images.DEFAULT_LOGO,
-                  size: UIHelper.size(90),
+                child: Hero(
+                  tag: team.id,
+                  child: ImageWidget(
+                    source: team.logo,
+                    placeHolder: Images.DEFAULT_LOGO,
+                    size: UIHelper.size(90),
+                  ),
                 ),
                 builder: (c, model, child) {
                   var _team = model.team;
@@ -143,7 +149,7 @@ class TeamDetailPage extends StatelessWidget {
                                       child: Row(
                                         children: <Widget>[
                                           Image.asset(
-                                            Images.EDIT_PROFILE,
+                                            Images.EDIT_TEAM,
                                             width: UIHelper.size20,
                                             height: UIHelper.size20,
                                             color: Colors.amber,

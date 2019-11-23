@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
-import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
@@ -12,10 +10,10 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
-import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/input_text_widget.dart';
+import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -23,7 +21,12 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/search_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-enum SEARCH_TYPE { REQUEST_MEMBER, COMPARE_TEAM, SELECT_OPPONENT_TEAM }
+enum SEARCH_TYPE {
+  REQUEST_MEMBER,
+  COMPARE_TEAM,
+  SELECT_OPPONENT_TEAM,
+  TEAM_DETAIL
+}
 
 // ignore: must_be_immutable
 class SearchTeamPage extends StatelessWidget {
@@ -44,7 +47,9 @@ class SearchTeamPage extends StatelessWidget {
     return false;
   }
 
-  Widget _buildItemTeam(BuildContext context, Team team) => Card(
+  Widget _buildItemTeam(BuildContext context, Team team,
+          {Function onSubmitRequest}) =>
+      Card(
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.size10),
@@ -56,10 +61,17 @@ class SearchTeamPage extends StatelessWidget {
               NavigationService.instance()
                   .navigateTo(COMPARE_TEAM, arguments: team);
             } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
-              _showOptions(context,
-                  onDetail: () => NavigationService.instance()
-                      .navigateTo(TEAM_DETAIL, arguments: team),
-                  onRequest: () => _showRequestForm(context, team));
+              _positions = null;
+              _showOptions(
+                context,
+                onDetail: () => NavigationService.instance()
+                    .navigateTo(TEAM_DETAIL, arguments: team),
+                onRequest: () =>
+                    _showRequestForm(context, team, onSubmit: onSubmitRequest),
+              );
+            } else if (type == SEARCH_TYPE.TEAM_DETAIL) {
+              NavigationService.instance()
+                  .navigateTo(TEAM_DETAIL, arguments: team);
             } else {
               Navigator.of(context).pop(team);
             }
@@ -70,9 +82,12 @@ class SearchTeamPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: UIHelper.size10, horizontal: UIHelper.size15),
-                child: ImageWidget(
-                  source: team.logo,
-                  placeHolder: Images.DEFAULT_LOGO,
+                child: Hero(
+                  tag: team.id,
+                  child: ImageWidget(
+                    source: team.logo,
+                    placeHolder: Images.DEFAULT_LOGO,
+                  ),
                 ),
               ),
               Expanded(
@@ -128,8 +143,7 @@ class SearchTeamPage extends StatelessWidget {
         ),
       );
 
-   _showOptions(BuildContext context,
-          {Function onRequest, Function onDetail}) =>
+  _showOptions(BuildContext context, {Function onRequest, Function onDetail}) =>
       showModalBottomSheet(
           context: context,
           builder: (c) => BottomSheetWidget(
@@ -149,122 +163,51 @@ class SearchTeamPage extends StatelessWidget {
                 },
               ));
 
-   _showRequestForm(BuildContext context, Team team) => showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(UIHelper.size5),
-          ),
-          contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: UIHelper.screenWidth * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(UIHelper.size10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Gửi tới: ',
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: REGULAR,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                            TextSpan(
-                              text: team.name,
-                              style: TextStyle(
-                                fontFamily: SEMI_BOLD,
-                                color: Colors.black,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: InputWidget(
-                          validator: (value) {
-                            if (value.isEmpty) return 'Vui lòng nhập nội dung';
-                            return null;
-                          },
-                          onSaved: (value) => _content = value,
-                          maxLines: 3,
-                          inputType: TextInputType.text,
-                          inputAction: TextInputAction.done,
-                          labelText: 'Giới thiệu bản thân',
-                        ),
-                      ),
-                      Text(
-                        'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
-                        style: textStyleRegular(),
-                      ),
-                      MultiChoicePosition(
-                        initPositions: [],
-                        onChangePositions: (positions) =>
-                            _positions = positions,
-                      )
-                    ],
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () => Navigator.of(context).pop(),
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(UIHelper.size5)),
-                        backgroundColor: Colors.grey,
-                        height: UIHelper.size40,
-                        child: Text(
-                          StringRes.CANCEL,
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: BaseWidget<SearchTeamViewModel>(
-                        model: SearchTeamViewModel(api: Provider.of(context)),
-                        builder: (context, model, child) => ButtonWidget(
-                          onTap: () {
-                            if (validateAndSave()) {
-                              if (_positions == null ||
-                                  _positions.length == 0) {
-                                UIHelper.showSimpleDialog(
-                                    'Bạn chưa chọn vị trí có thể chơi');
-                              } else {
-                                Navigator.of(context).pop();
-                                model.createRequest(
-                                    team.id, _content, _positions);
-                              }
-                            }
-                          },
-                          height: UIHelper.size40,
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(UIHelper.size5)),
-                          child: Text(
-                            'Đăng ký',
-                            style:
-                                textStyleRegular(size: 16, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+  _showRequestForm(BuildContext context, Team team, {Function onSubmit}) =>
+      UIHelper.showCustomizeDialog(
+        'request_member',
+        icon: Images.EDIT_PROFILE,
+        confirmLabel: 'GỬI',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              child: InputTextWidget(
+                validator: (value) {
+                  if (value.isEmpty) return 'Vui lòng nhập nội dung';
+                  return null;
+                },
+                onSaved: (value) => _content = value,
+                maxLines: 3,
+                inputType: TextInputType.text,
+                inputAction: TextInputAction.done,
+                labelText: 'Giới thiệu bản thân',
+                textStyle: textStyleInput(color: Colors.white),
+                hintTextStyle: textStyleInput(color: Colors.white),
+              ),
             ),
-          ),
+            UIHelper.verticalSpaceSmall,
+            Text(
+              'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+              style: textStyleRegular(color: Colors.white),
+            ),
+            MultiChoicePosition(
+              initPositions: [],
+              onChangePositions: (positions) => _positions = positions,
+            )
+          ],
         ),
+        onConfirmed: () {
+          if (validateAndSave()) {
+            if (_positions == null || _positions.length == 0) {
+              UIHelper.showSimpleDialog('Bạn chưa chọn vị trí có thể chơi');
+            } else {
+              NavigationService.instance().goBack();
+              onSubmit(team.id);
+            }
+          }
+        },
       );
 
   @override
@@ -312,12 +255,18 @@ class SearchTeamPage extends StatelessWidget {
                                 ? EmptyWidget(message: 'Không tìm thấy kết quả')
                                 : ListView.separated(
                                     physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: UIHelper.size10),
                                     itemCount: model.teams.length,
                                     separatorBuilder: (c, index) =>
                                         UIHelper.verticalIndicator,
                                     itemBuilder: (c, index) => _buildItemTeam(
-                                        context, model.teams[index]),
+                                      context,
+                                      model.teams[index],
+                                      onSubmitRequest: (teamId) =>
+                                          model.createRequest(
+                                              teamId, _content, _positions),
+                                    ),
                                   ),
                           ),
                     child

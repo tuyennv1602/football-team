@@ -1,5 +1,6 @@
 import 'package:myfootball/models/notification.dart' as noti;
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/expandable_text_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/notification_viewmodel.dart';
@@ -38,17 +40,29 @@ class NotificationState extends State<NotificationPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                notification.title,
-                style: textStyleSemiBold(),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: notification.title,
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontFamily: SEMI_BOLD,
+                          fontSize: UIHelper.size(16)),
+                    ),
+                    TextSpan(
+                      text: ' - ${notification.getCreateTime}',
+                      style: TextStyle(
+                          fontFamily: REGULAR,
+                          color: Colors.grey,
+                          fontSize: UIHelper.size(14)),
+                    ),
+                  ],
+                ),
               ),
-              Text(notification.getCreateTime,
-                  style: textStyleRegularBody(color: Colors.grey)),
-              Text(
-                notification.body,
-                maxLines: 3,
-                style: textStyleRegular(),
-              ),
+              UIHelper.verticalSpaceSmall,
+              ExpandableTextWidget(notification.body,
+                  textStyle: textStyleRegular()),
             ],
           ),
         ),

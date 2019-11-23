@@ -7,16 +7,16 @@ import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 
-class ChooseRatioTypeWidget extends StatefulWidget {
+class ChooseTransactionTypeWidget extends StatefulWidget {
   final OnSelectedType onSelectedType;
 
-  ChooseRatioTypeWidget({@required this.onSelectedType});
+  ChooseTransactionTypeWidget({@required this.onSelectedType});
 
   @override
-  State<StatefulWidget> createState() => _ChooseRatioTypeState();
+  State<StatefulWidget> createState() => _ChooseTransactionTypeState();
 }
 
-class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
+class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
   bool _isExpanded = false;
   int _selectedType = Constants.RATIO_50_50;
 
@@ -32,8 +32,8 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
           padding: EdgeInsets.symmetric(
               horizontal: UIHelper.size50, vertical: UIHelper.size(7)),
           child: Text(
-            StringUtil.getRatioName(type),
-            style: textStyleRegular(),
+            StringUtil.getTransactionName(type),
+            style: textStyleRegularTitle(color: Colors.white),
           ),
         ),
       );
@@ -52,14 +52,14 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
             return Row(
               children: <Widget>[
                 Text(
-                  'Tỉ lệ kèo (Thắng - Thua)',
-                  style: textStyleRegularTitle(),
+                  'Loại giao dịch',
+                  style: textStyleRegularTitle(color: Colors.white),
                 ),
                 Expanded(
                   child: Text(
-                    StringUtil.getRatioName(_selectedType),
+                    StringUtil.getTransactionName(_selectedType),
                     textAlign: TextAlign.right,
-                    style: textStyleSemiBold(),
+                    style: textStyleSemiBold(color: Colors.white, size: 22),
                   ),
                 ),
                 UIHelper.horizontalSpaceMedium
@@ -72,11 +72,8 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                _buildItemType(Constants.RATIO_50_50),
-                _buildItemType(Constants.RATIO_40_60),
-                _buildItemType(Constants.RATIO_30_70),
-                _buildItemType(Constants.RATIO_20_80),
-                _buildItemType(Constants.RATIO_0_100),
+                _buildItemType(Constants.TRANSACTION_IN),
+                _buildItemType(Constants.TRANSACTION_OUT),
                 UIHelper.verticalSpaceMedium
               ],
             ),

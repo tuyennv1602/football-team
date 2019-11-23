@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/models/group_matching_info.dart';
-import 'package:myfootball/models/responses/create_matching_resp.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/services/team_services.dart';
@@ -62,7 +61,8 @@ class SetupMatchingInfoViewModel extends BaseViewModel {
       _teamServices.updateMatchingInfo(resp.groupMatchingInfos);
       UIHelper.showSimpleDialog(
           'Đã cập nhật thông tin ghép đối',
-          onTap: () => NavigationService.instance().goBack());
+          isSuccess: true,
+          onConfirmed: () => NavigationService.instance().goBack());
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

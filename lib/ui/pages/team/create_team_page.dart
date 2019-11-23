@@ -3,7 +3,6 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
-import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
@@ -12,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
-import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/input_text_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/create_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +31,7 @@ class CreateTeamPage extends StatelessWidget {
     return false;
   }
 
-  void _showChooseImage(BuildContext context, Function onImageReady) =>
+   _showChooseImage(BuildContext context, Function onImageReady) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
@@ -91,13 +90,13 @@ class CreateTeamPage extends StatelessWidget {
                     child: BaseWidget<CreateTeamViewModel>(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              InputWidget(
+                              InputTextWidget(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập tên đội bóng';
@@ -108,7 +107,8 @@ class CreateTeamPage extends StatelessWidget {
                                 labelText: 'Tên đội bóng',
                                 onSaved: (value) => _teamName = value,
                               ),
-                              InputWidget(
+                              UIHelper.verticalSpaceMedium,
+                              InputTextWidget(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập giới thiệu';
@@ -120,6 +120,7 @@ class CreateTeamPage extends StatelessWidget {
                                 labelText: 'Giới thiệu đội bóng',
                                 onSaved: (value) => _bio = value,
                               ),
+                              UIHelper.verticalSpaceMedium,
                               Text(
                                 'Màu áo',
                                 style: textStyleInput(color: Colors.grey),
@@ -200,6 +201,7 @@ class CreateTeamPage extends StatelessWidget {
                               itemCount: DRESS_COLORS.length,
                             ),
                           ),
+                          UIHelper.verticalSpaceLarge,
                           ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {
@@ -211,7 +213,7 @@ class CreateTeamPage extends StatelessWidget {
                                 horizontal: UIHelper.size10,
                                 vertical: UIHelper.size15),
                             child: Text(
-                              StringRes.REGISTER.toUpperCase(),
+                              'ĐĂNG KÝ',
                               style: textStyleButton(),
                             ),
                           )

@@ -34,7 +34,8 @@ class InviteTeamViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã gửi lời mời',
-          onTap: () => NavigationService.instance().goBack());
+          isSuccess: true,
+          onConfirmed: () => NavigationService.instance().goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

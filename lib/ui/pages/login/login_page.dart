@@ -6,7 +6,7 @@ import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
-import 'package:myfootball/ui/widgets/border_textformfield.dart';
+import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -46,7 +46,10 @@ class _LoginState extends State<LoginPage> {
         padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(Images.BACKGROUND), fit: BoxFit.fill),
+            image: AssetImage(Images.BACKGROUND),
+            fit: BoxFit.fill,
+            colorFilter: ColorFilter.srgbToLinearGamma(),
+          ),
         ),
         child: Column(
           children: <Widget>[
@@ -83,15 +86,15 @@ class _LoginState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           UIHelper.verticalSpaceLarge,
-                          BorderTextFormField(
-                            labelText: StringRes.EMAIL,
+                          LightInputTextWidget(
+                            labelText: 'Email',
                             validator: Validator.validEmail,
                             inputType: TextInputType.emailAddress,
                             onSaved: (value) => _email = value.trim(),
                           ),
                           UIHelper.verticalSpaceMedium,
-                          BorderTextFormField(
-                            labelText: StringRes.PASSWORD,
+                          LightInputTextWidget(
+                            labelText: 'Mật khẩu',
                             validator: Validator.validPassword,
                             obscureText: true,
                             onSaved: (value) => _password = value.trim(),
@@ -99,7 +102,8 @@ class _LoginState extends State<LoginPage> {
                           Align(
                             alignment: Alignment.topRight,
                             child: InkWell(
-                              onTap: () => NavigationService.instance().navigateTo(FORGOT_PASSWORD),
+                              onTap: () => NavigationService.instance()
+                                  .navigateTo(FORGOT_PASSWORD),
                               child: Text(
                                 'Quên mật khẩu?',
                                 style: textStyleRegular(color: Colors.white),
@@ -113,7 +117,7 @@ class _LoginState extends State<LoginPage> {
                               margin: EdgeInsets.symmetric(
                                   vertical: UIHelper.size30),
                               child: Text(
-                                StringRes.LOGIN.toUpperCase(),
+                                'ĐĂNG NHẬP',
                                 style: textStyleButton(),
                               ),
                               onTap: () {
@@ -139,7 +143,7 @@ class _LoginState extends State<LoginPage> {
                         padding:
                             EdgeInsets.symmetric(horizontal: UIHelper.size10),
                         child: Text(
-                          StringRes.LOGIN_VIA,
+                          'Đăng nhập qua',
                           style: textStyleRegular(color: Colors.white),
                         ),
                       ),
@@ -186,8 +190,8 @@ class _LoginState extends State<LoginPage> {
                                     color: Colors.white,
                                     fontSize: UIHelper.size(16)),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap =
-                                      () => NavigationService.instance().navigateTo(REGISTER)),
+                                  ..onTap = () => NavigationService.instance()
+                                      .navigateTo(REGISTER)),
                           ],
                         ),
                       ),

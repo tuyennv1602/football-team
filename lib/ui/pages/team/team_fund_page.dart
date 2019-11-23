@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
@@ -11,18 +12,17 @@ import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 class TeamFundPage extends StatelessWidget {
-
   _showAuthenticationBottomSheet(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (c) => AuthenticationWidget(
-      onAuthentication: (isSuccess) {
-        if (isSuccess) {
-          Navigator.of(context).pop();
-        }
-      },
-    ),
-  );
-  
+        context: context,
+        builder: (c) => AuthenticationWidget(
+          onAuthentication: (isSuccess) {
+            if (isSuccess) {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+      );
+
   Widget _buildItemFund(BuildContext context, String title, String content,
           double price, int status) =>
       Card(
@@ -42,26 +42,55 @@ class TeamFundPage extends StatelessWidget {
                   title,
                   style: textStyleSemiBold(),
                 ),
-                Text(
-                  content,
-                  style: textStyleRegular(),
+                RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Số tiền cần đóng: ',
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontFamily: REGULAR,
+                            fontSize: UIHelper.size(14)),
+                      ),
+                      TextSpan(
+                        text: StringUtil.formatCurrency(100000),
+                        style: TextStyle(
+                            fontFamily: SEMI_BOLD,
+                            color: Colors.black,
+                            fontSize: UIHelper.size(15)),
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                   children: <Widget>[
-                    Text(
-                      'Số tiền: ',
-                      style: textStyleRegular(),
-                    ),
-                    Text(
-                      StringUtil.formatCurrency(price),
-                      style: textStyleSemiBold(),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Thời hạn hoàn thành: ',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontFamily: REGULAR,
+                                fontSize: UIHelper.size(14)),
+                          ),
+                          TextSpan(
+                            text: '15/09/2019',
+                            style: TextStyle(
+                                fontFamily: SEMI_BOLD,
+                                color: Colors.black,
+                                fontSize: UIHelper.size(15)),
+                          ),
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: Text(
                         status % 2 == 0 ? 'Đã đóng' : 'Chưa đóng',
                         textAlign: TextAlign.right,
                         style: textStyleRegularBody(
-                            color: status % 2 == 0 ? Colors.green : Colors.grey),
+                            color:
+                                status % 2 == 0 ? Colors.green : Colors.grey),
                       ),
                     )
                   ],

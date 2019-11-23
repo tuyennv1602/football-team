@@ -12,8 +12,10 @@ class BottomSheetWidget extends StatelessWidget {
   final OnClickOption onClickOption;
   List<Widget> children = [];
   final double _kButtonHeight = UIHelper.size(50);
+  final double paddingBottom;
 
-  BottomSheetWidget({Key key, @required this.options, this.onClickOption})
+  BottomSheetWidget(
+      {Key key, @required this.options, this.onClickOption, this.paddingBottom})
       : assert(options != null),
         super(key: key);
 
@@ -77,7 +79,8 @@ class BottomSheetWidget extends StatelessWidget {
                   topRight: Radius.circular(UIHelper.size15),
                   topLeft: Radius.circular(UIHelper.size15)),
             ),
-            padding: EdgeInsets.only(bottom: UIHelper.paddingBottom),
+            padding: EdgeInsets.only(
+                bottom: paddingBottom ?? UIHelper.paddingBottom),
             child: Column(
               children: this.children,
               mainAxisAlignment: MainAxisAlignment.end,

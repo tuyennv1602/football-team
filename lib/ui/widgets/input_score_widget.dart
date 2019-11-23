@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
@@ -15,17 +14,13 @@ class InputScoreWidget extends StatelessWidget {
   final String keyword;
   final OnChangedText onChangedText;
   final String hint;
-  final TextStyle textStyle;
-  final TextStyle hintTextStyle;
   Timer _debounce;
 
   InputScoreWidget(
       {Key key,
       this.keyword = '',
       this.hint = '0',
-      @required this.onChangedText,
-      this.textStyle,
-      this.hintTextStyle})
+      @required this.onChangedText})
       : super(key: key);
 
   @override
@@ -36,11 +31,10 @@ class InputScoreWidget extends StatelessWidget {
       height: UIHelper.size35,
       padding: EdgeInsets.all(UIHelper.size5),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 1),
-        borderRadius: BorderRadius.circular(UIHelper.size5)
-      ),
+          border: Border.all(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(UIHelper.size5)),
       child: TextField(
-        cursorColor: PRIMARY,
+        cursorColor: Colors.white,
         cursorWidth: 1,
         onChanged: (text) {
           if (_debounce?.isActive ?? false) _debounce.cancel();
@@ -50,11 +44,10 @@ class InputScoreWidget extends StatelessWidget {
         autocorrect: false,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
-        style: textStyle ?? textStyleRegularTitle(),
+        style: textStyleSemiBold(size: 20, color: Colors.white),
         decoration: InputDecoration(
             hintText: hint,
-            hintStyle:
-                hintTextStyle ?? textStyleRegularTitle(color: Colors.grey),
+            hintStyle: textStyleSemiBold(size: 20, color: Colors.white),
             border: InputBorder.none,
             contentPadding: EdgeInsets.zero),
         textInputAction: TextInputAction.done,

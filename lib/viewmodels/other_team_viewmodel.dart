@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/comment.dart';
 import 'package:myfootball/models/responses/comments_resp.dart';
-import 'package:myfootball/models/responses/review_resp.dart';
 import 'package:myfootball/models/responses/team_resp.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/services/api.dart';

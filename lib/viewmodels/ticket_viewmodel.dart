@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/ticket_resp.dart';
 import 'package:myfootball/models/ticket.dart';
 import 'package:myfootball/services/api.dart';
@@ -29,7 +28,7 @@ class TicketViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       this.tickets.removeAt(index);
       notifyListeners();
-      UIHelper.showSimpleDialog('Đã huỷ thành công vé #$ticketId');
+      UIHelper.showSimpleDialog('Đã huỷ thành công vé #$ticketId', isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

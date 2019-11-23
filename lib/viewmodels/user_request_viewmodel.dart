@@ -24,11 +24,10 @@ class UserRequestModel extends BaseViewModel {
   }
 
   Future<void> updateRequest(int index, int requestId, int teamId,
-      String content, List<String> positions) async {
+      String content, String positions) async {
     UIHelper.showProgressDialog;
     var resp = await _api.updateRequestMember(
-        requestId, teamId, content, positions.join(','));
-
+        requestId, teamId, content, positions);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       var _userRequest = userRequests[index];
@@ -36,20 +35,22 @@ class UserRequestModel extends BaseViewModel {
       _userRequest.content = content;
       userRequests[index] = _userRequest;
       notifyListeners();
-      UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!');
+      UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!', isSuccess: true);
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
   }
 
   Future<BaseResponse> cancelRequest(int index, int requestId) async {
+    UIHelper.showProgressDialog;
     var resp = await _api.cancelRequestMember(requestId);
+    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       var _userRequest = userRequests[index];
       _userRequest.status = Constants.REQUEST_CANCEL;
       userRequests[index] = _userRequest;
       notifyListeners();
-      UIHelper.showSimpleDialog('Đã huỷ yêu cầu');
+      UIHelper.showSimpleDialog('Đã huỷ yêu cầu', isSuccess: true);
     }else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

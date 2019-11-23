@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -18,7 +17,8 @@ class RegisterViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog(
           'Đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản',
-          onTap: () => NavigationService.instance().goBack());
+          isSuccess: true,
+          onConfirmed: () => NavigationService.instance().goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

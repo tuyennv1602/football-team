@@ -33,7 +33,7 @@ class MatchHistoryViewModel extends BaseViewModel {
       matchHistories[index].receiveGroupScore = _secondScore;
       notifyListeners();
       UIHelper.showSimpleDialog(
-          'Đã gửi yêu cầu xác nhận tỉ số tới đối tác. Vui lòng chờ đối tác xác nhận!');
+          'Đã gửi yêu cầu xác nhận tỉ số tới đối tác. Vui lòng chờ đối tác xác nhận!', isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

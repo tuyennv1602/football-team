@@ -3,7 +3,6 @@ import 'package:myfootball/models/user_request.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
-import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
@@ -11,11 +10,11 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
-import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
-import 'package:myfootball/ui/widgets/input_widget.dart';
+import 'package:myfootball/ui/widgets/input_text_widget.dart';
 import 'package:myfootball/ui/widgets/item_position.dart';
+import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/utils/constants.dart';
@@ -28,7 +27,6 @@ class UserRequestPage extends StatelessWidget {
   String _content;
   List<String> _positions;
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -39,7 +37,7 @@ class UserRequestPage extends StatelessWidget {
     return false;
   }
 
-   _showChooseAction(BuildContext context,
+  _showChooseAction(BuildContext context,
           {Function onEdit, Function onCancel}) =>
       showModalBottomSheet(
         context: context,
@@ -47,6 +45,7 @@ class UserRequestPage extends StatelessWidget {
           options: ['Tuỳ chọn', 'Sửa đăng ký', 'Huỷ đăng ký', 'Huỷ'],
           onClickOption: (position) async {
             if (position == 1) {
+              _positions = null;
               onEdit();
             } else if (position == 2) {
               onCancel();
@@ -55,113 +54,54 @@ class UserRequestPage extends StatelessWidget {
         ),
       );
 
-  void _showEditForm(
+  _showEditForm(
           BuildContext context, UserRequest userRequest, Function onSubmit) =>
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(UIHelper.size5),
-          ),
-          contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: UIHelper.screenWidth * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(UIHelper.size10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Chỉnh sửa yêu cầu',
-                        style: textStyleRegular(size: 16),
-                        textAlign: TextAlign.center,
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: InputWidget(
-                          validator: (value) {
-                            if (value.isEmpty) return 'Vui lòng nhập nội dung';
-                            return null;
-                          },
-                          initValue: userRequest.content,
-                          onSaved: (value) => _content = value,
-                          maxLines: 4,
-                          inputType: TextInputType.text,
-                          inputAction: TextInputAction.done,
-                          labelText: 'Giới thiệu bản thân',
-                        ),
-                      ),
-                      Text(
-                        'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
-                        style: textStyleRegular(color: Colors.grey),
-                      ),
-                      MultiChoicePosition(
-                        initPositions: userRequest.getPositions,
-                        onChangePositions: (positions) =>
-                            _positions = positions,
-                      )
-                    ],
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () => Navigator.of(context).pop(),
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(UIHelper.size5)),
-                        backgroundColor: Colors.grey,
-                        height: UIHelper.size40,
-                        child: Text(
-                          StringRes.CANCEL,
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () async {
-                          if (validateAndSave()) {
-                            Navigator.of(context).pop();
-                            onSubmit();
-                          }
-                        },
-                        height: UIHelper.size40,
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(UIHelper.size5)),
-                        child: Text(
-                          'Cập nhật',
-                          style:
-                              textStyleRegular(size: 16, color: Colors.white),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+      UIHelper.showCustomizeDialog(
+        'edit_request',
+        icon: Images.EDIT_PROFILE,
+        confirmLabel: 'CẬP NHẬT',
+        onConfirmed: () {
+          if (validateAndSave()) {
+            NavigationService.instance().goBack();
+            onSubmit();
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              child: InputTextWidget(
+                validator: (value) {
+                  if (value.isEmpty) return 'Vui lòng nhập nội dung';
+                  return null;
+                },
+                initValue: userRequest.content,
+                onSaved: (value) => _content = value,
+                maxLines: 3,
+                inputType: TextInputType.text,
+                inputAction: TextInputAction.done,
+                labelText: 'Giới thiệu bản thân',
+                textStyle: textStyleInput(color: Colors.white),
+                hintTextStyle: textStyleInput(color: Colors.white),
+              ),
             ),
-          ),
+            UIHelper.verticalSpaceSmall,
+            Text(
+              'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+              style: textStyleRegular(color: Colors.white),
+            ),
+            MultiChoicePosition(
+              initPositions: userRequest.getPositions,
+              onChangePositions: (positions) => _positions = positions,
+            )
+          ],
         ),
       );
 
   Widget _buildItemRequest(
       BuildContext context, UserRequestModel model, int index) {
     UserRequest request = model.userRequests[index];
-    Color _status;
-    switch (request.status) {
-      case Constants.REQUEST_REJECTED:
-      case Constants.REQUEST_CANCEL:
-      case Constants.REQUEST_WAITING:
-        _status = Colors.grey;
-        break;
-      default:
-        _status = Colors.green;
-    }
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
@@ -175,10 +115,15 @@ class UserRequestPage extends StatelessWidget {
           _showChooseAction(
             context,
             onEdit: () => _showEditForm(
-                _scaffoldKey.currentContext,
-                request,
-                () => model.updateRequest(index, request.idRequest,
-                    request.idName, _content, _positions)),
+              context,
+              request,
+              () => model.updateRequest(
+                  index,
+                  request.idRequest,
+                  request.idTeam,
+                  _content,
+                  _positions != null ? _positions.join(',') : request.position),
+            ),
             onCancel: () => UIHelper.showConfirmDialog(
               'Bạn có chắc chắn muốn xoá yêu cầu?',
               onConfirmed: () => model.cancelRequest(index, request.idRequest),
@@ -238,7 +183,8 @@ class UserRequestPage extends StatelessWidget {
                           ),
                           Text(
                             request.getStatus,
-                            style: textStyleRegularBody(color: _status),
+                            style: textStyleRegularBody(
+                                color: request.getStatusColor),
                           )
                         ],
                       )
@@ -257,7 +203,6 @@ class UserRequestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     UIHelper().init(context);
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[

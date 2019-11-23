@@ -14,56 +14,52 @@ class TopRankingWidget extends StatelessWidget {
       : super(key: key);
 
   Widget _buildItem(BuildContext context, Team team, int number) {
-    double itemWidth = (UIHelper.screenWidth - UIHelper.size20) / 3;
     double logoSize;
     Color color;
     if (number == 1) {
-      logoSize = UIHelper.size(150);
-      color = Colors.green;
-    } else if (number == 2) {
-      logoSize = UIHelper.size(130);
-      color = Colors.grey;
-    } else {
       logoSize = UIHelper.size(110);
-      color = Colors.brown;
+      color = Colors.redAccent;
+    } else if (number == 2) {
+      logoSize = UIHelper.size(70);
+      color = Colors.deepPurpleAccent;
+    } else {
+      logoSize = UIHelper.size(50);
+      color = Colors.lightGreen;
     }
     return Container(
-      height: UIHelper.size(200),
-      width: itemWidth,
-      padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+      height: UIHelper.size(210),
+      width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          ImageWidget(source: team.logo, placeHolder: Images.DEFAULT_LOGO),
+          UIHelper.verticalSpaceMedium,
           Container(
-            width: itemWidth,
-            height: logoSize,
-            padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+            width: double.infinity,
+            height: UIHelper.size25,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: color, width: 1)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                ImageWidget(
-                  source: team.logo,
-                  placeHolder: Images.DEFAULT_LOGO,
-                  size: logoSize - UIHelper.size(60),
-                ),
-                Text(
-                  '${team.point}',
-                  style: textStyleSemiBold(),
-                )
-              ],
+              color: color,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(number != 2 ? UIHelper.size10 : 0),
+                topLeft: Radius.circular(number != 3 ? UIHelper.size10 : 0),
+              ),
+            ),
+            child: Text(
+              team.point.toString(),
+              textAlign: TextAlign.center,
+              style: textStyleBold(color: Colors.white),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+          Container(
+            width: double.infinity,
+            height: logoSize,
+            padding: EdgeInsets.only(top: UIHelper.size5),
+            color: Colors.orangeAccent,
             child: Text(
-              team.name,
-              style: textStyleSemiBold(size: 14),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              number.toString(),
+              style: textStyleBold(size: 30, color: Colors.white70),
+              textAlign: TextAlign.center,
             ),
           )
         ],
@@ -74,9 +70,9 @@ class TopRankingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
-      _buildItem(context, firstTeam, 1),
-      _buildItem(context, secondTeam, 2),
-      _buildItem(context, thirdTeam, 3)
+      Expanded(child: _buildItem(context, secondTeam, 2)),
+      Expanded(child: _buildItem(context, firstTeam, 1)),
+      Expanded(child: _buildItem(context, thirdTeam, 3))
     ]);
   }
 }

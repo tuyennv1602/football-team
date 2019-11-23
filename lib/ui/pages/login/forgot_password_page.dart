@@ -4,7 +4,7 @@ import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/pages/base_widget.dart';
-import 'package:myfootball/ui/widgets/border_textformfield.dart';
+import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
@@ -41,7 +41,10 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
         padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(Images.BACKGROUND), fit: BoxFit.fill),
+            image: AssetImage(Images.BACKGROUND),
+            fit: BoxFit.fill,
+            colorFilter: ColorFilter.srgbToLinearGamma(),
+          ),
         ),
         child: Column(
           children: <Widget>[
@@ -108,8 +111,8 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                           style: textStyleBold(color: Colors.white),
                         ),
                         UIHelper.verticalSpaceLarge,
-                        BorderTextFormField(
-                          labelText: StringRes.EMAIL,
+                        LightInputTextWidget(
+                          labelText: 'Email',
                           validator: Validator.validEmail,
                           inputType: TextInputType.emailAddress,
                           onSaved: (value) => _email = value.trim(),
@@ -118,7 +121,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                             ? Column(
                                 children: <Widget>[
                                   UIHelper.verticalSpaceMedium,
-                                  BorderTextFormField(
+                                  LightInputTextWidget(
                                     labelText: 'Mật khẩu mới',
                                     obscureText: true,
                                     validator: Validator.validPassword,
@@ -126,7 +129,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                         _password = value.trim(),
                                   ),
                                   UIHelper.verticalSpaceMedium,
-                                  BorderTextFormField(
+                                  LightInputTextWidget(
                                     labelText: 'Mã xác thực',
                                     obscureText: true,
                                     validator: Validator.validCode,
@@ -134,33 +137,32 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                   ),
                                 ],
                               )
-                            : Text(
-                                'Một mã xác thực sẽ được gửi tới email mà bạn đã đăng ký. Vui lòng kiểm tra email và sử dụng mã xác thực để lấy lại mật khẩu',
-                                style: textStyleItalic(color: Colors.white),
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: UIHelper.size10),
+                                child: Text(
+                                  'Một mã xác thực sẽ được gửi tới email mà bạn đã đăng ký. Vui lòng kiểm tra email và sử dụng mã xác thực để lấy lại mật khẩu',
+                                  style: textStyleItalic(color: Colors.white),
+                                ),
                               ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: ButtonWidget(
-                              margin: EdgeInsets.only(bottom: UIHelper.size30),
-                              child: Text(
-                                model.isChangePassword
-                                    ? 'ĐỔI MẬT KHẨU'
-                                    : 'XÁC THỰC',
-                                style: textStyleButton(),
-                              ),
-                              onTap: () {
-                                if (validateAndSave()) {
-                                  if (model.isChangePassword) {
-                                    model.changePassword(
-                                        _email, _password, _code);
-                                  } else {
-                                    model.forgotPassword(_email);
-                                  }
-                                }
-                              },
-                            ),
+                        UIHelper.verticalSpaceLarge,
+                        ButtonWidget(
+                          child: Text(
+                            model.isChangePassword
+                                ? 'ĐỔI MẬT KHẨU'
+                                : 'XÁC THỰC',
+                            style: textStyleButton(),
                           ),
+                          onTap: () {
+                            if (validateAndSave()) {
+                              if (model.isChangePassword) {
+                                model.changePassword(
+                                    _email, _password, _code);
+                              } else {
+                                model.forgotPassword(_email);
+                              }
+                            }
+                          },
                         )
                       ],
                     ),

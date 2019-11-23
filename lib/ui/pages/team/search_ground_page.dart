@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
@@ -33,6 +36,89 @@ class _SearchGroundState extends State<SearchGroundPage> {
   final Completer<GoogleMapController> _controller = Completer();
   BitmapDescriptor _groundMarker;
 
+  Widget _buildItemGround(BuildContext context, int index, Ground ground) =>
+      Hero(
+        tag: ground.id,
+        child: InkWell(
+          onTap: () => NavigationService.instance()
+              .navigateTo(BOOKING, arguments: ground),
+          child: Stack(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(UIHelper.size15),
+                child: SizedBox.expand(
+                  child: FadeInImage.assetNetwork(
+                    placeholder: Images.DEFAULT_GROUND,
+                    image: ground.avatar,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  height: UIHelper.screenWidth * 0.5,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(UIHelper.size10),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: BLACK_GRADIENT,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(UIHelper.size15),
+                      bottomRight: Radius.circular(UIHelper.size15),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        ground.name,
+                        maxLines: 1,
+                        style: textStyleRegularTitle(color: Colors.white),
+                      ),
+                      Text(
+                        ground.address,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyleRegularBody(color: Colors.white),
+                      ),
+                      UIHelper.verticalSpaceSmall,
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              'Đánh giá',
+                              style: textStyleRegularBody(color: Colors.white),
+                            ),
+                          ),
+                          RatingBarIndicator(
+                            rating: ground.rating,
+                            itemCount: 5,
+                            itemPadding:
+                                EdgeInsets.only(right: UIHelper.size(2)),
+                            itemSize: UIHelper.size15,
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: PRIMARY,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +140,8 @@ class _SearchGroundState extends State<SearchGroundPage> {
     UIHelper.showProgressDialog;
     await model.getGroundsByLocation();
     UIHelper.hideProgressDialog;
+    _animateToPosition(
+        LatLng(model.currentGround.lat, model.currentGround.lng));
   }
 
   Future<void> _animateToPosition(LatLng target) async {
@@ -105,25 +193,47 @@ class _SearchGroundState extends State<SearchGroundPage> {
                       markers: model.grounds
                           .map(
                             (ground) => Marker(
-                                markerId: MarkerId(
-                                  ground.id.toString(),
-                                ),
-                                infoWindow: InfoWindow(
-                                    title: ground.name,
-                                    snippet: ground.address,
-                                    onTap: () => NavigationService.instance()
-                                        .navigateTo(BOOKING,
-                                            arguments: ground)),
-                                position: LatLng(ground.lat, ground.lng),
-                                icon: _groundMarker),
+                              markerId: MarkerId(
+                                ground.id.toString(),
+                              ),
+                              alpha:
+                                  model.currentGround.id == ground.id ? 1 : 0.5,
+                              position: LatLng(ground.lat, ground.lng),
+                              icon: _groundMarker,
+                            ),
                           )
                           .toSet(),
                     ),
                     SearchWidget(
-//                        keyword: model.key,
                       hintText: 'Nhập tên sân bóng',
                       isLoading: false,
                       onChangedText: (text) {},
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: UIHelper.size(200),
+                        margin: EdgeInsets.only(bottom: UIHelper.size20),
+                        child: model.grounds.length == 0
+                            ? SizedBox()
+                            : Swiper(
+                                itemBuilder: (BuildContext context, int index) {
+                                  var _ground = model.grounds[index];
+                                  return _buildItemGround(
+                                      context, index, _ground);
+                                },
+                                onIndexChanged: (index) {
+                                  var _ground = model.grounds[index];
+                                  _animateToPosition(
+                                      LatLng(_ground.lat, _ground.lng));
+                                  model.changeCurrentGround(_ground);
+                                },
+                                itemCount: model.grounds.length,
+                                scale: 0.8,
+                                viewportFraction: 0.7,
+                                loop: true,
+                              ),
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,

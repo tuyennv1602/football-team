@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 import 'button_widget.dart';
-import 'input_widget.dart';
+import 'input_text_widget.dart';
 
 typedef void OnSubmitReview(double rate, String comment);
 
@@ -23,90 +25,142 @@ class ReviewDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: UIHelper.screenWidth * 0.9,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-                UIHelper.size15, UIHelper.size15, UIHelper.size15, 0),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Đánh giá & nhận xét',
-                  style: textStyleBold(),
-                ),
-                UIHelper.verticalSpaceMedium,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Đánh giá',
-                      style: textStyleRegular(),
-                    ),
-                    RatingBar(
-                      initialRating: 5,
-                      direction: Axis.horizontal,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.only(right: UIHelper.size5),
-                      itemSize: UIHelper.size30,
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
+    return Material(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Wrap(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.fromLTRB(
+                        UIHelper.size30,
+                        UIHelper.paddingTop + UIHelper.size15,
+                        UIHelper.size30,
+                        UIHelper.size30),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(UIHelper.size30),
                       ),
-                      onRatingUpdate: (rating) => this.rating = rating,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: GREEN_GRADIENT,
+                      ),
                     ),
-                  ],
-                ),
-                UIHelper.verticalSpaceSmall,
-                Form(
-                  key: _formKey,
-                  child: InputWidget(
-                    onSaved: (value) => comment = value,
-                    maxLines: 3,
-                    maxLength: 500,
-                    inputType: TextInputType.text,
-                    inputAction: TextInputAction.done,
-                    labelText: 'Viết nhận xét',
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          Images.EDIT_PROFILE,
+                          width: UIHelper.size50,
+                          height: UIHelper.size50,
+                          color: Colors.white,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: UIHelper.size30),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        'Đánh giá',
+                                        style: textStyleRegular(
+                                            color: Colors.white),
+                                      ),
+                                      RatingBar(
+                                        initialRating: 5,
+                                        direction: Axis.horizontal,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.only(
+                                            right: UIHelper.size5),
+                                        itemSize: UIHelper.size30,
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) =>
+                                            this.rating = rating,
+                                      ),
+                                    ],
+                                  ),
+                                  UIHelper.verticalSpaceMedium,
+                                  Form(
+                                    key: _formKey,
+                                    child: InputTextWidget(
+                                      onSaved: (value) => comment = value,
+                                      maxLines: 3,
+                                      maxLength: 500,
+                                      inputType: TextInputType.text,
+                                      inputAction: TextInputAction.done,
+                                      labelText: 'Viết nhận xét',
+                                      textStyle: textStyleInput(
+                                          color: Colors.white),
+                                      hintTextStyle: textStyleInput(
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: ButtonWidget(
-                  onTap: () => Navigator.of(context).pop(),
-                  height: UIHelper.size40,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(UIHelper.size5)),
-                  backgroundColor: Colors.grey,
-                  child: Text(
-                    'Huỷ',
-                    style: textStyleRegular(size: 16, color: Colors.white),
-                  ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.all(UIHelper.size10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        ButtonWidget(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          width: UIHelper.screenWidth / 3,
+                          backgroundColor: Colors.grey,
+                          height: UIHelper.size40,
+                          borderRadius: BorderRadius.circular(UIHelper.size40),
+                          child: Text(
+                            'HUỶ',
+                            style: textStyleButton(),
+                          ),
+                        ),
+                        UIHelper.horizontalSpaceMedium,
+                        ButtonWidget(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            _onSubmitReview();
+                          },
+                          width: UIHelper.screenWidth / 3,
+                          backgroundColor: GREEN_SUCCESS,
+                          height: UIHelper.size40,
+                          borderRadius: BorderRadius.circular(UIHelper.size40),
+                          child: Text(
+                            'GỬI',
+                            style: textStyleButton(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                child: ButtonWidget(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _onSubmitReview();
-                  },
-                  height: UIHelper.size40,
+              decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(UIHelper.size5)),
-                  child: Text(
-                    'Gửi',
-                    style: textStyleRegular(size: 16, color: Colors.white),
+                    bottomLeft: Radius.circular(UIHelper.size30),
                   ),
-                ),
-              )
-            ],
-          )
-        ],
+                  color: Colors.white),
+            )
+          ],
+        ),
       ),
     );
   }

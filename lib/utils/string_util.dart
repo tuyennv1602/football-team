@@ -41,4 +41,15 @@ class StringUtil {
         return '0 - 100';
     }
   }
+
+  static String getTransactionName(int type) {
+    switch (type) {
+      case Constants.TRANSACTION_IN:
+        return 'Thu';
+      case Constants.TRANSACTION_OUT:
+        return 'Chi';
+      default:
+        return null;
+    }
+  }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
+import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/ui/widgets/progress_dialog.dart';
 
@@ -68,127 +71,153 @@ class UIHelper {
 
   static get hideProgressDialog => progressDialog.hide();
 
-  static void showSimpleDialog(String message, {Function onTap}) => showDialog(
-      context: _buildContext,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(size5),
-            ),
-            contentPadding: EdgeInsets.zero,
-            content: Container(
-              width: screenWidth * 0.9,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(UIHelper.size15),
-                    child: Column(
-                      children: <Widget>[
-                        Text('Thông báo', style: textStyleSemiBold()),
-                        UIHelper.verticalSpaceMedium,
-                        Text(
-                          message,
-                          style: textStyleRegular(size: 16),
-                          textAlign: TextAlign.center,
-                        ),
-                        UIHelper.verticalSpaceMedium,
-                      ],
-                    ),
-                  ),
-                  Align(
-                    child: ButtonWidget(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        if (onTap != null) {
-                          onTap();
-                        }
-                      },
-                      height: size40,
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(size5),
-                          bottomRight: Radius.circular(size5)),
-                      child: Text(
-                        'Xong',
-                        style: textStyleSemiBold(size: 16, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+  static void showSimpleDialog(String message,
+          {bool isSuccess = false, Function onConfirmed}) =>
+      showCustomizeDialog('simple_dialog',
+          dismissiable: false,
+          confirmLabel: 'XONG',
+          showCancel: false,
+          icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
+          gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
+          confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR, onConfirmed: () {
+        NavigationService.instance().goBack();
+        if (onConfirmed != null) {
+          onConfirmed();
+        }
+      },
+          child: Text(
+            message,
+            style: textStyleAlert(),
           ));
 
-  static void showConfirmDialog(String message, {Function onConfirmed}) =>
-      UIHelper.showCustomizeDialog(
-        child: Column(
-          children: <Widget>[
-            Text('Xác nhận', style: textStyleSemiBold()),
-            UIHelper.verticalSpaceMedium,
+  static void showConfirmDialog(String message,
+          {Widget child,
+          String icon = Images.QUESTION,
+          @required Function onConfirmed}) =>
+      showCustomizeDialog(
+        'confirm_dialog',
+        dismissiable: true,
+        onConfirmed: () {
+          NavigationService.instance().goBack();
+          onConfirmed();
+        },
+        child: child ??
             Text(
               message,
-              style: textStyleRegular(size: 16),
-              textAlign: TextAlign.center,
+              style: textStyleAlert(),
             ),
-            UIHelper.verticalSpaceMedium,
-          ],
-        ),
-        onConfirmed: () => onConfirmed(),
       );
 
-  static void showCustomizeDialog({Widget child, Function onConfirmed}) =>
-      showDialog(
+  static void showCustomizeDialog(String label,
+          {@required Widget child,
+          bool showCancel = true,
+          bool dismissiable = true,
+          String confirmLabel = 'ĐỒNG Ý',
+          Color confirmColor,
+          List<Color> gradientColors,
+          String icon = Images.QUESTION,
+          Function onConfirmed}) =>
+      showGeneralDialog(
+        barrierLabel: label,
+        barrierDismissible: dismissiable,
+        barrierColor: Colors.black.withOpacity(0.6),
+        transitionDuration: Duration(milliseconds: 300),
         context: _buildContext,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(size5),
-          ),
-          contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: screenWidth * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+        pageBuilder: (context, anim1, anim2) => Material(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Wrap(
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(size15),
-                  child: child,
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () => Navigator.of(context).pop(),
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(size5)),
-                        backgroundColor: Colors.grey,
-                        child: Text(
-                          'Huỷ',
-                          style: textStyleSemiBold(color: Colors.white),
+                Container(
+                  width: double.infinity,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.fromLTRB(
+                            size30, paddingTop + size15, size30, size30),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(UIHelper.size30),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: gradientColors ?? GREEN_GRADIENT,
+                          ),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset(
+                              icon,
+                              width: size50,
+                              height: size50,
+                              color: Colors.white,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: size30),
+                              child: child,
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: ButtonWidget(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          onConfirmed();
-                        },
-                        height: size40,
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(size5)),
-                        child: Text(
-                          'Đồng ý',
-                          style: textStyleSemiBold(color: Colors.white),
+                      Padding(
+                        padding: EdgeInsets.all(UIHelper.size10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            showCancel
+                                ? ButtonWidget(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    width: screenWidth / 3,
+                                    backgroundColor: Colors.grey,
+                                    height: size40,
+                                    borderRadius:
+                                        BorderRadius.circular(UIHelper.size40),
+                                    child: Text(
+                                      'HUỶ',
+                                      style: textStyleButton(),
+                                    ),
+                                  )
+                                : SizedBox(),
+                            UIHelper.horizontalSpaceMedium,
+                            ButtonWidget(
+                              onTap: () {
+                                if (onConfirmed != null) {
+                                  onConfirmed();
+                                }
+                              },
+                              width: screenWidth / 3,
+                              backgroundColor: confirmColor ?? GREEN_SUCCESS,
+                              height: size40,
+                              borderRadius:
+                                  BorderRadius.circular(UIHelper.size40),
+                              child: Text(
+                                confirmLabel,
+                                style: textStyleButton(),
+                              ),
+                            ),
+                          ],
                         ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(UIHelper.size30),
                       ),
-                    )
-                  ],
+                      color: Colors.white),
                 )
               ],
             ),
           ),
+        ),
+        transitionBuilder: (context, anim1, anim2, child) => SlideTransition(
+          position:
+              Tween(begin: Offset(0, -1), end: Offset(0, 0)).animate(anim1),
+          child: child,
         ),
       );
 

@@ -60,7 +60,7 @@ class CreateTeamViewModel extends BaseViewModel {
       _sharePreferences.setLastTeam(_team);
       user.addTeam(_team);
       _authServices.updateUser(user);
-      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công');
+      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công', isSuccess: true);
     } else {
       UIHelper.hideProgressDialog;
       UIHelper.showSimpleDialog(resp.errorMessage);

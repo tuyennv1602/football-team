@@ -3,7 +3,6 @@ import 'package:myfootball/models/comment.dart';
 import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/models/responses/comments_resp.dart';
 import 'package:myfootball/models/responses/ground_resp.dart';
-import 'package:myfootball/models/responses/review_resp.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
