@@ -137,11 +137,11 @@ class _SearchGroundState extends State<SearchGroundPage> {
   Future<void> _updateMyLocation(SearchGroundViewModel model) async {
     await model.getMyLocation();
     _animateToPosition(model.myPosition);
-    UIHelper.showProgressDialog;
     await model.getGroundsByLocation();
-    UIHelper.hideProgressDialog;
-    _animateToPosition(
-        LatLng(model.currentGround.lat, model.currentGround.lng));
+    if (model.currentGround != null) {
+      _animateToPosition(
+          LatLng(model.currentGround.lat, model.currentGround.lng));
+    }
   }
 
   Future<void> _animateToPosition(LatLng target) async {

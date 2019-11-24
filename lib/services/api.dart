@@ -133,7 +133,7 @@ class Api {
   Future<BaseResponse> updateRequestMember(
       int requestId, int teamId, String content, String position) async {
     try {
-      var response = await _api.putApi('request-member/update', body: {
+      var response = await _api.postApi('request-member/update', body: {
         "id": requestId,
         "content": content,
         'group_id': teamId,
