@@ -25,16 +25,17 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(
-          height: UIHelper.paddingTop,
-        ),
         Container(
-          height: _kAppbarHeight,
+          height: _kAppbarHeight + UIHelper.paddingTop,
+          padding: EdgeInsets.only(top: UIHelper.paddingTop),
           decoration: BoxDecoration(
-              color: backgroundColor ?? PRIMARY,
-              border: showBorder
-                  ? Border(bottom: BorderSide(width: 0.5, color: LINE_COLOR))
-                  : null),
+            color: backgroundColor ?? PRIMARY,
+            border: showBorder
+                ? Border(
+                    bottom: BorderSide(width: 0.5, color: LINE_COLOR),
+                  )
+                : null,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,

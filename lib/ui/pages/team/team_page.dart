@@ -40,8 +40,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           children: <Widget>[
             Expanded(
               child: InkWell(
-                onTap: () =>
-                    NavigationService.instance().navigateTo(CREATE_TEAM),
+                onTap: () => NavigationService.instance.navigateTo(CREATE_TEAM),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -62,8 +61,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ),
             Expanded(
               child: InkWell(
-                onTap: () => NavigationService.instance().navigateTo(
-                    SEARCH_TEAM,
+                onTap: () => NavigationService.instance.navigateTo(SEARCH_TEAM,
                     arguments: SEARCH_TYPE.REQUEST_MEMBER),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -90,37 +88,32 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   Widget _buildTeamOptions(BuildContext context, Team team) {
     List<Widget> _children = [];
     List<Widget> _manager = [];
-    if (team.manager == Provider.of<User>(context).id) {
+    bool isManager = team.manager == Provider.of<User>(context).id;
+    if (isManager) {
       _manager.addAll([
         ItemOptionWidget(
           Images.FIND_MATCH,
           'Tìm đối tác',
           iconColor: Colors.red,
-          onTap: () => NavigationService.instance().navigateTo(FIND_MATCHING),
+          onTap: () => NavigationService.instance.navigateTo(FIND_MATCHING),
         ),
         ItemOptionWidget(
           Images.INVITE,
           'Lời mời ghép đối',
           iconColor: Colors.pinkAccent,
-          onTap: () => NavigationService.instance().navigateTo(INVITE_REQUESTS),
+          onTap: () => NavigationService.instance.navigateTo(INVITE_REQUESTS),
         ),
         ItemOptionWidget(
           Images.BOOKING,
           'Đặt sân bóng',
           iconColor: Colors.green,
-          onTap: () => NavigationService.instance().navigateTo(SEARCH_GROUND),
+          onTap: () => NavigationService.instance.navigateTo(SEARCH_GROUND),
         ),
         ItemOptionWidget(
           Images.MEMBER_MANAGE,
           'Yêu cầu gia nhập đội bóng',
           iconColor: Colors.green,
-          onTap: () => NavigationService.instance().navigateTo(REQUEST_MEMBER),
-        ),
-        ItemOptionWidget(
-          Images.SETTING,
-          'Thiết lập đội bóng',
-          iconColor: Colors.orange,
-          onTap: () => NavigationService.instance().navigateTo(SETUP_TEAM),
+          onTap: () => NavigationService.instance.navigateTo(REQUEST_MEMBER),
         ),
       ]);
     }
@@ -130,21 +123,20 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           [
             ItemOptionWidget(Images.MEMBER, 'Danh sách thành viên',
                 iconColor: Colors.green,
-                onTap: () => NavigationService.instance()
+                onTap: () => NavigationService.instance
                     .navigateTo(MEMBERS, arguments: team)),
             ItemOptionWidget(
               Images.SCHEDULE,
               'Lịch thi đấu',
               iconColor: Colors.deepOrange,
               onTap: () =>
-                  NavigationService.instance().navigateTo(MATCH_SCHEDULE),
+                  NavigationService.instance.navigateTo(MATCH_SCHEDULE),
             ),
             ItemOptionWidget(
               Images.MATCH_HISTORY,
               'Lịch sử thi đấu',
               iconColor: Colors.blue,
-              onTap: () =>
-                  NavigationService.instance().navigateTo(MATCH_HISTORY),
+              onTap: () => NavigationService.instance.navigateTo(MATCH_HISTORY),
             ),
             ItemOptionWidget(
               Images.COMMENT,
@@ -158,25 +150,36 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 Images.WALLET_IN,
                 'Đóng quỹ đội bóng',
                 iconColor: Colors.red,
-                onTap: () => NavigationService.instance().navigateTo(TEAM_FUND),
+                onTap: () => NavigationService.instance.navigateTo(TEAM_FUND),
               ),
               ItemOptionWidget(
                 Images.TRANSACTION_HISTORY,
                 'Tài chính đội bóng',
                 iconColor: Colors.amber,
-                onTap: () => NavigationService.instance().navigateTo(FINANCE),
+                onTap: () => NavigationService.instance.navigateTo(FINANCE),
               ),
               ItemOptionWidget(
                 Images.CONNECT,
                 'Mời bạn bè vào đội',
                 iconColor: Colors.blueAccent,
               ),
+            ])
+            ..add(isManager
+                ? ItemOptionWidget(
+                    Images.SETTING,
+                    'Thiết lập đội bóng',
+                    iconColor: Colors.orange,
+                    onTap: () =>
+                        NavigationService.instance.navigateTo(SETUP_TEAM),
+                  )
+                : SizedBox())
+            ..add(
               ItemOptionWidget(
                 Images.LEAVE_TEAM,
                 'Rời đội bóng',
                 iconColor: Colors.blueGrey,
               ),
-            ]),
+            ),
         ),
     );
   }
@@ -359,46 +362,40 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                               frontTrailing: AppBarButtonWidget(
                                 imageName: Images.SEARCH,
                                 iconColor: Colors.white,
-                                onTap: () => NavigationService.instance()
+                                onTap: () => NavigationService.instance
                                     .navigateTo(SEARCH_TEAM,
                                         arguments: SEARCH_TYPE.TEAM_DETAIL),
                               ),
                               frontHeading: Container(
-                                width: double.infinity,
-                                height: UIHelper.size40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: PRIMARY,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(UIHelper.size15),
-                                    topRight: Radius.circular(UIHelper.size15),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      blurRadius: 3,
-                                      offset: Offset(0, -1),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'Phóng to',
-                                      style:
-                                          textStyleRegular(color: Colors.white),
+                                  width: double.infinity,
+                                  height: UIHelper.size40,
+                                  padding:
+                                      EdgeInsets.only(top: UIHelper.size10),
+                                  alignment: Alignment.topCenter,
+                                  decoration: BoxDecoration(
+                                    color: PRIMARY,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(UIHelper.radius),
+                                      topRight:
+                                          Radius.circular(UIHelper.radius),
                                     ),
-                                    UIHelper.horizontalSpaceMedium,
-                                    Image.asset(
-                                      Images.EXPAND,
-                                      color: Colors.white,
-                                      width: UIHelper.size10,
-                                      height: UIHelper.size10,
-                                    )
-                                  ],
-                                ),
-                              ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 3,
+                                        offset: Offset(0, -1),
+                                      )
+                                    ],
+                                  ),
+                                  child: Container(
+                                    height: UIHelper.size(8),
+                                    width: UIHelper.size50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white70,
+                                      borderRadius: BorderRadius.circular(
+                                          UIHelper.size(4)),
+                                    ),
+                                  )),
                             ),
                           )
                         : _buildEmptyTeam(context),

@@ -93,7 +93,7 @@ class MatchSchedulePage extends StatelessWidget {
             context,
             matchSchedule.receiveTeam != null,
             matchSchedule.isJoined,
-            onDetail: () => NavigationService.instance()
+            onDetail: () => NavigationService.instance
                 .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
             onRegister: (isJoined) => !isJoined
                 ? model.joinMatch(index, matchSchedule.matchId)
@@ -107,7 +107,7 @@ class MatchSchedulePage extends StatelessWidget {
           _showMemberOptions(
             context,
             matchSchedule.isJoined,
-            onDetail: () => NavigationService.instance()
+            onDetail: () => NavigationService.instance
                 .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
             onRegister: (isJoined) => !isJoined
                 ? model.joinMatch(index, matchSchedule.matchId)
@@ -255,7 +255,6 @@ class MatchSchedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     var _team = Provider.of<Team>(context);
     var isCaptain = Provider.of<User>(context).id == _team.manager;
     return Scaffold(
@@ -270,7 +269,7 @@ class MatchSchedulePage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(

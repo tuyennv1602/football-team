@@ -62,7 +62,7 @@ class UserRequestPage extends StatelessWidget {
         confirmLabel: 'CẬP NHẬT',
         onConfirmed: () {
           if (validateAndSave()) {
-            NavigationService.instance().goBack();
+            NavigationService.instance.goBack();
             onSubmit();
           }
         },
@@ -103,11 +103,11 @@ class UserRequestPage extends StatelessWidget {
       BuildContext context, UserRequestModel model, int index) {
     UserRequest request = model.userRequests[index];
     return Card(
-      elevation: 1,
+      elevation:3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size10),
+        borderRadius: BorderRadius.circular(UIHelper.padding),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
       child: InkWell(
         onTap: () {
           if (request.status == Constants.REQUEST_REJECTED ||
@@ -131,7 +131,7 @@ class UserRequestPage extends StatelessWidget {
           );
         },
         child: Padding(
-          padding: EdgeInsets.all(UIHelper.size10),
+          padding: EdgeInsets.all(UIHelper.padding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -139,7 +139,7 @@ class UserRequestPage extends StatelessWidget {
                   source: request.teamLogo, placeHolder: Images.DEFAULT_LOGO),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(left: UIHelper.size10),
+                  padding: EdgeInsets.only(left: UIHelper.padding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -201,7 +201,6 @@ class UserRequestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -214,7 +213,7 @@ class UserRequestPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
@@ -228,7 +227,7 @@ class UserRequestPage extends StatelessWidget {
                       model.userRequests.length == 0)
                     return EmptyWidget(message: 'Chưa có yêu cầu nào');
                   return ListView.separated(
-                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (c, index) =>
                           _buildItemRequest(context, model, index),

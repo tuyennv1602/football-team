@@ -63,7 +63,6 @@ class InputMoneyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,

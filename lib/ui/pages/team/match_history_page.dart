@@ -123,11 +123,11 @@ class MatchHistoryPage extends StatelessWidget {
     bool isCaptain =
         Provider.of<Team>(context).manager == Provider.of<User>(context).id;
     return Card(
-      elevation: 1,
+      elevation: 3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size10),
+        borderRadius: BorderRadius.circular(UIHelper.padding),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
       child: InkWell(
         onTap: () {
           if (isCaptain && !matchHistory.isConfirmed) {
@@ -158,7 +158,8 @@ class MatchHistoryPage extends StatelessWidget {
         },
         child: Padding(
           padding: EdgeInsets.symmetric(
-              vertical: UIHelper.size15, horizontal: UIHelper.size5),
+              vertical: UIHelper.padding
+              , horizontal: UIHelper.size5),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -244,7 +245,6 @@ class MatchHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     var _team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: PRIMARY,
@@ -276,7 +276,7 @@ class MatchHistoryPage extends StatelessWidget {
                         ? EmptyWidget(message: 'Chưa có lịch sử thi đấu')
                         : ListView.separated(
                             padding:
-                                EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                EdgeInsets.symmetric(vertical: UIHelper.padding),
                             itemBuilder: (c, index) => _buildItemHistory(
                                   context,
                                   index,

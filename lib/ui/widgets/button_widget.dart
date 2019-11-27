@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-final double _kButtonHeight = 48;
+final double _kButtonHeight = 50;
 
 class ButtonWidget extends StatelessWidget {
   final Widget child;
@@ -10,6 +10,7 @@ class ButtonWidget extends StatelessWidget {
   final EdgeInsets margin;
   final Function onTap;
   final double width;
+  final double elevation;
   final double height;
   final BorderRadius borderRadius;
 
@@ -21,6 +22,7 @@ class ButtonWidget extends StatelessWidget {
       this.margin,
       this.width,
       this.height,
+      this.elevation = 3,
       this.borderRadius})
       : assert(child != null),
         assert(onTap != null),
@@ -32,18 +34,17 @@ class ButtonWidget extends StatelessWidget {
         height: height ?? _kButtonHeight,
         alignment: Alignment.center,
         margin: this.margin ?? EdgeInsets.zero,
-        child: ClipRRect(
-          borderRadius:
-              borderRadius ?? BorderRadius.circular(UIHelper.size10),
-          child: Material(
-            color: this.backgroundColor ?? PRIMARY,
-            child: InkWell(
-              onTap: onTap,
-              child: Align(
-                alignment: Alignment.center,
-                child: this.child,
-              ),
-            ),
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                borderRadius ?? BorderRadius.circular(UIHelper.size10),
+          ),
+          elevation: elevation,
+          color: backgroundColor ?? PRIMARY,
+          onPressed: onTap,
+          child: Align(
+            alignment: Alignment.center,
+            child: this.child,
           ),
         ),
       );

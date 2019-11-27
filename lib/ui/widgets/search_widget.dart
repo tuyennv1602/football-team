@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/ui/widgets/button_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnChangedText(String text);
@@ -16,7 +15,7 @@ class SearchWidget extends StatelessWidget {
   final OnChangedText onChangedText;
   final Color backgroundColor;
   final String hintText;
-  final double _kSearchHeight = UIHelper.size(42);
+  final double _kSearchHeight = UIHelper.size(45);
   final bool isLoading;
   Timer _debounce;
 
@@ -34,7 +33,7 @@ class SearchWidget extends StatelessWidget {
     int length = this.keyword.length;
     return Container(
       height: _kSearchHeight,
-      margin: EdgeInsets.all(UIHelper.size(10)),
+      margin: EdgeInsets.all(UIHelper.padding),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -53,10 +52,10 @@ class SearchWidget extends StatelessWidget {
                     () => onChangedText(text));
               },
               autocorrect: false,
-              style: textStyleRegular(size: 16),
+              style: textStyleRegular(),
               decoration: InputDecoration(
                   hintText: this.hintText,
-                  hintStyle: textStyleRegular(color: Colors.grey, size: 16),
+                  hintStyle: textStyleRegular(color: Colors.grey),
                   border: InputBorder.none,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: UIHelper.size(15))),
@@ -69,22 +68,29 @@ class SearchWidget extends StatelessWidget {
               ),
             ),
           ),
-          ButtonWidget(
+          Container(
             width: _kSearchHeight,
             height: _kSearchHeight,
-            backgroundColor: Colors.white,
-            borderRadius: BorderRadius.circular(_kSearchHeight / 2),
-            onTap: () {
-              if (length > 0) {
-                onChangedText('');
-              }
-            },
-            child: this.isLoading
-                ? Image.asset('assets/images/ic_loading.gif')
-                : Icon(
-                    length > 0 ? Icons.close : Icons.search,
-                    color: Colors.grey,
-                  ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(_kSearchHeight / 2),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(_kSearchHeight / 2),
+              child: InkWell(
+                onTap: () {
+                  if (length > 0) {
+                    onChangedText('');
+                  }
+                },
+                child: this.isLoading
+                    ? Image.asset('assets/images/ic_loading.gif')
+                    : Icon(
+                        length > 0 ? Icons.close : Icons.search,
+                        color: Colors.grey,
+                      ),
+              ),
+            ),
           )
         ],
       ),

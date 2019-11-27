@@ -77,7 +77,6 @@ class SetupMatchingInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     Team _team = Provider.of<Team>(context);
     List<TimeInfo> _timeInfo;
     List<AddressInfo> _addressInfo;
@@ -195,7 +194,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () async {
                                         var result =
-                                            await NavigationService.instance()
+                                            await NavigationService.instance
                                                 .navigateTo(SETUP_ADDRESS);
                                         if (result != null) {
                                           model.addAddressInfos(result);

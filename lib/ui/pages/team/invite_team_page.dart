@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/models/invite_request.dart';
-import 'package:myfootball/models/invite_team_argument.dart';
+import 'package:myfootball/models/invite_team_arg.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -45,7 +45,7 @@ class InviteTeamPage extends StatelessWidget {
   Widget _buildItemTimeSlot(BuildContext context, int index, bool isSelected,
           MatchingTimeSlot timeSlot, Function onTap) =>
       InkWell(
-        onTap: () => NavigationService.instance()
+        onTap: () => NavigationService.instance
             .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
@@ -104,7 +104,6 @@ class InviteTeamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: PRIMARY,
@@ -118,7 +117,7 @@ class InviteTeamPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(

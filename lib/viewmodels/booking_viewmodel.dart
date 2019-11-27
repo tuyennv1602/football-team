@@ -45,7 +45,7 @@ class BookingViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(
           'Đặt sân thành công. Bạn có thể lên lịch cho đội bóng trong mục quản trị đội bóng',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance().goBack());
+          onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

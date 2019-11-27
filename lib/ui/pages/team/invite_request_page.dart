@@ -26,19 +26,19 @@ class InviteRequestPage extends StatelessWidget {
 
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
       Card(
-        elevation: 1,
+        elevation: 3,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size10),
+          borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
           onTap: () {
             if (inviteRequest.status == Constants.INVITE_WAITING) {
               _showOptions(
                 context,
-                onInviteDetail: () => NavigationService.instance()
+                onInviteDetail: () => NavigationService.instance
                     .navigateTo(INVITE_DETAIL, arguments: inviteRequest),
-                onTeamDetail: () => NavigationService.instance().navigateTo(
+                onTeamDetail: () => NavigationService.instance.navigateTo(
                     TEAM_DETAIL,
                     arguments: Team(
                         id: inviteRequest.getId,
@@ -48,43 +48,45 @@ class InviteRequestPage extends StatelessWidget {
             }
           },
           child: Padding(
-            padding: EdgeInsets.all(UIHelper.size10),
+            padding: EdgeInsets.all(UIHelper.padding),
             child: Row(
               children: <Widget>[
                 ImageWidget(
                   source: inviteRequest.getLogo,
                   placeHolder: Images.DEFAULT_LOGO,
                 ),
-                UIHelper.horizontalSpaceMedium,
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        inviteRequest.getName,
-                        style: textStyleSemiBold(),
-                      ),
-                      Text(
-                        inviteRequest.title,
-                        style: textStyleRegular(),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            inviteRequest.getCreateTime,
-                            style: textStyleRegularBody(color: Colors.grey),
-                          ),
-                          Text(
-                            inviteRequest.getStatus,
-                            style: textStyleRegularBody(
-                                color: inviteRequest.getStatusColor),
-                          )
-                        ],
-                      )
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.only(left: UIHelper.padding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          inviteRequest.getName,
+                          style: textStyleSemiBold(),
+                        ),
+                        Text(
+                          inviteRequest.title,
+                          style: textStyleRegular(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              inviteRequest.getCreateTime,
+                              style: textStyleRegularBody(color: Colors.grey),
+                            ),
+                            Text(
+                              inviteRequest.getStatus,
+                              style: textStyleRegularBody(
+                                  color: inviteRequest.getStatusColor),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -117,7 +119,6 @@ class InviteRequestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     var team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: PRIMARY,
@@ -131,7 +132,7 @@ class InviteRequestPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
@@ -165,7 +166,7 @@ class InviteRequestPage extends StatelessWidget {
                                               ListView.separated(
                                                   padding: EdgeInsets.symmetric(
                                                       vertical:
-                                                          UIHelper.size10),
+                                                          UIHelper.size15),
                                                   itemBuilder: (c, index) =>
                                                       _buildItemRequest(
                                                           context,

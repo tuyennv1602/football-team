@@ -21,45 +21,46 @@ class RequestMemberPage extends StatelessWidget {
   Widget _buildItemRequest(BuildContext context, TeamRequest teamRequest,
           {Function onAccept, Function onReject}) =>
       Card(
-        elevation: 1,
+        elevation: 3,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size10),
+          borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
           onTap: () => _showRequestOptions(context,
               onAccept: onAccept, onReject: onReject),
           child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: UIHelper.size15, vertical: UIHelper.size10),
+            padding: EdgeInsets.all(UIHelper.padding),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ImageWidget(
                     source: teamRequest.avatar,
                     placeHolder: Images.DEFAULT_AVATAR),
-                UIHelper.horizontalSpaceMedium,
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        teamRequest.name ?? teamRequest.username,
-                        style: textStyleSemiBold(),
-                      ),
-                      Text(
-                        'Giới thiệu: ${teamRequest.content}',
-                        style: textStyleRegular(),
-                      ),
-                      Row(
-                          children: teamRequest.getPositions
-                              .map((pos) => ItemPosition(position: pos))
-                              .toList()),
-                      Text(
-                        'Ngày gửi: ${teamRequest.getCreateDate}',
-                        style: textStyleRegularBody(color: Colors.grey),
-                      )
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.only(left: UIHelper.padding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          teamRequest.name ?? teamRequest.username,
+                          style: textStyleSemiBold(),
+                        ),
+                        Text(
+                          'Giới thiệu: ${teamRequest.content}',
+                          style: textStyleRegular(),
+                        ),
+                        Row(
+                            children: teamRequest.getPositions
+                                .map((pos) => ItemPosition(position: pos))
+                                .toList()),
+                        Text(
+                          'Ngày gửi: ${teamRequest.getCreateDate}',
+                          style: textStyleRegularBody(color: Colors.grey),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -87,7 +88,6 @@ class RequestMemberPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     Team _team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: PRIMARY,
@@ -96,7 +96,7 @@ class RequestMemberPage extends StatelessWidget {
           AppBarWidget(
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             centerContent: Text(
               'Yêu cầu gia nhập đội bóng',
@@ -114,7 +114,7 @@ class RequestMemberPage extends StatelessWidget {
                   builder: (c, model, child) => model.teamRequests.length > 0
                       ? ListView.separated(
                           padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size10),
+                              EdgeInsets.symmetric(vertical: UIHelper.padding),
                           itemBuilder: (c, index) {
                             TeamRequest _request = model.teamRequests[index];
                             return _buildItemRequest(

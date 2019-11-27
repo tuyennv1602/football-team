@@ -52,7 +52,6 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    UIHelper().init(context);
     var _user = Provider.of<User>(context);
     return Scaffold(
       key: _scaffoldKey,
@@ -180,14 +179,14 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                         Images.TRANSACTION_HISTORY,
                         'Lịch sử giao dịch',
                         iconColor: Colors.amber,
-                        onTap: () => NavigationService.instance()
+                        onTap: () => NavigationService.instance
                             .navigateTo(USER_TRANSACTION_HISTORY),
                       ),
                       ItemOptionWidget(
                         Images.ADD_REQUEST,
                         'Tham gia đội bóng',
                         iconColor: Colors.cyan,
-                        onTap: () => NavigationService.instance().navigateTo(
+                        onTap: () => NavigationService.instance.navigateTo(
                             SEARCH_TEAM,
                             arguments: SEARCH_TYPE.REQUEST_MEMBER),
                       ),
@@ -195,7 +194,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                         Images.ADD_TEAM,
                         'Thành lập đội bóng',
                         iconColor: Colors.orange,
-                        onTap: () => NavigationService.instance()
+                        onTap: () => NavigationService.instance
                             .navigateTo(CREATE_TEAM),
                       ),
 

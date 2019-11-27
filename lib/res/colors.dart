@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color PRIMARY = Color(0xFF01A028);
+const Color PRIMARY = Color(0xFF03be31);
 const Color WHITE_OPACITY = Color(0xCCF9F9F9);
 const Color LINE_COLOR = Color(0xFFE0E0E0);
 const Color GREY_BACKGROUND = Color(0xFFF2F3F4);
@@ -42,7 +42,15 @@ const List<Color> GREEN_GRADIENT = [
   Color(0xFF025917),
   Color(0xFF024913),
   Color(0xFF02390F),
-  Color(0xFF012A0B)
+];
+
+const List<Color> LIGHT_GREEN_GRADIENT = [
+  Color(0xFF02DC37),
+  Color(0xFF04B22F),
+  Color(0xFF01A028),
+  Color(0xFF01A028),
+  Color(0xFF04B22F),
+  Color(0xFF02DC37),
 ];
 
 const List<Color> RED_GRADIENT = [
@@ -53,7 +61,6 @@ const List<Color> RED_GRADIENT = [
   Color(0xFF7B1404),
   Color(0xFF681104),
   Color(0xFF641105),
-  Color(0xFF540D03)
 ];
 
 const List<Color> DRESS_COLORS = [

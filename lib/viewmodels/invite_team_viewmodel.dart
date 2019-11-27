@@ -35,7 +35,7 @@ class InviteTeamViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã gửi lời mời',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance().goBack());
+          onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

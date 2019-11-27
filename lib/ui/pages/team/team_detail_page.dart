@@ -44,7 +44,6 @@ class TeamDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,
@@ -58,7 +57,7 @@ class TeamDetailPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
@@ -132,7 +131,7 @@ class TeamDetailPage extends StatelessWidget {
                                     Images.MEMBER,
                                     'Thành viên',
                                     iconColor: Colors.green,
-                                    onTap: () => NavigationService.instance()
+                                    onTap: () => NavigationService.instance
                                         .navigateTo(MEMBERS, arguments: _team),
                                   ),
                                   LineWidget(),

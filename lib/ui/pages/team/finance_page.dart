@@ -146,7 +146,6 @@ class FinancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     var team = Provider.of<Team>(context);
     bool isManager = team.manager == Provider.of<User>(context).id;
     return Scaffold(
@@ -226,7 +225,7 @@ class FinancePage extends StatelessWidget {
                 : SizedBox(),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             backgroundColor: Colors.transparent,
             rightContent: SizedBox(),

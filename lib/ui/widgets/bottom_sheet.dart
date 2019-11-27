@@ -39,6 +39,7 @@ class BottomSheetWidget extends StatelessWidget {
         children.add(
           ButtonWidget(
             height: _kButtonHeight,
+            elevation: 0,
             backgroundColor: Colors.white,
             child: Text(
               value,
@@ -51,10 +52,11 @@ class BottomSheetWidget extends StatelessWidget {
         children.add(
           ButtonWidget(
             height: _kButtonHeight,
+            elevation: 0,
             backgroundColor: Colors.white,
             child: Text(
               value,
-              style: textStyleRegular(size: 16),
+              style: textStyleAlert(color: Colors.black),
             ),
             onTap: () {
               Navigator.of(context).pop();
@@ -76,8 +78,8 @@ class BottomSheetWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(UIHelper.size15),
-                  topLeft: Radius.circular(UIHelper.size15)),
+                  topRight: Radius.circular(UIHelper.radius),
+                  topLeft: Radius.circular(UIHelper.radius)),
             ),
             padding: EdgeInsets.only(
                 bottom: paddingBottom ?? UIHelper.paddingBottom),

@@ -37,7 +37,7 @@ class UpdateTeamViewModel extends BaseViewModel {
       if (_imageLink != null) {
         // upload image success and update team info
         team.logo = _imageLink;
-      }else{
+      } else {
         UIHelper.hideProgressDialog;
       }
     }
@@ -46,7 +46,7 @@ class UpdateTeamViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       _teamServices.setTeam(team);
-      NavigationService.instance().goBack();
+      NavigationService.instance.goBack();
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -55,6 +55,6 @@ class UpdateTeamViewModel extends BaseViewModel {
   Future<String> _uploadImage(int teamId, String teamName) async {
     if (image == null) return null;
     var name = 'id_$teamId';
-    return FirebaseServices().uploadImage(image, 'team', name);
+    return FirebaseServices.instance.uploadImage(image, 'team', name);
   }
 }

@@ -43,7 +43,6 @@ class MatchDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     var team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: PRIMARY,
@@ -57,7 +56,7 @@ class MatchDetailPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
@@ -76,7 +75,7 @@ class MatchDetailPage extends StatelessWidget {
                   children: <Widget>[
                     _matchSchedule.receiveTeam != null
                         ? InkWell(
-                            onTap: () => NavigationService.instance()
+                            onTap: () => NavigationService.instance
                                 .navigateTo(TEAM_DETAIL,
                                     arguments: _matchSchedule.getOpponentTeam),
                             child: Padding(
@@ -122,7 +121,7 @@ class MatchDetailPage extends StatelessWidget {
                       Images.MARKER,
                       _matchSchedule.groundName,
                       iconColor: Colors.green,
-                      onTap: () => NavigationService.instance().navigateTo(
+                      onTap: () => NavigationService.instance.navigateTo(
                           GROUND_DETAIL,
                           arguments: _matchSchedule.groundId),
                     ),

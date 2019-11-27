@@ -30,13 +30,13 @@ class NotificationState extends State<NotificationPage>
   Widget _buildItemNotification(
           BuildContext context, noti.Notification notification) =>
       Card(
-        elevation: 1,
+        elevation: 3,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size10),
+          borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: Padding(
-          padding: EdgeInsets.all(UIHelper.size10),
+          padding: EdgeInsets.all(UIHelper.padding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -71,7 +71,6 @@ class NotificationState extends State<NotificationPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -100,7 +99,7 @@ class NotificationState extends State<NotificationPage>
                       ? ListView.separated(
                           physics: BouncingScrollPhysics(),
                           padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size10),
+                              EdgeInsets.symmetric(vertical: UIHelper.padding),
                           itemBuilder: (c, index) => _buildItemNotification(
                               context, model.notifications[index]),
                           separatorBuilder: (c, index) =>

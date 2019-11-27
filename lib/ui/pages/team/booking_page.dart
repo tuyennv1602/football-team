@@ -1,4 +1,3 @@
-import 'package:dashed_container/dashed_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -84,46 +83,39 @@ class BookingPage extends StatelessWidget {
 
   Widget _buildTicket(BuildContext context, DateTime playDate,
       TimeSlot timeSlot, Function onTap) {
-    return DashedContainer(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          margin: EdgeInsets.all(1),
-          width: UIHelper.size(135),
-          height: UIHelper.size(110),
-          padding: EdgeInsets.all(UIHelper.size10),
-          decoration: BoxDecoration(
-              color: GREY_BACKGROUND,
-              borderRadius: BorderRadius.circular(UIHelper.size5)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Khung giờ',
-                style: textStyleRegularBody(color: Colors.grey),
-              ),
-              Text(
-                timeSlot.getTime,
-                style: textStyleRegularTitle(),
-              ),
-              UIHelper.verticalSpaceSmall,
-              Text(
-                'Giá thuê sân',
-                style: textStyleRegularBody(color: Colors.grey),
-              ),
-              Text(
-                StringUtil.formatCurrency(timeSlot.price),
-                style: textStyleRegularTitle(),
-              )
-            ],
-          ),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.all(1),
+        width: UIHelper.size(135),
+        height: UIHelper.size(110),
+        padding: EdgeInsets.all(UIHelper.size10),
+        decoration: BoxDecoration(
+            color: GREY_BACKGROUND,
+            borderRadius: BorderRadius.circular(UIHelper.size10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Khung giờ',
+              style: textStyleRegularBody(color: Colors.grey),
+            ),
+            Text(
+              timeSlot.getTime,
+              style: textStyleRegularTitle(),
+            ),
+            UIHelper.verticalSpaceSmall,
+            Text(
+              'Giá thuê sân',
+              style: textStyleRegularBody(color: Colors.grey),
+            ),
+            Text(
+              StringUtil.formatCurrency(timeSlot.price),
+              style: textStyleRegularTitle(),
+            )
+          ],
         ),
       ),
-      dashColor: PRIMARY,
-      borderRadius: UIHelper.size5,
-      dashedLength: UIHelper.size10,
-      blankLength: UIHelper.size10,
-      strokeWidth: 1,
     );
   }
 
@@ -133,7 +125,7 @@ class BookingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+            padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
             child: Row(
               children: <Widget>[
                 Text(
@@ -156,7 +148,7 @@ class BookingPage extends StatelessWidget {
               padding: EdgeInsets.all(1),
               physics: BouncingScrollPhysics(),
               separatorBuilder: (c, index) => SizedBox(
-                width: UIHelper.size10,
+                width: UIHelper.padding,
               ),
               shrinkWrap: true,
               itemBuilder: (c, index) => _buildTicket(
@@ -171,7 +163,6 @@ class BookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -184,7 +175,7 @@ class BookingPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             rightContent: AppBarButtonWidget(
               imageName: Images.INFO,
@@ -194,12 +185,12 @@ class BookingPage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                padding: EdgeInsets.all(UIHelper.padding),
                 child: BaseWidget<BookingViewModel>(
                   model: BookingViewModel(api: Provider.of(context)),
                   onModelReady: (model) => model.getFreeTimeSlot(_ground.id),
                   child: InkWell(
-                    onTap: () => NavigationService.instance()
+                    onTap: () => NavigationService.instance
                         .navigateTo(GROUND_DETAIL, arguments: _ground.id),
                     child: Row(
                       children: <Widget>[
@@ -218,48 +209,51 @@ class BookingPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        UIHelper.horizontalSpaceMedium,
                         Expanded(
-                          child: SizedBox(
-                            height: UIHelper.size(70),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  _ground.name,
-                                  maxLines: 1,
-                                  style: textStyleSemiBold(),
-                                ),
-                                Text(
-                                  _ground.address,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: textStyleRegular(),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        'Đánh giá',
-                                        style: textStyleRegular(),
-                                      ),
-                                      RatingBarIndicator(
-                                        rating: _ground.rating,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.only(left: 2),
-                                        itemSize: UIHelper.size20,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star,
-                                          color: PRIMARY,
-                                        ),
-                                      ),
-                                    ],
+                          child: Padding(
+                            padding: EdgeInsets.only(left: UIHelper.size15),
+                            child: SizedBox(
+                              height: UIHelper.size(70),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    _ground.name,
+                                    maxLines: 1,
+                                    style: textStyleSemiBold(),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    _ground.address,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textStyleRegular(),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          'Đánh giá',
+                                          style: textStyleRegular(),
+                                        ),
+                                        RatingBarIndicator(
+                                          rating: _ground.rating,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.only(left: 2),
+                                          itemSize: UIHelper.size20,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: PRIMARY,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -276,7 +270,6 @@ class BookingPage extends StatelessWidget {
                   builder: (c, model, child) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      UIHelper.verticalSpaceMedium,
                       child,
                       UIHelper.verticalSpaceMedium,
                       LineWidget(indent: 0),

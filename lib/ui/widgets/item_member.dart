@@ -4,9 +4,6 @@ import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'button_widget.dart';
 import 'image_widget.dart';
 import 'item_position.dart';
 
@@ -22,15 +19,15 @@ class ItemMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: 3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size10),
+        borderRadius: BorderRadius.circular(UIHelper.padding),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(UIHelper.size10),
+          padding: EdgeInsets.all(UIHelper.padding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -40,63 +37,52 @@ class ItemMember extends StatelessWidget {
                 size: UIHelper.size50,
                 radius: UIHelper.size25,
               ),
-              UIHelper.horizontalSpaceMedium,
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    isCaptain
-                        ? RichText(
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: member.userName,
-                                  style: textStyleSemiBold(),
-                                ),
-                                TextSpan(
-                                    text: ' (C)',
-                                    style: textStyleSemiBold(color: Colors.red))
-                              ],
-                            ),
-                          )
-                        : Text(
-                            member.userName,
-                            style: textStyleSemiBold(),
-                          ),
-                    member.rating != null
-                        ? Text(
-                            'Điểm cá nhân: ${member.rating}',
-                            style: textStyleRegular(),
-                          )
-                        : SizedBox(),
-                    member.position != null && member.position.length > 0
-                        ? Row(
-                            children: member.getPositions
-                                .map<Widget>(
-                                  (pos) => ItemPosition(
-                                    position: pos,
+                child: Padding(
+                  padding: EdgeInsets.only(left: UIHelper.padding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      isCaptain
+                          ? RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: member.userName,
+                                    style: textStyleSemiBold(),
                                   ),
-                                )
-                                .toList(),
-                          )
-                        : SizedBox(),
-                  ],
+                                  TextSpan(
+                                      text: ' (C)',
+                                      style:
+                                          textStyleSemiBold(color: Colors.red))
+                                ],
+                              ),
+                            )
+                          : Text(
+                              member.userName,
+                              style: textStyleSemiBold(),
+                            ),
+                      member.rating != null
+                          ? Text(
+                              'Điểm cá nhân: ${member.rating}',
+                              style: textStyleRegular(),
+                            )
+                          : SizedBox(),
+                      member.position != null && member.position.length > 0
+                          ? Row(
+                              children: member.getPositions
+                                  .map<Widget>(
+                                    (pos) => ItemPosition(
+                                      position: pos,
+                                    ),
+                                  )
+                                  .toList(),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
                 ),
               ),
-              ButtonWidget(
-                  width: UIHelper.size40,
-                  height: UIHelper.size40,
-                  borderRadius: BorderRadius.circular(UIHelper.size20),
-                  backgroundColor: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.all(UIHelper.size10),
-                    child: Image.asset(
-                      Images.CALL,
-                      fit: BoxFit.contain,
-                      color: PRIMARY,
-                    ),
-                  ),
-                  onTap: () => launch('tel://${member.phone}'))
             ],
           ),
         ),

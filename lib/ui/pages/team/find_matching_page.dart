@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
-import 'package:myfootball/models/invite_team_argument.dart';
+import 'package:myfootball/models/invite_team_arg.dart';
 import 'package:myfootball/models/matching.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
 import 'package:myfootball/models/team.dart';
@@ -68,7 +68,7 @@ class FindMatchingPage extends StatelessWidget {
                 ),
                 margin: EdgeInsets.only(top: UIHelper.size40),
                 onTap: () =>
-                    NavigationService.instance().navigateTo(SETUP_MATCHING))
+                    NavigationService.instance.navigateTo(SETUP_MATCHING))
           ],
         ),
       );
@@ -92,7 +92,7 @@ class FindMatchingPage extends StatelessWidget {
 
   Widget _buildItemTimeSlot(BuildContext context, MatchingTimeSlot timeSlot) =>
       InkWell(
-        onTap: () => NavigationService.instance()
+        onTap: () => NavigationService.instance
             .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
@@ -267,7 +267,7 @@ class FindMatchingPage extends StatelessWidget {
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
                                   onTap: () =>
-                                      NavigationService.instance().navigateTo(
+                                      NavigationService.instance.navigateTo(
                                     TEAM_DETAIL,
                                     arguments: Team(
                                         id: team2.groupId,
@@ -332,7 +332,7 @@ class FindMatchingPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () => NavigationService.instance().navigateTo(INVITE_TEAM,
+            onTap: () => NavigationService.instance.navigateTo(INVITE_TEAM,
                 arguments: InviteTeamArgument(
                     fromTeamId: team1.id,
                     toTeamId: int.parse(team2.id),
@@ -361,7 +361,6 @@ class FindMatchingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     Team team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -379,7 +378,7 @@ class FindMatchingPage extends StatelessWidget {
             centerContent: SizedBox(),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             backgroundColor: Colors.transparent,
           ),

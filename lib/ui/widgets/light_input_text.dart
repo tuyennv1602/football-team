@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -33,7 +34,7 @@ class LightInputTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       autocorrect: false,
-      cursorColor: Colors.white,
+      cursorColor: PRIMARY,
       cursorWidth: 1,
       maxLines: maxLines,
       initialValue: initValue,
@@ -42,22 +43,22 @@ class LightInputTextWidget extends StatelessWidget {
       keyboardType: inputType ?? TextInputType.text,
       textInputAction: inputAction ?? TextInputAction.done,
       onSaved: onSaved,
-      style: textStyle ?? textStyleInput(color: Colors.white),
+      style: textStyle ?? textStyleInput(),
       decoration: InputDecoration(
         helperText: '',
         alignLabelWithHint: maxLines > 1,
-        contentPadding: EdgeInsets.all(UIHelper.size15),
+        contentPadding: EdgeInsets.all(UIHelper.size(14)),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 0.5, color: Colors.white),
+            borderSide: BorderSide(width: 0.5, color: Colors.grey),
             borderRadius: BorderRadius.circular(UIHelper.size10)),
         errorBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 0.5, color: Colors.red),
             borderRadius: BorderRadius.circular(UIHelper.size10)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.white),
+            borderSide: BorderSide(width: 1, color: PRIMARY),
             borderRadius: BorderRadius.circular(UIHelper.size10)),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: Colors.white),
+          borderSide: BorderSide(width: 1, color: PRIMARY),
           borderRadius: BorderRadius.circular(UIHelper.size10),
         ),
         errorText: errorText,
@@ -67,7 +68,7 @@ class LightInputTextWidget extends StatelessWidget {
             fontFamily: REGULAR,
             color: Colors.red,
             fontSize: UIHelper.size(12)),
-        labelStyle: textStyleInput(color: Colors.white),
+        labelStyle: textStyleInput(color: Colors.grey),
       ),
     );
   }

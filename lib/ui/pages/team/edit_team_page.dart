@@ -77,7 +77,7 @@ class EditTeamPage extends StatelessWidget {
           AppBarWidget(
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             centerContent: Text('Chỉnh sửa thông tin',
                 textAlign: TextAlign.center, style: textStyleTitle()),

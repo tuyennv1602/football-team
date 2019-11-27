@@ -9,7 +9,7 @@ class NavigationService {
 
   NavigationService.internal();
 
-  static NavigationService instance() {
+  static NavigationService get instance {
     if (_instance == null) {
       return NavigationService();
     }

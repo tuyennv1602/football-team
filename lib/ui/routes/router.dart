@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/models/invite_request.dart';
-import 'package:myfootball/models/invite_team_argument.dart';
+import 'package:myfootball/models/invite_team_arg.dart';
 import 'package:myfootball/models/match_schedule.dart';
 import 'package:myfootball/models/team.dart';
+import 'package:myfootball/models/verify_arg.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
 import 'package:myfootball/ui/pages/login/forgot_password_page.dart';
 import 'package:myfootball/ui/pages/login/login_page.dart';
 import 'package:myfootball/ui/pages/login/register_page.dart';
+import 'package:myfootball/ui/pages/login/verify_otp_page.dart';
 import 'package:myfootball/ui/pages/social/ranking_page.dart';
 import 'package:myfootball/ui/pages/team/add_address_page.dart';
 import 'package:myfootball/ui/pages/team/booking_page.dart';
@@ -115,6 +117,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: TransactionHistoryPage());
     case RANKING:
       return SlideLeftRoute(widget: RankingPage());
+    case VERIFY_OTP:
+      var verify = settings.arguments as VerifyArgument;
+      return SlideLeftRoute(widget: VerifyOTPPage(verifyArgument: verify));
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

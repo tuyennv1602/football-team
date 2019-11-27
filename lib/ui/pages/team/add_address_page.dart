@@ -103,7 +103,6 @@ class AddAddressPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: BaseWidget<AddAddressViewModel>(
@@ -169,7 +168,7 @@ class AddAddressPage extends StatelessWidget {
                 ),
                 leftContent: AppBarButtonWidget(
                   imageName: Images.BACK,
-                  onTap: () => NavigationService.instance().goBack(),
+                  onTap: () => NavigationService.instance.goBack(),
                 ),
                 rightContent: model.step == Constants.SELECT_WARD
                     ? AppBarButtonWidget(

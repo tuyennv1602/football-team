@@ -42,7 +42,6 @@ class CompareTeamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     Team _team1 = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -215,7 +214,7 @@ class CompareTeamPage extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: InkWell(
-                              onTap: () => NavigationService.instance().navigateTo(TEAM_DETAIL, arguments: _team2),
+                              onTap: () => NavigationService.instance.navigateTo(TEAM_DETAIL, arguments: _team2),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: UIHelper.size5),

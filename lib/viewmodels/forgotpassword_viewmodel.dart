@@ -33,7 +33,7 @@ class ForgotPasswordViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(
         'Mật khẩu đã được thay đổi',
         isSuccess: true,
-        onConfirmed: () => NavigationService.instance().goBack(),
+        onConfirmed: () => NavigationService.instance.goBack(),
       );
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);

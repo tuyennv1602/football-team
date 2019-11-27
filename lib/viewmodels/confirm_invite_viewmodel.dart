@@ -31,7 +31,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
-          onConfirmed: () => NavigationService.instance().goBack());
+          onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -43,7 +43,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã huỷ lời mời',
-          onConfirmed: () => NavigationService.instance().goBack());
+          onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -55,7 +55,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã huỷ lời mời',
-          onConfirmed: () => NavigationService.instance().goBack());
+          onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

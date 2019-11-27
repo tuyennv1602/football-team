@@ -40,7 +40,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
       Hero(
         tag: ground.id,
         child: InkWell(
-          onTap: () => NavigationService.instance()
+          onTap: () => NavigationService.instance
               .navigateTo(BOOKING, arguments: ground),
           child: Stack(
             children: <Widget>[
@@ -102,7 +102,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
                             itemCount: 5,
                             itemPadding:
                                 EdgeInsets.only(right: UIHelper.size(2)),
-                            itemSize: UIHelper.size15,
+                            itemSize: UIHelper.size20,
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
                               color: PRIMARY,
@@ -155,7 +155,6 @@ class _SearchGroundState extends State<SearchGroundPage> {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -168,11 +167,11 @@ class _SearchGroundState extends State<SearchGroundPage> {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             rightContent: AppBarButtonWidget(
               imageName: Images.HISTORY,
-              onTap: () => NavigationService.instance().navigateTo(TICKETS),
+              onTap: () => NavigationService.instance.navigateTo(TICKETS),
             ),
           ),
           Expanded(

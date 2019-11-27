@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
 import 'package:myfootball/res/colors.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: NavigationService().navigatorKey,
         onGenerateRoute: generateRoute,
+
         theme: ThemeData(
           canvasColor: Colors.transparent,
           primaryColor: PRIMARY,

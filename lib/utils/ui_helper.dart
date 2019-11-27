@@ -24,6 +24,8 @@ class UIHelper {
   static double size40;
   static double size45;
   static double size50;
+  static double radius;
+  static double padding;
 
   void init(BuildContext context) {
     _buildContext = context;
@@ -42,17 +44,20 @@ class UIHelper {
     size40 = size(40);
     size45 = size(45);
     size50 = size(50);
+    radius = size(20);
+    padding = size(12);
     progressDialog = new ProgressDialog(context, isDismissible: false);
   }
 
   static Widget verticalSpaceSmall = SizedBox(height: size5, width: 1);
   static Widget verticalSpaceMedium = SizedBox(height: size10, width: 1);
   static Widget verticalSpaceLarge = SizedBox(height: size20, width: 1);
-  static Widget verticalIndicator = SizedBox(height: size10, width: 1);
+  static Widget verticalIndicator = SizedBox(height: padding, width: 1);
 
   static Widget horizontalSpaceSmall = SizedBox(width: size5, height: 1);
   static Widget horizontalSpaceMedium = SizedBox(width: size10, height: 1);
   static Widget horizontalSpaceLarge = SizedBox(width: size20, height: 1);
+  static double horizontalIndicator = padding;
 
   static Widget homeButtonSpace =
       SizedBox(height: paddingBottom, width: screenWidth);
@@ -80,7 +85,7 @@ class UIHelper {
           icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
           gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
           confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR, onConfirmed: () {
-        NavigationService.instance().goBack();
+        NavigationService.instance.goBack();
         if (onConfirmed != null) {
           onConfirmed();
         }
@@ -98,7 +103,7 @@ class UIHelper {
         'confirm_dialog',
         dismissiable: true,
         onConfirmed: () {
-          NavigationService.instance().goBack();
+          NavigationService.instance.goBack();
           onConfirmed();
         },
         child: child ??
@@ -138,7 +143,7 @@ class UIHelper {
                             size30, paddingTop + size15, size30, size30),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(UIHelper.size30),
+                            bottomLeft: Radius.circular(UIHelper.size20),
                           ),
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
@@ -161,29 +166,28 @@ class UIHelper {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(UIHelper.size10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            showCancel
-                                ? ButtonWidget(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    width: screenWidth / 3,
-                                    backgroundColor: Colors.grey,
-                                    height: size40,
-                                    borderRadius:
-                                        BorderRadius.circular(UIHelper.size40),
-                                    child: Text(
-                                      'HUỶ',
-                                      style: textStyleButton(),
-                                    ),
-                                  )
-                                : SizedBox(),
-                            UIHelper.horizontalSpaceMedium,
-                            ButtonWidget(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          showCancel
+                              ? ButtonWidget(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  width: screenWidth / 3,
+                                  backgroundColor: Colors.grey,
+                                  height: size40,
+                                  borderRadius:
+                                      BorderRadius.circular(UIHelper.size40),
+                                  child: Text(
+                                    'HUỶ',
+                                    style: textStyleButton(),
+                                  ),
+                                )
+                              : SizedBox(),
+                          Padding(
+                            padding: EdgeInsets.all(UIHelper.padding),
+                            child: ButtonWidget(
                               onTap: () {
                                 if (onConfirmed != null) {
                                   onConfirmed();
@@ -199,14 +203,14 @@ class UIHelper {
                                 style: textStyleButton(),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       )
                     ],
                   ),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(UIHelper.size30),
+                        bottomLeft: Radius.circular(UIHelper.size20),
                       ),
                       color: Colors.white),
                 )

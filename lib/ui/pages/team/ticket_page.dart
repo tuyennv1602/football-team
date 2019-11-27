@@ -54,11 +54,11 @@ class TicketPage extends StatelessWidget {
       BuildContext context, TicketViewModel model, int index) {
     Ticket ticket = model.tickets[index];
     return Card(
-      elevation: 1,
+      elevation: 3,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.size10),
+        borderRadius: BorderRadius.circular(UIHelper.padding),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
       child: InkWell(
         onTap: () => _showOptions(
           context,
@@ -75,14 +75,13 @@ class TicketPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(UIHelper.size10, UIHelper.size10,
-                  UIHelper.size10, UIHelper.size5),
+              padding: EdgeInsets.symmetric(horizontal: UIHelper.padding, vertical: UIHelper.size10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     'ID #${ticket.id}',
-                    style: textStyleSemiBold(color: Colors.grey),
+                    style: textStyleSemiBold(color: PRIMARY),
                   ),
                   Text(
                     'Chưa thanh toán',
@@ -93,114 +92,131 @@ class TicketPage extends StatelessWidget {
             ),
             LineWidget(indent: 0),
             Padding(
-              padding: EdgeInsets.all(UIHelper.size10),
+              padding: EdgeInsets.all(UIHelper.padding),
               child: Column(
                 children: <Widget>[
                   Row(
                     children: <Widget>[
                       Image.asset(
                         Images.CLOCK,
-                        width: UIHelper.size15,
-                        height: UIHelper.size15,
+                        width: UIHelper.size20,
+                        height: UIHelper.size20,
                         color: Colors.grey,
                       ),
-                      UIHelper.horizontalSpaceMedium,
-                      Text(
-                        ticket.getFullPlayTime,
-                        style: textStyleSemiBold(),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: UIHelper.size15),
+                          child: Text(
+                            ticket.getFullPlayTime,
+                            style: textStyleSemiBold(),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  UIHelper.verticalSpaceSmall,
-                  Row(
-                    children: <Widget>[
-                      Image.asset(
-                        Images.MARKER,
-                        width: UIHelper.size15,
-                        height: UIHelper.size15,
-                        color: Colors.grey,
-                      ),
-                      UIHelper.horizontalSpaceMedium,
-                      RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '${ticket.fieldName}',
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: SEMI_BOLD,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' - ${ticket.groundName}',
-                              style: TextStyle(
-                                fontFamily: REGULAR,
-                                color: Colors.black87,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                          ],
+                  Padding(
+                    padding: EdgeInsets.only(top: UIHelper.size10),
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset(
+                          Images.MARKER,
+                          width: UIHelper.size20,
+                          height: UIHelper.size20,
+                          color: Colors.grey,
                         ),
-                      )
-                    ],
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: UIHelper.padding),
+                            child: RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: '${ticket.fieldName}',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontFamily: SEMI_BOLD,
+                                      fontSize: UIHelper.size(17),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' - ${ticket.groundName}',
+                                    style: TextStyle(
+                                      fontFamily: REGULAR,
+                                      color: Colors.black87,
+                                      fontSize: UIHelper.size(17),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  UIHelper.verticalSpaceSmall,
-                  Row(
-                    children: <Widget>[
-                      Image.asset(
-                        Images.TRANSACTIONS,
-                        width: UIHelper.size15,
-                        height: UIHelper.size15,
-                        color: Colors.grey,
-                      ),
-                      UIHelper.horizontalSpaceMedium,
-                      RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Tổng: ',
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: REGULAR,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                            TextSpan(
-                              text: StringUtil.formatCurrency(ticket.price),
-                              style: TextStyle(
-                                fontFamily: SEMI_BOLD,
-                                color: Colors.black87,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                          ],
+                  Padding(
+                    padding: EdgeInsets.only(top: UIHelper.size10),
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset(
+                          Images.TRANSACTIONS,
+                          width: UIHelper.size20,
+                          height: UIHelper.size20,
+                          color: Colors.grey,
                         ),
-                      ),
-                      UIHelper.horizontalSpaceLarge,
-                      RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Đặt cọc: ',
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: REGULAR,
-                                fontSize: UIHelper.size(16),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: UIHelper.padding),
+                            child: RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Tổng: ',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontFamily: REGULAR,
+                                      fontSize: UIHelper.size(17),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: StringUtil.formatCurrency(ticket.price),
+                                    style: TextStyle(
+                                      fontFamily: SEMI_BOLD,
+                                      color: Colors.black87,
+                                      fontSize: UIHelper.size(17),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            TextSpan(
-                              text: StringUtil.formatCurrency(0),
-                              style: TextStyle(
-                                fontFamily: SEMI_BOLD,
-                                color: Colors.black87,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      )
-                    ],
+                        Expanded(
+                          child: RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Đặt cọc: ',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontFamily: REGULAR,
+                                    fontSize: UIHelper.size(17),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: StringUtil.formatCurrency(0),
+                                  style: TextStyle(
+                                    fontFamily: SEMI_BOLD,
+                                    color: Colors.black87,
+                                    fontSize: UIHelper.size(17),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -213,7 +229,6 @@ class TicketPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -226,7 +241,7 @@ class TicketPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
@@ -241,7 +256,8 @@ class TicketPage extends StatelessWidget {
                           ? EmptyWidget(message: 'Chưa có thông tin đặt sân')
                           : ListView.separated(
                               padding: EdgeInsets.symmetric(
-                                  vertical: UIHelper.size10),
+                                  vertical: UIHelper.padding),
+                              physics: BouncingScrollPhysics(),
                               itemBuilder: (c, index) =>
                                   _buildItemTicket(context, model, index),
                               separatorBuilder: (c, index) =>

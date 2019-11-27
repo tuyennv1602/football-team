@@ -305,8 +305,8 @@ class BackdropState extends State<Backdrop>
             ),
           ),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(UIHelper.size15),
-            topRight: Radius.circular(UIHelper.size15),
+            topLeft: Radius.circular(UIHelper.radius),
+            topRight: Radius.circular(UIHelper.radius),
           ),
           clipBehavior: Clip.antiAlias,
         ),

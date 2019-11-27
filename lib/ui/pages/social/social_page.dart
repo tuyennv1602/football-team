@@ -56,7 +56,7 @@ class SocialPage extends StatelessWidget {
           children: <Widget>[
             _buildCateTitle('Bảng xếp hạng'),
             InkWell(
-              onTap: () => NavigationService.instance().navigateTo(RANKING),
+              onTap: () => NavigationService.instance.navigateTo(RANKING),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
                 child: Text(
@@ -122,7 +122,6 @@ class SocialPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(

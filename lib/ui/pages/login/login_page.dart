@@ -5,6 +5,7 @@ import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
+import 'package:myfootball/services/firebase_services.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
@@ -48,14 +49,13 @@ class _LoginState extends State<LoginPage> {
           image: DecorationImage(
             image: AssetImage(Images.BACKGROUND),
             fit: BoxFit.fill,
-            colorFilter: ColorFilter.srgbToLinearGamma(),
           ),
         ),
         child: Column(
           children: <Widget>[
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(bottom: UIHelper.size20),
+                padding: EdgeInsets.only(bottom: UIHelper.size35),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
@@ -64,11 +64,14 @@ class _LoginState extends State<LoginPage> {
                       width: UIHelper.size50,
                       height: UIHelper.size50,
                       fit: BoxFit.contain,
+                      color: Colors.white,
                     ),
-                    UIHelper.horizontalSpaceMedium,
-                    Text(
-                      StringRes.APP_NAME,
-                      style: textStyleAppName(),
+                    Padding(
+                      padding: EdgeInsets.only(left: UIHelper.size15),
+                      child: Text(
+                        StringRes.APP_NAME,
+                        style: textStyleAppName(),
+                      ),
                     )
                   ],
                 ),
@@ -102,11 +105,11 @@ class _LoginState extends State<LoginPage> {
                           Align(
                             alignment: Alignment.topRight,
                             child: InkWell(
-                              onTap: () => NavigationService.instance()
+                              onTap: () => NavigationService.instance
                                   .navigateTo(FORGOT_PASSWORD),
                               child: Text(
                                 'Quên mật khẩu?',
-                                style: textStyleRegular(color: Colors.white),
+                                style: textStyleRegular(),
                               ),
                             ),
                           ),
@@ -144,7 +147,7 @@ class _LoginState extends State<LoginPage> {
                             EdgeInsets.symmetric(horizontal: UIHelper.size10),
                         child: Text(
                           'Đăng nhập qua',
-                          style: textStyleRegular(color: Colors.white),
+                          style: textStyleRegular(),
                         ),
                       ),
                       Expanded(
@@ -180,17 +183,17 @@ class _LoginState extends State<LoginPage> {
                             TextSpan(
                                 text: 'Bạn chưa có tài khoản? ',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: UIHelper.size(16))),
+                                    color: Colors.black,
+                                    fontSize: UIHelper.size(17))),
                             TextSpan(
                                 text: 'Đăng ký ngay',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
                                     fontFamily: SEMI_BOLD,
-                                    color: Colors.white,
-                                    fontSize: UIHelper.size(16)),
+                                    color: Colors.black,
+                                    fontSize: UIHelper.size(17)),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () => NavigationService.instance()
+                                  ..onTap = () => NavigationService.instance
                                       .navigateTo(REGISTER)),
                           ],
                         ),

@@ -37,7 +37,7 @@ class InviteDetailPage extends StatelessWidget {
     bool isSelected = selectedTimeSlot != null &&
         selectedTimeSlot.timeSlotId == timeSlot.timeSlotId;
     return InkWell(
-      onTap: () => NavigationService.instance()
+      onTap: () => NavigationService.instance
           .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
@@ -98,7 +98,6 @@ class InviteDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -111,7 +110,7 @@ class InviteDetailPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(

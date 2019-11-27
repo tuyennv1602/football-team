@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:myfootball/models/time_slot.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DateUtil {
@@ -113,5 +112,15 @@ class DateUtil {
     return getDiffTime(startTime, DateTime.fromMillisecondsSinceEpoch(playDate))
             .inDays <
         1;
+  }
+
+  static String formatMMSS(int seconds) {
+    seconds = (seconds % 3600).truncate();
+    int minutes = (seconds / 60).truncate();
+
+    String minutesStr = (minutes).toString().padLeft(2, '0');
+    String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+
+    return "$minutesStr:$secondsStr";
   }
 }

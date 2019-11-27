@@ -60,5 +60,16 @@
     <true/>
     <key>NSFaceIDUsageDescription</key>
     <string>Xác thực để thực hiện giao dịch</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+           <string>com.googleusercontent.apps.201065002899-jiudas2i7n8jntu5a3qe0te7beh0vih2</string>
+        </array>
+        </dict>
+    </array>
 </dict>
 </plist>

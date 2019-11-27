@@ -43,7 +43,6 @@ class GroundDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,
@@ -104,7 +103,7 @@ class GroundDetailPage extends StatelessWidget {
                 ),
                 leftContent: AppBarButtonWidget(
                   imageName: Images.BACK,
-                  onTap: () => NavigationService.instance().goBack(),
+                  onTap: () => NavigationService.instance.goBack(),
                 ),
                 rightContent: AppBarButtonWidget(
                   imageName: Images.CALL,

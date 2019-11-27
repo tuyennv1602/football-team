@@ -62,7 +62,7 @@ class SetupMatchingInfoViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(
           'Đã cập nhật thông tin ghép đối',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance().goBack());
+          onConfirmed: () => NavigationService.instance.goBack());
     }else{
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

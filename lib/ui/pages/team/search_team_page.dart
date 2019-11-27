@@ -50,27 +50,27 @@ class SearchTeamPage extends StatelessWidget {
   Widget _buildItemTeam(BuildContext context, Team team,
           {Function onSubmitRequest}) =>
       Card(
-        elevation: 1,
+        elevation: 3,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size10),
+          borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
           onTap: () {
             if (type == SEARCH_TYPE.COMPARE_TEAM) {
-              NavigationService.instance()
+              NavigationService.instance
                   .navigateTo(COMPARE_TEAM, arguments: team);
             } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
               _positions = null;
               _showOptions(
                 context,
-                onDetail: () => NavigationService.instance()
+                onDetail: () => NavigationService.instance
                     .navigateTo(TEAM_DETAIL, arguments: team),
                 onRequest: () =>
                     _showRequestForm(context, team, onSubmit: onSubmitRequest),
               );
             } else if (type == SEARCH_TYPE.TEAM_DETAIL) {
-              NavigationService.instance()
+              NavigationService.instance
                   .navigateTo(TEAM_DETAIL, arguments: team);
             } else {
               Navigator.of(context).pop(team);
@@ -80,8 +80,7 @@ class SearchTeamPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: UIHelper.size10, horizontal: UIHelper.size15),
+                padding: EdgeInsets.all(UIHelper.padding),
                 child: Hero(
                   tag: team.id,
                   child: ImageWidget(
@@ -92,7 +91,7 @@ class SearchTeamPage extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(UIHelper.size10),
+                  padding: EdgeInsets.fromLTRB(0, UIHelper.padding, UIHelper.padding, UIHelper.padding),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -203,7 +202,7 @@ class SearchTeamPage extends StatelessWidget {
             if (_positions == null || _positions.length == 0) {
               UIHelper.showSimpleDialog('Bạn chưa chọn vị trí có thể chơi');
             } else {
-              NavigationService.instance().goBack();
+              NavigationService.instance.goBack();
               onSubmit(team.id);
             }
           }
@@ -212,7 +211,6 @@ class SearchTeamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -225,13 +223,13 @@ class SearchTeamPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
             rightContent: type == SEARCH_TYPE.REQUEST_MEMBER
                 ? AppBarButtonWidget(
                     imageName: Images.STACK,
                     onTap: () =>
-                        NavigationService.instance().navigateTo(USER_REQUESTS))
+                        NavigationService.instance.navigateTo(USER_REQUESTS))
                 : AppBarButtonWidget(),
           ),
           Expanded(
@@ -255,8 +253,7 @@ class SearchTeamPage extends StatelessWidget {
                                 ? EmptyWidget(message: 'Không tìm thấy kết quả')
                                 : ListView.separated(
                                     physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: UIHelper.size10),
+                                    padding: EdgeInsets.only(bottom: UIHelper.padding),
                                     itemCount: model.teams.length,
                                     separatorBuilder: (c, index) =>
                                         UIHelper.verticalIndicator,

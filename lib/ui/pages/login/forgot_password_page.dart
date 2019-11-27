@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
@@ -34,7 +35,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
@@ -43,31 +43,32 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
           image: DecorationImage(
             image: AssetImage(Images.BACKGROUND),
             fit: BoxFit.fill,
-            colorFilter: ColorFilter.srgbToLinearGamma(),
           ),
         ),
         child: Column(
           children: <Widget>[
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(bottom: UIHelper.size20),
+                padding: EdgeInsets.only(bottom: UIHelper.size35),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ButtonWidget(
+                    Container(
                       width: UIHelper.size50,
                       height: UIHelper.size50,
-                      onTap: () => NavigationService.instance().goBack(),
                       margin: EdgeInsets.only(top: UIHelper.paddingTop),
-                      backgroundColor: Colors.transparent,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: UIHelper.size15,
-                            right: UIHelper.size15,
-                            bottom: UIHelper.size15),
-                        child: Image.asset(
-                          Images.LEFT_ARROW,
-                          color: Colors.white,
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => NavigationService.instance.goBack(),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: UIHelper.size15,
+                              right: UIHelper.size15,
+                              bottom: UIHelper.size15),
+                          child: Image.asset(
+                            Images.LEFT_ARROW,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -80,11 +81,14 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                             width: UIHelper.size50,
                             height: UIHelper.size50,
                             fit: BoxFit.contain,
+                            color: Colors.white,
                           ),
-                          UIHelper.horizontalSpaceMedium,
-                          Text(
-                            StringRes.APP_NAME,
-                            style: textStyleAppName(),
+                          Padding(
+                            padding: EdgeInsets.only(left: UIHelper.size15),
+                            child: Text(
+                              StringRes.APP_NAME,
+                              style: textStyleAppName(),
+                            ),
                           )
                         ],
                       ),
@@ -104,13 +108,15 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          model.isChangePassword
-                              ? 'Đổi mật khẩu'
-                              : 'Lấy mã xác thực',
-                          style: textStyleBold(color: Colors.white),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: UIHelper.size25),
+                          child: Text(
+                            model.isChangePassword
+                                ? 'Đổi mật khẩu'
+                                : 'Lấy mã xác thực',
+                            style: textStyleBold(color: PRIMARY),
+                          ),
                         ),
-                        UIHelper.verticalSpaceLarge,
                         LightInputTextWidget(
                           labelText: 'Email',
                           validator: Validator.validEmail,
@@ -142,10 +148,9 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                     vertical: UIHelper.size10),
                                 child: Text(
                                   'Một mã xác thực sẽ được gửi tới email mà bạn đã đăng ký. Vui lòng kiểm tra email và sử dụng mã xác thực để lấy lại mật khẩu',
-                                  style: textStyleItalic(color: Colors.white),
+                                  style: textStyleItalic(color: Colors.grey),
                                 ),
                               ),
-                        UIHelper.verticalSpaceLarge,
                         ButtonWidget(
                           child: Text(
                             model.isChangePassword
@@ -153,11 +158,11 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                 : 'XÁC THỰC',
                             style: textStyleButton(),
                           ),
+                          margin: EdgeInsets.only(top: UIHelper.size30),
                           onTap: () {
                             if (validateAndSave()) {
                               if (model.isChangePassword) {
-                                model.changePassword(
-                                    _email, _password, _code);
+                                model.changePassword(_email, _password, _code);
                               } else {
                                 model.forgotPassword(_email);
                               }

@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "201065002899-u4ajrpi4mknetba55nka33fhtjp572dl.apps.googleusercontent.com",
+          "client_id": "201065002899-lmcgt1mg40rsd5b8s7vpvph1m7dluvdq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.myfootball",
@@ -40,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "201065002899-jiudas2i7n8jntu5a3qe0te7beh0vih2.apps.googleusercontent.com",
+              "client_id": "201065002899-b5br7igupvfb6mtd1fooefuljoui9rr0.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.app.footballteam"
+                "bundle_id": "com.app.footballground"
               }
             }
           ]

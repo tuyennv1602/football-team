@@ -16,8 +16,8 @@ class BorderBackground extends StatelessWidget {
     return SizedBox.expand(
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(this.radius ?? UIHelper.size15),
-            topLeft: Radius.circular(this.radius ?? UIHelper.size15)),
+            topRight: Radius.circular(this.radius ?? UIHelper.radius),
+            topLeft: Radius.circular(this.radius ?? UIHelper.radius)),
         child: Container(
           color: this.backgroundColor ?? Colors.white,
           child: this.child,

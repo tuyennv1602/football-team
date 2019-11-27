@@ -19,7 +19,6 @@ class SetupTeamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     Team _team = Provider.of<Team>(context);
     return Scaffold(
       backgroundColor: PRIMARY,
@@ -33,7 +32,7 @@ class SetupTeamPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
@@ -46,9 +45,8 @@ class SetupTeamPage extends StatelessWidget {
                     Images.EDIT_TEAM,
                     'Chỉnh sửa thông tin',
                     iconColor: Colors.green,
-                    onTap: () => NavigationService.instance().navigateTo(EDIT_TEAM_INFO),
+                    onTap: () => NavigationService.instance.navigateTo(EDIT_TEAM_INFO),
                   ),
-                  LineWidget(),
                   BaseWidget<SetupTeamViewModel>(
                     model: SetupTeamViewModel(
                         api: Provider.of(context),
@@ -83,14 +81,12 @@ class SetupTeamPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  LineWidget(),
                   ItemOptionWidget(
                     Images.FIND_MATCH,
                     'Thiết lập thông tin ghép đối',
                     iconColor: Colors.red,
-                    onTap: () => NavigationService.instance().navigateTo(SETUP_MATCHING),
+                    onTap: () => NavigationService.instance.navigateTo(SETUP_MATCHING),
                   ),
-                  LineWidget()
                 ],
               ),
             ),

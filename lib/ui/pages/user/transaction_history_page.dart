@@ -13,7 +13,6 @@ import 'package:myfootball/utils/ui_helper.dart';
 class TransactionHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -26,14 +25,14 @@ class TransactionHistoryPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
             child: BorderBackground(
               child: ListView.separated(
                 itemCount: 2,
-                padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
                 separatorBuilder: (c, index) => UIHelper.verticalIndicator,
                 itemBuilder: (c, index) => ItemTransactionWidget(
                   transaction: Transaction(

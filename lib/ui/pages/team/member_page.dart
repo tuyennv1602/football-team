@@ -19,13 +19,6 @@ class MemberPage extends StatelessWidget {
 
   MemberPage({@required this.members, @required this.managerId});
 
-  void _showClearPoints(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Reset điểm thành viên', 'Huỷ'],
-        ),
-      );
-
   void _showManagerOptions(BuildContext context, Member member) =>
       showModalBottomSheet(
         context: context,
@@ -42,7 +35,6 @@ class MemberPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     var isManager = Provider.of<User>(context).id == managerId;
     return Scaffold(
       backgroundColor: PRIMARY,
@@ -56,20 +48,14 @@ class MemberPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
-            rightContent: isManager
-                ? AppBarButtonWidget(
-                    imageName: Images.MORE,
-                    onTap: () => _showClearPoints(context),
-                  )
-                : AppBarButtonWidget(),
           ),
           Expanded(
             child: BorderBackground(
               child: ListView.separated(
                   physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                  padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
                   itemBuilder: (c, index) {
                     Member _member = members[index];
                     return ItemMember(

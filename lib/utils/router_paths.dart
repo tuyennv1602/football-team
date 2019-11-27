@@ -30,21 +30,4 @@ const String TICKETS = 'TICKETS';
 const String EDIT_PROFILE = 'EDIT_PROFILE';
 const String USER_TRANSACTION_HISTORY = 'USER_TRANSACTION_HISTORY';
 const String RANKING = 'RANKING';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const String VERIFY_OTP = 'VERIFY_OTP';

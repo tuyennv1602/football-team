@@ -26,38 +26,41 @@ class TeamFundPage extends StatelessWidget {
   Widget _buildItemFund(BuildContext context, String title, String content,
           double price, int status) =>
       Card(
-        elevation: 1,
+        elevation: 3,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size10),
+          borderRadius: BorderRadius.circular(UIHelper.size15),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
         child: InkWell(
           onTap: () => _showAuthenticationBottomSheet(context),
           child: Padding(
-            padding: EdgeInsets.all(UIHelper.size10),
+            padding: EdgeInsets.all(UIHelper.size15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  title,
-                  style: textStyleSemiBold(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: UIHelper.size5),
+                  child: Text(
+                    title,
+                    style: textStyleSemiBold(),
+                  ),
                 ),
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Số tiền cần đóng: ',
+                        text: 'Số tiền: ',
                         style: TextStyle(
                             color: Colors.black87,
                             fontFamily: REGULAR,
-                            fontSize: UIHelper.size(14)),
+                            fontSize: UIHelper.size(17)),
                       ),
                       TextSpan(
                         text: StringUtil.formatCurrency(100000),
                         style: TextStyle(
                             fontFamily: SEMI_BOLD,
                             color: Colors.black,
-                            fontSize: UIHelper.size(15)),
+                            fontSize: UIHelper.size(17)),
                       ),
                     ],
                   ),
@@ -68,18 +71,18 @@ class TeamFundPage extends StatelessWidget {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Thời hạn hoàn thành: ',
+                            text: 'Hạn đóng: ',
                             style: TextStyle(
                                 color: Colors.black87,
                                 fontFamily: REGULAR,
-                                fontSize: UIHelper.size(14)),
+                                fontSize: UIHelper.size(17)),
                           ),
                           TextSpan(
                             text: '15/09/2019',
                             style: TextStyle(
                                 fontFamily: SEMI_BOLD,
                                 color: Colors.black,
-                                fontSize: UIHelper.size(15)),
+                                fontSize: UIHelper.size(17)),
                           ),
                         ],
                       ),
@@ -103,7 +106,6 @@ class TeamFundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UIHelper().init(context);
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -116,13 +118,13 @@ class TeamFundPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => NavigationService.instance().goBack(),
+              onTap: () => NavigationService.instance.goBack(),
             ),
           ),
           Expanded(
             child: BorderBackground(
               child: ListView(
-                padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
                 children: <Widget>[
                   _buildItemFund(context, 'Đóng quỹ tháng 10/2019',
                       'Vui lòng hoàn thành trước 15/10', 100000, 1),

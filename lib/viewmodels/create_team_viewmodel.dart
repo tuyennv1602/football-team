@@ -71,7 +71,7 @@ class CreateTeamViewModel extends BaseViewModel {
   Future<String> _uploadImage(int teamId, String teamName) async {
     if (image == null) return null;
     var name = 'id_$teamId';
-    return FirebaseServices().uploadImage(image, 'team', name);
+    return FirebaseServices.instance.uploadImage(image, 'team', name);
   }
 
   void setDressColor(Color color) {

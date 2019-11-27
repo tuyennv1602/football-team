@@ -1,12 +1,16 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/responses/base_response.dart';
+import 'package:myfootball/models/verify_arg.dart';
 import 'package:myfootball/services/auth_services.dart';
+import 'package:myfootball/services/firebase_services.dart';
 import 'package:myfootball/services/navigation_services.dart';
+import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/base_viewmodel.dart';
@@ -21,16 +25,23 @@ class LoginViewModel extends BaseViewModel {
     UIHelper.showProgressDialog;
     var resp = await _authServices.loginEmail(email, password);
     if (resp.isSuccess) {
+      await FirebaseServices.instance.signInAnonymous();
       var _registerDeviceResp = await registerDevice();
       UIHelper.hideProgressDialog;
       if (_registerDeviceResp.isSuccess) {
-        NavigationService.instance().navigateAndRemove(HOME);
+        NavigationService.instance.navigateAndRemove(HOME);
       } else {
         UIHelper.showSimpleDialog(_registerDeviceResp.errorMessage);
       }
     } else {
       UIHelper.hideProgressDialog;
-      UIHelper.showSimpleDialog(resp.errorMessage);
+      if (resp.statusCode == Constants.CODE_NOT_ACCEPTABLE) {
+        UIHelper.showConfirmDialog(
+            'Tài khoản chưa được kích hoạt! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
+            onConfirmed: () => verifyPhoneNumber('+84123456788'));
+      } else {
+        UIHelper.showSimpleDialog(resp.errorMessage);
+      }
     }
   }
 
@@ -63,5 +74,44 @@ class LoginViewModel extends BaseViewModel {
         deviceName: deviceName));
     setBusy(false);
     return resp;
+  }
+
+  Future<void> verifyPhoneNumber(String phoneNumber) async {
+    UIHelper.showProgressDialog;
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = phoneNumber.replaceFirst('0', '+84');
+    }
+    final PhoneVerificationCompleted verificationCompleted =
+        (AuthCredential phoneAuthCredential) {
+      UIHelper.hideProgressDialog;
+      print('verify completely');
+//      FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+    };
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+      UIHelper.hideProgressDialog;
+      UIHelper.showSimpleDialog(
+          'Gửi mã xác thực lỗi: ${authException.message}');
+    };
+    final PhoneCodeSent codeSent =
+        (String verificationId, [int forceResendingToken]) async {
+      UIHelper.hideProgressDialog;
+      print('code sent: ' + verificationId);
+      NavigationService.instance.navigateTo(VERIFY_OTP,
+          arguments: VerifyArgument(
+              phoneNumber: phoneNumber, verificationId: verificationId));
+    };
+    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      UIHelper.hideProgressDialog;
+      print('Gửi mã xác thực lỗi: Timeout!');
+    };
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: Duration(minutes: 1),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
   }
 }
