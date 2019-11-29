@@ -52,4 +52,11 @@ class StringUtil {
         return null;
     }
   }
+
+  static double getPriceFromString(String price) {
+    if (price.isEmpty) return 0;
+    price = price.replaceAll('.', '');
+    price = price.replaceAll('đ', '');
+    return double.parse(price);
+  }
 }

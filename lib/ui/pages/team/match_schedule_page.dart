@@ -11,10 +11,13 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
+import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
+import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/status_indicator.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/match_schedule_viewmodel.dart';
@@ -86,169 +89,159 @@ class MatchSchedulePage extends StatelessWidget {
       MatchScheduleViewModel model) {
     MatchSchedule matchSchedule = model.matchSchedules[index];
     var _hasReceiveTeam = matchSchedule.receiveTeam != null;
-    return InkWell(
-      onTap: () {
-        if (isCaptain) {
-          _showManagerOptions(
-            context,
-            matchSchedule.receiveTeam != null,
-            matchSchedule.isJoined,
-            onDetail: () => NavigationService.instance
-                .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
-            onRegister: (isJoined) => !isJoined
-                ? model.joinMatch(index, matchSchedule.matchId)
-                : UIHelper.showConfirmDialog(
-                    'Bạn có chắc muốn huỷ tham gia trận đấu này?',
-                    onConfirmed: () =>
-                        model.leaveMatch(index, matchSchedule.matchId),
-                  ),
-          );
-        } else {
-          _showMemberOptions(
-            context,
-            matchSchedule.isJoined,
-            onDetail: () => NavigationService.instance
-                .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
-            onRegister: (isJoined) => !isJoined
-                ? model.joinMatch(index, matchSchedule.matchId)
-                : UIHelper.showConfirmDialog(
-                    'Bạn có chắc muốn huỷ tham gia trận đấu này?',
-                    onConfirmed: () =>
-                        model.leaveMatch(index, matchSchedule.matchId),
-                  ),
-          );
-        }
-      },
-      child: Column(
-        children: <Widget>[
-          UIHelper.verticalSpaceSmall,
-          Container(
-            height: UIHelper.size(80),
-            padding: EdgeInsets.all(UIHelper.size5),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: UIHelper.size25,
-                  left: UIHelper.size35,
-                  right: UIHelper.size35,
-                  child: Container(
-                    height: UIHelper.size40,
-                    padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-                    color: SHADOW_GREEN,
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(UIHelper.padding),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
+      child: InkWell(
+        onTap: () {
+          if (isCaptain) {
+            _showManagerOptions(
+              context,
+              matchSchedule.receiveTeam != null,
+              matchSchedule.isJoined,
+              onDetail: () => NavigationService.instance
+                  .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
+              onRegister: (isJoined) => !isJoined
+                  ? model.joinMatch(index, matchSchedule.matchId)
+                  : UIHelper.showConfirmDialog(
+                      'Bạn có chắc muốn huỷ tham gia trận đấu này?',
+                      onConfirmed: () =>
+                          model.leaveMatch(index, matchSchedule.matchId),
+                    ),
+            );
+          } else {
+            _showMemberOptions(
+              context,
+              matchSchedule.isJoined,
+              onDetail: () => NavigationService.instance
+                  .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
+              onRegister: (isJoined) => !isJoined
+                  ? model.joinMatch(index, matchSchedule.matchId)
+                  : UIHelper.showConfirmDialog(
+                      'Bạn có chắc muốn huỷ tham gia trận đấu này?',
+                      onConfirmed: () =>
+                          model.leaveMatch(index, matchSchedule.matchId),
+                    ),
+            );
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            UIHelper.verticalSpaceSmall,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
                     child: Row(
                       children: <Widget>[
                         Expanded(
-                          child: Text(
-                            matchSchedule.getMyTeamName,
-                            style: textStyleSemiBold(size: 13),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: UIHelper.size15),
+                            child: Text(
+                              matchSchedule.getMyTeamName + '\n',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: textStyleMedium(),
+                            ),
                           ),
                         ),
-                        Container(
-                          height: UIHelper.size20,
-                          width: UIHelper.size20,
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(UIHelper.size5),
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius:
-                                  BorderRadius.circular(UIHelper.size10)),
-                          child: Text(
-                            'VS',
-                            style: textStyleSemiBold(
-                                color: Colors.white, size: 10),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            _hasReceiveTeam
-                                ? matchSchedule.getOpponentName
-                                : '',
-                            textAlign: TextAlign.right,
-                            style: textStyleSemiBold(size: 13),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                          child: ImageWidget(
+                            source: matchSchedule.getMyTeamLogo,
+                            placeHolder: Images.DEFAULT_LOGO,
+                            size: UIHelper.size30,
                           ),
                         ),
                       ],
                     ),
                   ),
+                  Text(
+                    'VS',
+                    textAlign: TextAlign.center,
+                    style: textStyleSemiBold(color: Colors.red),
+                  ),
+                  Expanded(
+                    child: _hasReceiveTeam
+                        ? Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: UIHelper.size10),
+                                child: ImageWidget(
+                                  source: matchSchedule.getOpponentLogo,
+                                  placeHolder: Images.DEFAULT_LOGO,
+                                  size: UIHelper.size30,
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(top: UIHelper.size15),
+                                  child: Text(
+                                    matchSchedule.getOpponentName + '\n',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: textStyleMedium(),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        : SizedBox(),
+                  ),
+                ],
+              ),
+            ),
+            UIHelper.verticalSpaceMedium,
+            LineWidget(indent: 0),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: UIHelper.size10, right: UIHelper.size5),
+                    child: Text(
+                      matchSchedule.groundName,
+                      style: textStyleRegular(color: GREEN_TEXT),
+                    ),
+                  ),
                 ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Align(
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(UIHelper.padding),
+                      topLeft: Radius.circular(UIHelper.size50)),
+                  child: ClipPath(
+                    clipper: ClipperRightWidget(),
                     child: Container(
-                      height: UIHelper.size25,
-                      width: UIHelper.size(120),
-                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(UIHelper.size15),
-                          topLeft: Radius.circular(UIHelper.size15),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Color(0xFF02DC37), PRIMARY],
                         ),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                      padding: EdgeInsets.symmetric(
+                          vertical: UIHelper.size5,
+                          horizontal: UIHelper.size15),
                       child: Text(
                         matchSchedule.getShortPlayTime,
-                        style: textStyleSemiBold(color: Colors.white, size: 15),
+                        style: textStyleSemiBold(color: Colors.white),
                       ),
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: UIHelper.size20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        height: UIHelper.size50,
-                        width: UIHelper.size50,
-                        padding: EdgeInsets.all(UIHelper.size5),
-                        decoration: BoxDecoration(
-                            color: SHADOW_GREEN,
-                            border: Border.all(width: 2, color: Colors.white),
-                            borderRadius: BorderRadius.circular(UIHelper.size25)),
-                        child: ImageWidget(
-                          source: matchSchedule.getMyTeamLogo,
-                          placeHolder: Images.DEFAULT_LOGO,
-                          size: UIHelper.size40,
-                          radius: UIHelper.size20,
-                        ),
-                      ),
-                      Container(
-                        height: UIHelper.size50,
-                        width: UIHelper.size50,
-                        padding: EdgeInsets.all(UIHelper.size5),
-                        decoration: BoxDecoration(
-                            color: SHADOW_GREEN,
-                            border: Border.all(width: 2, color: Colors.white),
-                            borderRadius: BorderRadius.circular(UIHelper.size25)),
-                        child: _hasReceiveTeam
-                            ? ImageWidget(
-                                source: matchSchedule.getOpponentLogo,
-                                placeHolder: Images.DEFAULT_LOGO,
-                                size: UIHelper.size40,
-                                radius: UIHelper.size20,
-                              )
-                            : SizedBox(),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
-          ),
-          Text(
-            matchSchedule.groundName,
-            style: textStyleRegular(),
-          ),
-          UIHelper.verticalSpaceLarge
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -282,11 +275,12 @@ class MatchSchedulePage extends StatelessWidget {
                     : model.matchSchedules.length == 0
                         ? EmptyWidget(message: 'Chưa có lịch thi đấu')
                         : ListView.separated(
-                            padding:
-                                EdgeInsets.symmetric(vertical: UIHelper.size10),
+                            padding: EdgeInsets.symmetric(
+                                vertical: UIHelper.padding),
                             itemBuilder: (c, index) => _buildItemSchedule(
                                 context, isCaptain, index, model),
-                            separatorBuilder: (c, index) => LineWidget(),
+                            separatorBuilder: (c, index) =>
+                                UIHelper.verticalIndicator,
                             itemCount: model.matchSchedules.length),
               ),
             ),

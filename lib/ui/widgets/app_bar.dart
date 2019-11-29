@@ -9,7 +9,7 @@ class AppBarWidget extends StatelessWidget {
   final Widget rightContent;
   final bool showBorder;
   final Color backgroundColor;
-  final double _kAppbarHeight = UIHelper.size(50);
+  final double _kAppbarHeight = UIHelper.size(55);
 
   AppBarWidget(
       {Key key,
@@ -35,6 +35,11 @@ class AppBarWidget extends StatelessWidget {
                     bottom: BorderSide(width: 0.5, color: LINE_COLOR),
                   )
                 : null,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF02DC37), PRIMARY],
+            ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/utils/string_util.dart';
 
 class Ticket {
   int id;
@@ -84,5 +85,7 @@ class Ticket {
       '${DateUtil.getTimeStringFromDouble(startTime)} - ${DateUtil.getTimeStringFromDouble(endTime)}  ${DateUtil.getDateFromTimestamp(playDate)}';
 
   bool get isOverTime => DateUtil.isOverTimeCancel(startTime, playDate);
+
+  String get getPrice => StringUtil.formatCurrency(price);
 
 }

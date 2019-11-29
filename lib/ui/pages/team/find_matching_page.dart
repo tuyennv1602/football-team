@@ -187,7 +187,9 @@ class FindMatchingPage extends StatelessWidget {
                             children: <Widget>[
                               UIHelper.verticalSpaceSmall,
                               _buildItemCompare(
-                                  'Điểm', '${team1.point}', '${team2.point}'),
+                                  'Điểm',
+                                  '${team1.point.toStringAsFixed(1)}',
+                                  '${team2.point.toStringAsFixed(1)}'),
                               _buildItemCompare(
                                   'Xếp hạng', '${team1.rank}', '${team2.rank}'),
                               _buildItemCompare(
@@ -410,23 +412,14 @@ class FindMatchingPage extends StatelessWidget {
                                     padding: EdgeInsets.all(UIHelper.size5),
                                     child: Text(
                                       team.name,
-                                      maxLines: 2,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       style: textStyleSemiBold(
                                           color: Colors.white),
                                     ),
                                   )
                                 ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: UIHelper.size(80)),
-                              child: Image.asset(
-                                Images.FIND_MATCH,
-                                width: UIHelper.size50,
-                                height: UIHelper.size50,
-                                color: Colors.white,
                               ),
                             ),
                             Expanded(
@@ -450,7 +443,8 @@ class FindMatchingPage extends StatelessWidget {
                                       model.currentTeam != null
                                           ? model.currentTeam.groupName
                                           : '?',
-                                      maxLines: 2,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       style: textStyleSemiBold(
                                           color: Colors.white),

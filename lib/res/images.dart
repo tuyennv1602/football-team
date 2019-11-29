@@ -38,7 +38,6 @@ class Images {
   static const String INFO = '$FOLDER/ic_info.png';
   static const String EDIT = '$FOLDER/ic_edit.png';
   static const String CLEAR = '$FOLDER/ic_clear.png';
-  static const String LOADING = '$FOLDER/ic_loading.png';
   static const String LEAVE_TEAM = '$FOLDER/ic_leave_team.png';
   static const String PHONE = '$FOLDER/ic_phone.png';
   static const String CALL = '$FOLDER/ic_call.png';

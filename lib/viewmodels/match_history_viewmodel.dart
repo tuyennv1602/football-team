@@ -33,7 +33,23 @@ class MatchHistoryViewModel extends BaseViewModel {
       matchHistories[index].receiveGroupScore = _secondScore;
       notifyListeners();
       UIHelper.showSimpleDialog(
-          'Đã gửi yêu cầu xác nhận tỉ số tới đối tác. Vui lòng chờ đối tác xác nhận!', isSuccess: true);
+          'Đã gửi yêu cầu xác nhận tỉ số tới đối tác. Vui lòng chờ đối tác xác nhận!',
+          isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  Future<void> confirmScore(int index, int historyId) async {
+    UIHelper.showProgressDialog;
+    var resp = await _api.confirmMatchResult(historyId);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      matchHistories[index].isConfirmed = true;
+      notifyListeners();
+      UIHelper.showSimpleDialog(
+          'Cảm ơn vì đã xác nhận. Các cầu thủ có thể tham gia xác nhận tỉ số để nhận điểm thưởng',
+          isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

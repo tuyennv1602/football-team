@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:myfootball/models/team.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
@@ -14,65 +16,66 @@ class TopRankingWidget extends StatelessWidget {
       : super(key: key);
 
   Widget _buildItem(BuildContext context, Team team, int number) {
-    double logoSize;
-    Color color;
+    var medal;
+    var bottom;
     if (number == 1) {
-      logoSize = UIHelper.size(110);
-      color = Colors.redAccent;
+      medal = 'assets/images/ic_purple.png';
+      bottom = 'assets/images/ic_purple_bottom.png';
     } else if (number == 2) {
-      logoSize = UIHelper.size(70);
-      color = Colors.deepPurpleAccent;
+      medal = 'assets/images/ic_gold.png';
+      bottom = 'assets/images/ic_gold_bottom.png';
     } else {
-      logoSize = UIHelper.size(50);
-      color = Colors.lightGreen;
+      medal = 'assets/images/ic_green.png';
+      bottom = 'assets/images/ic_green_bottom.png';
     }
-    return Container(
-      height: UIHelper.size(210),
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          ImageWidget(source: team.logo, placeHolder: Images.DEFAULT_LOGO),
-          UIHelper.verticalSpaceMedium,
-          Container(
-            width: double.infinity,
-            height: UIHelper.size25,
+    return Column(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 1,
+          child: Container(
             alignment: Alignment.center,
+            margin: EdgeInsets.symmetric(horizontal: UIHelper.size10),
             decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(number != 2 ? UIHelper.size10 : 0),
-                topLeft: Radius.circular(number != 3 ? UIHelper.size10 : 0),
+              image: DecorationImage(
+                image: AssetImage(medal),
               ),
             ),
-            child: Text(
-              team.point.toString(),
-              textAlign: TextAlign.center,
-              style: textStyleBold(color: Colors.white),
-            ),
+            child: team != null && team.logo != null
+                ? ImageWidget(
+                    source: team.logo,
+                    placeHolder: Images.DEFAULT_LOGO,
+                    size: UIHelper.size(60),
+                  )
+                : Image.asset(
+                    Images.DEFAULT_LOGO,
+                    width: UIHelper.size(60),
+                    height: UIHelper.size(60),
+                  ),
           ),
-          Container(
-            width: double.infinity,
-            height: logoSize,
-            padding: EdgeInsets.only(top: UIHelper.size5),
-            color: Colors.orangeAccent,
-            child: Text(
-              number.toString(),
-              style: textStyleBold(size: 30, color: Colors.white70),
-              textAlign: TextAlign.center,
-            ),
-          )
-        ],
-      ),
+        ),
+        Container(
+          height: UIHelper.size25,
+          margin: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+          width: double.infinity,
+          decoration:
+              BoxDecoration(image: DecorationImage(image: AssetImage(bottom), fit: BoxFit.cover)),
+        )
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: <Widget>[
-      Expanded(child: _buildItem(context, secondTeam, 2)),
-      Expanded(child: _buildItem(context, firstTeam, 1)),
-      Expanded(child: _buildItem(context, thirdTeam, 3))
-    ]);
+    return Container(
+      height: UIHelper.size(150),
+      width: double.infinity,
+      child: Row(
+        children: <Widget>[
+          Expanded(child: _buildItem(context, firstTeam, 1)),
+          Expanded(child: _buildItem(context, secondTeam, 2)),
+          Expanded(child: _buildItem(context, thirdTeam, 3))
+        ],
+      ),
+    );
   }
 }

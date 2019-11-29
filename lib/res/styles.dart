@@ -67,3 +67,9 @@ textStyleAlert({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 18),
     color: color ?? Colors.white,
     letterSpacing: 0.1);
+
+textStyleMedium({double size, Color color}) => TextStyle(
+    fontFamily: MEDIUM,
+    fontSize: UIHelper.size(size ?? 16),
+    color: color ?? Colors.black,
+    letterSpacing: 0.1);

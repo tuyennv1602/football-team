@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:myfootball/models/match_schedule.dart';
 import 'package:myfootball/utils/date_util.dart';
 
@@ -10,6 +12,7 @@ class MatchHistory extends MatchSchedule {
   int receiveGroupScore;
   double receiveGroupPoint;
   bool isConfirmed;
+  int countConfirmed;
 
   MatchHistory(
       {this.id,
@@ -19,6 +22,7 @@ class MatchHistory extends MatchSchedule {
       this.sendGroupPoint,
       this.receiveGroupScore,
       this.receiveGroupPoint,
+      this.countConfirmed,
       this.isConfirmed});
 
   MatchHistory.fromJson(int teamId, Map<String, dynamic> json)
@@ -31,6 +35,7 @@ class MatchHistory extends MatchSchedule {
     receiveGroupScore = json['receive_group_score'];
     receiveGroupPoint = json['receive_group_point'];
     isConfirmed = json['is_confirmed'];
+    countConfirmed = json['count_confirm'];
   }
 
   String get getPlayTime => '${DateUtil.getDateFromTimestamp(playDate)}';
@@ -61,6 +66,24 @@ class MatchHistory extends MatchSchedule {
     if (!isConfirmed) {
       return 'Chờ xác nhận';
     }
-    return null;
+    return 'Đã xác nhận';
+  }
+
+  double get getRatePercent => 0.4;
+
+  Color get getRateColor {
+    if (getRatePercent >= 0.3 && getRatePercent < 0.5) return Colors.green;
+    if (getRatePercent >= 0.5 && getRatePercent < 0.8) return Colors.amber;
+    if (getRatePercent >= 0.8) return Colors.deepPurpleAccent;
+    return Colors.grey;
+  }
+
+  double get getBonus {
+    if (getMyTeamPoint == null) return 0;
+    var myPoint = getMyTeamPoint > 0 ? getMyTeamPoint : (-1 * getMyTeamPoint);
+    if (getRatePercent >= 0.3 && getRatePercent < 0.5) return myPoint * 0.05;
+    if (getRatePercent >= 0.5 && getRatePercent < 0.8) return myPoint * 0.1;
+    if (getRatePercent >= 0.8) return myPoint * 0.15;
+    return 0;
   }
 }

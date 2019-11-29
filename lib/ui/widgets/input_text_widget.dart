@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
@@ -16,6 +16,7 @@ class InputTextWidget extends StatelessWidget {
   final TextStyle hintTextStyle;
   final int maxLines;
   final int maxLength;
+  final List<TextInputFormatter> formatter;
 
   InputTextWidget(
       {Key key,
@@ -29,6 +30,7 @@ class InputTextWidget extends StatelessWidget {
       this.maxLines = 1,
       this.maxLength = 200,
       this.hintTextStyle,
+      this.formatter,
       this.textStyle})
       : super(key: key);
 
@@ -46,28 +48,23 @@ class InputTextWidget extends StatelessWidget {
       textInputAction: inputAction ?? TextInputAction.done,
       onSaved: onSaved,
       style: textStyle ?? textStyleInput(),
+      inputFormatters: formatter,
       decoration: InputDecoration(
         helperText: '',
         contentPadding: EdgeInsets.symmetric(vertical: UIHelper.size5),
         alignLabelWithHint: maxLines > 1,
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(width: 0.5, color: LINE_COLOR),
-        ),
+            borderSide: BorderSide(width: 0.5, color: Colors.grey)),
         errorBorder: UnderlineInputBorder(
             borderSide: BorderSide(width: 0.5, color: Colors.red)),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(width: 1.2, color: PRIMARY),
-        ),
+            borderSide: BorderSide(width: 1.2, color: PRIMARY)),
         focusedErrorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(width: 1.2, color: PRIMARY),
-        ),
+            borderSide: BorderSide(width: 1.2, color: PRIMARY)),
         labelText: labelText,
         errorText: errorText,
         counter: SizedBox(),
-        errorStyle: TextStyle(
-            fontFamily: REGULAR,
-            color: Colors.red,
-            fontSize: UIHelper.size(12)),
+        errorStyle: textStyleItalic(size: 12, color: Colors.red),
         labelStyle: hintTextStyle ?? textStyleInput(color: Colors.grey),
       ),
     );

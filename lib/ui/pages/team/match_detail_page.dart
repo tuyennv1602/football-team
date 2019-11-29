@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/match_history.dart';
 import 'package:myfootball/models/match_schedule.dart';
 import 'package:myfootball/models/member.dart';
 import 'package:myfootball/models/team.dart';
@@ -14,7 +15,6 @@ import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_member.dart';
 import 'package:myfootball/ui/widgets/item_option.dart';
-import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -23,10 +23,10 @@ import 'package:myfootball/viewmodels/matching_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MatchDetailPage extends StatelessWidget {
-  final MatchSchedule _matchSchedule;
+  final MatchHistory matchHistory;
 
-  MatchDetailPage({Key key, @required MatchSchedule matchSchedule})
-      : _matchSchedule = matchSchedule,
+  MatchDetailPage({Key key, @required MatchHistory matchHistory})
+      : matchHistory = matchHistory,
         super(key: key);
 
   Widget _buildTeamMembers(BuildContext context, List<Member> members) {
@@ -65,19 +65,19 @@ class MatchDetailPage extends StatelessWidget {
                 model: MatchingDetailViewModel(api: Provider.of(context)),
                 onModelReady: (model) {
                   model.getMyTeamMembers(1, team.id);
-                  if (_matchSchedule.receiveTeam != null) {
+                  if (matchHistory.receiveTeam != null) {
                     model.getOpponentTeamMembers(
-                        1, _matchSchedule.getOpponentTeam.id);
+                        1, matchHistory.getOpponentTeam.id);
                   }
                 },
                 builder: (c, model, child) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _matchSchedule.receiveTeam != null
+                    matchHistory.receiveTeam != null
                         ? InkWell(
                             onTap: () => NavigationService.instance
                                 .navigateTo(TEAM_DETAIL,
-                                    arguments: _matchSchedule.getOpponentTeam),
+                                    arguments: matchHistory.getOpponentTeam),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: UIHelper.size10,
@@ -86,14 +86,14 @@ class MatchDetailPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   ImageWidget(
-                                    source: _matchSchedule.getOpponentLogo,
+                                    source: matchHistory.getOpponentLogo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                     size: UIHelper.size40,
                                   ),
                                   UIHelper.horizontalSpaceMedium,
                                   Expanded(
                                     child: Text(
-                                      _matchSchedule.getOpponentName,
+                                      matchHistory.getOpponentName,
                                       style: textStyleSemiBold(size: 18),
                                     ),
                                   ),
@@ -109,43 +109,31 @@ class MatchDetailPage extends StatelessWidget {
                             ),
                           )
                         : SizedBox(),
-                    LineWidget(),
                     ItemOptionWidget(
                       Images.CLOCK,
-                      _matchSchedule.getFullPlayTime,
+                      matchHistory.getFullPlayTime,
                       iconColor: Colors.blue,
                       rightContent: SizedBox(),
                     ),
-                    LineWidget(),
                     ItemOptionWidget(
                       Images.MARKER,
-                      _matchSchedule.groundName,
+                      matchHistory.groundName,
                       iconColor: Colors.green,
                       onTap: () => NavigationService.instance.navigateTo(
                           GROUND_DETAIL,
-                          arguments: _matchSchedule.groundId),
+                          arguments: matchHistory.groundId),
                     ),
-                    _matchSchedule.getRatio != null ? LineWidget() : SizedBox(),
-                    _matchSchedule.getRatio != null
+                    matchHistory.getRatio != null
                         ? ItemOptionWidget(
                             Images.FRAME,
-                            'Tỉ lệ (thắng-thua) ${_matchSchedule.getRatio}',
+                            'Tỉ lệ (thắng-thua) ${matchHistory.getRatio}',
                             iconColor: Colors.red,
                             rightContent: SizedBox(),
                           )
                         : SizedBox(),
-                    LineWidget(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: UIHelper.size15,
-                          vertical: UIHelper.size10),
-                      child: Text(
-                        'Danh sách đăng ký thi đấu',
-                        style: textStyleRegularTitle(),
-                      ),
-                    ),
+
                     Expanded(
-                      child: _matchSchedule.receiveTeam != null
+                      child: matchHistory.receiveTeam != null
                           ? DefaultTabController(
                               length: 2,
                               child: Column(
@@ -153,9 +141,9 @@ class MatchDetailPage extends StatelessWidget {
                                   TabBarWidget(
                                     titles: [
                                       team.name,
-                                      _matchSchedule.getOpponentName
+                                      matchHistory.getOpponentName
                                     ],
-                                    height: UIHelper.size30,
+                                    height: UIHelper.size35,
                                   ),
                                   Expanded(
                                     child: TabBarView(children: [

@@ -3,11 +3,13 @@ import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
+import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/top_ranking.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/viewmodels/social_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class SocialPage extends StatelessWidget {
@@ -46,7 +48,7 @@ class SocialPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRanking(BuildContext context) {
+  Widget _buildRanking(BuildContext context, List<Team> teams) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -55,26 +57,28 @@ class SocialPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             _buildCateTitle('Bảng xếp hạng'),
-            InkWell(
-              onTap: () => NavigationService.instance.navigateTo(RANKING),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                child: Text(
-                  'Xem Top 100',
-                  style: textStyleSemiBold(color: Colors.grey, size: 15),
-                ),
-              ),
-            )
+            teams.length != 0
+                ? InkWell(
+                    onTap: () => NavigationService.instance.navigateTo(RANKING, arguments: teams),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                      child: Text(
+                        'Xem Top 100',
+                        style: textStyleSemiBold(color: Colors.grey, size: 15),
+                      ),
+                    ),
+                  )
+                : SizedBox()
           ],
         ),
         UIHelper.verticalSpaceMedium,
         Container(
           margin: EdgeInsets.only(bottom: UIHelper.size20),
-          height: UIHelper.size(210),
           child: TopRankingWidget(
-            firstTeam: Provider.of<Team>(context),
-            secondTeam: Provider.of<Team>(context),
-            thirdTeam: Provider.of<Team>(context),
+            firstTeam: teams.length > 0 ? teams[0] : null,
+            secondTeam: teams.length > 1 ? teams[1] : null,
+            thirdTeam: teams.length > 2 ? teams[2] : null,
           ),
         ),
       ],
@@ -134,19 +138,26 @@ class SocialPage extends StatelessWidget {
             ),
           ),
           Expanded(
-              child: BorderBackground(
-            child: ListView(
-              padding: EdgeInsets.all(UIHelper.size10),
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              children: <Widget>[
-                _buildRanking(context),
-                _buildNewest(context),
+            child: BorderBackground(
+              child: BaseWidget<SocialViewModel>(
+                model: SocialViewModel(api: Provider.of(context)),
+                onModelReady: (model) {
+                  model.getRanking();
+                },
+                builder: (c, model, child) => ListView(
+                  padding: EdgeInsets.all(UIHelper.padding),
+                  physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    _buildRanking(context, model.teams),
+                    _buildNewest(context),
 //                _buildTournament(context),
-                _buildRecruit(context)
-              ],
+                    _buildRecruit(context)
+                  ],
+                ),
+              ),
             ),
-          ))
+          )
         ],
       ),
     );

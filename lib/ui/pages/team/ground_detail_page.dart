@@ -118,6 +118,7 @@ class GroundDetailPage extends StatelessWidget {
                   child: model.busy
                       ? LoadingWidget()
                       : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ItemOptionWidget(
                               Images.DIRECTION,

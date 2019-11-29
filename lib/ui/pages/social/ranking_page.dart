@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
@@ -9,49 +10,98 @@ import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 class RankingPage extends StatelessWidget {
+  final List<Team> teams;
 
+  RankingPage({Key key, @required this.teams}) : super(key: key);
 
-  Widget _buildItemTeam() => Padding(
-    padding: EdgeInsets.symmetric(vertical: UIHelper.size5),
-    child: Row(
+  Widget _buildItemTeam(int index, Team team) => Padding(
+        padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+        child: Row(
           children: <Widget>[
             SizedBox(
-              width: UIHelper.size50,
+              width: UIHelper.size40,
               child: Text(
-                '1',
+                '${index + 1}',
                 style: textStyleRegularTitle(size: 15),
               ),
             ),
             Expanded(
               child: Text(
-                'Acazia FC',
+                team.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: textStyleRegularTitle(size: 15),
               ),
             ),
             SizedBox(
               width: UIHelper.size50,
               child: Text(
-                '90',
+                team.mp.toString(),
+                textAlign: TextAlign.right,
                 style: textStyleRegularTitle(size: 15),
               ),
             ),
             SizedBox(
               width: UIHelper.size50,
               child: Text(
-                '45',
+                team.win.toString(),
+                textAlign: TextAlign.right,
                 style: textStyleRegularTitle(size: 15),
               ),
             ),
             SizedBox(
               width: UIHelper.size(70),
               child: Text(
-                '1002.56',
+                team.point.toStringAsFixed(1),
+                textAlign: TextAlign.right,
                 style: textStyleRegularTitle(size: 15),
               ),
             )
           ],
         ),
-  );
+      );
+
+  Widget _buildTopBar() => Row(
+        children: <Widget>[
+          SizedBox(
+            width: UIHelper.size40,
+            child: Text(
+              '#R',
+              style: textStyleSemiBold(color: GREEN_TEXT),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              'Team',
+              style: textStyleSemiBold(color: GREEN_TEXT),
+            ),
+          ),
+          SizedBox(
+            width: UIHelper.size50,
+            child: Text(
+              'M',
+              textAlign: TextAlign.right,
+              style: textStyleSemiBold(color: GREEN_TEXT),
+            ),
+          ),
+          SizedBox(
+            width: UIHelper.size50,
+            child: Text(
+              'W',
+              textAlign: TextAlign.right,
+              style: textStyleSemiBold(color: GREEN_TEXT),
+            ),
+          ),
+          SizedBox(
+            width: UIHelper.size(70),
+            child: Text(
+              'P',
+              textAlign: TextAlign.right,
+              style: textStyleSemiBold(color: PRIMARY),
+            ),
+          )
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -70,59 +120,21 @@ class RankingPage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: Padding(
-                padding: EdgeInsets.all(UIHelper.size10),
+                padding: EdgeInsets.all(UIHelper.padding),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: UIHelper.size50,
-                          child: Text(
-                            'Hạng',
-                            style: textStyleSemiBold(size: 15),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Đội bóng',
-                            style: textStyleSemiBold(size: 15),
-                          ),
-                        ),
-                        SizedBox(
-                          width: UIHelper.size50,
-                          child: Text(
-                            'MP',
-                            style: textStyleSemiBold(size: 15),
-                          ),
-                        ),
-                        SizedBox(
-                          width: UIHelper.size50,
-                          child: Text(
-                            'W',
-                            style: textStyleSemiBold(size: 15),
-                          ),
-                        ),
-                        SizedBox(
-                          width: UIHelper.size(70),
-                          child: Text(
-                            'P',
-                            style: textStyleSemiBold(size: 15),
-                          ),
-                        )
-                      ],
-                    ),
+                    _buildTopBar(),
                     UIHelper.verticalSpaceMedium,
                     LineWidget(indent: 0),
                     UIHelper.verticalSpaceSmall,
                     Expanded(
-                      child: ListView(
+                      child: ListView.separated(
                         padding: EdgeInsets.zero,
-                        children: <Widget>[
-                          _buildItemTeam(),
-                          _buildItemTeam(),
-                          _buildItemTeam(),
-                          _buildItemTeam()
-                        ],
+                        itemBuilder: (c, index) =>
+                            _buildItemTeam(index, teams[index]),
+                        separatorBuilder: (c, index) => SizedBox(),
+                        itemCount: teams.length,
+                        physics: BouncingScrollPhysics(),
                       ),
                     )
                   ],

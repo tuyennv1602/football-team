@@ -135,7 +135,7 @@ class InviteDetailPage extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontFamily: REGULAR,
-                                fontSize: UIHelper.size(16),
+                                fontSize: UIHelper.size(17),
                               ),
                             ),
                             TextSpan(
@@ -144,7 +144,7 @@ class InviteDetailPage extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: SEMI_BOLD,
                                 color: Colors.black,
-                                fontSize: UIHelper.size(16),
+                                fontSize: UIHelper.size(17),
                               ),
                             ),
                           ],

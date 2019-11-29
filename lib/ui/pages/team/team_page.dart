@@ -147,14 +147,8 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ..addAll(_manager)
             ..addAll([
               ItemOptionWidget(
-                Images.WALLET_IN,
-                'Đóng quỹ đội bóng',
-                iconColor: Colors.red,
-                onTap: () => NavigationService.instance.navigateTo(TEAM_FUND),
-              ),
-              ItemOptionWidget(
                 Images.TRANSACTION_HISTORY,
-                'Tài chính đội bóng',
+                'Quỹ đội bóng',
                 iconColor: Colors.amber,
                 onTap: () => NavigationService.instance.navigateTo(FINANCE),
               ),
@@ -200,25 +194,25 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Điểm: ${team.point}',
-                    style: textStyleSemiBold(),
+                    'Điểm: ${team.point.toStringAsFixed(1)}',
+                    style: textStyleAlert(color: Colors.black87),
                   ),
                   Text(
                     'Xếp hạng: ${team.rank}',
-                    style: textStyleSemiBold(),
+                    style: textStyleAlert(color: Colors.black87),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
                         'Đánh giá: ',
-                        style: textStyleSemiBold(),
+                        style: textStyleAlert(color: Colors.black87),
                       ),
                       RatingBarIndicator(
                         rating: team.rating,
                         itemCount: 5,
                         itemPadding: EdgeInsets.only(left: 2),
-                        itemSize: UIHelper.size25,
+                        itemSize: UIHelper.size20,
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
                           color: PRIMARY,
@@ -318,8 +312,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                       )
                     : _hasGroup
                         ? Container(
-                            padding: EdgeInsets.only(top: UIHelper.paddingTop),
-                            color: PRIMARY,
                             child: Backdrop(
                               key: _backdropKey,
                               color: Colors.white,
@@ -367,35 +359,34 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                         arguments: SEARCH_TYPE.TEAM_DETAIL),
                               ),
                               frontHeading: Container(
-                                  width: double.infinity,
-                                  height: UIHelper.size40,
-                                  padding:
-                                      EdgeInsets.only(top: UIHelper.size10),
-                                  alignment: Alignment.topCenter,
-                                  decoration: BoxDecoration(
-                                    color: PRIMARY,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(UIHelper.radius),
-                                      topRight:
-                                          Radius.circular(UIHelper.radius),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 3,
-                                        offset: Offset(0, -1),
-                                      )
-                                    ],
+                                width: double.infinity,
+                                height: UIHelper.size40,
+                                padding: EdgeInsets.only(top: UIHelper.size10),
+                                alignment: Alignment.topCenter,
+                                decoration: BoxDecoration(
+                                  color: PRIMARY,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(UIHelper.radius),
+                                    topRight: Radius.circular(UIHelper.radius),
                                   ),
-                                  child: Container(
-                                    height: UIHelper.size(8),
-                                    width: UIHelper.size50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white70,
-                                      borderRadius: BorderRadius.circular(
-                                          UIHelper.size(4)),
-                                    ),
-                                  )),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 3,
+                                      offset: Offset(0, -1),
+                                    )
+                                  ],
+                                ),
+                                child: Container(
+                                  height: UIHelper.size(8),
+                                  width: UIHelper.size50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white70,
+                                    borderRadius:
+                                        BorderRadius.circular(UIHelper.size(4)),
+                                  ),
+                                ),
+                              ),
                             ),
                           )
                         : _buildEmptyTeam(context),

@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/fund.dart';
+import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/services/navigation_services.dart';
+import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
-import 'package:myfootball/ui/widgets/authentication_widget.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
-import 'package:myfootball/utils/string_util.dart';
+import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/viewmodels/team_fund_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class TeamFundPage extends StatelessWidget {
-  _showAuthenticationBottomSheet(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (c) => AuthenticationWidget(
-          onAuthentication: (isSuccess) {
-            if (isSuccess) {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-      );
 
-  Widget _buildItemFund(BuildContext context, String title, String content,
-          double price, int status) =>
-      Card(
-        elevation: 3,
+  Widget _buildItemFund(BuildContext context, Fund fund) => Card(
+        elevation: 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.size15),
+          borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
-          onTap: () => _showAuthenticationBottomSheet(context),
           child: Padding(
-            padding: EdgeInsets.all(UIHelper.size15),
+            padding: EdgeInsets.all(UIHelper.padding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: UIHelper.size5),
                   child: Text(
-                    title,
+                    fund.title,
                     style: textStyleSemiBold(),
                   ),
                 ),
@@ -56,7 +48,7 @@ class TeamFundPage extends StatelessWidget {
                             fontSize: UIHelper.size(17)),
                       ),
                       TextSpan(
-                        text: StringUtil.formatCurrency(100000),
+                        text: fund.getPrice,
                         style: TextStyle(
                             fontFamily: SEMI_BOLD,
                             color: Colors.black,
@@ -78,7 +70,7 @@ class TeamFundPage extends StatelessWidget {
                                 fontSize: UIHelper.size(17)),
                           ),
                           TextSpan(
-                            text: '15/09/2019',
+                            text: fund.getExpiredDate,
                             style: TextStyle(
                                 fontFamily: SEMI_BOLD,
                                 color: Colors.black,
@@ -89,11 +81,11 @@ class TeamFundPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        status % 2 == 0 ? 'Đã đóng' : 'Chưa đóng',
+                        fund.status == 0 ? 'Chưa đóng' : 'Đã đóng',
                         textAlign: TextAlign.right,
                         style: textStyleRegularBody(
                             color:
-                                status % 2 == 0 ? Colors.green : Colors.grey),
+                                fund.status == 0 ? Colors.green : Colors.green),
                       ),
                     )
                   ],
@@ -112,7 +104,7 @@ class TeamFundPage extends StatelessWidget {
         children: <Widget>[
           AppBarWidget(
             centerContent: Text(
-              'Đóng quỹ đội bóng',
+              'Thông báo đóng quỹ',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
@@ -123,18 +115,22 @@ class TeamFundPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: ListView(
-                padding: EdgeInsets.symmetric(vertical: UIHelper.size15),
-                children: <Widget>[
-                  _buildItemFund(context, 'Đóng quỹ tháng 10/2019',
-                      'Vui lòng hoàn thành trước 15/10', 100000, 1),
-                  UIHelper.verticalIndicator,
-                  _buildItemFund(context, 'Đóng quỹ tháng 09/2019',
-                      'Vui lòng hoàn thành trước 15/09', 100000, 2),
-                  UIHelper.verticalIndicator,
-                  _buildItemFund(context, 'Đóng quỹ tháng 08/2019',
-                      'Vui lòng hoàn thành trước 15/08', 100000, 2)
-                ],
+              child: BaseWidget<TeamFundViewModel>(
+                model: TeamFundViewModel(api: Provider.of(context)),
+                onModelReady: (model) =>
+                    model.getFunds(Provider.of<Team>(context).id),
+                builder: (c, model, child) => model.busy
+                    ? LoadingWidget()
+                    : model.funds.length == 0
+                        ? EmptyWidget(message: 'Chưa có thông báo nào')
+                        : ListView.separated(
+                            padding: EdgeInsets.symmetric(
+                                vertical: UIHelper.padding),
+                            itemBuilder: (c, index) =>
+                                _buildItemFund(context, model.funds[index]),
+                            separatorBuilder: (c, index) =>
+                                UIHelper.verticalIndicator,
+                            itemCount: model.funds.length),
               ),
             ),
           ),

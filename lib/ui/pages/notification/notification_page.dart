@@ -45,17 +45,11 @@ class NotificationState extends State<NotificationPage>
                   children: <TextSpan>[
                     TextSpan(
                       text: notification.title,
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontFamily: SEMI_BOLD,
-                          fontSize: UIHelper.size(16)),
+                      style: textStyleSemiBold(),
                     ),
                     TextSpan(
                       text: ' - ${notification.getCreateTime}',
-                      style: TextStyle(
-                          fontFamily: REGULAR,
-                          color: Colors.grey,
-                          fontSize: UIHelper.size(14)),
+                      style: textStyleRegularBody(color: Colors.grey),
                     ),
                   ],
                 ),

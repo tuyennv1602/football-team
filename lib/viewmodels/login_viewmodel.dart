@@ -38,7 +38,7 @@ class LoginViewModel extends BaseViewModel {
       if (resp.statusCode == Constants.CODE_NOT_ACCEPTABLE) {
         UIHelper.showConfirmDialog(
             'Tài khoản chưa được kích hoạt! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
-            onConfirmed: () => verifyPhoneNumber('+84123456788'));
+            onConfirmed: () => verifyPhoneNumber('0123456788'));
       } else {
         UIHelper.showSimpleDialog(resp.errorMessage);
       }
@@ -85,7 +85,6 @@ class LoginViewModel extends BaseViewModel {
         (AuthCredential phoneAuthCredential) {
       UIHelper.hideProgressDialog;
       print('verify completely');
-//      FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
     };
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {

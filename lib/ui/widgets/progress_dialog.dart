@@ -6,10 +6,6 @@ bool _isShowing = false;
 BuildContext _context, _dismissingContext;
 bool _barrierDismissible = true;
 
-Widget _progressWidget = RotationWidget(
-  widget: Image.asset('assets/images/ic_loading.png'),
-);
-
 class ProgressDialog {
   _Body _dialog;
 
@@ -91,10 +87,15 @@ class _BodyState extends State<_Body> {
       runAlignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: <Widget>[
-        SizedBox(
-          width: UIHelper.size(55),
-          height: UIHelper.size(55),
-          child: _progressWidget,
+        Container(
+          width: UIHelper.size(60),
+          height: UIHelper.size(60),
+          padding: EdgeInsets.all(UIHelper.size5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(UIHelper.size30),
+          ),
+          child: Image.asset('assets/images/ic_circle_loading.gif'),
         )
       ],
     );

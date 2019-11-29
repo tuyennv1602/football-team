@@ -43,167 +43,170 @@ class _LoginState extends State<LoginPage> {
     UIHelper().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Images.BACKGROUND),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(bottom: UIHelper.size35),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Image.asset(
-                      Images.LOGO,
-                      width: UIHelper.size50,
-                      height: UIHelper.size50,
-                      fit: BoxFit.contain,
-                      color: Colors.white,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: UIHelper.size15),
-                      child: Text(
-                        StringRes.APP_NAME,
-                        style: textStyleAppName(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+      body: GestureDetector(
+        onTap: () => UIHelper.hideKeyBoard(),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(Images.BACKGROUND),
+              fit: BoxFit.cover,
             ),
-            Expanded(
-              flex: 3,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          UIHelper.verticalSpaceLarge,
-                          LightInputTextWidget(
-                            labelText: 'Email',
-                            validator: Validator.validEmail,
-                            inputType: TextInputType.emailAddress,
-                            onSaved: (value) => _email = value.trim(),
-                          ),
-                          UIHelper.verticalSpaceMedium,
-                          LightInputTextWidget(
-                            labelText: 'Mật khẩu',
-                            validator: Validator.validPassword,
-                            obscureText: true,
-                            onSaved: (value) => _password = value.trim(),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                              onTap: () => NavigationService.instance
-                                  .navigateTo(FORGOT_PASSWORD),
-                              child: Text(
-                                'Quên mật khẩu?',
-                                style: textStyleRegular(),
-                              ),
-                            ),
-                          ),
-                          BaseWidget<LoginViewModel>(
-                            model: LoginViewModel(
-                                authServices: Provider.of(context)),
-                            builder: (context, model, child) => ButtonWidget(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: UIHelper.size30),
-                              child: Text(
-                                'ĐĂNG NHẬP',
-                                style: textStyleButton(),
-                              ),
-                              onTap: () {
-                                if (validateAndSave()) {
-                                  model.loginEmail(_email, _password);
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Row(
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: UIHelper.size35),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: LINE_COLOR,
-                        ),
+                      Image.asset(
+                        Images.LOGO,
+                        width: UIHelper.size50,
+                        height: UIHelper.size50,
+                        fit: BoxFit.contain,
+                        color: Colors.white,
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                        padding: EdgeInsets.only(left: UIHelper.size15),
                         child: Text(
-                          'Đăng nhập qua',
-                          style: textStyleRegular(),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: LINE_COLOR,
+                          StringRes.APP_NAME,
+                          style: textStyleAppName(),
                         ),
                       )
                     ],
                   ),
-                  UIHelper.verticalSpaceLarge,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        iconSize: UIHelper.size40,
-                        onPressed: () => print('facebook'),
-                        icon: Image.asset('assets/images/ic_facebook.png'),
-                      ),
-                      IconButton(
-                        iconSize: UIHelper.size40,
-                        onPressed: () => print('google'),
-                        icon: Image.asset('assets/images/ic_google.png'),
-                      )
-                    ],
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Bạn chưa có tài khoản? ',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: UIHelper.size(17))),
-                            TextSpan(
-                                text: 'Đăng ký ngay',
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontFamily: SEMI_BOLD,
-                                    color: Colors.black,
-                                    fontSize: UIHelper.size(17)),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => NavigationService.instance
-                                      .navigateTo(REGISTER)),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            UIHelper.verticalSpaceLarge,
+                            LightInputTextWidget(
+                              labelText: 'Email',
+                              validator: Validator.validEmail,
+                              inputType: TextInputType.emailAddress,
+                              onSaved: (value) => _email = value.trim(),
+                            ),
+                            UIHelper.verticalSpaceMedium,
+                            LightInputTextWidget(
+                              labelText: 'Mật khẩu',
+                              validator: Validator.validPassword,
+                              obscureText: true,
+                              onSaved: (value) => _password = value.trim(),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: InkWell(
+                                onTap: () => NavigationService.instance
+                                    .navigateTo(FORGOT_PASSWORD),
+                                child: Text(
+                                  'Quên mật khẩu?',
+                                  style: textStyleAlert(color: Colors.black, size: 17),
+                                ),
+                              ),
+                            ),
+                            BaseWidget<LoginViewModel>(
+                              model: LoginViewModel(
+                                  authServices: Provider.of(context)),
+                              builder: (context, model, child) => ButtonWidget(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: UIHelper.size30),
+                                child: Text(
+                                  'ĐĂNG NHẬP',
+                                  style: textStyleButton(),
+                                ),
+                                onTap: () {
+                                  if (validateAndSave()) {
+                                    model.loginEmail(_email, _password);
+                                  }
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            color: LINE_COLOR,
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                          child: Text(
+                            'Đăng nhập qua',
+                            style: textStyleRegular(),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            color: LINE_COLOR,
+                          ),
+                        )
+                      ],
+                    ),
+                    UIHelper.verticalSpaceLarge,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          iconSize: UIHelper.size40,
+                          onPressed: () => print('facebook'),
+                          icon: Image.asset('assets/images/ic_facebook.png'),
+                        ),
+                        IconButton(
+                          iconSize: UIHelper.size40,
+                          onPressed: () => print('google'),
+                          icon: Image.asset('assets/images/ic_google.png'),
+                        )
+                      ],
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: 'Bạn chưa có tài khoản? ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: UIHelper.size(17))),
+                              TextSpan(
+                                  text: 'Đăng ký ngay',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: BOLD,
+                                      color: PRIMARY,
+                                      fontSize: UIHelper.size(17)),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => NavigationService.instance
+                                        .navigateTo(REGISTER)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

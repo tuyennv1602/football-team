@@ -56,7 +56,7 @@ class BottomSheetWidget extends StatelessWidget {
             backgroundColor: Colors.white,
             child: Text(
               value,
-              style: textStyleAlert(color: Colors.black),
+              style: textStyleAlert(size: 16, color: Colors.black),
             ),
             onTap: () {
               Navigator.of(context).pop();

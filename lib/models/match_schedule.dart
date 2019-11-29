@@ -79,7 +79,7 @@ class MatchSchedule {
       '${DateUtil.getTimeStringFromDouble(startTime)} ${DateFormat('dd/MM').format(DateTime.fromMillisecondsSinceEpoch(playDate))}';
 
   String get getFullPlayTime =>
-      '${DateUtil.getTimeStringFromDouble(startTime)} ${DateUtil.getDateFromTimestamp(playDate)}';
+      '${startTime != null ? DateUtil.getTimeStringFromDouble(startTime) : ''} ${DateUtil.getDateFromTimestamp(playDate)}';
 
   String get getOpponentLogo => isSender ? receiveTeam.logo : sendTeam.logo;
 

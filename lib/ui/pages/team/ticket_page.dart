@@ -179,7 +179,7 @@ class TicketPage extends StatelessWidget {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: StringUtil.formatCurrency(ticket.price),
+                                    text: ticket.getPrice,
                                     style: TextStyle(
                                       fontFamily: SEMI_BOLD,
                                       color: Colors.black87,

@@ -64,9 +64,9 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
             padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/user_cover.jpg'),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.srgbToLinearGamma()),
+                image: AssetImage('assets/images/user_cover.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
             child: Column(
               children: <Widget>[
@@ -194,8 +194,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                         Images.ADD_TEAM,
                         'Thành lập đội bóng',
                         iconColor: Colors.orange,
-                        onTap: () => NavigationService.instance
-                            .navigateTo(CREATE_TEAM),
+                        onTap: () =>
+                            NavigationService.instance.navigateTo(CREATE_TEAM),
                       ),
 
                       ItemOptionWidget(

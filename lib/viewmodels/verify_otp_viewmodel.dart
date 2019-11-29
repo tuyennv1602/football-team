@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/services/api.dart';
 import 'package:myfootball/services/firebase_services.dart';
@@ -49,5 +50,41 @@ class VerifyOTPViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog('Có lỗi xảy ra. Vui lòng thử lại',
           onConfirmed: () => NavigationService.instance.goBack());
     }
+  }
+
+  Future<void> verifyPhoneNumber(String phoneNumber) async {
+    UIHelper.showProgressDialog;
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = phoneNumber.replaceFirst('0', '+84');
+    }
+    final PhoneVerificationCompleted verificationCompleted =
+        (AuthCredential phoneAuthCredential) {
+      UIHelper.hideProgressDialog;
+      print('verify completely');
+    };
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+      UIHelper.hideProgressDialog;
+      UIHelper.showSimpleDialog(
+          'Gửi mã xác thực lỗi: ${authException.message}');
+    };
+    final PhoneCodeSent codeSent =
+        (String verificationId, [int forceResendingToken]) async {
+      UIHelper.hideProgressDialog;
+      print('code sent: ' + verificationId);
+      setExpired(false);
+    };
+    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      UIHelper.hideProgressDialog;
+      print('Gửi mã xác thực lỗi: Timeout!');
+    };
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: Duration(minutes: 1),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
   }
 }

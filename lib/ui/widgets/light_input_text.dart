@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/styles.dart';
@@ -15,6 +16,7 @@ class LightInputTextWidget extends StatelessWidget {
   final Function(String) onSaved;
   final TextStyle textStyle;
   final int maxLines;
+  final List<TextInputFormatter> formatter;
 
   LightInputTextWidget(
       {Key key,
@@ -27,6 +29,7 @@ class LightInputTextWidget extends StatelessWidget {
       this.labelText,
       this.onSaved,
       this.maxLines = 1,
+      this.formatter,
       this.textStyle})
       : super(key: key);
 
@@ -44,6 +47,7 @@ class LightInputTextWidget extends StatelessWidget {
       textInputAction: inputAction ?? TextInputAction.done,
       onSaved: onSaved,
       style: textStyle ?? textStyleInput(),
+      inputFormatters: formatter,
       decoration: InputDecoration(
         helperText: '',
         alignLabelWithHint: maxLines > 1,
@@ -58,16 +62,12 @@ class LightInputTextWidget extends StatelessWidget {
             borderSide: BorderSide(width: 1, color: PRIMARY),
             borderRadius: BorderRadius.circular(UIHelper.size10)),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: PRIMARY),
-          borderRadius: BorderRadius.circular(UIHelper.size10),
-        ),
+            borderSide: BorderSide(width: 1, color: PRIMARY),
+            borderRadius: BorderRadius.circular(UIHelper.size10)),
         errorText: errorText,
         labelText: labelText,
         counter: SizedBox(),
-        errorStyle: TextStyle(
-            fontFamily: REGULAR,
-            color: Colors.red,
-            fontSize: UIHelper.size(12)),
+        errorStyle: textStyleItalic(size: 12, color: Colors.red),
         labelStyle: textStyleInput(color: Colors.grey),
       ),
     );

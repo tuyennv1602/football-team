@@ -1,12 +1,13 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'dart:math' as math;
 
 final double _kFrontClosedHeight =
     UIHelper.size40; // front layer height when closed
-final double _kBackAppBarHeight =
-    UIHelper.size50; // back layer (options) appbar height
+final double _kBackAppBarHeight = UIHelper.size(55) +
+    UIHelper.paddingTop; // back layer (options) appbar height
 
 class _TappableWhileStatusIs extends StatefulWidget {
   const _TappableWhileStatusIs(
@@ -136,7 +137,7 @@ class _BackAppBar extends StatelessWidget {
     final List<Widget> children = <Widget>[
       Container(
         alignment: Alignment.center,
-        width: _kBackAppBarHeight,
+        width: _kBackAppBarHeight - UIHelper.paddingTop,
         child: leading,
       ),
       Expanded(
@@ -147,12 +148,23 @@ class _BackAppBar extends StatelessWidget {
       children.add(
         Container(
           alignment: Alignment.center,
-          width: _kBackAppBarHeight,
+          width: _kBackAppBarHeight - UIHelper.paddingTop,
           child: trailing,
         ),
       );
     }
-    return SizedBox(height: _kBackAppBarHeight, child: Row(children: children));
+    return Container(
+      height: _kBackAppBarHeight,
+      padding: EdgeInsets.only(top: UIHelper.paddingTop),
+      child: Row(children: children),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF02DC37), PRIMARY],
+        ),
+      ),
+    );
   }
 }
 

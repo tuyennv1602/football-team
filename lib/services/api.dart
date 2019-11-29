@@ -5,6 +5,7 @@ import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/comments_resp.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
+import 'package:myfootball/models/responses/fund_resp.dart';
 import 'package:myfootball/models/responses/ground_resp.dart';
 import 'package:myfootball/models/responses/invite_request_resp.dart';
 import 'package:myfootball/models/responses/list_ground_resp.dart';
@@ -513,6 +514,44 @@ class Api {
       return MatchHistoryResponse.success(teamId, resp.data);
     } on DioError catch (e) {
       return MatchHistoryResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> confirmMatchResult(int historyId) async {
+    try {
+      var resp = await _api.putApi('match/history/$historyId/confirm');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> createFundNotify(
+      int teamId, String title, double price, int expireDate) async {
+    try {
+      var resp = await _api.postApi('group/$teamId/notice-wallet',
+          body: {"price": price, "title": title, "expire_date": expireDate});
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<FundResponse> getFundsByTeam(int teamId) async {
+    try {
+      var resp = await _api.getApi('group/$teamId/notice-wallet');
+      return FundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return FundResponse.error(e.message);
+    }
+  }
+
+  Future<SearchTeamResponse> getRanking() async {
+    try {
+      var resp = await _api.getApi('group/ranking');
+      return SearchTeamResponse.success(resp.data);
+    } on DioError catch (e) {
+      return SearchTeamResponse.error(e.message);
     }
   }
 }

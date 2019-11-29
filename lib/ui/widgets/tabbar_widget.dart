@@ -24,15 +24,19 @@ class TabBarWidget extends StatelessWidget {
         tabs: titles
             .map(
               (title) => Align(
-                child: Text(title),
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             )
             .toList(),
-        labelStyle: textStyleSemiBold(),
+        labelStyle: textStyleRegularTitle(),
         isScrollable: isScrollable,
         unselectedLabelStyle: textStyleRegularTitle(),
         labelColor: PRIMARY,
-        unselectedLabelColor: BLACK_TEXT,
+        unselectedLabelColor: Colors.grey,
         indicator: UnderlineTabIndicator(
           insets: EdgeInsets.symmetric(horizontal: UIHelper.size5),
           borderSide: BorderSide(width: UIHelper.size(2), color: PRIMARY),

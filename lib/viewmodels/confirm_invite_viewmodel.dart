@@ -31,6 +31,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
+          isSuccess: true,
           onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);

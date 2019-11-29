@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/user.dart';
@@ -14,14 +16,26 @@ import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/input_price_widget.dart';
 import 'package:myfootball/ui/widgets/input_text_widget.dart';
 import 'package:myfootball/ui/widgets/select_date.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/finance_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class FinancePage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  String _content;
+  final _formTransactionKey = GlobalKey<FormState>();
+  final _formNotifyKey = GlobalKey<FormState>();
+
+  String _transaction;
+
+  bool validateAndSaveNotification() {
+    final form = _formNotifyKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
 
   Widget _buildItemIntro(String image, String action) => Padding(
         padding: EdgeInsets.symmetric(
@@ -63,7 +77,7 @@ class FinancePage extends StatelessWidget {
             ),
           ),
           _buildItemIntro(
-              Images.BUDGET, 'Xem theo dõi đóng quỹ của thành viên'),
+              Images.BUDGET, 'Xem danh sách thông báo đóng quỹ'),
           UIHelper.verticalSpaceSmall,
           _buildItemIntro(
               Images.FUND_NOTIFY, 'Tạo thông báo đóng quỹ tới thành viên'),
@@ -72,35 +86,63 @@ class FinancePage extends StatelessWidget {
         ],
       );
 
-  _createFundNotification(BuildContext context) => UIHelper.showCustomizeDialog(
-        'create noti',
-        icon: Images.FUND_NOTIFY,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Số tiền cần thu',
-              style: textStyleRegularTitle(color: Colors.white),
+  _createFundNotification(BuildContext context, {Function onSubmit}) {
+    var price;
+    var expireDate;
+    var title;
+    return UIHelper.showCustomizeDialog(
+      'create noti',
+      icon: Images.FUND_NOTIFY,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Số tiền cần thu',
+            style: textStyleRegularTitle(color: Colors.white),
+          ),
+          UIHelper.verticalSpaceSmall,
+          InputPriceWidget(
+              textStyle: textStyleSemiBold(size: 20, color: Colors.white),
+              hint: '0đ',
+              hintTextStyle: textStyleSemiBold(size: 20, color: Colors.white),
+              onChangedText: (text) => price = text),
+          UIHelper.verticalSpaceMedium,
+          Text(
+            'Chọn hạn thu quỹ',
+            style: textStyleRegularTitle(color: Colors.white),
+          ),
+          UIHelper.verticalSpaceSmall,
+          SelectDateWidget(
+            textStyle: textStyleSemiBold(size: 20, color: Colors.white),
+            onSelectedDate: (date) => expireDate = date,
+          ),
+          UIHelper.verticalSpaceMedium,
+          Form(
+            key: _formNotifyKey,
+            child: InputTextWidget(
+              validator: (value) {
+                if (value.isEmpty) return 'Vui lòng nhập tiêu đề';
+                return null;
+              },
+              onSaved: (value) => title = value,
+              maxLines: 1,
+              inputType: TextInputType.text,
+              inputAction: TextInputAction.done,
+              labelText: 'Tiêu đề',
+              textStyle: textStyleInput(color: Colors.white),
+              hintTextStyle: textStyleInput(color: Colors.white),
             ),
-            UIHelper.verticalSpaceSmall,
-            InputPriceWidget(
-                textStyle: textStyleSemiBold(size: 22, color: Colors.white),
-                hint: '0đ',
-                hintTextStyle:
-                    textStyleSemiBold(size: 22, color: Colors.white),
-                onChangedText: (text) {}),
-            UIHelper.verticalSpaceMedium,
-            Text(
-              'Chọn hạn thu quỹ',
-              style: textStyleRegularTitle(color: Colors.white),
-            ),
-            UIHelper.verticalSpaceSmall,
-            SelectDateWidget(
-              textStyle: textStyleSemiBold(size: 22, color: Colors.white),
-            )
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+      onConfirmed: () {
+        if (validateAndSaveNotification()) {
+          NavigationService.instance.goBack();
+          onSubmit(title, price, expireDate);
+        }
+      },
+    );
+  }
 
   _createTransaction(BuildContext context) => UIHelper.showCustomizeDialog(
         'create_transaction',
@@ -114,30 +156,29 @@ class FinancePage extends StatelessWidget {
             ),
             UIHelper.verticalSpaceSmall,
             InputPriceWidget(
-                textStyle: textStyleSemiBold(size: 22, color: Colors.white),
+                textStyle: textStyleSemiBold(size: 20, color: Colors.white),
                 hint: '0đ',
-                hintTextStyle:
-                    textStyleSemiBold(size: 22, color: Colors.white),
+                hintTextStyle: textStyleSemiBold(size: 20, color: Colors.white),
                 onChangedText: (text) {}),
             Padding(
-              padding: EdgeInsets.only(
-                  top: UIHelper.size5, bottom: UIHelper.size20),
+              padding:
+                  EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size20),
               child: ChooseTransactionTypeWidget(onSelectedType: (type) {}),
             ),
             Form(
-              key: _formKey,
+              key: _formTransactionKey,
               child: InputTextWidget(
                 validator: (value) {
                   if (value.isEmpty) return 'Vui lòng nhập nội dung';
                   return null;
                 },
-                onSaved: (value) => _content = value,
+                onSaved: (value) => _transaction = value,
                 maxLines: 1,
                 inputType: TextInputType.text,
                 inputAction: TextInputAction.done,
                 labelText: 'Nôi dung giao dịch',
                 textStyle: textStyleInput(color: Colors.white),
-                hintTextStyle:textStyleInput(color: Colors.white) ,
+                hintTextStyle: textStyleInput(color: Colors.white),
               ),
             ),
           ],
@@ -204,31 +245,43 @@ class FinancePage extends StatelessWidget {
               ],
             ),
           ),
-          AppBarWidget(
-            centerContent: isManager
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      AppBarButtonWidget(
-                          imageName: Images.BUDGET, onTap: () {}),
-                      AppBarButtonWidget(
-                        imageName: Images.FUND_NOTIFY,
-                        onTap: () => _createFundNotification(context),
-                        padding: UIHelper.size(12),
-                      ),
-                      AppBarButtonWidget(
-                        imageName: Images.TRANSACTIONS,
-                        onTap: () => _createTransaction(context),
-                      ),
-                    ],
-                  )
-                : SizedBox(),
-            leftContent: AppBarButtonWidget(
-              imageName: Images.BACK,
-              onTap: () => NavigationService.instance.goBack(),
+          BaseWidget<FinanceViewModel>(
+            model: FinanceViewModel(api: Provider.of(context)),
+            builder: (c, model, child) => AppBarWidget(
+              centerContent: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  AppBarButtonWidget(
+                      imageName: Images.BUDGET,
+                      onTap: () =>
+                          NavigationService.instance.navigateTo(TEAM_FUND)),
+                  isManager
+                      ? AppBarButtonWidget(
+                          imageName: Images.FUND_NOTIFY,
+                          onTap: () => _createFundNotification(
+                            context,
+                            onSubmit: (title, price, expiredDate) =>
+                                model.createFundNotify(
+                                    team.id, title, price, expiredDate),
+                          ),
+                          padding: UIHelper.size(12),
+                        )
+                      : SizedBox(),
+                  isManager
+                      ? AppBarButtonWidget(
+                          imageName: Images.TRANSACTIONS,
+                          onTap: () => _createTransaction(context),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+              leftContent: AppBarButtonWidget(
+                imageName: Images.BACK,
+                onTap: () => NavigationService.instance.goBack(),
+              ),
+              backgroundColor: Colors.transparent,
+              rightContent: SizedBox(),
             ),
-            backgroundColor: Colors.transparent,
-            rightContent: SizedBox(),
           ),
           Container(
             margin:

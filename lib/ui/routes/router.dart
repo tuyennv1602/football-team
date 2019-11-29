@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/invite_team_arg.dart';
+import 'package:myfootball/models/match_history.dart';
 import 'package:myfootball/models/match_schedule.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/verify_arg.dart';
@@ -107,8 +108,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case MATCH_HISTORY:
       return SlideLeftRoute(widget: MatchHistoryPage());
     case MATCH_DETAIL:
-      var match = settings.arguments as MatchSchedule;
-      return SlideLeftRoute(widget: MatchDetailPage(matchSchedule: match));
+      var match = settings.arguments as MatchHistory;
+      return SlideLeftRoute(widget: MatchDetailPage(matchHistory: match));
     case TICKETS:
       return SlideLeftRoute(widget: TicketPage());
     case INVITE_REQUESTS:
@@ -116,7 +117,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case USER_TRANSACTION_HISTORY:
       return SlideLeftRoute(widget: TransactionHistoryPage());
     case RANKING:
-      return SlideLeftRoute(widget: RankingPage());
+      var teams = settings.arguments as List<Team>;
+      return SlideLeftRoute(
+          widget: RankingPage(
+        teams: teams,
+      ));
     case VERIFY_OTP:
       var verify = settings.arguments as VerifyArgument;
       return SlideLeftRoute(widget: VerifyOTPPage(verifyArgument: verify));

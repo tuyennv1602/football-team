@@ -21,6 +21,8 @@ class Team {
   int rank;
   int isSearching;
   List<GroupMatchingInfo> groupMatchingInfo;
+  int mp;
+  int win;
 
   Team(
       {this.id,
@@ -66,6 +68,8 @@ class Team {
         groupMatchingInfo.add(new GroupMatchingInfo.fromJson(v));
       });
     }
+    mp = json['number_match'];
+    win = json['number_match_win'];
   }
 
   Map<String, dynamic> toJson() {

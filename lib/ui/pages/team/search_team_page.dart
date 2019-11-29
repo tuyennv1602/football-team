@@ -13,7 +13,6 @@ import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/input_text_widget.dart';
-import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/multichoice_position.dart';
 import 'package:myfootball/ui/widgets/search_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -50,7 +49,7 @@ class SearchTeamPage extends StatelessWidget {
   Widget _buildItemTeam(BuildContext context, Team team,
           {Function onSubmitRequest}) =>
       Card(
-        elevation: 3,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
@@ -91,7 +90,8 @@ class SearchTeamPage extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(0, UIHelper.padding, UIHelper.padding, UIHelper.padding),
+                  padding: EdgeInsets.fromLTRB(
+                      0, UIHelper.padding, UIHelper.padding, UIHelper.padding),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -106,31 +106,79 @@ class SearchTeamPage extends StatelessWidget {
                         team.name,
                         style: textStyleSemiBold(),
                       ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: UIHelper.size(2)),
-                        child: Text(
-                          'Xếp hạng: ${team.rank} (${team.point} điểm)',
-                          style: textStyleRegular(),
-                        ),
+                      UIHelper.verticalSpaceSmall,
+                      Text(
+                        team.bio,
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                        style: textStyleRegularBody(),
                       ),
+                      UIHelper.verticalSpaceMedium,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            'Đánh giá: ',
-                            style: textStyleRegular(),
-                          ),
-                          RatingBarIndicator(
-                            rating: team.rating,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.only(left: 2),
-                            itemSize: UIHelper.size15,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: PRIMARY,
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  Images.MEMBER,
+                                  width: UIHelper.size15,
+                                  height: UIHelper.size15,
+                                  color: Colors.grey,
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: UIHelper.size5),
+                                  child: Text(
+                                    team.countMember.toString(),
+                                    style:
+                                        textStyleRegular(color: Colors.black87),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  Images.RANK,
+                                  width: UIHelper.size(13),
+                                  height: UIHelper.size(13),
+                                  color: Colors.amber,
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: UIHelper.size5),
+                                  child: Text(
+                                    team.rank.toString(),
+                                    style:
+                                        textStyleRegular(color: Colors.black87),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.green,
+                                  size: UIHelper.size20,
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: UIHelper.size5),
+                                  child: Text(
+                                    team.rating.toStringAsFixed(1),
+                                    style:
+                                        textStyleRegular(color: Colors.black87),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                         ],
                       )
                     ],
@@ -253,7 +301,8 @@ class SearchTeamPage extends StatelessWidget {
                                 ? EmptyWidget(message: 'Không tìm thấy kết quả')
                                 : ListView.separated(
                                     physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.only(bottom: UIHelper.padding),
+                                    padding: EdgeInsets.only(
+                                        bottom: UIHelper.padding),
                                     itemCount: model.teams.length,
                                     separatorBuilder: (c, index) =>
                                         UIHelper.verticalIndicator,

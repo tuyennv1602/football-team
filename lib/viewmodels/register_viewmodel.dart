@@ -36,7 +36,6 @@ class RegisterViewModel extends BaseViewModel {
         (AuthCredential phoneAuthCredential) {
       UIHelper.hideProgressDialog;
       print('verify completely');
-//      FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
     };
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {

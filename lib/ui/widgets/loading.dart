@@ -12,12 +12,11 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
         child: type == LOADING_TYPE.CIRCLE
-            ? RotationWidget(
-                width: UIHelper.size50,
-                height: UIHelper.size50,
-                widget: Image.asset(
-                  'assets/images/ic_loading.png',
-                ),
+            ? Container(
+                width: UIHelper.size(60),
+                height: UIHelper.size(60),
+                padding: EdgeInsets.all(UIHelper.size5),
+                child: Image.asset('assets/images/ic_circle_loading.gif'),
               )
             : Image.asset(
                 'assets/images/ic_loading.gif',

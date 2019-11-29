@@ -20,10 +20,10 @@ class Validator {
 
   static String validPhoneNumber(String phoneNumber) {
     if (phoneNumber.isEmpty) return 'Vui lòng nhập số điện thoại';
-    final _phoneRegExpString = r'^(?:[+0]9)?[0-9]{10}$';
+    final _phoneRegExpString = r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{3})\s*$';
     RegExp regex = RegExp(_phoneRegExpString, caseSensitive: false);
     if (!regex.hasMatch(phoneNumber)) {
-      return 'Số điện thoại không hợp lệ';
+      return 'Số điện thoại có dạng +84 XXX XXX XXX';
     }
     return null;
   }

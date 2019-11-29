@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/utils/currency_input_formatter.dart';
+import 'package:myfootball/utils/currency_formatter.dart';
 
 typedef void OnChangedText(String text);
 typedef void OnSubmitText(String text);
@@ -44,7 +44,7 @@ class InputPriceWidget extends StatelessWidget {
       style: textStyle ?? textStyleRegularTitle(),
       inputFormatters: [
         WhitelistingTextInputFormatter.digitsOnly,
-        CurrencyInputFormatter()
+        CurrencyFormatter()
       ],
       decoration: InputDecoration(
           hintText: hint,

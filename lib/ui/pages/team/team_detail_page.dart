@@ -94,12 +94,35 @@ class TeamDetailPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'Điểm: ${_team.point ?? 0}',
-                                      style: textStyleSemiBold(),
+                                      'Điểm: ${_team.point.toStringAsFixed(1) ?? 0}',
+                                      style:
+                                          textStyleAlert(color: Colors.black87),
                                     ),
                                     Text(
                                       'Xếp hạng: ${_team.rank ?? 0}',
-                                      style: textStyleSemiBold(),
+                                      style:
+                                          textStyleAlert(color: Colors.black87),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          'Đánh giá: ',
+                                          style: textStyleAlert(
+                                              color: Colors.black87),
+                                        ),
+                                        RatingBarIndicator(
+                                          rating: team.rating,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.only(left: 2),
+                                          itemSize: UIHelper.size20,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: PRIMARY,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Divider(
                                       height: UIHelper.size15,
@@ -135,45 +158,14 @@ class TeamDetailPage extends StatelessWidget {
                                         .navigateTo(MEMBERS, arguments: _team),
                                   ),
                                   LineWidget(),
-                                  InkWell(
+                                  ItemOptionWidget(
+                                    Images.EDIT_TEAM,
+                                    'Nhận xét',
+                                    iconColor: Colors.amber,
                                     onTap: () => _writeReview(
                                       context,
                                       onSubmit: (rating, comment) =>
                                           model.submitReview(rating, comment),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: UIHelper.size20,
-                                          vertical: UIHelper.size15),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Image.asset(
-                                            Images.EDIT_TEAM,
-                                            width: UIHelper.size20,
-                                            height: UIHelper.size20,
-                                            color: Colors.amber,
-                                          ),
-                                          UIHelper.horizontalSpaceLarge,
-                                          Expanded(
-                                            child: Text(
-                                              'Đánh giá & nhận xét',
-                                              style: textStyleRegularTitle(),
-                                            ),
-                                          ),
-                                          RatingBarIndicator(
-                                            rating: _team.rating,
-                                            itemCount: 5,
-                                            itemPadding: EdgeInsets.only(
-                                                right: UIHelper.size(2)),
-                                            itemSize: UIHelper.size20,
-                                            itemBuilder: (context, index) =>
-                                                Icon(
-                                              Icons.star,
-                                              color: PRIMARY,
-                                            ),
-                                          )
-                                        ],
-                                      ),
                                     ),
                                   ),
                                   Expanded(
