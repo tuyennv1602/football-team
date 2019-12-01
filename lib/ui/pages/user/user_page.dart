@@ -1,3 +1,4 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
@@ -108,24 +109,36 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       ),
                       UIHelper.horizontalSpaceLarge,
                       Expanded(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            _user.name ?? _user.userName,
-                            textAlign: TextAlign.center,
-                            style: textStyleSemiBold(
-                                size: 22, color: Colors.white),
-                          ),
-                          Text(
-                            _user.email,
-                            style: textStyleRegularTitle(color: Colors.white),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ],
-                      ))
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              _user.name ?? _user.userName,
+                              textAlign: TextAlign.center,
+                              style: textStyleSemiBold(
+                                  size: 22, color: Colors.white),
+                            ),
+                            Text(
+                              _user.email,
+                              style: textStyleRegularTitle(color: Colors.white),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            UIHelper.verticalSpaceSmall,
+                            RatingBarIndicator(
+                              rating: _user.rating,
+                              itemCount: 5,
+                              itemPadding: EdgeInsets.only(right: 2),
+                              itemSize: UIHelper.size20,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

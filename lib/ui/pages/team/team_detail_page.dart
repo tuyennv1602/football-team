@@ -17,7 +17,6 @@ import 'package:myfootball/ui/widgets/item_option.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/review_dialog.dart';
-import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/other_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -47,39 +46,46 @@ class TeamDetailPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,
-      body: Column(
-        children: <Widget>[
-          AppBarWidget(
-            centerContent: Text(
-              team.name,
-              textAlign: TextAlign.center,
-              style: textStyleTitle(),
-            ),
-            leftContent: AppBarButtonWidget(
-              imageName: Images.BACK,
-              onTap: () => NavigationService.instance.goBack(),
-            ),
+      body: BaseWidget<OtherTeamViewModel>(
+        model: OtherTeamViewModel(api: Provider.of(context), team: team),
+        child: Hero(
+          tag: team.id,
+          child: ImageWidget(
+            source: team.logo,
+            placeHolder: Images.DEFAULT_LOGO,
+            size: UIHelper.size(90),
           ),
-          Expanded(
-            child: BorderBackground(
-              child: BaseWidget<OtherTeamViewModel>(
-                model:
-                    OtherTeamViewModel(api: Provider.of(context), team: team),
-                onModelReady: (model) {
-                  model.getTeamDetail();
-                  model.getComments();
-                },
-                child: Hero(
-                  tag: team.id,
-                  child: ImageWidget(
-                    source: team.logo,
-                    placeHolder: Images.DEFAULT_LOGO,
-                    size: UIHelper.size(90),
+        ),
+        onModelReady: (model) {
+          model.getTeamDetail();
+          model.getComments();
+        },
+        builder: (c, model, child) {
+          var _team = model.team;
+          return Column(
+            children: <Widget>[
+              AppBarWidget(
+                centerContent: Text(
+                  team.name,
+                  textAlign: TextAlign.center,
+                  style: textStyleTitle(),
+                ),
+                leftContent: AppBarButtonWidget(
+                  imageName: Images.BACK,
+                  onTap: () => NavigationService.instance.goBack(),
+                ),
+                rightContent: AppBarButtonWidget(
+                  imageName: Images.EDIT_TEAM,
+                  onTap: () => _writeReview(
+                    context,
+                    onSubmit: (rating, comment) =>
+                        model.submitReview(rating, comment),
                   ),
                 ),
-                builder: (c, model, child) {
-                  var _team = model.team;
-                  return Column(
+              ),
+              Expanded(
+                child: BorderBackground(
+                  child: Column(
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.all(UIHelper.size15),
@@ -113,13 +119,13 @@ class TeamDetailPage extends StatelessWidget {
                                               color: Colors.black87),
                                         ),
                                         RatingBarIndicator(
-                                          rating: team.rating,
+                                          rating: _team.rating,
                                           itemCount: 5,
                                           itemPadding: EdgeInsets.only(left: 2),
                                           itemSize: UIHelper.size20,
                                           itemBuilder: (context, index) => Icon(
                                             Icons.star,
-                                            color: PRIMARY,
+                                            color: Colors.amber,
                                           ),
                                         ),
                                       ],
@@ -150,22 +156,14 @@ class TeamDetailPage extends StatelessWidget {
                             ? LoadingWidget()
                             : Column(
                                 children: <Widget>[
-                                  ItemOptionWidget(
-                                    Images.MEMBER,
-                                    'Thành viên',
-                                    iconColor: Colors.green,
-                                    onTap: () => NavigationService.instance
-                                        .navigateTo(MEMBERS, arguments: _team),
-                                  ),
-                                  LineWidget(),
-                                  ItemOptionWidget(
-                                    Images.EDIT_TEAM,
-                                    'Nhận xét',
-                                    iconColor: Colors.amber,
-                                    onTap: () => _writeReview(
-                                      context,
-                                      onSubmit: (rating, comment) =>
-                                          model.submitReview(rating, comment),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(UIHelper.padding),
+                                      child: Text(
+                                        'Đánh giá và nhận xét',
+                                        style: textStyleSemiBold(),
+                                      ),
                                     ),
                                   ),
                                   Expanded(
@@ -175,9 +173,8 @@ class TeamDetailPage extends StatelessWidget {
                                             ? EmptyWidget(
                                                 message: 'Chưa có nhận xét nào')
                                             : ListView.separated(
-                                                padding: EdgeInsets.only(
-                                                    left: UIHelper.size50,
-                                                    right: UIHelper.size10),
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: UIHelper.padding),
                                                 itemBuilder: (c, index) =>
                                                     ItemComment(
                                                         comment: model
@@ -191,12 +188,12 @@ class TeamDetailPage extends StatelessWidget {
                               ),
                       )
                     ],
-                  );
-                },
-              ),
-            ),
-          )
-        ],
+                  ),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }

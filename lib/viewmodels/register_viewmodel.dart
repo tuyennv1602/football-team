@@ -21,13 +21,13 @@ class RegisterViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(
           'Đăng ký thành công! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
           isSuccess: true,
-          onConfirmed: () => verifyPhoneNumber(phoneNumber));
+          onConfirmed: () => verifyPhoneNumber(resp.user.id, phoneNumber));
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
   }
 
-  Future<void> verifyPhoneNumber(String phoneNumber) async {
+  Future<void> verifyPhoneNumber(int userId, String phoneNumber) async {
     UIHelper.showProgressDialog;
     if (phoneNumber.startsWith('0')) {
       phoneNumber = phoneNumber.replaceFirst('0', '+84');
@@ -49,7 +49,9 @@ class RegisterViewModel extends BaseViewModel {
       print('code sent: ' + verificationId);
       NavigationService.instance.navigateTo(VERIFY_OTP,
           arguments: VerifyArgument(
-              phoneNumber: phoneNumber, verificationId: verificationId));
+              userId: userId,
+              phoneNumber: phoneNumber,
+              verificationId: verificationId));
     };
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {

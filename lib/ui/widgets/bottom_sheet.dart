@@ -78,8 +78,7 @@ class BottomSheetWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(UIHelper.radius),
-                  topLeft: Radius.circular(UIHelper.radius)),
+                  topRight: Radius.circular(UIHelper.radius)),
             ),
             padding: EdgeInsets.only(
                 bottom: paddingBottom ?? UIHelper.paddingBottom),

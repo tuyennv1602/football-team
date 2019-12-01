@@ -163,7 +163,8 @@ class VerifyOTPPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                          padding:
+                              EdgeInsets.symmetric(vertical: UIHelper.size10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -215,8 +216,10 @@ class VerifyOTPPage extends StatelessWidget {
                                   model.verifyPhoneNumber(
                                       verifyArgument.phoneNumber);
                                 } else {
-                                  model
-                                      .verifyOtp(verifyArgument.verificationId);
+                                  model.verifyOtp(
+                                      verifyArgument.userId,
+                                      verifyArgument.phoneNumber,
+                                      verifyArgument.verificationId);
                                 }
                               },
                             ),

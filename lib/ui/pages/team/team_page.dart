@@ -121,7 +121,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       children: _children
         ..addAll(
           [
-            ItemOptionWidget(Images.MEMBER, 'Danh sách thành viên',
+            ItemOptionWidget(Images.MEMBER, 'Thành viên',
                 iconColor: Colors.green,
                 onTap: () => NavigationService.instance
                     .navigateTo(MEMBERS, arguments: team)),
@@ -201,24 +201,28 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     'Xếp hạng: ${team.rank}',
                     style: textStyleAlert(color: Colors.black87),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Đánh giá: ',
-                        style: textStyleAlert(color: Colors.black87),
-                      ),
-                      RatingBarIndicator(
-                        rating: team.rating,
-                        itemCount: 5,
-                        itemPadding: EdgeInsets.only(left: 2),
-                        itemSize: UIHelper.size20,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: PRIMARY,
+                  InkWell(
+                    onTap: () =>
+                        NavigationService.instance.navigateTo(TEAM_COMMENT),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Đánh giá: ',
+                          style: textStyleAlert(color: Colors.black87),
                         ),
-                      ),
-                    ],
+                        RatingBarIndicator(
+                          rating: team.rating,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.only(left: 2),
+                          itemSize: UIHelper.size20,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Divider(
                     height: UIHelper.size15,

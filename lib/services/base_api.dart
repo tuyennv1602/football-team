@@ -23,34 +23,20 @@ class BaseApi {
     BaseApi.header = header;
   }
 
-  Future<Response<dynamic>> getAuthApi(String endPoint,
-      {FormData queryParams}) async {
-    return await dio.get(endPoint,
-        queryParameters: queryParams,
-        options: Options(headers: {'app-type': 0}));
-  }
-
-  Future<Response<dynamic>> postAuthApi(String endPoint, {dynamic body}) async {
-    return await dio.post(endPoint,
-        data: body, options: Options(headers: {'app-type': 0}));
-  }
-
   Future<Response<dynamic>> getApi(String endPoint,
       {FormData queryParams}) async {
     return await dio.get(endPoint,
         queryParameters: queryParams,
-        options: Options(headers: header != null ? header.toJson() : null));
+        options: Options(headers: header.toJson()));
   }
 
   Future<Response<dynamic>> postApi(String endPoint, {dynamic body}) async {
     return await dio.post(endPoint,
-        data: body,
-        options: Options(headers: header != null ? header.toJson() : null));
+        data: body, options: Options(headers: header.toJson()));
   }
 
   Future<Response<dynamic>> putApi(String endPoint, {dynamic body}) async {
     return await dio.put(endPoint,
-        data: body,
-        options: Options(headers: header != null ? header.toJson() : null));
+        data: body, options: Options(headers: header.toJson()));
   }
 }

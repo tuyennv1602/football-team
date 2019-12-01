@@ -5,6 +5,8 @@ import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/invite_team_arg.dart';
 import 'package:myfootball/models/match_history.dart';
 import 'package:myfootball/models/match_schedule.dart';
+import 'package:myfootball/models/member.dart';
+import 'package:myfootball/models/member_arg.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/verify_arg.dart';
 import 'package:myfootball/ui/pages/home_page.dart';
@@ -24,10 +26,13 @@ import 'package:myfootball/ui/pages/team/ground_detail_page.dart';
 import 'package:myfootball/ui/pages/team/invite_detail_page.dart';
 import 'package:myfootball/ui/pages/team/invite_request_page.dart';
 import 'package:myfootball/ui/pages/team/invite_team_page.dart';
-import 'package:myfootball/ui/pages/team/match_detail_page.dart';
+import 'package:myfootball/ui/pages/team/match_history_detail_page.dart';
 import 'package:myfootball/ui/pages/team/match_history_page.dart';
+import 'package:myfootball/ui/pages/team/match_schedulde_detail_page.dart';
 import 'package:myfootball/ui/pages/team/match_schedule_page.dart';
+import 'package:myfootball/ui/pages/team/member_detail_page.dart';
 import 'package:myfootball/ui/pages/team/member_page.dart';
+import 'package:myfootball/ui/pages/team/team_comment_page.dart';
 import 'package:myfootball/ui/pages/team/team_detail_page.dart';
 import 'package:myfootball/ui/pages/team/request_member_page.dart';
 import 'package:myfootball/ui/pages/team/search_ground_page.dart';
@@ -107,9 +112,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: MatchSchedulePage());
     case MATCH_HISTORY:
       return SlideLeftRoute(widget: MatchHistoryPage());
-    case MATCH_DETAIL:
+    case MATCH_HISTORY_DETAIL:
       var match = settings.arguments as MatchHistory;
-      return SlideLeftRoute(widget: MatchDetailPage(matchHistory: match));
+      return SlideLeftRoute(
+          widget: MatchHistoryDetailPage(matchHistory: match));
+    case MATCH_SCHEDULE_DETAIL:
+      var match = settings.arguments as MatchSchedule;
+      return SlideLeftRoute(
+          widget: MatchScheduleDetailPage(matchSchedule: match));
     case TICKETS:
       return SlideLeftRoute(widget: TicketPage());
     case INVITE_REQUESTS:
@@ -125,6 +135,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case VERIFY_OTP:
       var verify = settings.arguments as VerifyArgument;
       return SlideLeftRoute(widget: VerifyOTPPage(verifyArgument: verify));
+    case TEAM_COMMENT:
+      return SlideLeftRoute(widget: TeamCommentPage());
+    case MEMBER_DETAIL:
+      var memberArg = settings.arguments as MemberArgument;
+      return SlideLeftRoute(
+          widget: MemberDetailPage(
+        memberArgument: memberArg,
+      ));
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

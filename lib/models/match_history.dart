@@ -69,6 +69,16 @@ class MatchHistory extends MatchSchedule {
     return 'Đã xác nhận';
   }
 
+  int get getStep {
+    if (!isUpdated) {
+      return 1;
+    }
+    if (!isConfirmed) {
+      return 2;
+    }
+    return 3;
+  }
+
   double get getRatePercent => 0.4;
 
   Color get getRateColor {

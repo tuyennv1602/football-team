@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/ui/widgets/rotation_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 bool _isShowing = false;

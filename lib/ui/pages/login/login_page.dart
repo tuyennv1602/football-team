@@ -5,7 +5,6 @@ import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/stringres.dart';
 import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/services/firebase_services.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/ui/widgets/light_input_text.dart';
 import 'package:myfootball/ui/widgets/button_widget.dart';
@@ -111,13 +110,15 @@ class _LoginState extends State<LoginPage> {
                                     .navigateTo(FORGOT_PASSWORD),
                                 child: Text(
                                   'Quên mật khẩu?',
-                                  style: textStyleAlert(color: Colors.black, size: 17),
+                                  style: textStyleAlert(
+                                      color: Colors.black, size: 17),
                                 ),
                               ),
                             ),
                             BaseWidget<LoginViewModel>(
                               model: LoginViewModel(
                                   authServices: Provider.of(context)),
+                              onModelReady: (model) => model.setupDeviceInfo(),
                               builder: (context, model, child) => ButtonWidget(
                                 margin: EdgeInsets.symmetric(
                                     vertical: UIHelper.size30),
@@ -188,7 +189,7 @@ class _LoginState extends State<LoginPage> {
                                       color: Colors.black,
                                       fontSize: UIHelper.size(17))),
                               TextSpan(
-                                  text: 'Đăng ký ngay',
+                                  text: 'Đăng ký',
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
                                       fontFamily: BOLD,

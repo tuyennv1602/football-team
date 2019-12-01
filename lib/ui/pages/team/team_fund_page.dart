@@ -10,21 +10,52 @@ import 'package:myfootball/ui/pages/base_widget.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/step_widget.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/team_fund_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class TeamFundPage extends StatelessWidget {
+  _showOptions(BuildContext context,
+          {Function onSendRequest, Function onViewList}) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: [
+            'Tuỳ chọn',
+            'Gửi yêu cầu xác nhận đóng quỹ',
+            'Xem danh sách đóng quỹ',
+            'Huỷ'
+          ],
+          onClickOption: (index) {
+            if (index == 1) {
+              onSendRequest();
+            }
+            if (index == 2) {
+              onViewList();
+            }
+          },
+        ),
+      );
 
-  Widget _buildItemFund(BuildContext context, Fund fund) => Card(
+  Widget _buildItemFund(BuildContext context, Fund fund,
+          {Function onSendRequest, Function onViewList}) =>
+      Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
         margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
+          onTap: () => _showOptions(
+            context,
+            onSendRequest: () => onSendRequest(fund.id),
+            onViewList: () => onViewList(fund.id),
+          ),
           child: Padding(
             padding: EdgeInsets.all(UIHelper.padding),
             child: Column(
@@ -37,58 +68,27 @@ class TeamFundPage extends StatelessWidget {
                     style: textStyleSemiBold(),
                   ),
                 ),
-                RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Số tiền: ',
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontFamily: REGULAR,
-                            fontSize: UIHelper.size(17)),
-                      ),
-                      TextSpan(
-                        text: fund.getPrice,
-                        style: TextStyle(
-                            fontFamily: SEMI_BOLD,
-                            color: Colors.black,
-                            fontSize: UIHelper.size(17)),
-                      ),
-                    ],
-                  ),
-                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Hạn đóng: ',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: REGULAR,
-                                fontSize: UIHelper.size(17)),
-                          ),
-                          TextSpan(
-                            text: fund.getExpiredDate,
-                            style: TextStyle(
-                                fontFamily: SEMI_BOLD,
-                                color: Colors.black,
-                                fontSize: UIHelper.size(17)),
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'Số tiền: ${fund.getPrice}',
+                      style: textStyleRegular(),
                     ),
-                    Expanded(
-                      child: Text(
-                        fund.status == 0 ? 'Chưa đóng' : 'Đã đóng',
-                        textAlign: TextAlign.right,
-                        style: textStyleRegularBody(
-                            color:
-                                fund.status == 0 ? Colors.green : Colors.green),
-                      ),
-                    )
+                    Text(
+                      'Exp: ${fund.getExpiredDate}',
+                      style: textStyleRegular(),
+                    ),
                   ],
+                ),
+                UIHelper.verticalSpaceMedium,
+                LineWidget(indent: 0),
+                UIHelper.verticalSpaceMedium,
+                StepWidget(
+                  step: fund.getStep,
+                  firstTitle: 'Chưa đóng',
+                  secondTitle: 'Chờ xác nhận',
+                  thirdTitle: 'Đã đóng',
                 )
               ],
             ),
@@ -126,8 +126,12 @@ class TeamFundPage extends StatelessWidget {
                         : ListView.separated(
                             padding: EdgeInsets.symmetric(
                                 vertical: UIHelper.padding),
-                            itemBuilder: (c, index) =>
-                                _buildItemFund(context, model.funds[index]),
+                            itemBuilder: (c, index) => _buildItemFund(
+                                  context,
+                                  model.funds[index],
+                                  onSendRequest: (noticeId) =>
+                                      model.sendRequest(index, noticeId),
+                                ),
                             separatorBuilder: (c, index) =>
                                 UIHelper.verticalIndicator,
                             itemCount: model.funds.length),

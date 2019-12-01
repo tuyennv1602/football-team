@@ -6,6 +6,7 @@ import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
+import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
@@ -19,11 +20,25 @@ class RankingPage extends StatelessWidget {
         child: Row(
           children: <Widget>[
             SizedBox(
-              width: UIHelper.size40,
+              width: UIHelper.size30,
               child: Text(
                 '${index + 1}',
                 style: textStyleRegularTitle(size: 15),
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+              child: team.logo != null
+                  ? ImageWidget(
+                      source: team.logo,
+                      placeHolder: Images.DEFAULT_LOGO,
+                      size: UIHelper.size25,
+                    )
+                  : Image.asset(
+                      Images.DEFAULT_LOGO,
+                      width: UIHelper.size25,
+                      height: UIHelper.size25,
+                    ),
             ),
             Expanded(
               child: Text(
@@ -63,16 +78,9 @@ class RankingPage extends StatelessWidget {
 
   Widget _buildTopBar() => Row(
         children: <Widget>[
-          SizedBox(
-            width: UIHelper.size40,
-            child: Text(
-              '#R',
-              style: textStyleSemiBold(color: GREEN_TEXT),
-            ),
-          ),
           Expanded(
             child: Text(
-              'Team',
+              'Đội bóng',
               style: textStyleSemiBold(color: GREEN_TEXT),
             ),
           ),
@@ -95,7 +103,7 @@ class RankingPage extends StatelessWidget {
           SizedBox(
             width: UIHelper.size(70),
             child: Text(
-              'P',
+              'Điểm',
               textAlign: TextAlign.right,
               style: textStyleSemiBold(color: PRIMARY),
             ),

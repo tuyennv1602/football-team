@@ -29,27 +29,12 @@ class _MultiChoicePositionState extends State<MultiChoicePosition> {
     List<Widget> _children = [];
     StringRes.POSITIONS_SYMBOL.asMap().forEach(
       (index, title) {
-        Color _selectedColor;
-        switch (index) {
-          case 0:
-            _selectedColor = GK;
-            break;
-          case 1:
-            _selectedColor = DF;
-            break;
-          case 2:
-            _selectedColor = MF;
-            break;
-          case 3:
-            _selectedColor = FW;
-            break;
-        }
         _children.add(
           Theme(
             data: ThemeData(brightness: Brightness.dark),
             child: FilterChip(
               pressElevation: 0,
-              selectedColor: _selectedColor,
+              selectedColor: getPositionColor(title),
               backgroundColor: Colors.grey,
               label: Text(title, style: textStyleRegular(color: Colors.white)),
               selected: _selectedPositions.contains(title),

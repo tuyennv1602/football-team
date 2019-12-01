@@ -1,6 +1,5 @@
 import 'package:myfootball/models/notification.dart' as noti;
 import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/fonts.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,7 @@ class NotificationState extends State<NotificationPage>
   Widget _buildItemNotification(
           BuildContext context, noti.Notification notification) =>
       Card(
-        elevation: 3,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.padding),
         ),

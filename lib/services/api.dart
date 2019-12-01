@@ -30,7 +30,7 @@ class Api {
 
   Future<LoginResponse> loginEmail(String email, String password) async {
     try {
-      var response = await _api.getAuthApi('user/login',
+      var response = await _api.getApi('user/login',
           queryParams: FormData.from({
             'email': email,
             'password': password,
@@ -50,18 +50,29 @@ class Api {
     }
   }
 
-  Future<BaseResponse> register(String name, String email, String password,
+  Future<LoginResponse> register(String name, String email, String password,
       String phoneNumber, List<int> roles) async {
     try {
       // for body
-      var response = await _api.postAuthApi('user/register', body: {
+      var response = await _api.postApi('user/register', body: {
         "name": name,
         "email": email,
         "password": password,
         "phone": phoneNumber,
         "roles": roles
       });
-      return BaseResponse.success(response.data);
+      return LoginResponse.success(response.data);
+    } on DioError catch (e) {
+      return LoginResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> activeUser(
+      int userId, String phoneNumber, String idToken) async {
+    try {
+      var resp = await _api.putApi('user/active',
+          body: {"user_id": userId, "phone": phoneNumber, "token_id": idToken});
+      return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
     }
@@ -69,8 +80,8 @@ class Api {
 
   Future<BaseResponse> forgotPassword(String email) async {
     try {
-      var response = await _api
-          .postAuthApi('user/forgot-password', body: {"email": email});
+      var response =
+          await _api.postApi('user/forgot-password', body: {"email": email});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -80,7 +91,7 @@ class Api {
   Future<BaseResponse> changePassword(
       String email, String password, String code) async {
     try {
-      var response = await _api.postAuthApi('user/change-password',
+      var response = await _api.postApi('user/change-password',
           body: {"email": email, "password": password, "code": code});
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
@@ -90,8 +101,7 @@ class Api {
 
   Future<LoginResponse> refreshToken(String refreshToken) async {
     try {
-      var resp =
-          await _api.getAuthApi('user/login/refresh-token/$refreshToken');
+      var resp = await _api.getApi('user/login/refresh-token/$refreshToken');
       return LoginResponse.success(resp.data);
     } on DioError catch (e) {
       return LoginResponse.error(e.message);
@@ -554,4 +564,34 @@ class Api {
       return SearchTeamResponse.error(e.message);
     }
   }
+
+  Future<BaseResponse> sendFundRequest(int noticeId) async {
+    try {
+      var resp = await _api.postApi('group/notice-wallet/$noticeId/request');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> acceptFundRequest(int requestId) async {
+    try {
+      var resp =
+          await _api.putApi('group/notice-wallet/request/$requestId/accept');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> rejectFundRequest(int requestId) async {
+    try {
+      var resp =
+          await _api.putApi('group/notice-wallet/request/$requestId/reject');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
 }

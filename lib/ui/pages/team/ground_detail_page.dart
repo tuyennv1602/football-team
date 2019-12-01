@@ -78,10 +78,10 @@ class GroundDetailPage extends StatelessWidget {
                     ),
               Container(
                 margin: EdgeInsets.only(
-                    top: UIHelper.size(120) + UIHelper.paddingTop),
-                height: UIHelper.size(80),
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                    top: UIHelper.size(80) + UIHelper.paddingTop),
+                height: UIHelper.size(120),
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(UIHelper.size10, 0, UIHelper.size10, UIHelper.size30),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
@@ -89,10 +89,23 @@ class GroundDetailPage extends StatelessWidget {
                     colors: BLACK_GRADIENT,
                   ),
                 ),
-                child: Text(
-                  ground != null ? ground.name : '',
-                  maxLines: 1,
-                  style: textStyleSemiBold(size: 18, color: Colors.white),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      ground != null ? ground.name : '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyleSemiBold(size: 18, color: Colors.white),
+                    ),
+                    Text(
+                      ground != null ? ground.address : '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyleRegular(color: Colors.white),
+                    )
+                  ],
                 ),
               ),
               AppBarWidget(
@@ -103,11 +116,27 @@ class GroundDetailPage extends StatelessWidget {
                 ),
                 leftContent: AppBarButtonWidget(
                   imageName: Images.BACK,
+                  backgroundColor: BLACK_TRANSPARENT,
+                  padding: UIHelper.size10,
                   onTap: () => NavigationService.instance.goBack(),
                 ),
-                rightContent: AppBarButtonWidget(
-                  imageName: Images.CALL,
-                  onTap: () => launch('tel://${ground.phone}'),
+                rightContent: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    AppBarButtonWidget(
+                      imageName: Images.DIRECTION,
+                      backgroundColor: BLACK_TRANSPARENT,
+                      padding: UIHelper.size10,
+                      onTap: () => launch(
+                          'https://www.google.com/maps/dir/?api=1&origin=20.986166,105.825647&destination=${ground.lat},${ground.lng}'),
+                    ),
+                    AppBarButtonWidget(
+                      imageName: Images.CALL,
+                      backgroundColor: BLACK_TRANSPARENT,
+                      padding: UIHelper.size10,
+                      onTap: () => launch('tel://${ground.phone}'),
+                    ),
+                  ],
                 ),
                 backgroundColor: Colors.transparent,
               ),
@@ -120,20 +149,16 @@ class GroundDetailPage extends StatelessWidget {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            ItemOptionWidget(
-                              Images.DIRECTION,
-                              ground != null ? ground.address : '',
-                              iconColor: Colors.green,
-                              onTap: () => launch(
-                                  'https://www.google.com/maps/dir/?api=1&origin=20.986166,105.825647&destination=${ground.lat},${ground.lng}'),
-                            ),
-                            ItemOptionWidget(
-                              Images.NOTE,
-                              'Nội quy sân bóng',
-                              iconColor: Colors.red,
+                            Padding(
+                              padding: EdgeInsets.all(UIHelper.padding),
+                              child: Text(
+                                'Nội quy sân bóng',
+                                style: textStyleSemiBold(),
+                              ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: UIHelper.size(60)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size15),
                               child: ExpandableTextWidget(
                                 ground.rule,
                                 textStyle: textStyleRegularBody(),
@@ -144,22 +169,13 @@ class GroundDetailPage extends StatelessWidget {
                                   onSubmit: (rating, comment) =>
                                       model.submitReview(rating, comment)),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: UIHelper.size20,
-                                    vertical: UIHelper.size15),
+                                padding: EdgeInsets.all(UIHelper.padding),
                                 child: Row(
                                   children: <Widget>[
-                                    Image.asset(
-                                      Images.EDIT_TEAM,
-                                      width: UIHelper.size20,
-                                      height: UIHelper.size20,
-                                      color: Colors.amber,
-                                    ),
-                                    UIHelper.horizontalSpaceLarge,
                                     Expanded(
                                       child: Text(
                                         'Đánh giá & nhận xét',
-                                        style: textStyleRegularTitle(),
+                                        style: textStyleSemiBold(),
                                       ),
                                     ),
                                     RatingBarIndicator(
@@ -170,7 +186,7 @@ class GroundDetailPage extends StatelessWidget {
                                       itemSize: UIHelper.size20,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
-                                        color: PRIMARY,
+                                        color: Colors.amber,
                                       ),
                                     )
                                   ],
@@ -187,9 +203,7 @@ class GroundDetailPage extends StatelessWidget {
                                                     'Chưa có nhận xét nào'),
                                           )
                                         : ListView.separated(
-                                            padding: EdgeInsets.only(
-                                                left: UIHelper.size50,
-                                                right: UIHelper.size10),
+                                            padding: EdgeInsets.zero,
                                             itemBuilder: (c, index) =>
                                                 ItemComment(
                                                     comment:

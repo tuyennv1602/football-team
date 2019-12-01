@@ -8,9 +8,9 @@ class User {
   String avatar;
   String email;
   String phone;
-  List<Role> roles;
   List<Team> teams;
   double wallet;
+  double rating;
 
   User(
       {this.id,
@@ -28,12 +28,6 @@ class User {
     avatar = json['avatar'];
     email = json['email'];
     phone = json['phone'];
-    if (json['role_list'] != null) {
-      roles = new List<Role>();
-      json['role_list'].forEach((v) {
-        roles.add(new Role.fromJson(v));
-      });
-    }
     if (json['group_list'] != null) {
       teams = new List<Team>();
       json['group_list'].forEach((v) {
@@ -41,8 +35,9 @@ class User {
         teams.add(team);
       });
     }
-    if (json['wallet'] != null) {
-      wallet = double.parse(json['wallet'].toString());
+    wallet = json['wallet'];
+    if (json['rating'] != null) {
+      rating = double.parse(json['rating'].toString());
     }
   }
 
@@ -54,9 +49,6 @@ class User {
     data['avatar'] = this.avatar;
     data['email'] = this.email;
     data['phone'] = this.phone;
-    if (this.roles != null) {
-      data['role_list'] = this.roles.map((v) => v.toJson()).toList();
-    }
     if (this.teams != null) {
       data['group_list'] = this.teams.map((v) => v.toJson()).toList();
     }
@@ -71,4 +63,6 @@ class User {
     teams.add(team);
     return teams;
   }
+
+  double get getRating => rating != null ? rating : 0;
 }

@@ -16,7 +16,8 @@ class ItemComment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(UIHelper.size10),
+      padding: EdgeInsets.symmetric(
+          horizontal: UIHelper.size20, vertical: UIHelper.padding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -47,7 +48,7 @@ class ItemComment extends StatelessWidget {
                       itemSize: UIHelper.size15,
                       itemBuilder: (context, index) => Icon(
                         Icons.star,
-                        color: PRIMARY,
+                        color: Colors.amber,
                       ),
                     )
                   ],

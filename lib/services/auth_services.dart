@@ -4,7 +4,6 @@ import 'package:myfootball/models/device_info.dart';
 import 'package:myfootball/models/headers.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/login_resp.dart';
-import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/token.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/services/base_api.dart';
@@ -28,13 +27,16 @@ class AuthServices {
     _userController.add(user);
   }
 
-  Future<LoginResponse> loginEmail(String email, String password) async {
+  Future<LoginResponse> loginEmail(
+      String deviceId, String email, String password) async {
     var resp = await _api.loginEmail(email, password);
     if (resp.isSuccess) {
       updateUser(resp.user);
-      _preferences
-          .setToken(Token(token: resp.token, refreshToken: resp.refreshToken));
-      BaseApi.setHeader(Headers(accessToken: resp.token));
+      _preferences.setToken(Token(
+          deviceId: deviceId,
+          token: resp.token,
+          refreshToken: resp.refreshToken));
+      BaseApi.setHeader(Headers(accessToken: resp.token, deviceId: deviceId));
     }
     return resp;
   }
@@ -45,13 +47,17 @@ class AuthServices {
 
   Future<LoginResponse> refreshToken() async {
     var token = await _preferences.getToken();
+    BaseApi.setHeader(Headers(deviceId: token.deviceId));
     if (token != null) {
       var resp = await _api.refreshToken(token.refreshToken);
       if (resp.isSuccess) {
         updateUser(resp.user);
-        _preferences.setToken(
-            Token(token: resp.token, refreshToken: resp.refreshToken));
-        BaseApi.setHeader(Headers(accessToken: resp.token));
+        _preferences.setToken(Token(
+            deviceId: token.deviceId,
+            token: resp.token,
+            refreshToken: resp.refreshToken));
+        BaseApi.setHeader(
+            Headers(deviceId: token.deviceId, accessToken: resp.token));
       } else {
         _preferences.clearLastTeam();
         _preferences.clearToken();

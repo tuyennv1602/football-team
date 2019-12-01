@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';
 
@@ -48,4 +50,22 @@ class Fund {
   String get getPrice => StringUtil.formatCurrency(price);
 
   String get getExpiredDate => DateUtil.getDateFromTimestamp(expireDate);
+
+  String get getStatus {
+    if (status == 0) return 'Chưa đóng';
+    if (status == 4) return 'Chờ xác nhận';
+    return 'Đã đóng';
+  }
+
+  Color get getStatusColor {
+    if (status == 0) return Colors.grey;
+    if (status == 4) return Colors.amber;
+    return GREEN_TEXT;
+  }
+
+  int get getStep {
+    if (status == 0) return 1;
+    if (status == 4) return 2;
+    return 3;
+  }
 }

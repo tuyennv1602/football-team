@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:myfootball/models/match_history.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/models/user.dart';
@@ -153,7 +154,7 @@ class MatchHistoryPage extends StatelessWidget {
                             onSubmit(matchHistory.id, firstScore, secondScore),
                       ),
                   onDetail: () => NavigationService.instance
-                      .navigateTo(MATCH_DETAIL, arguments: matchHistory));
+                      .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory));
             } else {
               _showReceiveOptions(
                 context,
@@ -168,12 +169,12 @@ class MatchHistoryPage extends StatelessWidget {
                   }
                 },
                 onDetail: () => NavigationService.instance
-                    .navigateTo(MATCH_DETAIL, arguments: matchHistory),
+                    .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory),
               );
             }
           } else {
             NavigationService.instance
-                .navigateTo(MATCH_DETAIL, arguments: matchHistory);
+                .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory);
           }
         },
         child: Padding(
@@ -251,18 +252,14 @@ class MatchHistoryPage extends StatelessWidget {
                 ],
               ),
               UIHelper.verticalSpaceMedium,
-              LineWidget(),
+              LineWidget(indent: 0),
               UIHelper.verticalSpaceMedium,
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                      child: StatusIndicator(
-                        isActive: matchHistory.isConfirmed,
-                        status: matchHistory.getStatus,
-                      ),
+                    child: StatusIndicator(
+                      isActive: matchHistory.isConfirmed,
+                      status: matchHistory.getStatus,
                     ),
                   ),
                   matchHistory.isConfirmed
@@ -277,8 +274,7 @@ class MatchHistoryPage extends StatelessWidget {
                       : SizedBox(),
                   matchHistory.isConfirmed
                       ? Padding(
-                          padding:
-                              EdgeInsets.only(right: UIHelper.size10, left: 2),
+                          padding: EdgeInsets.only(left: 2),
                           child: Image.asset(
                             matchHistory.getMyTeamPoint > 0
                                 ? Images.UP
@@ -293,38 +289,45 @@ class MatchHistoryPage extends StatelessWidget {
                       : SizedBox(),
                 ],
               ),
-              matchHistory.isConfirmed ?
-              Padding(
-                padding: EdgeInsets.only(left: UIHelper.size10, right: UIHelper.size10, top: UIHelper.size10),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      'Điểm thưởng',
-                      style: textStyleRegularBody(color: Colors.grey),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                        child: LinearPercentIndicator(
-                          animation: true,
-                          lineHeight: UIHelper.size(6),
-                          animationDuration: 1000,
-                          percent: matchHistory.getRatePercent,
-                          linearStrokeCap: LinearStrokeCap.roundAll,
-                          progressColor: matchHistory.getRateColor,
-                          backgroundColor: LINE_COLOR,
-                        ),
+              matchHistory.isConfirmed
+                  ? Padding(
+                      padding: EdgeInsets.only(top: UIHelper.size10),
+                      child: Row(
+                        children: <Widget>[
+                          LikeButton(
+                            size: UIHelper.size25,
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.check_circle,
+                                color: isLiked ? PRIMARY : Colors.grey,
+                                size: UIHelper.size25,
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size5),
+                              child: LinearPercentIndicator(
+                                animation: true,
+                                lineHeight: UIHelper.size(6),
+                                animationDuration: 1000,
+                                percent: matchHistory.getRatePercent,
+                                linearStrokeCap: LinearStrokeCap.roundAll,
+                                progressColor: matchHistory.getRateColor,
+                                backgroundColor: LINE_COLOR,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'bonus +${matchHistory.getBonus.toStringAsFixed(2)}',
+                            style: textStyleSemiBold(
+                                size: 14, color: matchHistory.getRateColor),
+                          )
+                        ],
                       ),
-                    ),
-                    Text(
-                      '+${matchHistory.getBonus.toStringAsFixed(2)}',
-                      style: textStyleSemiBold(
-                          size: 14, color: matchHistory.getRateColor),
                     )
-                  ],
-                ),
-              ) : SizedBox()
+                  : SizedBox()
             ],
           ),
         ),

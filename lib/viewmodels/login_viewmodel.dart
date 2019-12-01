@@ -5,10 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/device_info.dart';
+import 'package:myfootball/models/headers.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/verify_arg.dart';
 import 'package:myfootball/services/auth_services.dart';
-import 'package:myfootball/services/firebase_services.dart';
+import 'package:myfootball/services/base_api.dart';
 import 'package:myfootball/services/navigation_services.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -17,15 +18,22 @@ import 'package:myfootball/viewmodels/base_viewmodel.dart';
 
 class LoginViewModel extends BaseViewModel {
   final AuthServices _authServices;
+  DeviceInfo deviceInfo;
 
   LoginViewModel({@required AuthServices authServices})
       : _authServices = authServices;
 
+  Future<void> setupDeviceInfo() async {
+    var resp = await getDeviceInfo();
+    this.deviceInfo = resp;
+    BaseApi.setHeader(Headers(deviceId: deviceInfo.deviceId));
+  }
+
   Future<void> loginEmail(String email, String password) async {
     UIHelper.showProgressDialog;
-    var resp = await _authServices.loginEmail(email, password);
+    var resp =
+        await _authServices.loginEmail(deviceInfo.deviceId, email, password);
     if (resp.isSuccess) {
-      await FirebaseServices.instance.signInAnonymous();
       var _registerDeviceResp = await registerDevice();
       UIHelper.hideProgressDialog;
       if (_registerDeviceResp.isSuccess) {
@@ -38,15 +46,15 @@ class LoginViewModel extends BaseViewModel {
       if (resp.statusCode == Constants.CODE_NOT_ACCEPTABLE) {
         UIHelper.showConfirmDialog(
             'Tài khoản chưa được kích hoạt! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
-            onConfirmed: () => verifyPhoneNumber('0123456788'));
+            onConfirmed: () =>
+                verifyPhoneNumber(resp.user.id, resp.user.phone));
       } else {
         UIHelper.showSimpleDialog(resp.errorMessage);
       }
     }
   }
 
-  Future<BaseResponse> registerDevice() async {
-    setBusy(true);
+  Future<DeviceInfo> getDeviceInfo() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String firebaseToken = await FirebaseMessaging().getToken();
     String deviceId;
@@ -66,17 +74,22 @@ class LoginViewModel extends BaseViewModel {
       deviceName = iosInfo.name;
       version = iosInfo.systemVersion;
     }
-    var resp = await _authServices.registerDevice(DeviceInfo(
+    return DeviceInfo(
         deviceId: deviceId,
         firebaseToken: firebaseToken,
         os: os,
         deviceVer: version,
-        deviceName: deviceName));
+        deviceName: deviceName);
+  }
+
+  Future<BaseResponse> registerDevice() async {
+    setBusy(true);
+    var resp = await _authServices.registerDevice(deviceInfo);
     setBusy(false);
     return resp;
   }
 
-  Future<void> verifyPhoneNumber(String phoneNumber) async {
+  Future<void> verifyPhoneNumber(int userId, String phoneNumber) async {
     UIHelper.showProgressDialog;
     if (phoneNumber.startsWith('0')) {
       phoneNumber = phoneNumber.replaceFirst('0', '+84');
@@ -98,7 +111,9 @@ class LoginViewModel extends BaseViewModel {
       print('code sent: ' + verificationId);
       NavigationService.instance.navigateTo(VERIFY_OTP,
           arguments: VerifyArgument(
-              phoneNumber: phoneNumber, verificationId: verificationId));
+              userId: userId,
+              phoneNumber: phoneNumber,
+              verificationId: verificationId));
     };
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {

@@ -22,7 +22,7 @@ class BaseResponse {
 
   String get getErrorMessage {
     if(statusCode == Constants.CODE_UNAUTHORIZED){
-      return 'Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại';
+      return 'Phiên làm việc đã kết thúc. Vui lòng đăng nhập lại';
     }
     return errorMessage;
   }

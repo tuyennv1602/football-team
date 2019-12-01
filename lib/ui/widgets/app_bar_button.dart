@@ -7,8 +7,15 @@ class AppBarButtonWidget extends StatelessWidget {
   final double padding;
   final double _kButtonAppbarHeight = UIHelper.size(50);
   final Color iconColor;
+  final Color backgroundColor;
 
-  AppBarButtonWidget({Key key, this.imageName, this.onTap, this.padding, this.iconColor = Colors.white})
+  AppBarButtonWidget(
+      {Key key,
+      this.imageName,
+      this.onTap,
+      this.padding,
+      this.iconColor = Colors.white,
+      this.backgroundColor})
       : super(key: key);
 
   @override
@@ -19,8 +26,14 @@ class AppBarButtonWidget extends StatelessWidget {
       child: (imageName != null && onTap != null)
           ? InkWell(
               onTap: onTap,
-              child: Padding(
+              child: Container(
+                margin: EdgeInsets.all(
+                    backgroundColor != null ? UIHelper.size5 : 0),
                 padding: EdgeInsets.all(this.padding ?? UIHelper.size(15)),
+                decoration: BoxDecoration(
+                    color: backgroundColor ?? Colors.transparent,
+                    borderRadius:
+                        BorderRadius.circular(_kButtonAppbarHeight / 2)),
                 child: Image.asset(
                   imageName,
                   color: iconColor,

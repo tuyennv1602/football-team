@@ -43,7 +43,13 @@ class FirebaseServices {
     );
     final FirebaseUser user =
         (await _firebaseAuth.signInWithCredential(credential)).user;
-    return user.uid;
+    if (user != null) {
+      final IdTokenResult tokenResult = await user.getIdToken();
+      if (tokenResult != null) {
+        return tokenResult.token;
+      }
+    }
+    return null;
   }
 
   Future<AuthResult> signInAnonymous() async {

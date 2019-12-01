@@ -11,10 +11,7 @@ const Color BLACK_TEXT = Colors.black87;
 const Color SHADOW_GREEN = Color(0xFFA1FAB7);
 const Color SHADOW_GREY = Color(0xFFE8E8E8);
 const Color GREEN_TEXT = Color(0xFF03be31);
-const Color FW = Colors.red;
-const Color MF = Colors.lightGreen;
-const Color DF = Colors.blueAccent;
-const Color GK = Colors.orange;
+
 
 const List<Color> BLACK_GRADIENT = [
   Color(0xCC000000),
@@ -80,4 +77,19 @@ String getColorValue(String color) {
 Color parseColor(String code) {
   int value = int.parse(code, radix: 16);
   return Color(value);
+}
+
+Color getPositionColor(String position) {
+  switch (position) {
+    case 'FW':
+      return Colors.red;
+    case 'MF':
+      return Colors.lightGreen;
+      break;
+    case 'DF':
+      return Colors.blueAccent;
+    case 'GK':
+      return Colors.orange;
+  }
+  return Colors.white;
 }

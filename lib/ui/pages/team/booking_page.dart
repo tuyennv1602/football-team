@@ -246,7 +246,7 @@ class BookingPage extends StatelessWidget {
                                           itemSize: UIHelper.size20,
                                           itemBuilder: (context, index) => Icon(
                                             Icons.star,
-                                            color: PRIMARY,
+                                            color: Colors.amber,
                                           ),
                                         ),
                                       ],

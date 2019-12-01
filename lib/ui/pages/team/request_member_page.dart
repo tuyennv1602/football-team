@@ -12,6 +12,7 @@ import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/item_position.dart';
+import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/viewmodels/request_member_viewmodel.dart';
@@ -74,7 +75,7 @@ class RequestMemberPage extends StatelessWidget {
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Chấp nhận', 'Từ chối', 'Huỷ'],
+          options: ['Tuỳ chọn', 'Chấp nhận yêu cầu', 'Từ chối yêu cầu', 'Huỷ'],
           onClickOption: (index) {
             if (index == 1) {
               onAccept();
@@ -111,25 +112,28 @@ class RequestMemberPage extends StatelessWidget {
                       api: Provider.of(context),
                       teamServices: Provider.of(context)),
                   onModelReady: (model) => model.getTeamRequests(_team.id),
-                  builder: (c, model, child) => model.teamRequests.length > 0
-                      ? ListView.separated(
-                          padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.padding),
-                          itemBuilder: (c, index) {
-                            TeamRequest _request = model.teamRequests[index];
-                            return _buildItemRequest(
-                              context,
-                              _request,
-                              onAccept: () => model.acceptRequest(
-                                  index, _request.idRequest, _team.id),
-                              onReject: () => model.rejectRequest(
-                                  index, _request.idRequest),
-                            );
-                          },
-                          separatorBuilder: (c, index) =>
-                              UIHelper.verticalIndicator,
-                          itemCount: model.teamRequests.length)
-                      : EmptyWidget(message: 'Không có yêu cầu nào')),
+                  builder: (c, model, child) => model.busy
+                      ? LoadingWidget()
+                      : model.teamRequests.length > 0
+                          ? ListView.separated(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: UIHelper.padding),
+                              itemBuilder: (c, index) {
+                                TeamRequest _request =
+                                    model.teamRequests[index];
+                                return _buildItemRequest(
+                                  context,
+                                  _request,
+                                  onAccept: () => model.acceptRequest(
+                                      index, _request.idRequest, _team.id),
+                                  onReject: () => model.rejectRequest(
+                                      index, _request.idRequest),
+                                );
+                              },
+                              separatorBuilder: (c, index) =>
+                                  UIHelper.verticalIndicator,
+                              itemCount: model.teamRequests.length)
+                          : EmptyWidget(message: 'Không có yêu cầu nào')),
             ),
           )
         ],

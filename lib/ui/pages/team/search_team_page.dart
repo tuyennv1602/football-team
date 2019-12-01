@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/team.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -124,7 +123,7 @@ class SearchTeamPage extends StatelessWidget {
                                   Images.MEMBER,
                                   width: UIHelper.size15,
                                   height: UIHelper.size15,
-                                  color: Colors.grey,
+                                  color: Colors.green,
                                 ),
                                 Padding(
                                   padding:
@@ -145,7 +144,7 @@ class SearchTeamPage extends StatelessWidget {
                                   Images.RANK,
                                   width: UIHelper.size(13),
                                   height: UIHelper.size(13),
-                                  color: Colors.amber,
+                                  color: Colors.deepPurpleAccent,
                                 ),
                                 Padding(
                                   padding:
@@ -164,7 +163,7 @@ class SearchTeamPage extends StatelessWidget {
                               children: <Widget>[
                                 Icon(
                                   Icons.star,
-                                  color: Colors.green,
+                                  color: Colors.amber,
                                   size: UIHelper.size20,
                                 ),
                                 Padding(

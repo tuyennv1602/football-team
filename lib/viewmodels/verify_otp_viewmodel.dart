@@ -35,18 +35,25 @@ class VerifyOTPViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> verifyOtp(String verificationId) async {
+  Future<void> verifyOtp(
+      int userId, String phoneNumber, String verificationId) async {
     if (otpCode.length != 6) return;
     UIHelper.showProgressDialog;
-    var uid = await FirebaseServices.instance
+    var token = await FirebaseServices.instance
         .signInWithPhoneNumber(verificationId, otpCode);
-    UIHelper.hideProgressDialog;
-    if (uid != null) {
-      UIHelper.showSimpleDialog('Tài khoản đã được kích hoạt thành công! #$uid',
-          onConfirmed: () =>
-              NavigationService.instance.navigateAndRemove(LOGIN),
-          isSuccess: true);
+    if (token != null) {
+      var resp = await _api.activeUser(userId, phoneNumber, token);
+      UIHelper.hideProgressDialog;
+      if (resp.isSuccess) {
+        UIHelper.showSimpleDialog('Tài khoản đã được kích hoạt thành công!',
+            onConfirmed: () =>
+                NavigationService.instance.navigateAndRemove(LOGIN),
+            isSuccess: true);
+      } else {
+        UIHelper.showSimpleDialog(resp.errorMessage);
+      }
     } else {
+      UIHelper.hideProgressDialog;
       UIHelper.showSimpleDialog('Có lỗi xảy ra. Vui lòng thử lại',
           onConfirmed: () => NavigationService.instance.goBack());
     }

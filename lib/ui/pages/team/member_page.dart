@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/member.dart';
+import 'package:myfootball/models/member_arg.dart';
 import 'package:myfootball/models/user.dart';
 import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
@@ -10,6 +11,7 @@ import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/item_member.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -19,17 +21,16 @@ class MemberPage extends StatelessWidget {
 
   MemberPage({@required this.members, @required this.managerId});
 
-  void _showManagerOptions(BuildContext context, Member member) =>
+  void _showManagerOptions(BuildContext context, {Function onDetail}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
-          options: [
-            'Tuỳ chọn',
-            'Xem chi tiết',
-            'Đánh giá',
-            'Xoá khỏi đội',
-            'Huỷ'
-          ],
+          options: ['Tuỳ chọn', 'Xem hồ sơ', 'Xoá khỏi đội', 'Huỷ'],
+          onClickOption: (index) {
+            if (index == 1) {
+              onDetail();
+            }
+          },
         ),
       );
 
@@ -53,22 +54,41 @@ class MemberPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
-                  itemBuilder: (c, index) {
-                    Member _member = members[index];
-                    return ItemMember(
-                        member: _member,
-                        isCaptain: _member.id == managerId,
-                        onTap: () {
-                          if (isManager) {
-                            _showManagerOptions(context, _member);
-                          }
-                        });
-                  },
-                  separatorBuilder: (c, index) => UIHelper.verticalIndicator,
-                  itemCount: members.length),
+              child: GridView.builder(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(UIHelper.padding),
+                itemBuilder: (c, index) {
+                  Member _member = members[index];
+                  return ItemMember(
+                    member: _member,
+                    isCaptain: _member.id == managerId,
+                    onTap: () async {
+                      if (isManager) {
+                        _showManagerOptions(
+                          context,
+                          onDetail: () async {
+                            var rating = NavigationService.instance.navigateTo(
+                                MEMBER_DETAIL,
+                                arguments: MemberArgument(member: _member));
+                            print(rating);
+                          },
+                        );
+                      } else {
+                        var rating = NavigationService.instance.navigateTo(
+                            MEMBER_DETAIL,
+                            arguments: MemberArgument(member: _member));
+                        print(rating);
+                      }
+                    },
+                  );
+                },
+                itemCount: members.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.8,
+                    crossAxisSpacing: UIHelper.size10,
+                    mainAxisSpacing: UIHelper.size10),
+              ),
             ),
           ),
         ],

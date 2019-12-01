@@ -11,13 +11,11 @@ import 'package:myfootball/ui/widgets/app_bar_button.dart';
 import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
-import 'package:myfootball/ui/widgets/clipper_left_widget.dart';
 import 'package:myfootball/ui/widgets/clipper_right_widget.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
-import 'package:myfootball/ui/widgets/status_indicator.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/match_schedule_viewmodel.dart';
@@ -103,7 +101,7 @@ class MatchSchedulePage extends StatelessWidget {
               matchSchedule.receiveTeam != null,
               matchSchedule.isJoined,
               onDetail: () => NavigationService.instance
-                  .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
+                  .navigateTo(MATCH_SCHEDULE_DETAIL, arguments: matchSchedule),
               onRegister: (isJoined) => !isJoined
                   ? model.joinMatch(index, matchSchedule.matchId)
                   : UIHelper.showConfirmDialog(
@@ -117,7 +115,7 @@ class MatchSchedulePage extends StatelessWidget {
               context,
               matchSchedule.isJoined,
               onDetail: () => NavigationService.instance
-                  .navigateTo(MATCH_DETAIL, arguments: matchSchedule),
+                  .navigateTo(MATCH_SCHEDULE_DETAIL, arguments: matchSchedule),
               onRegister: (isJoined) => !isJoined
                   ? model.joinMatch(index, matchSchedule.matchId)
                   : UIHelper.showConfirmDialog(

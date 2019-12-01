@@ -37,11 +37,11 @@ class _SearchGroundState extends State<SearchGroundPage> {
   BitmapDescriptor _groundMarker;
 
   Widget _buildItemGround(BuildContext context, int index, Ground ground) =>
-      Hero(
-        tag: ground.id,
-        child: InkWell(
-          onTap: () => NavigationService.instance
-              .navigateTo(BOOKING, arguments: ground),
+      InkWell(
+        onTap: () =>
+            NavigationService.instance.navigateTo(BOOKING, arguments: ground),
+        child: Hero(
+          tag: ground.id,
           child: Stack(
             children: <Widget>[
               ClipRRect(
@@ -105,7 +105,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
                             itemSize: UIHelper.size20,
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
-                              color: PRIMARY,
+                              color: Colors.amber,
                             ),
                           ),
                         ],

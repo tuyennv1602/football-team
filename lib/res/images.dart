@@ -73,5 +73,5 @@ class Images {
   static const String SUCCESS = '$FOLDER/ic_success.png';
   static const String CANCEL = '$FOLDER/ic_cancel.png';
   static const String QUESTION = '$FOLDER/ic_question.png';
-
+  static const String STADIUM = '$FOLDER/ic_stadium.png';
 }
