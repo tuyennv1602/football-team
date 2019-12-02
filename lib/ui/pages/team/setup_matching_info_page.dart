@@ -144,7 +144,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                                 children: <Widget>[
                                   Text(
                                     'Thời gian có thể chơi',
-                                    style: textStyleRegularTitle(),
+                                    style: textStyleMediumTitle(),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(UIHelper.size10),
@@ -187,7 +187,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                                 children: <Widget>[
                                   Text(
                                     'Khu vực có thể chơi',
-                                    style: textStyleRegularTitle(),
+                                    style: textStyleMediumTitle(),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(UIHelper.size10),

@@ -10,8 +10,10 @@ import 'package:myfootball/ui/widgets/app_bar.dart';
 import 'package:myfootball/ui/widgets/border_background.dart';
 import 'package:myfootball/ui/widgets/bottom_sheet.dart';
 import 'package:myfootball/ui/widgets/empty_widget.dart';
+import 'package:myfootball/ui/widgets/expandable_text_widget.dart';
 import 'package:myfootball/ui/widgets/image_widget.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
+import 'package:myfootball/ui/widgets/status_indicator.dart';
 import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -63,13 +65,12 @@ class InviteRequestPage extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           inviteRequest.getName,
-                          style: textStyleSemiBold(),
+                          style: textStyleMediumTitle(),
                         ),
-                        Text(
+                        UIHelper.verticalSpaceSmall,
+                        ExpandableTextWidget(
                           inviteRequest.title,
-                          style: textStyleRegular(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          textStyle: textStyleRegular(),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,10 +79,9 @@ class InviteRequestPage extends StatelessWidget {
                               inviteRequest.getCreateTime,
                               style: textStyleRegularBody(color: Colors.grey),
                             ),
-                            Text(
-                              inviteRequest.getStatus,
-                              style: textStyleRegularBody(
-                                  color: inviteRequest.getStatusColor),
+                            StatusIndicator(
+                              isActive: inviteRequest.isActive,
+                              status: inviteRequest.getStatus,
                             )
                           ],
                         )
@@ -187,6 +187,7 @@ class InviteRequestPage extends StatelessWidget {
               ),
             ),
           ),
+          UIHelper.homeButtonSpace
         ],
       ),
     );

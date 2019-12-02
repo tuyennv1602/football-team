@@ -64,7 +64,7 @@ class Images {
   static const String CLOCK = '$FOLDER/ic_clock.png';
   static const String UP = '$FOLDER/ic_up.png';
   static const String DOWN = '$FOLDER/ic_down.png';
-  static const String FRAME = '$FOLDER/ic_frame.png';
+  static const String RATIO = '$FOLDER/ic_ratio.png';
   static const String CONNECT = '$FOLDER/ic_connect.png';
   static const String RECEIVE_INVITE = '$FOLDER/ic_add_invite.png';
   static const String PASSWORD = '$FOLDER/ic_password.png';
@@ -74,4 +74,6 @@ class Images {
   static const String CANCEL = '$FOLDER/ic_cancel.png';
   static const String QUESTION = '$FOLDER/ic_question.png';
   static const String STADIUM = '$FOLDER/ic_stadium.png';
+  static const String NOTIFICATION = '$FOLDER/ic_notification.png';
+
 }

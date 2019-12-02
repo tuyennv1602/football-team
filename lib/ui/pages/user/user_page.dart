@@ -114,14 +114,14 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              _user.name ?? _user.userName,
+                              _user.name,
                               textAlign: TextAlign.center,
                               style: textStyleSemiBold(
                                   size: 22, color: Colors.white),
                             ),
                             Text(
                               _user.email,
-                              style: textStyleRegularTitle(color: Colors.white),
+                              style: textStyleMediumTitle(color: Colors.white),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -229,7 +229,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       BaseWidget<UserViewModel>(
                         model: UserViewModel(
                             sharePreferences: Provider.of(context),
-                            teamServices: Provider.of(context)),
+                            teamServices: Provider.of(context),
+                        api: Provider.of(context)),
                         builder: (c, model, child) => ItemOptionWidget(
                             Images.LOGOUT, 'Đăng xuất',
                             iconColor: Colors.grey,

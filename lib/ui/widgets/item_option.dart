@@ -47,7 +47,7 @@ class ItemOptionWidget extends StatelessWidget {
                     padding: EdgeInsets.only(left: UIHelper.size20),
                     child: Text(
                       this.title,
-                      style: this.titleStyle ?? textStyleRegularTitle(),
+                      style: this.titleStyle ?? textStyleMediumTitle(),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

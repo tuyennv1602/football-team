@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/models/comment.dart';
-import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/res/images.dart';
 import 'package:myfootball/res/styles.dart';
 import 'package:myfootball/ui/widgets/expandable_text_widget.dart';
@@ -37,7 +36,7 @@ class ItemComment extends StatelessWidget {
                     Expanded(
                       child: Text(
                         comment.userName,
-                        style: textStyleSemiBold(),
+                        style: textStyleMediumTitle(),
                       ),
                     ),
                     UIHelper.horizontalSpaceMedium,

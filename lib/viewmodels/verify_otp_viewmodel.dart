@@ -61,9 +61,6 @@ class VerifyOTPViewModel extends BaseViewModel {
 
   Future<void> verifyPhoneNumber(String phoneNumber) async {
     UIHelper.showProgressDialog;
-    if (phoneNumber.startsWith('0')) {
-      phoneNumber = phoneNumber.replaceFirst('0', '+84');
-    }
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential phoneAuthCredential) {
       UIHelper.hideProgressDialog;

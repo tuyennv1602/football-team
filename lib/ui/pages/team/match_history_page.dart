@@ -320,7 +320,7 @@ class MatchHistoryPage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'bonus +${matchHistory.getBonus.toStringAsFixed(2)}',
+                            '+${matchHistory.getBonus.toStringAsFixed(2)}',
                             style: textStyleSemiBold(
                                 size: 14, color: matchHistory.getRateColor),
                           )

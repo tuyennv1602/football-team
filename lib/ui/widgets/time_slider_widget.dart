@@ -68,7 +68,7 @@ class TimeSliderState extends State<TimeSliderWidget> {
             children: <Widget>[
               Text(
                 'Thời gian có thể chơi',
-                style: textStyleRegularTitle(),
+                style: textStyleMediumTitle(),
               ),
               Text(
                 '$formattedStart - $formattedEnd',
@@ -115,7 +115,7 @@ class TimeSliderState extends State<TimeSliderWidget> {
             children: <Widget>[
               Text(
                 'Ngày có thể chơi',
-                style: textStyleRegularTitle(),
+                style: textStyleMediumTitle(),
               ),
               InkWell(
                 onTap: () {

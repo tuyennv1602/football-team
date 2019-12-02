@@ -32,9 +32,9 @@ class TabBarWidget extends StatelessWidget {
               ),
             )
             .toList(),
-        labelStyle: textStyleRegularTitle(),
+        labelStyle: textStyleMediumTitle(),
         isScrollable: isScrollable,
-        unselectedLabelStyle: textStyleRegularTitle(),
+        unselectedLabelStyle: textStyleMediumTitle(),
         labelColor: PRIMARY,
         unselectedLabelColor: Colors.grey,
         indicator: UnderlineTabIndicator(

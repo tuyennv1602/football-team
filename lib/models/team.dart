@@ -106,4 +106,6 @@ class Team {
     data['bio'] = this.bio;
     return data;
   }
+
+  bool isManager(int userId) => userId == manager || userId == captain;
 }

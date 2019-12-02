@@ -14,7 +14,7 @@ class Headers {
       data['Authorization'] = 'Bearer ${this.accessToken}';
     }
     data['app-type'] = 0;
-    data['device_id'] = deviceId;
+    data['device-id'] = deviceId;
     return data;
   }
 }

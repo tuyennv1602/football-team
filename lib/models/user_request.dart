@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
 
@@ -60,14 +61,7 @@ class UserRequest {
   List<String> get getPositions => position != null ? position.split(',') : [];
 
   Color get getStatusColor {
-    switch (status) {
-      case Constants.REQUEST_REJECTED:
-      case Constants.REQUEST_CANCEL:
-      case Constants.REQUEST_WAITING:
-        return Colors.grey;
-        break;
-      default:
-        return Colors.green;
-    }
+    if (status == Constants.REQUEST_WAITING) return GREEN_TEXT;
+    return Colors.grey;
   }
 }

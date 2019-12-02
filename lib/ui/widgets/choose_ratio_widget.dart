@@ -53,7 +53,7 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
               children: <Widget>[
                 Text(
                   'Tỉ lệ kèo (Thắng - Thua)',
-                  style: textStyleRegularTitle(),
+                  style: textStyleMediumTitle(),
                 ),
                 Expanded(
                   child: Text(

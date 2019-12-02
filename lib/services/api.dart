@@ -5,6 +5,7 @@ import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/responses/base_response.dart';
 import 'package:myfootball/models/responses/comments_resp.dart';
 import 'package:myfootball/models/responses/create_matching_resp.dart';
+import 'package:myfootball/models/responses/fund_request_resp.dart';
 import 'package:myfootball/models/responses/fund_resp.dart';
 import 'package:myfootball/models/responses/ground_resp.dart';
 import 'package:myfootball/models/responses/invite_request_resp.dart';
@@ -105,6 +106,15 @@ class Api {
       return LoginResponse.success(resp.data);
     } on DioError catch (e) {
       return LoginResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> logout() async {
+    try {
+      var response = await _api.postApi('user/logout');
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
     }
   }
 
@@ -594,4 +604,13 @@ class Api {
     }
   }
 
+  Future<FundRequestResponse> getFundStatusByNoticeId(
+      int teamId, int noticeId) async {
+    try {
+      var resp = await _api.getApi('group/$teamId/notice-wallet/$noticeId');
+      return FundRequestResponse.success(resp.data);
+    } on DioError catch (e) {
+      return FundRequestResponse.error(e.message);
+    }
+  }
 }

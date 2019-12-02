@@ -14,15 +14,13 @@ class EmptyWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Image.asset(
-          'assets/images/ic_empty.png',
-          width: UIHelper.size50,
-          height: UIHelper.size50,
-          color: Colors.grey,
+          'assets/images/ic_empty.gif',
+          width: UIHelper.size(150),
+          height: UIHelper.size(150),
         ),
-        UIHelper.verticalSpaceMedium,
         Text(
           _message,
-          style: textStyleRegularTitle(color: Colors.grey),
+          style: textStyleMediumTitle(color: Colors.grey),
         ),
         SizedBox(height: UIHelper.size50)
       ],

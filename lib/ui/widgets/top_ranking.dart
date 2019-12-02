@@ -66,16 +66,12 @@ class TopRankingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: UIHelper.size(150),
-      width: double.infinity,
-      child: Row(
-        children: <Widget>[
-          Expanded(child: _buildItem(context, firstTeam, 1)),
-          Expanded(child: _buildItem(context, secondTeam, 2)),
-          Expanded(child: _buildItem(context, thirdTeam, 3))
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        Expanded(child: _buildItem(context, firstTeam, 1)),
+        Expanded(child: _buildItem(context, secondTeam, 2)),
+        Expanded(child: _buildItem(context, thirdTeam, 3))
+      ],
     );
   }
 }

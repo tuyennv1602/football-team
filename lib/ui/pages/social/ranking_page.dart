@@ -23,7 +23,7 @@ class RankingPage extends StatelessWidget {
               width: UIHelper.size30,
               child: Text(
                 '${index + 1}',
-                style: textStyleRegularTitle(size: 15),
+                style: textStyleMediumTitle(size: 15),
               ),
             ),
             Padding(
@@ -45,7 +45,7 @@ class RankingPage extends StatelessWidget {
                 team.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: textStyleRegularTitle(size: 15),
+                style: textStyleMediumTitle(size: 15),
               ),
             ),
             SizedBox(
@@ -53,7 +53,7 @@ class RankingPage extends StatelessWidget {
               child: Text(
                 team.mp.toString(),
                 textAlign: TextAlign.right,
-                style: textStyleRegularTitle(size: 15),
+                style: textStyleMediumTitle(size: 15),
               ),
             ),
             SizedBox(
@@ -61,7 +61,7 @@ class RankingPage extends StatelessWidget {
               child: Text(
                 team.win.toString(),
                 textAlign: TextAlign.right,
-                style: textStyleRegularTitle(size: 15),
+                style: textStyleMediumTitle(size: 15),
               ),
             ),
             SizedBox(
@@ -69,7 +69,7 @@ class RankingPage extends StatelessWidget {
               child: Text(
                 team.point.toStringAsFixed(1),
                 textAlign: TextAlign.right,
-                style: textStyleRegularTitle(size: 15),
+                style: textStyleMediumTitle(size: 15),
               ),
             )
           ],

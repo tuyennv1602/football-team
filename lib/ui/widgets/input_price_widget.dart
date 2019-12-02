@@ -41,14 +41,14 @@ class InputPriceWidget extends StatelessWidget {
       },
       autocorrect: false,
       keyboardType: TextInputType.number,
-      style: textStyle ?? textStyleRegularTitle(),
+      style: textStyle ?? textStyleMediumTitle(),
       inputFormatters: [
         WhitelistingTextInputFormatter.digitsOnly,
         CurrencyFormatter()
       ],
       decoration: InputDecoration(
           hintText: hint,
-          hintStyle: hintTextStyle ?? textStyleRegularTitle(color: Colors.grey),
+          hintStyle: hintTextStyle ?? textStyleMediumTitle(color: Colors.grey),
           border: InputBorder.none,
           contentPadding: EdgeInsets.zero),
       textInputAction: TextInputAction.done,

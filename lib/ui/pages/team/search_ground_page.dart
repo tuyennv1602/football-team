@@ -80,7 +80,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
                       Text(
                         ground.name,
                         maxLines: 1,
-                        style: textStyleRegularTitle(color: Colors.white),
+                        style: textStyleMediumTitle(color: Colors.white),
                       ),
                       Text(
                         ground.address,

@@ -76,8 +76,7 @@ class FinancePage extends StatelessWidget {
               style: textStyleSemiBold(),
             ),
           ),
-          _buildItemIntro(
-              Images.BUDGET, 'Xem danh sách thông báo đóng quỹ'),
+          _buildItemIntro(Images.BUDGET, 'Xem danh sách thông báo đóng quỹ'),
           UIHelper.verticalSpaceSmall,
           _buildItemIntro(
               Images.FUND_NOTIFY, 'Tạo thông báo đóng quỹ tới thành viên'),
@@ -98,7 +97,7 @@ class FinancePage extends StatelessWidget {
         children: <Widget>[
           Text(
             'Số tiền cần thu',
-            style: textStyleRegularTitle(color: Colors.white),
+            style: textStyleMediumTitle(color: Colors.white),
           ),
           UIHelper.verticalSpaceSmall,
           InputPriceWidget(
@@ -109,7 +108,7 @@ class FinancePage extends StatelessWidget {
           UIHelper.verticalSpaceMedium,
           Text(
             'Chọn hạn thu quỹ',
-            style: textStyleRegularTitle(color: Colors.white),
+            style: textStyleMediumTitle(color: Colors.white),
           ),
           UIHelper.verticalSpaceSmall,
           SelectDateWidget(
@@ -152,7 +151,7 @@ class FinancePage extends StatelessWidget {
           children: <Widget>[
             Text(
               'Số tiền giao dịch',
-              style: textStyleRegularTitle(color: Colors.white),
+              style: textStyleMediumTitle(color: Colors.white),
             ),
             UIHelper.verticalSpaceSmall,
             InputPriceWidget(
@@ -188,7 +187,7 @@ class FinancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
-    bool isManager = team.manager == Provider.of<User>(context).id;
+    bool isManager = team.isManager(Provider.of<User>(context).id);
     return Scaffold(
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,

@@ -31,7 +31,7 @@ class AddAddressPage extends StatelessWidget {
               Text(
                 province.name,
                 maxLines: 1,
-                style: textStyleRegularTitle(),
+                style: textStyleMediumTitle(),
               ),
               Image.asset(
                 Images.NEXT,
@@ -56,7 +56,7 @@ class AddAddressPage extends StatelessWidget {
               Text(
                 '${district.name}, ${province.name}',
                 maxLines: 1,
-                style: textStyleRegularTitle(),
+                style: textStyleMediumTitle(),
               ),
               Image.asset(
                 Images.NEXT,
@@ -83,7 +83,7 @@ class AddAddressPage extends StatelessWidget {
                   '${ward.name}, ${district.name}, ${province.name}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: textStyleRegularTitle(),
+                  style: textStyleMediumTitle(),
                 ),
               ),
               UIHelper.horizontalSpaceSmall,

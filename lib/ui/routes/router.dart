@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myfootball/models/fund.dart';
 import 'package:myfootball/models/ground.dart';
 import 'package:myfootball/models/invite_request.dart';
 import 'package:myfootball/models/invite_team_arg.dart';
@@ -22,6 +23,7 @@ import 'package:myfootball/ui/pages/team/create_team_page.dart';
 import 'package:myfootball/ui/pages/team/edit_team_page.dart';
 import 'package:myfootball/ui/pages/team/finance_page.dart';
 import 'package:myfootball/ui/pages/team/find_matching_page.dart';
+import 'package:myfootball/ui/pages/team/fund_request_page.dart';
 import 'package:myfootball/ui/pages/team/ground_detail_page.dart';
 import 'package:myfootball/ui/pages/team/invite_detail_page.dart';
 import 'package:myfootball/ui/pages/team/invite_request_page.dart';
@@ -126,6 +128,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: InviteRequestPage());
     case USER_TRANSACTION_HISTORY:
       return SlideLeftRoute(widget: TransactionHistoryPage());
+    case FUND_REQUEST:
+      var fund = settings.arguments as Fund;
+      return SlideLeftRoute(widget: FundRequestPage(fund: fund));
     case RANKING:
       var teams = settings.arguments as List<Team>;
       return SlideLeftRoute(

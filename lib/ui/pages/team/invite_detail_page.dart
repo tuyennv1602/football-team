@@ -156,7 +156,7 @@ class InviteDetailPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       child: Text(
                         'Chọn ngày, giờ, sân',
-                        style: textStyleRegularTitle(),
+                        style: textStyleMediumTitle(),
                       ),
                     ),
                     Expanded(

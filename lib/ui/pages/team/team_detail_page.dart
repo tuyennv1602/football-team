@@ -100,7 +100,7 @@ class TeamDetailPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'Điểm: ${_team.point.toStringAsFixed(1) ?? 0}',
+                                      'Điểm: ${_team.point != null ? _team.point.toStringAsFixed(1) : 0}',
                                       style:
                                           textStyleAlert(color: Colors.black87),
                                     ),
@@ -119,7 +119,7 @@ class TeamDetailPage extends StatelessWidget {
                                               color: Colors.black87),
                                         ),
                                         RatingBarIndicator(
-                                          rating: _team.rating,
+                                          rating: _team.rating ?? 0,
                                           itemCount: 5,
                                           itemPadding: EdgeInsets.only(left: 2),
                                           itemSize: UIHelper.size20,

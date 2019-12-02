@@ -37,7 +37,7 @@ class _ExpandableTextState extends State<ExpandableTextWidget>
                   softWrap: true,
                   maxLines: isExpanded ? 1000 : widget.numberLine,
                   overflow: TextOverflow.ellipsis,
-                  style: widget.textStyle ?? textStyleRegularTitle()),
+                  style: widget.textStyle ?? textStyleMediumTitle()),
               boxes.length > widget.numberLine
                   ? InkWell(
                       onTap: () {

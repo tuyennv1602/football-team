@@ -88,7 +88,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   Widget _buildTeamOptions(BuildContext context, Team team) {
     List<Widget> _children = [];
     List<Widget> _manager = [];
-    bool isManager = team.manager == Provider.of<User>(context).id;
+    bool isManager = team.isManager(Provider.of<User>(context).id);
     if (isManager) {
       _manager.addAll([
         ItemOptionWidget(
@@ -270,7 +270,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     Expanded(
                       child: Text(
                         _team.name,
-                        style: textStyleRegularTitle(),
+                        style: textStyleMediumTitle(),
                       ),
                     ),
                   ],

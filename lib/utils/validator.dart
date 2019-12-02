@@ -23,7 +23,7 @@ class Validator {
     final _phoneRegExpString = r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{3})\s*$';
     RegExp regex = RegExp(_phoneRegExpString, caseSensitive: false);
     if (!regex.hasMatch(phoneNumber)) {
-      return 'Số điện thoại có dạng +84 XXX XXX XXX';
+      return 'Số điện thoại có dạng 0XXX XXX XXX';
     }
     return null;
   }

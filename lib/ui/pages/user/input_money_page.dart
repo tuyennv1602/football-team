@@ -42,7 +42,7 @@ class InputMoneyPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     name,
-                    style: textStyleRegularTitle(),
+                    style: textStyleMediumTitle(),
                   ),
                   Text(
                     'Miễn phí',
@@ -100,7 +100,7 @@ class InputMoneyPage extends StatelessWidget {
                                 child: InputPriceWidget(
                                   onChangedText: (text) {},
                                   textStyle: textStyleSemiBold(size: 22),
-                                  hintTextStyle: textStyleRegularTitle(
+                                  hintTextStyle: textStyleMediumTitle(
                                       size: 22, color: Colors.grey),
                                   hint: '0đ',
                                 ),

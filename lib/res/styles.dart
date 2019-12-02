@@ -32,9 +32,9 @@ textStyleRegular({double size, Color color}) => TextStyle(
     color: color ?? Colors.black87,
     letterSpacing: 0.1);
 
-textStyleRegularTitle({double size, Color color}) => TextStyle(
+textStyleMediumTitle({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 17),
-    fontFamily: REGULAR,
+    fontFamily: MEDIUM,
     color: color ?? Colors.black,
     letterSpacing: 0.1);
 
@@ -73,3 +73,4 @@ textStyleMedium({double size, Color color}) => TextStyle(
     fontSize: UIHelper.size(size ?? 16),
     color: color ?? Colors.black,
     letterSpacing: 0.1);
+

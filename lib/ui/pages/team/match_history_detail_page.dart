@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:myfootball/models/match_history.dart';
 import 'package:myfootball/models/member.dart';
 import 'package:myfootball/models/team.dart';
@@ -19,6 +20,7 @@ import 'package:myfootball/ui/widgets/tabbar_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/matching_detail_viewmodel.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class MatchHistoryDetailPage extends StatelessWidget {
@@ -89,6 +91,49 @@ class MatchHistoryDetailPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: UIHelper.size15,
+                                    vertical: UIHelper.size5),
+                                child: Row(
+                                  children: <Widget>[
+                                    LikeButton(
+                                      size: UIHelper.size30,
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          Icons.check_circle,
+                                          color:
+                                              isLiked ? PRIMARY : Colors.grey,
+                                          size: UIHelper.size30,
+                                        );
+                                      },
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: UIHelper.size5),
+                                        child: LinearPercentIndicator(
+                                          animation: true,
+                                          lineHeight: UIHelper.size(6),
+                                          animationDuration: 1000,
+                                          percent: matchHistory.getRatePercent,
+                                          linearStrokeCap:
+                                              LinearStrokeCap.roundAll,
+                                          progressColor:
+                                              matchHistory.getRateColor,
+                                          backgroundColor: LINE_COLOR,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '+${matchHistory.getBonus.toStringAsFixed(2)}',
+                                      style: textStyleSemiBold(
+                                          size: 16,
+                                          color: matchHistory.getRateColor),
+                                    )
+                                  ],
+                                ),
+                              ),
                               ItemOptionWidget(
                                 Images.STADIUM,
                                 matchHistory.groundName,
@@ -155,20 +200,71 @@ class MatchHistoryDetailPage extends StatelessWidget {
                               placeHolder: Images.DEFAULT_LOGO,
                             ),
                           ),
-                          Text(
-                            '${matchHistory.getMyTeamScore} - ${matchHistory.getOpponentTeamScore}',
-                            textAlign: TextAlign.center,
-                            style: textStyleBold(
-                                size: 30,
-                                color: matchHistory.isConfirmed
-                                    ? Colors.red
-                                    : Colors.grey),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                '${matchHistory.getMyTeamScore} - ${matchHistory.getOpponentTeamScore}',
+                                textAlign: TextAlign.center,
+                                style: textStyleBold(
+                                    size: 30,
+                                    color: matchHistory.isConfirmed
+                                        ? Colors.red
+                                        : Colors.grey),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  matchHistory.isConfirmed
+                                      ? Text(
+                                          matchHistory.getMyTeamPoint
+                                              .toStringAsFixed(2),
+                                          style: textStyleSemiBold(
+                                              size: 14,
+                                              color:
+                                                  matchHistory.getMyTeamPoint >
+                                                          0
+                                                      ? GREEN_TEXT
+                                                      : Colors.red),
+                                        )
+                                      : SizedBox(),
+                                  matchHistory.isConfirmed
+                                      ? Padding(
+                                          padding: EdgeInsets.only(left: 2),
+                                          child: Image.asset(
+                                            matchHistory.getMyTeamPoint > 0
+                                                ? Images.UP
+                                                : Images.DOWN,
+                                            width: UIHelper.size(12),
+                                            height: UIHelper.size(12),
+                                            color:
+                                                matchHistory.getMyTeamPoint > 0
+                                                    ? GREEN_TEXT
+                                                    : Colors.red,
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
+                            ],
                           ),
                           Expanded(
-                            child: ImageWidget(
-                              source: matchHistory.getOpponentLogo,
-                              placeHolder: Images.DEFAULT_LOGO,
-                            ),
+                            child: matchHistory.getOpponentTeam != null
+                                ? InkWell(
+                                    onTap: () => NavigationService.instance
+                                        .navigateTo(TEAM_DETAIL,
+                                            arguments:
+                                                matchHistory.getOpponentTeam),
+                                    child: Hero(
+                                      tag: matchHistory.getOpponentTeam.id,
+                                      child: ImageWidget(
+                                        source: matchHistory.getOpponentLogo,
+                                        placeHolder: Images.DEFAULT_LOGO,
+                                      ),
+                                    ),
+                                  )
+                                : Image.asset(Images.DEFAULT_LOGO,
+                                    width: UIHelper.size50,
+                                    height: UIHelper.size50),
                           ),
                         ],
                       ),

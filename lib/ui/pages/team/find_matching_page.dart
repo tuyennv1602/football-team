@@ -80,12 +80,11 @@ class FindMatchingPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
                 child: Text(left,
-                    textAlign: TextAlign.left, style: textStyleRegularTitle())),
+                    textAlign: TextAlign.left, style: textStyleMediumTitle())),
             Text(title, style: textStyleRegular()),
             Expanded(
                 child: Text(right,
-                    textAlign: TextAlign.right,
-                    style: textStyleRegularTitle())),
+                    textAlign: TextAlign.right, style: textStyleMediumTitle())),
           ],
         ),
       );
@@ -178,8 +177,9 @@ class FindMatchingPage extends StatelessWidget {
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),
                       child: SliverAppBar(
-                        expandedHeight: 210,
+                        expandedHeight: UIHelper.size(200),
                         forceElevated: false,
+                        automaticallyImplyLeading: false,
                         backgroundColor: Colors.white,
                         flexibleSpace: FlexibleSpaceBar(
                           background: Column(
@@ -210,7 +210,7 @@ class FindMatchingPage extends StatelessWidget {
                                       itemSize: UIHelper.size15,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
-                                        color: PRIMARY,
+                                        color: Colors.amber,
                                       ),
                                     ),
                                     Text(
@@ -224,7 +224,7 @@ class FindMatchingPage extends StatelessWidget {
                                       itemSize: UIHelper.size15,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
-                                        color: PRIMARY,
+                                        color: Colors.amber,
                                       ),
                                     ),
                                   ],
@@ -279,9 +279,8 @@ class FindMatchingPage extends StatelessWidget {
                                         logo: team2.logo),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: UIHelper.size10,
-                                        bottom: UIHelper.size5),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: UIHelper.size5),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
@@ -306,14 +305,15 @@ class FindMatchingPage extends StatelessWidget {
                           ),
                         ),
                         bottom: PreferredSize(
-                          preferredSize: Size.fromHeight(3),
+                          preferredSize: Size.fromHeight(5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
                                 'Gợi ý sân thi đấu',
-                                style: textStyleSemiBold(size: 14),
+                                style: textStyleSemiBold(),
                               ),
+                              UIHelper.verticalSpaceSmall,
                               TabBarWidget(
                                 titles: team2.getMappedTimeSlot.keys
                                     .toList()

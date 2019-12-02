@@ -208,7 +208,7 @@ class MatchSchedulePage extends StatelessWidget {
                     padding: EdgeInsets.only(left: UIHelper.size10, right: UIHelper.size5),
                     child: Text(
                       matchSchedule.groundName,
-                      style: textStyleRegular(color: GREEN_TEXT),
+                      style: textStyleMedium(color: Colors.blueGrey),
                     ),
                   ),
                 ),
@@ -231,7 +231,7 @@ class MatchSchedulePage extends StatelessWidget {
                           horizontal: UIHelper.size15),
                       child: Text(
                         matchSchedule.getShortPlayTime,
-                        style: textStyleSemiBold(color: Colors.white),
+                        style: textStyleMedium(color: Colors.white),
                       ),
                     ),
                   ),

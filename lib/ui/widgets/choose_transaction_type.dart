@@ -33,7 +33,7 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
               horizontal: UIHelper.size50, vertical: UIHelper.size(7)),
           child: Text(
             StringUtil.getTransactionName(type),
-            style: textStyleRegularTitle(color: Colors.white),
+            style: textStyleMediumTitle(color: Colors.white),
           ),
         ),
       );
@@ -53,7 +53,7 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
               children: <Widget>[
                 Text(
                   'Loại giao dịch',
-                  style: textStyleRegularTitle(color: Colors.white),
+                  style: textStyleMediumTitle(color: Colors.white),
                 ),
                 Expanded(
                   child: Text(

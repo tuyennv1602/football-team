@@ -44,7 +44,7 @@ class NotificationState extends State<NotificationPage>
                   children: <TextSpan>[
                     TextSpan(
                       text: notification.title,
-                      style: textStyleSemiBold(),
+                      style: textStyleMediumTitle(),
                     ),
                     TextSpan(
                       text: ' - ${notification.getCreateTime}',

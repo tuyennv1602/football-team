@@ -30,12 +30,12 @@ class CompareTeamPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
                 child: Text(left,
-                    textAlign: TextAlign.left, style: textStyleRegularTitle())),
+                    textAlign: TextAlign.left, style: textStyleMediumTitle())),
             Text(title, style: textStyleRegular()),
             Expanded(
                 child: Text(right,
                     textAlign: TextAlign.right,
-                    style: textStyleRegularTitle())),
+                    style: textStyleMediumTitle())),
           ],
         ),
       );

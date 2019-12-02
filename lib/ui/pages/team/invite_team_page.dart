@@ -24,6 +24,7 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/invite_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class InviteTeamPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final InviteTeamArgument _inviteTeamArgument;
@@ -123,11 +124,11 @@ class InviteTeamPage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    UIHelper.verticalSpaceMedium,
+                    UIHelper.verticalSpaceSmall,
                     Form(
                       key: _formKey,
                       child: InputTextWidget(
@@ -153,7 +154,7 @@ class InviteTeamPage extends StatelessWidget {
                               top: UIHelper.size20, bottom: UIHelper.size5),
                           child: Text(
                             'Chọn ngày, giờ, sân',
-                            style: textStyleRegularTitle(),
+                            style: textStyleMediumTitle(),
                           ),
                         ),
                         InkWell(
@@ -162,7 +163,7 @@ class InviteTeamPage extends StatelessWidget {
                                 top: UIHelper.size20, bottom: UIHelper.size5),
                             child: Text(
                               'Chọn tất cả',
-                              style: textStyleRegularTitle(),
+                              style: textStyleMediumTitle(),
                             ),
                           ),
                         ),
@@ -221,7 +222,7 @@ class InviteTeamPage extends StatelessWidget {
                               ),
                               ButtonWidget(
                                 margin: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size10),
+                                    vertical: UIHelper.size5),
                                 child: Text(
                                   'GỬI LỜI MỜI',
                                   style: textStyleButton(),
@@ -230,10 +231,13 @@ class InviteTeamPage extends StatelessWidget {
                                   if (validateAndSave()) {
                                     model.sendInvite(InviteRequest(
                                         title: _invite,
-                                        sendGroupId: _inviteTeamArgument.fromTeamId,
-                                        receiveGroupId: _inviteTeamArgument.toTeamId,
+                                        sendGroupId:
+                                            _inviteTeamArgument.fromTeamId,
+                                        receiveGroupId:
+                                            _inviteTeamArgument.toTeamId,
                                         ratio: _ratio,
-                                        matchingTimeSlots: model.selectedTimeSlots));
+                                        matchingTimeSlots:
+                                            model.selectedTimeSlots));
                                   }
                                 },
                               ),

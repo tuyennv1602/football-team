@@ -110,9 +110,9 @@ class SearchTeamPage extends StatelessWidget {
                         team.bio,
                         maxLines: 2,
                         overflow: TextOverflow.fade,
-                        style: textStyleRegularBody(),
+                        style: textStyleRegular(color: Colors.black54),
                       ),
-                      UIHelper.verticalSpaceMedium,
+                      UIHelper.verticalSpaceSmall,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

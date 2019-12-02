@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/models/matching_time_slot.dart';
+import 'package:myfootball/res/colors.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/object_utils.dart';
@@ -100,12 +101,7 @@ class InviteRequest {
     return 'Không xác định';
   }
 
-  Color get getStatusColor {
-    if (status == Constants.INVITE_CANCEL ||
-        status == Constants.INVITE_REJECTED) return Colors.grey;
-    if (status == Constants.INVITE_WAITING) return Colors.red;
-    return Colors.green;
-  }
+  bool get isActive => status == Constants.INVITE_WAITING;
 
   Map<int, List<MatchingTimeSlot>> get getMappedTimeSlot =>
       ObjectUtil.mapMatchingTimeSlotByPlayDate(groundTimeSlots);

@@ -60,7 +60,7 @@ class UIHelper {
   static double horizontalIndicator = padding;
 
   static Widget homeButtonSpace =
-      SizedBox(height: paddingBottom, width: screenWidth);
+      Container(color: Colors.white, height: paddingBottom, width: screenWidth);
 
   static double size(double size) {
     if (size == 0) return 0;

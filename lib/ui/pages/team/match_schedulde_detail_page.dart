@@ -32,7 +32,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
   Widget _buildTeamMembers(BuildContext context, List<Member> members) {
     if (members == null) return LoadingWidget();
     return members.length == 0
-        ? EmptyWidget(message: 'Chưa có thành viên nào')
+        ? EmptyWidget(message: 'Chưa có thành viên đăng ký')
         : GridView.builder(
             padding: EdgeInsets.all(UIHelper.padding),
             itemBuilder: (c, index) => ItemMember(
@@ -67,6 +67,10 @@ class MatchScheduleDetailPage extends StatelessWidget {
                 imageName: Images.BACK,
                 onTap: () => NavigationService.instance.goBack(),
               ),
+              rightContent: AppBarButtonWidget(
+                imageName: Images.NOTIFICATION,
+                onTap: () => NavigationService.instance.goBack(),
+              ),
               backgroundColor: Colors.transparent,
             ),
             Expanded(
@@ -89,7 +93,6 @@ class MatchScheduleDetailPage extends StatelessWidget {
                         builder: (c, model, child) => Padding(
                           padding: EdgeInsets.only(top: UIHelper.size50),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               ItemOptionWidget(
                                 Images.STADIUM,
@@ -99,13 +102,24 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                     .navigateTo(GROUND_DETAIL,
                                         arguments: matchSchedule.groundId),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: UIHelper.padding,
-                                    vertical: UIHelper.size10),
-                                child: Text(
-                                  'Danh sách thi đấu',
-                                  style: textStyleSemiBold(),
+                              matchSchedule.getRatio != null
+                                  ? ItemOptionWidget(
+                                      Images.RATIO,
+                                      'Tỉ lệ (thắng-thua)   ${matchSchedule.getRatio}',
+                                      iconColor: Colors.red,
+                                      rightContent: SizedBox(),
+                                    )
+                                  : SizedBox(),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: UIHelper.padding,
+                                      vertical: UIHelper.size10),
+                                  child: Text(
+                                    'Danh sách thi đấu',
+                                    style: textStyleSemiBold(),
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -174,10 +188,23 @@ class MatchScheduleDetailPage extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: matchSchedule.getOpponentTeam != null ? ImageWidget(
-                              source: matchSchedule.getOpponentLogo,
-                              placeHolder: Images.DEFAULT_LOGO,
-                            ) : Image.asset(Images.DEFAULT_LOGO, width: UIHelper.size50, height: UIHelper.size50,),
+                            child: matchSchedule.getOpponentTeam != null
+                                ? InkWell(
+                                    onTap: () => NavigationService.instance
+                                        .navigateTo(TEAM_DETAIL,
+                                            arguments:
+                                                matchSchedule.getOpponentTeam),
+                                    child: Hero(
+                                      tag: matchSchedule.getOpponentTeam.id,
+                                      child: ImageWidget(
+                                        source: matchSchedule.getOpponentLogo,
+                                        placeHolder: Images.DEFAULT_LOGO,
+                                      ),
+                                    ),
+                                  )
+                                : Image.asset(Images.DEFAULT_LOGO,
+                                    width: UIHelper.size50,
+                                    height: UIHelper.size50),
                           ),
                         ],
                       ),

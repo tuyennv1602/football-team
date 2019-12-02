@@ -15,13 +15,14 @@ import 'package:myfootball/ui/widgets/empty_widget.dart';
 import 'package:myfootball/ui/widgets/line.dart';
 import 'package:myfootball/ui/widgets/loading.dart';
 import 'package:myfootball/ui/widgets/step_widget.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodels/team_fund_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class TeamFundPage extends StatelessWidget {
   _showOptions(BuildContext context,
-          {Function onSendRequest, Function onViewList}) =>
+          {Function onSendRequest, Function onDetail}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
@@ -36,14 +37,14 @@ class TeamFundPage extends StatelessWidget {
               onSendRequest();
             }
             if (index == 2) {
-              onViewList();
+              onDetail();
             }
           },
         ),
       );
 
   Widget _buildItemFund(BuildContext context, Fund fund,
-          {Function onSendRequest, Function onViewList}) =>
+          {Function onSendRequest, Function onDetail}) =>
       Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -54,7 +55,7 @@ class TeamFundPage extends StatelessWidget {
           onTap: () => _showOptions(
             context,
             onSendRequest: () => onSendRequest(fund.id),
-            onViewList: () => onViewList(fund.id),
+            onDetail: () => onDetail(fund),
           ),
           child: Padding(
             padding: EdgeInsets.all(UIHelper.padding),
@@ -65,7 +66,7 @@ class TeamFundPage extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: UIHelper.size5),
                   child: Text(
                     fund.title,
-                    style: textStyleSemiBold(),
+                    style: textStyleMediumTitle(),
                   ),
                 ),
                 Row(
@@ -88,7 +89,7 @@ class TeamFundPage extends StatelessWidget {
                   step: fund.getStep,
                   firstTitle: 'Chưa đóng',
                   secondTitle: 'Chờ xác nhận',
-                  thirdTitle: 'Đã đóng',
+                  thirdTitle: 'Hoàn thành',
                 )
               ],
             ),
@@ -131,6 +132,9 @@ class TeamFundPage extends StatelessWidget {
                                   model.funds[index],
                                   onSendRequest: (noticeId) =>
                                       model.sendRequest(index, noticeId),
+                                  onDetail: (fund) => NavigationService.instance
+                                      .navigateTo(FUND_REQUEST,
+                                          arguments: fund),
                                 ),
                             separatorBuilder: (c, index) =>
                                 UIHelper.verticalIndicator,
@@ -138,6 +142,7 @@ class TeamFundPage extends StatelessWidget {
               ),
             ),
           ),
+          UIHelper.homeButtonSpace
         ],
       ),
     );

@@ -102,7 +102,7 @@ class BookingPage extends StatelessWidget {
             ),
             Text(
               timeSlot.getTime,
-              style: textStyleRegularTitle(),
+              style: textStyleMediumTitle(),
             ),
             UIHelper.verticalSpaceSmall,
             Text(
@@ -111,7 +111,7 @@ class BookingPage extends StatelessWidget {
             ),
             Text(
               StringUtil.formatCurrency(timeSlot.price),
-              style: textStyleRegularTitle(),
+              style: textStyleMediumTitle(),
             )
           ],
         ),
@@ -135,7 +135,7 @@ class BookingPage extends StatelessWidget {
                 UIHelper.horizontalSpaceMedium,
                 Text(
                   '( ${StringUtil.getFieldType(field.type)} )',
-                  style: textStyleRegularTitle(),
+                  style: textStyleMediumTitle(),
                 ),
               ],
             ),
@@ -278,7 +278,7 @@ class BookingPage extends StatelessWidget {
                           Expanded(
                             child: Text(
                               'Chọn ngày đá',
-                              style: textStyleRegularTitle(),
+                              style: textStyleMediumTitle(),
                             ),
                           ),
                           SelectDateWidget(
@@ -296,7 +296,7 @@ class BookingPage extends StatelessWidget {
                             EdgeInsets.symmetric(vertical: UIHelper.size10),
                         child: Text(
                           'Các khung giờ trống',
-                          style: textStyleRegularTitle(),
+                          style: textStyleMediumTitle(),
                         ),
                       ),
                       Expanded(

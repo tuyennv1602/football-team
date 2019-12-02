@@ -21,7 +21,7 @@ class RegisterViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(
           'Đăng ký thành công! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
           isSuccess: true,
-          onConfirmed: () => verifyPhoneNumber(resp.user.id, phoneNumber));
+          onConfirmed: () => verifyPhoneNumber(resp.user.id, resp.user.phone));
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -29,9 +29,6 @@ class RegisterViewModel extends BaseViewModel {
 
   Future<void> verifyPhoneNumber(int userId, String phoneNumber) async {
     UIHelper.showProgressDialog;
-    if (phoneNumber.startsWith('0')) {
-      phoneNumber = phoneNumber.replaceFirst('0', '+84');
-    }
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential phoneAuthCredential) {
       UIHelper.hideProgressDialog;

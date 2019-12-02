@@ -46,7 +46,7 @@ class RequestMemberPage extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           teamRequest.name ?? teamRequest.username,
-                          style: textStyleSemiBold(),
+                          style: textStyleMediumTitle(),
                         ),
                         Text(
                           'Giới thiệu: ${teamRequest.content}',

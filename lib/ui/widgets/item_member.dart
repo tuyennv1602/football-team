@@ -75,7 +75,7 @@ class ItemMember extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        member.name ?? member.userName,
+                        member.name,
                         style: textStyleSemiBold(size: 15),
                         textAlign: TextAlign.center,
                         maxLines: 1,
@@ -90,7 +90,7 @@ class ItemMember extends StatelessWidget {
                           itemSize: UIHelper.size(18),
                           itemBuilder: (context, index) => Icon(
                             Icons.star,
-                            color: PRIMARY,
+                            color: Colors.amber,
                           ),
                         ),
                       ),
