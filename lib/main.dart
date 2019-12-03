@@ -1,19 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/provider_setup.dart' as setupProvider;
-import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/fonts.dart';
-import 'package:myfootball/services/local_storage.dart';
-import 'package:myfootball/services/navigation_services.dart';
-import 'package:myfootball/ui/pages/home_page.dart';
-import 'package:myfootball/ui/pages/login/login_page.dart';
+import 'package:myfootball/resource/colors.dart';
+import 'package:myfootball/resource/fonts.dart';
+import 'package:myfootball/service/local_storage.dart';
+import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/ui/page/home_page.dart';
+import 'package:myfootball/ui/page/login/login_page.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import 'package:myfootball/ui/routes/router.dart';
+import 'package:myfootball/ui/router/router.dart';
 import 'package:myfootball/utils/local_timeago.dart';
 import 'package:provider/provider.dart';
-import 'http.dart'; // make dio as global top-level variable
+import 'http.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:firebase_messaging/firebase_messaging.dart';
 

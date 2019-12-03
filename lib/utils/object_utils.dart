@@ -1,5 +1,5 @@
-import 'package:myfootball/models/invite_request.dart';
-import 'package:myfootball/models/matching_time_slot.dart';
+import 'package:myfootball/model/invite_request.dart';
+import 'package:myfootball/model/matching_time_slot.dart';
 import 'package:queries/collections.dart';
 import 'package:queries/queries.dart';
 

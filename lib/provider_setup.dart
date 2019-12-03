@@ -1,12 +1,12 @@
-import 'package:myfootball/models/user.dart';
-import 'package:myfootball/services/api.dart';
-import 'package:myfootball/services/auth_services.dart';
-import 'package:myfootball/services/local_storage.dart';
-import 'package:myfootball/services/sqlite_services.dart';
-import 'package:myfootball/services/team_services.dart';
+import 'package:myfootball/model/user.dart';
+import 'package:myfootball/service/api.dart';
+import 'package:myfootball/service/auth_services.dart';
+import 'package:myfootball/service/local_storage.dart';
+import 'package:myfootball/service/sqlite_services.dart';
+import 'package:myfootball/service/team_services.dart';
 import 'package:provider/provider.dart';
 
-import 'models/team.dart';
+import 'model/team.dart';
 
 // Define all provider in app
 List<SingleChildCloneableWidget> providers = [

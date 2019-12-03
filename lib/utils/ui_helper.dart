@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/res/colors.dart';
-import 'package:myfootball/res/images.dart';
-import 'package:myfootball/res/styles.dart';
-import 'package:myfootball/services/navigation_services.dart';
-import 'package:myfootball/ui/widgets/button_widget.dart';
-import 'package:myfootball/ui/widgets/progress_dialog.dart';
+import 'package:myfootball/resource/colors.dart';
+import 'package:myfootball/resource/images.dart';
+import 'package:myfootball/resource/styles.dart';
+import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/ui/widget/button_widget.dart';
+import 'package:myfootball/ui/widget/progress_dialog.dart';
 
 class UIHelper {
   static MediaQueryData _mediaQueryData;
