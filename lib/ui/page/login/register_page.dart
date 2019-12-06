@@ -134,13 +134,14 @@ class _RegisterState extends State<RegisterPage> {
                             key: _formKey,
                             child: Column(
                               children: <Widget>[
-                                UIHelper.verticalSpaceSmall,
-                                LightInputTextWidget(
-                                  labelText: 'Tên đầy đủ',
-                                  validator: Validator.validName,
-                                  onSaved: (value) => _name = value.trim(),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                  child: LightInputTextWidget(
+                                    labelText: 'Tên đầy đủ',
+                                    validator: Validator.validName,
+                                    onSaved: (value) => _name = value.trim(),
+                                  ),
                                 ),
-                                UIHelper.verticalSpaceMedium,
                                 LightInputTextWidget(
                                   labelText: 'Số điện thoại',
                                   validator: Validator.validPhoneNumber,
@@ -155,14 +156,15 @@ class _RegisterState extends State<RegisterPage> {
                                   ],
                                   onSaved: (value) => _phone = value.trim(),
                                 ),
-                                UIHelper.verticalSpaceMedium,
-                                LightInputTextWidget(
-                                  labelText: 'Email',
-                                  validator: Validator.validEmail,
-                                  inputType: TextInputType.emailAddress,
-                                  onSaved: (value) => _email = value.trim(),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                  child: LightInputTextWidget(
+                                    labelText: 'Email',
+                                    validator: Validator.validEmail,
+                                    inputType: TextInputType.emailAddress,
+                                    onSaved: (value) => _email = value.trim(),
+                                  ),
                                 ),
-                                UIHelper.verticalSpaceMedium,
                                 LightInputTextWidget(
                                   labelText: 'Mật khẩu',
                                   obscureText: true,

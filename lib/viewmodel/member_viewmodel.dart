@@ -1,43 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/model/comment.dart';
 import 'package:myfootball/model/member.dart';
+import 'package:myfootball/model/team.dart';
 import 'package:myfootball/service/api.dart';
+import 'package:myfootball/service/team_services.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class MemberViewModel extends BaseViewModel {
   Api _api;
-  List<Comment> comments;
-  Member member;
+  Team team;
+  TeamServices _teamServices;
 
-  MemberViewModel({@required Api api}) : _api = api;
+  MemberViewModel(
+      {@required Api api,
+      @required this.team,
+      @required TeamServices teamServices})
+      : _api = api,
+        _teamServices = teamServices;
 
-  initMember(Member member) {
-    this.member = member;
-  }
-
-  Future<void> getCommentsByUser(int userId, int page) async {
-    setBusy(true);
-    var resp = await _api.getCommentByUserId(userId, page);
+  Future<void> addCaptain(int memberId) async {
+    UIHelper.showProgressDialog;
+    var resp = await _api.addCaptain(team.id, memberId);
+    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
-      this.comments = resp.comments;
+      team.captainId = memberId;
+      _teamServices.setTeam(team);
+      notifyListeners();
+      UIHelper.showSimpleDialog('Đã thêm đội trưởng đội bóng!',
+          isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    setBusy(false);
   }
 
-  Future<double> submitReview(int userId, double rating, String comment) async {
+  Future<void> kickMember(int index, int memberId) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.reviewUser(userId, rating, comment);
+    var resp = await _api.removeMember(team.id, memberId);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
-      this.member.rating = resp.review.rating;
-      this.comments.add(resp.review.comment);
+      team.members.removeAt(index);
+      _teamServices.setTeam(team);
       notifyListeners();
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return this.member.rating;
   }
 }

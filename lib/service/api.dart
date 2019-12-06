@@ -21,6 +21,7 @@ import 'package:myfootball/model/response/search_team_resp.dart';
 import 'package:myfootball/model/response/team_request_resp.dart';
 import 'package:myfootball/model/response/team_resp.dart';
 import 'package:myfootball/model/response/ticket_resp.dart';
+import 'package:myfootball/model/response/transaction_resp.dart';
 import 'package:myfootball/model/response/user_request_resp.dart';
 import 'package:myfootball/model/team.dart';
 
@@ -630,6 +631,65 @@ class Api {
       return FundRequestResponse.success(resp.data);
     } on DioError catch (e) {
       return FundRequestResponse.error(e.message);
+    }
+  }
+
+  Future<TransactionResponse> getTransactionByTeam(
+      int teamId, String month) async {
+    try {
+      var resp = await _api.getApi('group/$teamId/wallet/history?month=$month');
+      return TransactionResponse.success(resp.data);
+    } on DioError catch (e) {
+      return TransactionResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> createExchange(
+      int teamId, double price, int type, String title) async {
+    try {
+      var resp = await _api.postApi('group/$teamId/exchange',
+          body: {'price': price, 'type': type, 'title': title});
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<TransactionResponse> getUserTransaction(int page) async {
+    try {
+      FormData formData = new FormData.from({"page": page, "limit": 50});
+      var resp =
+          await _api.getApi('user/wallet/history', queryParams: formData);
+      return TransactionResponse.success(resp.data);
+    } on DioError catch (e) {
+      return TransactionResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> addCaptain(int teamId, int memberId) async {
+    try {
+      var resp = await _api.putApi('group/$teamId/captain?member_id=$memberId');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> removeMember(int teamId, int memberId) async {
+    try {
+      var resp = await _api.deleteApi('group/$teamId/member/$memberId/kick');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> leaveTeam(int teamId) async {
+    try {
+      var resp = await _api.deleteApi('group/$teamId/leave');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
     }
   }
 }

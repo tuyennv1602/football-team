@@ -295,29 +295,6 @@ class FindMatchingPage extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: () => NavigationService.instance.navigateTo(INVITE_TEAM,
-                arguments: InviteTeamArgument(
-                    fromTeamId: team1.id,
-                    toTeamId: int.parse(team2.id),
-                    mappedTimeSlots: team2.getMappedTimeSlot)),
-            child: Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-              decoration: BoxDecoration(
-                color: PRIMARY,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(UIHelper.size10),
-                  bottomRight: Radius.circular(UIHelper.size10),
-                ),
-              ),
-              child: Text(
-                'MỜI GHÉP ĐỐI',
-                style: textStyleButton(),
-              ),
-            ),
           )
         ],
       ),
@@ -454,22 +431,50 @@ class FindMatchingPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     vertical: UIHelper.size10),
                                 child: model.matchings.length > 0
-                                    ? Swiper(
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          var _matching =
-                                              model.matchings[index];
-                                          return _buildSwiperItem(
-                                              context, team, _matching);
-                                        },
-                                        onIndexChanged: (index) =>
-                                            model.changeCurrentTeam(
-                                                model.matchings[index]),
-                                        itemCount: model.matchings.length,
-                                        itemWidth: UIHelper.screenWidth,
-                                        scale: 0.9,
-                                        viewportFraction: 0.87,
-                                        loop: false,
+                                    ? Column(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Swiper(
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                var _matching =
+                                                    model.matchings[index];
+                                                return _buildSwiperItem(
+                                                    context, team, _matching);
+                                              },
+                                              onIndexChanged: (index) =>
+                                                  model.changeCurrentTeam(
+                                                      model.matchings[index]),
+                                              itemCount: model.matchings.length,
+                                              itemWidth: UIHelper.screenWidth,
+                                              scale: 0.9,
+                                              viewportFraction: 0.87,
+                                              loop: false,
+                                            ),
+                                          ),
+                                          ButtonWidget(
+                                            child: Text(
+                                              'MỜI GHÉP ĐỐI',
+                                              style: textStyleButton(),
+                                            ),
+                                            margin: EdgeInsets.symmetric(
+                                              vertical: UIHelper.size10,
+                                                horizontal: UIHelper.padding),
+                                            onTap: () => NavigationService
+                                                .instance
+                                                .navigateTo(
+                                              INVITE_TEAM,
+                                              arguments: InviteTeamArgument(
+                                                  fromTeamId: team.id,
+                                                  toTeamId: int.parse(
+                                                      model.currentTeam.id),
+                                                  mappedTimeSlots: model
+                                                      .currentTeam
+                                                      .getMappedTimeSlot),
+                                            ),
+                                          )
+                                        ],
                                       )
                                     : EmptyWidget(
                                         message: 'Không tìm thấy kết quả'),

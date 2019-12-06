@@ -135,7 +135,7 @@ class MatchHistoryPage extends StatelessWidget {
       BuildContext context, int index, MatchHistory matchHistory,
       {Function onSubmit, Function onConfirm}) {
     bool isCaptain =
-        Provider.of<Team>(context).manager == Provider.of<User>(context).id;
+        Provider.of<Team>(context).managerId == Provider.of<User>(context).id;
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -265,7 +265,7 @@ class MatchHistoryPage extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: StatusIndicator(
-                      isActive: matchHistory.isConfirmed,
+                      statusName: matchHistory.getStatusName,
                       status: matchHistory.getStatus,
                     ),
                   ),

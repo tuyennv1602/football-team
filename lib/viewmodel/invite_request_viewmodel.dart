@@ -8,7 +8,8 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 class InviteRequestViewModel extends BaseViewModel {
   Api _api;
 
-  Map<int, List<InviteRequest>> mappedInviteRequest;
+  List<InviteRequest> sentInvites = [];
+  List<InviteRequest> receivedInvites = [];
 
   InviteRequestViewModel({@required Api api}) : _api = api;
 
@@ -16,7 +17,13 @@ class InviteRequestViewModel extends BaseViewModel {
     setBusy(true);
     var resp = await _api.getInviteRequests(teamId);
     if (resp.isSuccess) {
-      this.mappedInviteRequest = ObjectUtil.mapInviteRequestById(resp.requests);
+      resp.requests.forEach((request) {
+        if (request.getTypeRequest == 1) {
+          sentInvites.add(request);
+        } else {
+          receivedInvites.add(request);
+        }
+      });
     }
     setBusy(false);
     return resp;

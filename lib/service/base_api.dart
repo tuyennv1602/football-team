@@ -39,4 +39,9 @@ class BaseApi {
     return await dio.put(endPoint,
         data: body, options: Options(headers: header.toJson()));
   }
+
+  Future<Response<dynamic>> deleteApi(String endPoint, {FormData queryParams}) async {
+    return await dio.delete(endPoint,
+        queryParameters: queryParams, options: Options(headers: header.toJson()));
+  }
 }

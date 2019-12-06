@@ -111,7 +111,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(bottom: UIHelper.size25),
+                            padding: EdgeInsets.only(bottom: UIHelper.size30),
                             child: Text(
                               model.isChangePassword
                                   ? 'Đổi mật khẩu'
@@ -119,7 +119,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                               style: textStyleBold(color: PRIMARY),
                             ),
                           ),
-                          UIHelper.verticalSpaceSmall,
                           LightInputTextWidget(
                             labelText: 'Email',
                             validator: Validator.validEmail,
@@ -129,18 +128,19 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                           model.isChangePassword
                               ? Column(
                                   children: <Widget>[
-                                    UIHelper.verticalSpaceMedium,
-                                    LightInputTextWidget(
-                                      labelText: 'Mật khẩu mới',
-                                      obscureText: true,
-                                      validator: Validator.validPassword,
-                                      onSaved: (value) =>
-                                          _password = value.trim(),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: UIHelper.size10),
+                                      child: LightInputTextWidget(
+                                        labelText: 'Mật khẩu mới',
+                                        obscureText: true,
+                                        validator: Validator.validPassword,
+                                        onSaved: (value) =>
+                                            _password = value.trim(),
+                                      ),
                                     ),
-                                    UIHelper.verticalSpaceMedium,
                                     LightInputTextWidget(
                                       labelText: 'Mã xác thực',
-                                      obscureText: true,
                                       validator: Validator.validCode,
                                       onSaved: (value) => _code = value.trim(),
                                     ),
@@ -164,11 +164,13 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                             ),
                             margin: EdgeInsets.only(
                                 top: UIHelper.size40,
-                                bottom: UIHelper.paddingBottom + UIHelper.size20),
+                                bottom:
+                                    UIHelper.paddingBottom + UIHelper.size20),
                             onTap: () {
                               if (validateAndSave()) {
                                 if (model.isChangePassword) {
-                                  model.changePassword(_email, _password, _code);
+                                  model.changePassword(
+                                      _email, _password, _code);
                                 } else {
                                   model.forgotPassword(_email);
                                 }

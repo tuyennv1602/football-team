@@ -15,14 +15,14 @@ class RankingPage extends StatelessWidget {
 
   RankingPage({Key key, @required this.teams}) : super(key: key);
 
-  Widget _buildItemTeam(int index, Team team) => Padding(
+  Widget _buildItemTeam(Team team) => Padding(
         padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
         child: Row(
           children: <Widget>[
             SizedBox(
               width: UIHelper.size30,
               child: Text(
-                '${index + 1}',
+                '${team.rank}',
                 style: textStyleMediumTitle(size: 15),
               ),
             ),
@@ -132,14 +132,15 @@ class RankingPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     _buildTopBar(),
-                    UIHelper.verticalSpaceMedium,
-                    LineWidget(indent: 0),
-                    UIHelper.verticalSpaceSmall,
+                    Padding(
+                      padding: EdgeInsets.only(top: UIHelper.size10, bottom: UIHelper.size5),
+                      child: LineWidget(indent: 0),
+                    ),
                     Expanded(
                       child: ListView.separated(
                         padding: EdgeInsets.zero,
                         itemBuilder: (c, index) =>
-                            _buildItemTeam(index, teams[index]),
+                            _buildItemTeam(teams[index]),
                         separatorBuilder: (c, index) => SizedBox(),
                         itemCount: teams.length,
                         physics: BouncingScrollPhysics(),

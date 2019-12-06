@@ -38,7 +38,7 @@ class CreateTeamViewModel extends BaseViewModel {
     UIHelper.showProgressDialog;
     var resp = await _api.createTeam(
       Team(
-        manager: user.id,
+        managerId: user.id,
         name: name,
         bio: bio,
         dress: getColorValue(
@@ -50,12 +50,14 @@ class CreateTeamViewModel extends BaseViewModel {
       var _team = resp.team;
       if (image != null) {
         var _imageLink = await _uploadImage(_team.id, name);
-        UIHelper.hideProgressDialog;
         if (_imageLink != null) {
           // upload image success and update team info
           _team.logo = _imageLink;
           await _api.updateTeam(_team);
         }
+        UIHelper.hideProgressDialog;
+      } else {
+        UIHelper.hideProgressDialog;
       }
       _sharePreferences.setLastTeam(_team);
       user.addTeam(_team);

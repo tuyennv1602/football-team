@@ -114,6 +114,13 @@ class DateUtil {
         1;
   }
 
+  static bool isExpired(int expireTime) {
+    return DateTime.fromMillisecondsSinceEpoch(expireTime)
+            .difference(DateTime.now())
+            .inDays <
+        0;
+  }
+
   static String formatMMSS(int seconds) {
     seconds = (seconds % 3600).truncate();
     int minutes = (seconds / 60).truncate();
@@ -122,5 +129,9 @@ class DateUtil {
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
 
     return "$minutesStr:$secondsStr";
+  }
+
+  DateTime parseDateRss(String date) {
+    return DateFormat('EEE, dd MMM yyyy hh:mm:ss zzz').parse(date);
   }
 }

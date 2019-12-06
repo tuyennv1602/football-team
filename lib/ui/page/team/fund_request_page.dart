@@ -45,7 +45,7 @@ class FundRequestPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: UIHelper.padding),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         member.name,
@@ -53,8 +53,8 @@ class FundRequestPage extends StatelessWidget {
                       ),
                       UIHelper.verticalSpaceSmall,
                       StatusIndicator(
-                        isActive: member.isActive,
-                        status: member.getFundStatus,
+                        statusName: member.getStatusName,
+                        status: member.getStatus,
                       )
                     ],
                   ),
@@ -101,7 +101,7 @@ class FundRequestPage extends StatelessWidget {
                                   index,
                                   model.members[index],
                                   onTap: (member) {
-                                    if (team.isManager(user.id) &&
+                                    if (team.hasManager(user.id) &&
                                         member.isActive) {
                                       UIHelper.showConfirmDialog(
                                         'Xác nhận ${member.name} đã đóng quỹ?',

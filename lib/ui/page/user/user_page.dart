@@ -72,93 +72,95 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
             child: Column(
               children: <Widget>[
                 Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          ImageWidget(
-                            source: _user.avatar,
-                            placeHolder: Images.DEFAULT_AVATAR,
-                            size: UIHelper.size(100),
-                            radius: UIHelper.size(50),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: InkWell(
-                              onTap: () =>
-                                  _showChooseImage(context, (image) {}),
-                              child: Container(
-                                width: UIHelper.size35,
-                                height: UIHelper.size35,
-                                padding: EdgeInsets.all(UIHelper.size(7)),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(
-                                      UIHelper.size35 / 2),
-                                  border: Border.all(
-                                      color: Colors.white, width: 1.5),
-                                ),
-                                child: Image.asset(Images.CAMERA,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      UIHelper.horizontalSpaceLarge,
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: UIHelper.size10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Stack(
                           children: <Widget>[
-                            Text(
-                              _user.name,
-                              textAlign: TextAlign.center,
-                              style: textStyleSemiBold(
-                                  size: 20, color: Colors.white),
+                            ImageWidget(
+                              source: _user.avatar,
+                              placeHolder: Images.DEFAULT_AVATAR,
+                              size: UIHelper.size(100),
+                              radius: UIHelper.size(50),
                             ),
-                            Text(
-                              _user.email,
-                              style: textStyleRegular(color: Colors.white),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            InkWell(
-                              onTap: () => NavigationService.instance.navigateTo(USER_COMMENT),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size5),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: Text(
-                                      'Đánh giá',
-                                      style:
-                                          textStyleRegular(color: Colors.white),
-                                    )),
-                                    RatingBarIndicator(
-                                      rating: _user.rating,
-                                      itemCount: 5,
-                                      itemPadding: EdgeInsets.only(right: 2),
-                                      itemSize: UIHelper.size20,
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                    ),
-                                  ],
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: InkWell(
+                                onTap: () =>
+                                    _showChooseImage(context, (image) {}),
+                                child: Container(
+                                  width: UIHelper.size35,
+                                  height: UIHelper.size35,
+                                  padding: EdgeInsets.all(UIHelper.size(7)),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(
+                                        UIHelper.size35 / 2),
+                                    border: Border.all(
+                                        color: Colors.white, width: 1.5),
+                                  ),
+                                  child: Image.asset(Images.CAMERA,
+                                      color: Colors.white),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
-                      )
-                    ],
+                        UIHelper.horizontalSpaceLarge,
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                _user.name,
+                                textAlign: TextAlign.center,
+                                style: textStyleSemiBold(
+                                    size: 20, color: Colors.white),
+                              ),
+                              Text(
+                                _user.email,
+                                style: textStyleRegular(color: Colors.white),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              InkWell(
+                                onTap: () => NavigationService.instance.navigateTo(USER_COMMENT),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: UIHelper.size5),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Text(
+                                        'Đánh giá',
+                                        style:
+                                            textStyleRegular(color: Colors.white),
+                                      )),
+                                      RatingBarIndicator(
+                                        rating: _user.rating,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.only(right: 2),
+                                        itemSize: UIHelper.size20,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                UIHelper.verticalSpaceMedium
               ],
             ),
           ),

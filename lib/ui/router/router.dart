@@ -70,8 +70,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: RequestMemberPage());
     case MEMBERS:
       var team = settings.arguments as Team;
-      return SlideLeftRoute(
-          widget: MemberPage(managerId: team.manager, members: team.members));
+      if (team != null) {
+        return SlideLeftRoute(widget: MemberPage(team: team));
+      }
+      return SlideLeftRoute(widget: MemberPage());
     case FIND_MATCHING:
       return SlideLeftRoute(widget: FindMatchingPage());
     case SETUP_MATCHING:

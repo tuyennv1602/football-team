@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
+import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';
 
@@ -51,21 +52,24 @@ class Fund {
 
   String get getExpiredDate => DateUtil.getDateFromTimestamp(expireDate);
 
-  String get getStatus {
-    if (status == 0) return 'Chưa đóng';
+  bool get isExpired => DateUtil.isExpired(expireDate);
+
+  String get getStatusName {
+    if (status == 0) {
+      if (isExpired) return 'Quá hạn';
+      return 'Chưa đóng';
+    }
     if (status == 4) return 'Chờ xác nhận';
     return 'Đã đóng';
   }
 
-  Color get getStatusColor {
-    if (status == 0) return Colors.grey;
-    if (status == 4) return Colors.amber;
-    return GREEN_TEXT;
-  }
+  Status get getStatus {
+    if (status == 0) {
+      if (isExpired) return Status.FAILED;
+      return Status.NEW;
+    }
+    if (status == 4) return Status.PENDING;
 
-  int get getStep {
-    if (status == 0) return 1;
-    if (status == 4) return 2;
-    return 3;
+    return Status.DONE;
   }
 }

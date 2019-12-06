@@ -88,7 +88,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   Widget _buildTeamOptions(BuildContext context, Team team) {
     List<Widget> _children = [];
     List<Widget> _manager = [];
-    bool isManager = team.isManager(Provider.of<User>(context).id);
+    bool isManager = team.hasManager(Provider.of<User>(context).id);
     if (isManager) {
       _manager.addAll([
         ItemOptionWidget(
@@ -123,8 +123,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           [
             ItemOptionWidget(Images.MEMBER, 'Thành viên',
                 iconColor: Colors.green,
-                onTap: () => NavigationService.instance
-                    .navigateTo(MEMBERS, arguments: team)),
+                onTap: () => NavigationService.instance.navigateTo(MEMBERS)),
             ItemOptionWidget(
               Images.SCHEDULE,
               'Lịch thi đấu',
@@ -373,6 +372,8 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                     topLeft: Radius.circular(UIHelper.radius),
                                     topRight: Radius.circular(UIHelper.radius),
                                   ),
+                                  gradient: LinearGradient(
+                                      colors: LIGHT_GREEN_GRADIENT),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey,

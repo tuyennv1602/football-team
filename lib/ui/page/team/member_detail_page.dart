@@ -6,19 +6,22 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
+import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
+import 'package:myfootball/ui/widget/input_text_widget.dart';
 import 'package:myfootball/ui/widget/item_comment.dart';
 import 'package:myfootball/ui/widget/item_position.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
+import 'package:myfootball/ui/widget/multichoice_position.dart';
 import 'package:myfootball/ui/widget/review_dialog.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/member_viewmodel.dart';
+import 'package:myfootball/viewmodel/member_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,6 +29,18 @@ class MemberDetailPage extends StatelessWidget {
   final MemberArgument memberArgument;
   final bool isShowFull;
   final Member member;
+  String _number;
+  List<String> _positions;
+  final _formKey = GlobalKey<FormState>();
+
+  bool validateAndSave() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
 
   MemberDetailPage({Key key, this.memberArgument})
       : this.member = memberArgument.member,
@@ -48,8 +63,54 @@ class MemberDetailPage extends StatelessWidget {
         ),
       );
 
+  _showEditForm(BuildContext context, Member member, {Function onSubmit}) =>
+      UIHelper.showCustomizeDialog(
+        'edit_member',
+        icon: Images.EDIT_PROFILE,
+        confirmLabel: 'CẬP NHẬT',
+        onConfirmed: () {
+          if (validateAndSave()) {
+            NavigationService.instance.goBack();
+            onSubmit();
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              child: InputTextWidget(
+                validator: (value) {
+                  if (value.isEmpty) return 'Vui lòng nhập số áo';
+                  return null;
+                },
+                initValue: '0',
+                onSaved: (value) => _number = value,
+                maxLines: 1,
+                focusedColor: Colors.white,
+                inputType: TextInputType.number,
+                inputAction: TextInputAction.done,
+                labelText: 'Số áo',
+                textStyle: textStyleMediumTitle(size: 20, color: Colors.white),
+                hintTextStyle: textStyleMediumTitle(size: 20,color: Colors.white),
+              ),
+            ),
+            UIHelper.verticalSpaceSmall,
+            Text(
+              'Vị trí có thể chơi',
+              style: textStyleRegularBody(color: Colors.white),
+            ),
+            MultiChoicePosition(
+              initPositions: member.getPositions,
+              onChangePositions: (positions) => _positions = positions,
+            )
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
+    var userId = Provider.of<User>(context).id;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -65,16 +126,21 @@ class MemberDetailPage extends StatelessWidget {
               onTap: () => Navigator.of(context).pop(),
             ),
             rightContent: isShowFull
-                ? AppBarButtonWidget(
-                    imageName: Images.CALL,
-                    onTap: () => launch('tel://${member.phone}'),
-                  )
+                ? userId == member.id
+                    ? AppBarButtonWidget(
+                        imageName: Images.EDIT_PROFILE,
+                        onTap: () => _showEditForm(context, member, onSubmit: () {}),
+                      )
+                    : AppBarButtonWidget(
+                        imageName: Images.CALL,
+                        onTap: () => launch('tel://${member.phone}'),
+                      )
                 : SizedBox(),
           ),
           Expanded(
             child: BorderBackground(
-              child: BaseWidget<MemberViewModel>(
-                model: MemberViewModel(api: Provider.of(context)),
+              child: BaseWidget<MemberDetailViewModel>(
+                model: MemberDetailViewModel(api: Provider.of(context)),
                 onModelReady: (model) {
                   model.initMember(member);
                   model.getCommentsByUser(member.id, 1);
@@ -96,8 +162,7 @@ class MemberDetailPage extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.only(left: UIHelper.padding),
+                              padding: EdgeInsets.only(left: UIHelper.padding),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -130,14 +195,13 @@ class MemberDetailPage extends StatelessWidget {
                         onTap: () {
                           if (Provider.of<User>(context).id != member.id) {
                             _writeReview(context,
-                                onSubmit: (rating, comment) =>
-                                    model.submitReview(
-                                        member.id, rating, comment));
+                                onSubmit: (rating, comment) => model
+                                    .submitReview(member.id, rating, comment));
                           }
                         },
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: UIHelper.padding),
+                          padding:
+                              EdgeInsets.symmetric(vertical: UIHelper.padding),
                           child: Row(
                             children: <Widget>[
                               Expanded(

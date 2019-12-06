@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_schedule.dart';
+import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/date_util.dart';
 
 class MatchHistory extends MatchSchedule {
@@ -59,7 +60,7 @@ class MatchHistory extends MatchSchedule {
 
   bool get isUpdated => sendGroupScore != null && receiveGroupScore != null;
 
-  String get getStatus {
+  String get getStatusName {
     if (!isUpdated) {
       return 'Chưa cập nhật';
     }
@@ -69,14 +70,14 @@ class MatchHistory extends MatchSchedule {
     return 'Đã xác nhận';
   }
 
-  int get getStep {
+  Status get getStatus {
     if (!isUpdated) {
-      return 1;
+      return Status.NEW;
     }
     if (!isConfirmed) {
-      return 2;
+      return Status.PENDING;
     }
-    return 3;
+    return Status.DONE;
   }
 
   double get getRatePercent => 0.4;

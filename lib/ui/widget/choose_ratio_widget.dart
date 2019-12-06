@@ -72,16 +72,18 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
           isExpanded: _isExpanded,
           body: Align(
             alignment: Alignment.centerRight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                _buildItemType(Constants.RATIO_50_50),
-                _buildItemType(Constants.RATIO_40_60),
-                _buildItemType(Constants.RATIO_30_70),
-                _buildItemType(Constants.RATIO_20_80),
-                _buildItemType(Constants.RATIO_0_100),
-                UIHelper.verticalSpaceMedium
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(bottom: UIHelper.size10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  _buildItemType(Constants.RATIO_50_50),
+                  _buildItemType(Constants.RATIO_40_60),
+                  _buildItemType(Constants.RATIO_30_70),
+                  _buildItemType(Constants.RATIO_20_80),
+                  _buildItemType(Constants.RATIO_0_100),
+                ],
+              ),
             ),
           ),
         )

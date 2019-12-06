@@ -30,7 +30,7 @@ class BottomSheetWidget extends StatelessWidget {
             child: Center(
               child: Text(
                 value,
-                style: textStyleSemiBold(color: Colors.black),
+                style: textStyleSemiBold(color: Colors.black, size: 17),
               ),
             ),
           ),
@@ -40,10 +40,15 @@ class BottomSheetWidget extends StatelessWidget {
           ButtonWidget(
             height: _kButtonHeight,
             elevation: 0,
+            alignment: Alignment.centerLeft,
             backgroundColor: Colors.white,
-            child: Text(
-              value,
-              style: textStyleSemiBold(color: Colors.red),
+            child: Padding(
+              padding: EdgeInsets.only(left: UIHelper.size10),
+              child: Text(
+                value,
+                textAlign: TextAlign.left,
+                style: textStyleSemiBold(color: Colors.red),
+              ),
             ),
             onTap: () => Navigator.of(context).pop(),
           ),
@@ -53,10 +58,14 @@ class BottomSheetWidget extends StatelessWidget {
           ButtonWidget(
             height: _kButtonHeight,
             elevation: 0,
+            alignment: Alignment.centerLeft,
             backgroundColor: Colors.white,
-            child: Text(
-              value,
-              style: textStyleAlert(size: 16, color: Colors.black),
+            child: Padding(
+              padding: EdgeInsets.only(left: UIHelper.size10),
+              child: Text(
+                value,
+                style: textStyleAlert(size: 16, color: Colors.black),
+              ),
             ),
             onTap: () {
               Navigator.of(context).pop();
@@ -77,8 +86,8 @@ class BottomSheetWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(UIHelper.radius)),
+              borderRadius:
+                  BorderRadius.only(topRight: Radius.circular(UIHelper.radius)),
             ),
             padding: EdgeInsets.only(
                 bottom: paddingBottom ?? UIHelper.paddingBottom),

@@ -5,8 +5,8 @@ import 'group_matching_info.dart';
 class Team {
   int id;
   int status;
-  int manager;
-  int captain;
+  int managerId;
+  int captainId;
   String name;
   String dress;
   String bio;
@@ -26,7 +26,7 @@ class Team {
 
   Team(
       {this.id,
-      this.manager,
+      this.managerId,
       this.name,
       this.logo,
       this.dress,
@@ -38,8 +38,8 @@ class Team {
   Team.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
-    manager = json['manager'];
-    captain = json['captain'];
+    managerId = json['manager'];
+    captainId = json['captain'];
     name = json['name'];
     logo = json['logo'];
     dress = json['dress'];
@@ -76,8 +76,8 @@ class Team {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['status'] = this.status;
-    data['manager'] = this.manager;
-    data['captain'] = this.captain;
+    data['manager'] = this.managerId;
+    data['captain'] = this.captainId;
     data['name'] = this.name;
     data['logo'] = this.logo;
     data['dress'] = this.dress;
@@ -100,12 +100,12 @@ class Team {
 
   Map<String, dynamic> createTeamJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['manager'] = this.manager;
+    data['manager'] = this.managerId;
     data['name'] = this.name;
     data['dress'] = this.dress;
     data['bio'] = this.bio;
     return data;
   }
 
-  bool isManager(int userId) => userId == manager || userId == captain;
+  bool hasManager(int userId) => userId == managerId || userId == captainId;
 }

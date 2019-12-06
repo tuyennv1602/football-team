@@ -67,7 +67,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                 onTap: () => NavigationService.instance.goBack(),
               ),
               rightContent: AppBarButtonWidget(
-                imageName: Images.NOTIFICATION,
+                imageName: Images.SHARE_2,
                 onTap: () => NavigationService.instance.goBack(),
               ),
               backgroundColor: Colors.transparent,

@@ -56,6 +56,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã huỷ lời mời',
+          isSuccess: true,
           onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
@@ -68,6 +69,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã huỷ lời mời',
+          isSuccess: true,
           onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);

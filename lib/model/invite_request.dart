@@ -1,5 +1,6 @@
 import 'package:myfootball/model/match_schedule.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
+import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/object_utils.dart';
@@ -98,15 +99,35 @@ class InviteRequest {
 
   String get getCreateTime => DateUtil.getTimeAgo(createDate);
 
-  String get getStatus {
-    if (status == Constants.INVITE_CANCEL) return 'Đã huỷ';
-    if (status == Constants.INVITE_REJECTED) return 'Từ chối';
-    if (status == Constants.INVITE_WAITING) return 'Đang chờ';
-    if (status == Constants.INVITE_ACCEPTED) return 'Đã chấp nhận';
-    return 'Không xác định';
+  bool get isOverTime {
+    if (matchInfo != null) {
+      return DateUtil.getDiffTime(matchInfo.startTime,
+                  DateTime.fromMillisecondsSinceEpoch(matchInfo.playDate))
+              .inMinutes <
+          0;
+    }
+    return false;
   }
 
-  bool get isActive => status == Constants.INVITE_WAITING;
+  String get getStatusName {
+    if (status == Constants.INVITE_REJECTED) return 'Từ chối';
+    if (status == Constants.INVITE_WAITING) {
+      if (isOverTime) return 'Quá giờ';
+      return 'Đang chờ';
+    }
+    if (status == Constants.INVITE_ACCEPTED) return 'Đã chấp nhận';
+    return 'Đã huỷ';
+  }
+
+  Status get getStatus {
+    if (status == Constants.INVITE_REJECTED) return Status.ABORTED;
+    if (status == Constants.INVITE_WAITING) {
+      if (isOverTime) return Status.ABORTED;
+      return Status.PENDING;
+    }
+    if (status == Constants.INVITE_ACCEPTED) return Status.DONE;
+    return Status.ABORTED;
+  }
 
   Map<int, List<MatchingTimeSlot>> get getMappedTimeSlot =>
       ObjectUtil.mapMatchingTimeSlotByPlayDate(groundTimeSlots);

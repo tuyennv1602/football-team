@@ -346,7 +346,7 @@ class MatchSchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     team = Provider.of<Team>(context);
-    var isCaptain = Provider.of<User>(context).id == team.manager;
+    var isCaptain = Provider.of<User>(context).id == team.managerId;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(

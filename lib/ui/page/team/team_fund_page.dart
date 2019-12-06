@@ -11,9 +11,8 @@ import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
-import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
-import 'package:myfootball/ui/widget/step_widget.dart';
+import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/team_fund_viewmodel.dart';
@@ -51,44 +50,40 @@ class TeamFundPage extends StatelessWidget {
         ),
         margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
-          onTap: () => _showOptions(
-            context,
-            onSendRequest: () => onSendRequest(fund.id),
-            onDetail: () => onDetail(fund),
-          ),
+          onTap: () => fund.status == 1
+              ? onDetail(fund)
+              : _showOptions(
+                  context,
+                  onSendRequest: () => onSendRequest(fund.id),
+                  onDetail: () => onDetail(fund),
+                ),
           child: Padding(
             padding: EdgeInsets.all(UIHelper.padding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(bottom: UIHelper.size5),
+                  padding: EdgeInsets.only(bottom: 3),
                   child: Text(
                     fund.title,
                     style: textStyleMediumTitle(),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Số tiền: ${fund.getPrice}',
-                      style: textStyleRegular(),
-                    ),
-                    Text(
-                      'Exp: ${fund.getExpiredDate}',
-                      style: textStyleRegular(),
-                    ),
-                  ],
+                Text(
+                  'Số tiền: ${fund.getPrice}',
+                  style: textStyleRegular(),
                 ),
-                UIHelper.verticalSpaceMedium,
-                LineWidget(indent: 0),
-                UIHelper.verticalSpaceMedium,
-                StepWidget(
-                  step: fund.getStep,
-                  firstTitle: 'Chưa đóng',
-                  secondTitle: 'Chờ xác nhận',
-                  thirdTitle: 'Hoàn thành',
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Hạn thu: ${fund.getExpiredDate}',
+                        style: textStyleRegular(),
+                      ),
+                    ),
+                    StatusIndicator(
+                        status: fund.getStatus, statusName: fund.getStatusName),
+                  ],
                 )
               ],
             ),

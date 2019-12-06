@@ -36,6 +36,10 @@ dependencies:
   mask_text_input_formatter: ^1.0.5
   percent_indicator: ^2.1.1+1
   like_button: ^0.1.9
+  unicorndial: ^1.1.5
+  month_picker_dialog: ^0.3.0
+  webfeed: ^0.4.2
+  html: ^0.13.4+1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0

@@ -18,7 +18,13 @@ class ChooseTransactionTypeWidget extends StatefulWidget {
 
 class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
   bool _isExpanded = false;
-  int _selectedType = Constants.RATIO_50_50;
+  int _selectedType = Constants.TRANSACTION_IN;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.onSelectedType(_selectedType);
+  }
 
   Widget _buildItemType(int type) => InkWell(
         onTap: () {
@@ -70,13 +76,15 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
           isExpanded: _isExpanded,
           body: Align(
             alignment: Alignment.centerRight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                _buildItemType(Constants.TRANSACTION_IN),
-                _buildItemType(Constants.TRANSACTION_OUT),
-                UIHelper.verticalSpaceMedium
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(bottom: UIHelper.size10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  _buildItemType(Constants.TRANSACTION_IN),
+                  _buildItemType(Constants.TRANSACTION_OUT),
+                ],
+              ),
             ),
           ),
         )

@@ -162,10 +162,12 @@ class InviteDetailPage extends StatelessWidget {
                                       ),
                                       ItemOptionWidget(
                                         Images.STADIUM,
-                                        '',
-//                                        _inviteRequest.matchInfo.groundName,
-                                        rightContent: SizedBox(),
+                                        _inviteRequest.matchInfo.groundName,
                                         iconColor: Colors.green,
+                                        onTap: () => NavigationService.instance
+                                            .navigateTo(GROUND_DETAIL,
+                                                arguments: _inviteRequest
+                                                    .matchInfo.groundId),
                                       ),
                                     ],
                                   )

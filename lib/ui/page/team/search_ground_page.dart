@@ -211,8 +211,8 @@ class _SearchGroundState extends State<SearchGroundPage> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: UIHelper.size(200),
-                        margin: EdgeInsets.only(bottom: UIHelper.size20),
+                        height: UIHelper.size(180),
+                        margin: EdgeInsets.only(bottom: UIHelper.paddingBottom + UIHelper.size10),
                         child: model.grounds.length == 0
                             ? SizedBox()
                             : Swiper(

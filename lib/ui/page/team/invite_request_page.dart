@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 import '../base_widget.dart';
 
 class InviteRequestPage extends StatelessWidget {
-  static const TABS = ['Lời mời', 'Đã gửi'];
+  static const TABS = ['LỜI MỜI', 'ĐÃ GỬI'];
 
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
       Card(
@@ -35,7 +35,8 @@ class InviteRequestPage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
           onTap: () {
-            if (inviteRequest.status == Constants.INVITE_WAITING) {
+            if (inviteRequest.status == Constants.INVITE_WAITING &&
+                !inviteRequest.isOverTime) {
               _showOptions(
                 context,
                 onInviteDetail: () => NavigationService.instance
@@ -47,6 +48,12 @@ class InviteRequestPage extends StatelessWidget {
                         name: inviteRequest.getName,
                         logo: inviteRequest.getLogo)),
               );
+            } else {
+              NavigationService.instance.navigateTo(TEAM_DETAIL,
+                  arguments: Team(
+                      id: inviteRequest.getId,
+                      name: inviteRequest.getName,
+                      logo: inviteRequest.getLogo));
             }
           },
           child: Padding(
@@ -63,11 +70,13 @@ class InviteRequestPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          inviteRequest.getName,
-                          style: textStyleMediumTitle(),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 3),
+                          child: Text(
+                            inviteRequest.getName,
+                            style: textStyleMediumTitle(),
+                          ),
                         ),
-                        UIHelper.verticalSpaceSmall,
                         ExpandableTextWidget(inviteRequest.title),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,7 +86,7 @@ class InviteRequestPage extends StatelessWidget {
                               style: textStyleRegularBody(color: Colors.grey),
                             ),
                             StatusIndicator(
-                              isActive: inviteRequest.isActive,
+                              statusName: inviteRequest.getStatusName,
                               status: inviteRequest.getStatus,
                             )
                           ],
@@ -141,46 +150,48 @@ class InviteRequestPage extends StatelessWidget {
                 onModelReady: (model) => model.getAllInvites(team.id),
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
-                    : model.mappedInviteRequest.length == 0
-                        ? EmptyWidget(message: 'Không có lời mời nào')
-                        : DefaultTabController(
-                            length: model.mappedInviteRequest.length,
-                            child: Column(
-                              children: <Widget>[
-                                TabBarWidget(
-                                  titles: model.mappedInviteRequest.keys
-                                      .toList()
-                                      .map((item) => TABS[item])
-                                      .toList(),
-                                  height: UIHelper.size45,
-                                ),
-                                Expanded(
-                                  child: TabBarView(
-                                    children: model.mappedInviteRequest.values
-                                        .toList()
-                                        .map(
-                                          (inviteRequests) =>
-                                              ListView.separated(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical:
-                                                          UIHelper.size15),
-                                                  itemBuilder: (c, index) =>
-                                                      _buildItemRequest(
-                                                          context,
-                                                          inviteRequests[
-                                                              index]),
-                                                  separatorBuilder:
-                                                      (c, index) => UIHelper
-                                                          .verticalIndicator,
-                                                  itemCount:
-                                                      inviteRequests.length),
-                                        )
-                                        .toList(),
-                                  ),
-                                ),
-                              ],
+                    : DefaultTabController(
+                        length: 2,
+                        child: Column(
+                          children: <Widget>[
+                            TabBarWidget(
+                              titles: TABS,
+                              height: UIHelper.size45,
                             ),
-                          ),
+                            Expanded(
+                              child: TabBarView(
+                                children: [
+                                  model.receivedInvites.length == 0
+                                      ? EmptyWidget(
+                                          message: 'Chưa có lời mời nào')
+                                      : ListView.separated(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: UIHelper.size15),
+                                          itemBuilder: (c, index) =>
+                                              _buildItemRequest(context,
+                                                  model.receivedInvites[index]),
+                                          separatorBuilder: (c, index) =>
+                                              UIHelper.verticalIndicator,
+                                          itemCount:
+                                              model.receivedInvites.length),
+                                  model.sentInvites.length == 0
+                                      ? EmptyWidget(
+                                          message: 'Chưa có lời mời nào')
+                                      : ListView.separated(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: UIHelper.size15),
+                                          itemBuilder: (c, index) =>
+                                              _buildItemRequest(context,
+                                                  model.sentInvites[index]),
+                                          separatorBuilder: (c, index) =>
+                                              UIHelper.verticalIndicator,
+                                          itemCount: model.sentInvites.length),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
             ),
           ),

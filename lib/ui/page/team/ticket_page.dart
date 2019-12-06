@@ -86,8 +86,8 @@ class TicketPage extends StatelessWidget {
                     style: textStyleSemiBold(color: PRIMARY),
                   ),
                   StatusIndicator(
-                    isActive: true,
-                    status: 'Chưa thanh toán',
+                    status: Status.PENDING,
+                    statusName: 'Chưa thanh toán',
                   ),
                 ],
               ),

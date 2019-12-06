@@ -91,20 +91,22 @@ class ReviewDialog extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  UIHelper.verticalSpaceMedium,
-                                  Form(
-                                    key: _formKey,
-                                    child: InputTextWidget(
-                                      onSaved: (value) => comment = value,
-                                      maxLines: 3,
-                                      maxLength: 500,
-                                      inputType: TextInputType.text,
-                                      inputAction: TextInputAction.done,
-                                      labelText: 'Viết nhận xét',
-                                      textStyle: textStyleInput(
-                                          color: Colors.white),
-                                      hintTextStyle: textStyleInput(
-                                          color: Colors.white),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: UIHelper.size10),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: InputTextWidget(
+                                        onSaved: (value) => comment = value,
+                                        maxLines: 3,
+                                        maxLength: 500,
+                                        inputType: TextInputType.text,
+                                        inputAction: TextInputAction.done,
+                                        labelText: 'Viết nhận xét',
+                                        textStyle: textStyleInput(
+                                            color: Colors.white),
+                                        hintTextStyle: textStyleInput(
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ],

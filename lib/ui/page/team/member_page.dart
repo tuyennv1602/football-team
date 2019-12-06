@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/member.dart';
 import 'package:myfootball/model/member_arg.dart';
+import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
@@ -13,22 +15,36 @@ import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/item_member.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/viewmodel/member_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class MemberPage extends StatelessWidget {
-  final List<Member> members;
-  final int managerId;
+  Team team;
 
-  MemberPage({@required this.members, @required this.managerId});
+  MemberPage({this.team});
 
-  void _showManagerOptions(BuildContext context, {Function onDetail}) =>
+  void _showManagerOptions(BuildContext context,
+          {Function onDetail, Function onAddCaptain, Function onRemove}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Xem hồ sơ', 'Xoá khỏi đội', 'Huỷ'],
+          options: [
+            'Tuỳ chọn',
+            'Xem hồ sơ',
+            'Thêm quyền đội trưởng',
+            'Xoá khỏi đội',
+            'Huỷ'
+          ],
           onClickOption: (index) {
             if (index == 1) {
               onDetail();
+            }
+            if (index == 2) {
+              onAddCaptain();
+            }
+            if (index == 3) {
+              onRemove();
             }
           },
         ),
@@ -36,7 +52,10 @@ class MemberPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isManager = Provider.of<User>(context).id == managerId;
+    if (team == null) {
+      team = Provider.of<Team>(context);
+    }
+    var isManager = Provider.of<User>(context).id == team.managerId;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -54,40 +73,57 @@ class MemberPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: GridView.builder(
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.all(UIHelper.padding),
-                itemBuilder: (c, index) {
-                  Member _member = members[index];
-                  return ItemMember(
-                    member: _member,
-                    isCaptain: _member.id == managerId,
-                    onTap: () async {
-                      if (isManager) {
-                        _showManagerOptions(
-                          context,
-                          onDetail: () async {
-                            var rating = NavigationService.instance.navigateTo(
-                                MEMBER_DETAIL,
+              child: BaseWidget<MemberViewModel>(
+                model: MemberViewModel(
+                  api: Provider.of(context),
+                  team: team,
+                  teamServices: Provider.of(context),
+                ),
+                builder: (c, model, child) {
+                  var members = team.members;
+                  return GridView.builder(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(UIHelper.padding),
+                    itemBuilder: (c, index) {
+                      Member _member = members[index];
+                      return ItemMember(
+                        member: _member,
+                        isManager: _member.id == model.team.managerId,
+                        isCaptain: _member.id == model.team.captainId,
+                        onTap: () async {
+                          if (isManager) {
+                            _showManagerOptions(
+                              context,
+                              onDetail: () {
+                                NavigationService.instance.navigateTo(
+                                    MEMBER_DETAIL,
+                                    arguments: MemberArgument(member: _member));
+                              },
+                              onAddCaptain: () => UIHelper.showConfirmDialog(
+                                'Bạn có chắc chắn muốn thêm quyền đội trưởng cho ${_member.name}?',
+                                onConfirmed: () => model.addCaptain(_member.id),
+                              ),
+                              onRemove: () => UIHelper.showConfirmDialog(
+                                'Bạn có chắc chắn muốn xoá ${_member.name} khỏi đội bóng?',
+                                onConfirmed: () =>
+                                    model.kickMember(index, _member.id),
+                              ),
+                            );
+                          } else {
+                            NavigationService.instance.navigateTo(MEMBER_DETAIL,
                                 arguments: MemberArgument(member: _member));
-                            print(rating);
-                          },
-                        );
-                      } else {
-                        var rating = NavigationService.instance.navigateTo(
-                            MEMBER_DETAIL,
-                            arguments: MemberArgument(member: _member));
-                        print(rating);
-                      }
+                          }
+                        },
+                      );
                     },
+                    itemCount: members.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 0.8,
+                        crossAxisSpacing: UIHelper.size10,
+                        mainAxisSpacing: UIHelper.size10),
                   );
                 },
-                itemCount: members.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: UIHelper.size10,
-                    mainAxisSpacing: UIHelper.size10),
               ),
             ),
           ),

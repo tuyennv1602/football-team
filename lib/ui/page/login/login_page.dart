@@ -89,14 +89,15 @@ class _LoginState extends State<LoginPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            UIHelper.verticalSpaceLarge,
-                            LightInputTextWidget(
-                              labelText: 'Email',
-                              validator: Validator.validEmail,
-                              inputType: TextInputType.emailAddress,
-                              onSaved: (value) => _email = value.trim(),
+                            Padding(
+                              padding: EdgeInsets.only(top: UIHelper.size20, bottom: UIHelper.size10),
+                              child: LightInputTextWidget(
+                                labelText: 'Email',
+                                validator: Validator.validEmail,
+                                inputType: TextInputType.emailAddress,
+                                onSaved: (value) => _email = value.trim(),
+                              ),
                             ),
-                            UIHelper.verticalSpaceMedium,
                             LightInputTextWidget(
                               labelText: 'Mật khẩu',
                               validator: Validator.validPassword,
@@ -161,21 +162,23 @@ class _LoginState extends State<LoginPage> {
                         )
                       ],
                     ),
-                    UIHelper.verticalSpaceLarge,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: UIHelper.size40,
-                          onPressed: () => print('facebook'),
-                          icon: Image.asset('assets/images/ic_facebook.png'),
-                        ),
-                        IconButton(
-                          iconSize: UIHelper.size40,
-                          onPressed: () => print('google'),
-                          icon: Image.asset('assets/images/ic_google.png'),
-                        )
-                      ],
+                    Padding(
+                      padding: EdgeInsets.only(top: UIHelper.size20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          IconButton(
+                            iconSize: UIHelper.size40,
+                            onPressed: () => print('facebook'),
+                            icon: Image.asset('assets/images/ic_facebook.png'),
+                          ),
+                          IconButton(
+                            iconSize: UIHelper.size40,
+                            onPressed: () => print('google'),
+                            icon: Image.asset('assets/images/ic_google.png'),
+                          )
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: Align(

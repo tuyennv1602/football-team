@@ -10,13 +10,15 @@ import 'image_widget.dart';
 class ItemMember extends StatelessWidget {
   final Member member;
   final bool isCaptain;
+  final bool isManager;
   final Function onTap;
   final bool isFullInfo;
 
   const ItemMember(
       {Key key,
       @required this.member,
-      @required this.isCaptain,
+      @required this.isManager,
+      this.isCaptain,
       this.onTap,
       this.isFullInfo = true})
       : super(key: key);
@@ -33,7 +35,7 @@ class ItemMember extends StatelessWidget {
         onTap: onTap,
         child: Stack(
           children: <Widget>[
-            isCaptain
+            isManager || isCaptain
                 ? Positioned(
                     top: 0,
                     left: 0,
@@ -41,14 +43,14 @@ class ItemMember extends StatelessWidget {
                       width: UIHelper.size25,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: isManager ? Colors.red : Colors.blue,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(UIHelper.padding),
                           bottomRight: Radius.circular(UIHelper.padding),
                         ),
                       ),
                       child: Text(
-                        'C',
+                        isManager ? 'M' : 'C',
                         style: textStyleSemiBold(size: 14, color: Colors.white),
                       ),
                     ),
@@ -74,16 +76,22 @@ class ItemMember extends StatelessWidget {
                       bottom: 3,
                       right: 0,
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: UIHelper.size5),
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(UIHelper.size10),
-                          border: Border.all(color: Colors.white)
+                          border: Border.all(color: Colors.white),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xFF02DC37), PRIMARY],
+                          ),
                         ),
                         child: Text(
                           '10',
-                          style: textStyleSemiBold(
-                              size: 14, color: Colors.white),
+                          style:
+                              textStyleSemiBold(size: 14, color: Colors.white),
                         ),
                       ),
                     )

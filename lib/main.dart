@@ -51,12 +51,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: NavigationService().navigatorKey,
         onGenerateRoute: generateRoute,
-
         theme: ThemeData(
           canvasColor: Colors.transparent,
           primaryColor: PRIMARY,
           accentColor: PRIMARY,
           fontFamily: REGULAR,
+          accentIconTheme: IconThemeData(color: Colors.white)
         ),
         home: _isLogined ? HomePage() : LoginPage(),
       ),

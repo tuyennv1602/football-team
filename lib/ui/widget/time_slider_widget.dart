@@ -77,36 +77,37 @@ class TimeSliderState extends State<TimeSliderWidget> {
             ],
           ),
         ),
-        UIHelper.verticalSpaceLarge,
-        SliderTheme(
-          data: SliderThemeData(
-              trackHeight: UIHelper.size5,
-              valueIndicatorTextStyle: textStyleSemiBold(color: Colors.white)),
-          child: RangeSlider(
-            max: 24,
-            min: 0,
-            divisions: 48,
-            labels: RangeLabels('$formattedStart', '$formattedEnd'),
-            activeColor: PRIMARY,
-            values: _values,
-            onChanged: (values) {
-              this.setState(
-                () {
-                  if (values.end - values.start >= 1.5) {
-                    _values = RangeValues(values.start, values.end);
-                  } else {
-                    if (_values.start == values.start) {
-                      _values = RangeValues(_values.start, _values.start + 1.5);
+        Padding(
+          padding: EdgeInsets.only(top: UIHelper.size20, bottom: UIHelper.size10),
+          child: SliderTheme(
+            data: SliderThemeData(
+                trackHeight: UIHelper.size5,
+                valueIndicatorTextStyle: textStyleSemiBold(color: Colors.white)),
+            child: RangeSlider(
+              max: 24,
+              min: 0,
+              divisions: 48,
+              labels: RangeLabels('$formattedStart', '$formattedEnd'),
+              activeColor: PRIMARY,
+              values: _values,
+              onChanged: (values) {
+                this.setState(
+                  () {
+                    if (values.end - values.start >= 1.5) {
+                      _values = RangeValues(values.start, values.end);
                     } else {
-                      _values = RangeValues(_values.end - 1.5, _values.end);
+                      if (_values.start == values.start) {
+                        _values = RangeValues(_values.start, _values.start + 1.5);
+                      } else {
+                        _values = RangeValues(_values.end - 1.5, _values.end);
+                      }
                     }
-                  }
-                },
-              );
-            },
+                  },
+                );
+              },
+            ),
           ),
         ),
-        UIHelper.verticalSpaceMedium,
         Padding(
           padding: EdgeInsets.symmetric(
               horizontal: UIHelper.size15, vertical: UIHelper.size10),
@@ -139,22 +140,23 @@ class TimeSliderState extends State<TimeSliderWidget> {
             children: _children,
           ),
         ),
-        UIHelper.verticalSpaceLarge,
-        ButtonWidget(
-            child: Text(
-              'THÊM',
-              style: textStyleButton(),
-            ),
-            margin: EdgeInsets.all(UIHelper.size15),
-            onTap: () {
-              if (_selectedDay.length == 0) {
-                UIHelper.showSimpleDialog('Vui lòng chọn ngày có thể chơi');
-              } else {
-                widget.onSelectedTime(
-                    _values.start, _values.end, _selectedDay.join(','));
-              }
-            }),
-        UIHelper.verticalSpaceLarge,
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: UIHelper.size20),
+          child: ButtonWidget(
+              child: Text(
+                'THÊM',
+                style: textStyleButton(),
+              ),
+              margin: EdgeInsets.all(UIHelper.size15),
+              onTap: () {
+                if (_selectedDay.length == 0) {
+                  UIHelper.showSimpleDialog('Vui lòng chọn ngày có thể chơi');
+                } else {
+                  widget.onSelectedTime(
+                      _values.start, _values.end, _selectedDay.join(','));
+                }
+              }),
+        ),
       ],
     );
   }

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/transaction.dart';
-import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 class ItemTransactionWidget extends StatelessWidget {
   final Transaction transaction;
+  final bool showCreator;
 
-  ItemTransactionWidget({Key key, this.transaction}) : super(key: key);
+  ItemTransactionWidget({Key key, this.transaction, this.showCreator = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(UIHelper.padding),
       ),
@@ -45,59 +46,30 @@ class ItemTransactionWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      transaction.content,
-                      style: textStyleSemiBold(),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Số tiền GD: ',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: REGULAR,
-                                fontSize: UIHelper.size(14)),
-                          ),
-                          TextSpan(
-                            text: transaction.getPrice,
-                            style: TextStyle(
-                                fontFamily: SEMI_BOLD,
-                                color: Colors.black,
-                                fontSize: UIHelper.size(15)),
-                          ),
-                        ],
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 3),
+                      child: Text(
+                        transaction.title,
+                        style: textStyleMediumTitle(),
                       ),
                     ),
+                    Text(
+                      'Số tiền: ${transaction.getPrice}',
+                      style: textStyleMedium(),
+                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Ngày GD: ',
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontFamily: REGULAR,
-                                    fontSize: UIHelper.size(14)),
-                              ),
-                              TextSpan(
-                                text: transaction.getCreateTime,
-                                style: TextStyle(
-                                    fontFamily: SEMI_BOLD,
-                                    color: Colors.black,
-                                    fontSize: UIHelper.size(15)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Thành công',
-                            textAlign: TextAlign.right,
-                            style: textStyleRegularBody(color: Colors.green),
-                          ),
+                        showCreator
+                            ? Expanded(
+                                child: Text(
+                                  'bởi: ${transaction.userName}',
+                                  style: textStyleRegular(color: Colors.grey),
+                                ),
+                              )
+                            : SizedBox(),
+                        Text(
+                          transaction.getCreateTime,
+                          style: textStyleRegular(color: Colors.grey),
                         )
                       ],
                     )

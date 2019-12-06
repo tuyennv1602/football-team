@@ -26,6 +26,15 @@ class Constants {
   static const int INVITE_WAITING = 1;
   static const int INVITE_ACCEPTED = 2;
 
-  static const int TRANSACTION_IN = 0;
-  static const int TRANSACTION_OUT = 1;
+  static const int TRANSACTION_IN = 1;
+  static const int TRANSACTION_OUT = 2;
+
+  static const int CANCEL_STATUS = -2;
+  static const int REJECT_STATUS = -1;
+  static const int INACTIVE_STATUS = 0;
+  static const int ACTIVE_STATUS = 1;
+  static const int DONE_STATUS = 2;
+  static const int ERROR_STATUS = 3;
+  static const int REQUEST_STATUS = 4;
+  static const int LOGOUT_STATUS = 5;
 }

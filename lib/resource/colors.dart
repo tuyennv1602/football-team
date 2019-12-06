@@ -35,7 +35,7 @@ const List<Color> BLACK_GRADIENT = [
 
 const List<Color> GREEN_GRADIENT = [
   Color(0xFF01A028),
-  Color(0xFF024913),
+  Color(0xFF057C21),
 ];
 
 const List<Color> LIGHT_GREEN_GRADIENT = [
@@ -47,7 +47,7 @@ const List<Color> LIGHT_GREEN_GRADIENT = [
 
 const List<Color> RED_GRADIENT = [
   Color(0xFFC01D04),
-  Color(0xFF681104),
+  Color(0xFF831605),
 ];
 
 const List<Color> DRESS_COLORS = [
