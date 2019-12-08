@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:myfootball/model/match_schedule.dart';
 import 'package:myfootball/model/member.dart';
 import 'package:myfootball/model/team.dart';
@@ -14,12 +15,15 @@ import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/item_member.dart';
 import 'package:myfootball/ui/widget/item_option.dart';
+import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
 import 'package:myfootball/ui/widget/tabbar_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/matching_detail_viewmodel.dart';
+import 'package:myfootball/viewmodel/match_history_detail_viewmodel.dart';
+import 'package:myfootball/viewmodel/match_schedule_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class MatchScheduleDetailPage extends StatelessWidget {
   final MatchSchedule matchSchedule;
@@ -35,7 +39,10 @@ class MatchScheduleDetailPage extends StatelessWidget {
         : GridView.builder(
             padding: EdgeInsets.all(UIHelper.padding),
             itemBuilder: (c, index) => ItemMember(
-                member: members[index], isCaptain: members[index].isManager),
+                  member: members[index],
+                  isCaptain: members[index].isCaptain,
+                  isManager: members[index].isManager,
+                ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.8,
@@ -48,48 +55,55 @@ class MatchScheduleDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.center,
-                colors: [PRIMARY, Color(0xFFE5F230)])),
-        child: Column(
-          children: <Widget>[
-            AppBarWidget(
-              centerContent: Text(
-                'Thông tin trận đấu',
-                textAlign: TextAlign.center,
-                style: textStyleTitle(),
+      body: BaseWidget<MatchScheduleDetailViewModel>(
+        model: MatchScheduleDetailViewModel(
+            api: Provider.of(context), matchSchedule: matchSchedule),
+        onModelReady: (model) {
+          model.getMyTeamMembers(team.id);
+          if (matchSchedule.receiveTeam != null) {
+            model.getOpponentTeamMembers(matchSchedule.getOpponentTeam.id);
+          }
+        },
+        builder: (c, model, child) => Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.center,
+                  colors: [PRIMARY, Color(0xFFE5F230)])),
+          child: Column(
+            children: <Widget>[
+              AppBarWidget(
+                centerContent: Text(
+                  'Thông tin trận đấu',
+                  textAlign: TextAlign.center,
+                  style: textStyleTitle(),
+                ),
+                leftContent: AppBarButtonWidget(
+                  imageName: Images.BACK,
+                  onTap: () => NavigationService.instance.goBack(),
+                ),
+                rightContent: AppBarButtonWidget(
+                  imageName: Images.SHARE_2,
+                  onTap: () async {
+                    if (matchSchedule.requestCode == null) {
+                      var code = await model.createCode(team.id);
+                      if (code != null) {
+                        Share.share(model.matchSchedule.getShareCode);
+                      }
+                    } else {
+                      Share.share(model.matchSchedule.getShareCode);
+                    }
+                  },
+                ),
+                backgroundColor: Colors.transparent,
               ),
-              leftContent: AppBarButtonWidget(
-                imageName: Images.BACK,
-                onTap: () => NavigationService.instance.goBack(),
-              ),
-              rightContent: AppBarButtonWidget(
-                imageName: Images.SHARE_2,
-                onTap: () => NavigationService.instance.goBack(),
-              ),
-              backgroundColor: Colors.transparent,
-            ),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: UIHelper.size(50)),
-                    child: BorderBackground(
-                      child: BaseWidget<MatchingDetailViewModel>(
-                        model:
-                            MatchingDetailViewModel(api: Provider.of(context)),
-                        onModelReady: (model) {
-                          model.getMyTeamMembers(
-                              matchSchedule.matchId, team.id);
-                          if (matchSchedule.receiveTeam != null) {
-                            model.getOpponentTeamMembers(matchSchedule.matchId,
-                                matchSchedule.getOpponentTeam.id);
-                          }
-                        },
-                        builder: (c, model, child) => Padding(
+              Expanded(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: UIHelper.size(50)),
+                      child: BorderBackground(
+                        child: Padding(
                           padding: EdgeInsets.only(top: UIHelper.size50),
                           child: Column(
                             children: <Widget>[
@@ -101,14 +115,14 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                     .navigateTo(GROUND_DETAIL,
                                         arguments: matchSchedule.groundId),
                               ),
-                              matchSchedule.getRatio != null
+                              matchSchedule.requestCode != null
                                   ? ItemOptionWidget(
-                                      Images.RATIO,
-                                      'Tỉ lệ (thắng-thua)   ${matchSchedule.getRatio}',
-                                      iconColor: Colors.red,
-                                      rightContent: SizedBox(),
+                                      Images.MEMBER_MANAGE,
+                                      'Yêu cầu tham gia trận đấu',
+                                      iconColor: Colors.teal,
                                     )
                                   : SizedBox(),
+                              LineWidget(),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
@@ -116,7 +130,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                       horizontal: UIHelper.padding,
                                       vertical: UIHelper.size10),
                                   child: Text(
-                                    'Danh sách thi đấu',
+                                    'Danh sách đăng ký thi đấu',
                                     style: textStyleSemiBold(),
                                   ),
                                 ),
@@ -153,66 +167,83 @@ class MatchScheduleDetailPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    height: UIHelper.size(100),
-                    margin: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(UIHelper.radius),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ImageWidget(
-                              source: team.logo,
-                              placeHolder: Images.DEFAULT_LOGO,
+                    Container(
+                      height: UIHelper.size(100),
+                      margin: EdgeInsets.symmetric(horizontal: UIHelper.size20),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(UIHelper.radius),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ImageWidget(
+                                source: team.logo,
+                                placeHolder: Images.DEFAULT_LOGO,
+                              ),
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(UIHelper.size5),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(UIHelper.size10),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [Color(0xFF02DC37), PRIMARY],
-                                )),
-                            child: Text(
-                              '${matchSchedule.getShortPlayTime}',
-                              textAlign: TextAlign.center,
-                              style: textStyleSemiBold(color: Colors.white),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: UIHelper.size25,
+                                  width: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(UIHelper.size5),
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(UIHelper.size5),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [Color(0xFF02DC37), PRIMARY],
+                                      )),
+                                  child: Text(
+                                    '${matchSchedule.getShortPlayTime}',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        textStyleSemiBold(color: Colors.white),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: UIHelper.size25,
+                                  child: Text(
+                                    matchSchedule.getRatio,
+                                    style: textStyleItalic(size: 14, color: Colors.grey),
+                                  ),
+                                )
+                              ],
                             ),
-                          ),
-                          Expanded(
-                            child: matchSchedule.getOpponentTeam != null
-                                ? InkWell(
-                                    onTap: () => NavigationService.instance
-                                        .navigateTo(TEAM_DETAIL,
-                                            arguments:
-                                                matchSchedule.getOpponentTeam),
-                                    child: Hero(
-                                      tag: matchSchedule.getOpponentTeam.id,
-                                      child: ImageWidget(
-                                        source: matchSchedule.getOpponentLogo,
-                                        placeHolder: Images.DEFAULT_LOGO,
+                            Expanded(
+                              child: matchSchedule.getOpponentTeam != null
+                                  ? InkWell(
+                                      onTap: () => NavigationService.instance
+                                          .navigateTo(TEAM_DETAIL,
+                                              arguments: matchSchedule
+                                                  .getOpponentTeam),
+                                      child: Hero(
+                                        tag: matchSchedule.getOpponentTeam.id,
+                                        child: ImageWidget(
+                                          source: matchSchedule.getOpponentLogo,
+                                          placeHolder: Images.DEFAULT_LOGO,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                : Image.asset(Images.DEFAULT_LOGO,
-                                    width: UIHelper.size50,
-                                    height: UIHelper.size50),
-                          ),
-                        ],
+                                    )
+                                  : Image.asset(Images.DEFAULT_LOGO,
+                                      width: UIHelper.size50,
+                                      height: UIHelper.size50),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

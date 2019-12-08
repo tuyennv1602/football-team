@@ -27,7 +27,7 @@ import 'package:provider/provider.dart';
 class InviteTeamPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final InviteTeamArgument _inviteTeamArgument;
-  int _ratio = Constants.RATIO_50_50;
+  int _ratio;
   String _invite;
 
   InviteTeamPage({@required InviteTeamArgument inviteTeamArgument})

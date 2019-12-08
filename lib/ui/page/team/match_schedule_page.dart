@@ -365,7 +365,7 @@ class MatchSchedulePage extends StatelessWidget {
           Expanded(
             child: BorderBackground(
               child: BaseWidget<MatchScheduleViewModel>(
-                model: MatchScheduleViewModel(api: Provider.of(context)),
+                model: MatchScheduleViewModel(api: Provider.of(context), teamId: team.id),
                 onModelReady: (model) => model.getMatchSchedules(team.id),
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
@@ -382,6 +382,7 @@ class MatchSchedulePage extends StatelessWidget {
               ),
             ),
           ),
+          UIHelper.homeButtonSpace
         ],
       ),
     );

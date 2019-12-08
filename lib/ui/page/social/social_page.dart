@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:myfootball/model/match_share.dart';
 import 'package:myfootball/model/news.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
@@ -11,9 +12,9 @@ import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
-import 'package:myfootball/ui/widget/button_widget.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
+import 'package:myfootball/ui/widget/input_text_widget.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
 import 'package:myfootball/ui/widget/top_ranking.dart';
@@ -24,6 +25,17 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialPage extends StatelessWidget {
+  final _formCode = GlobalKey<FormState>();
+
+  bool validateAndSave() {
+    final form = _formCode.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
   Widget _buildCateTitle(String title) => Text(
         title,
         style: textStyleSemiBold(size: 17),
@@ -87,14 +99,16 @@ class SocialPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemRecruit(BuildContext context, int index) => Card(
+  Widget _buildItemRecruit(BuildContext context, MatchShare match,
+          {Function onJoin}) =>
+      Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
         margin: EdgeInsets.zero,
         child: Container(
-          width: UIHelper.screenWidth * 0.45,
+          width: UIHelper.screenWidth * 0.5,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(UIHelper.padding)),
           padding: EdgeInsets.all(UIHelper.size10),
@@ -104,7 +118,7 @@ class SocialPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   ImageWidget(
-                    source: null,
+                    source: match.matchInfo.getMyTeamLogo,
                     placeHolder: Images.DEFAULT_LOGO,
                     size: UIHelper.size45,
                   ),
@@ -115,19 +129,22 @@ class SocialPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Acazia FC',
+                            match.matchInfo.getMyTeamName,
                             style: textStyleMediumTitle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          RatingBarIndicator(
-                            rating: 4,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.only(right: 2),
-                            itemSize: UIHelper.size15,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                          Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: RatingBarIndicator(
+                              rating: match.matchInfo.getMyTeam.rating,
+                              itemCount: 5,
+                              itemPadding: EdgeInsets.only(right: 2),
+                              itemSize: UIHelper.size15,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
                             ),
                           ),
                         ],
@@ -138,7 +155,7 @@ class SocialPage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: UIHelper.size5, bottom: UIHelper.size10),
+                    top: UIHelper.size10, bottom: UIHelper.size10),
                 child: LineWidget(indent: 0),
               ),
               Row(
@@ -151,9 +168,9 @@ class SocialPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(left: UIHelper.size5),
+                      padding: EdgeInsets.only(left: UIHelper.size10),
                       child: Text(
-                        '16:30 31/12/19',
+                        match.matchInfo.getShortPlayTime,
                         style: textStyleMedium(),
                       ),
                     ),
@@ -174,9 +191,9 @@ class SocialPage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left: UIHelper.size5),
+                          padding: EdgeInsets.only(left: UIHelper.size10),
                           child: Text(
-                            'Sân bóng Thạch Cầu',
+                            match.matchInfo.groundName,
                             style: textStyleMedium(),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -189,20 +206,23 @@ class SocialPage extends StatelessWidget {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(UIHelper.size5),
-                child: Container(
-                  height: UIHelper.size30,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xFF02DC37), PRIMARY],
+                child: InkWell(
+                  onTap: () => onJoin(match.id, match.requestCode),
+                  child: Container(
+                    height: UIHelper.size30,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0xFF02DC37), PRIMARY],
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    'THAM GIA',
-                    style: textStyleMedium(color: Colors.white),
+                    child: Text(
+                      'THAM GIA',
+                      style: textStyleMedium(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
@@ -216,13 +236,16 @@ class SocialPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: UIHelper.padding, right: UIHelper.padding, top: UIHelper.size10),
+          padding: EdgeInsets.only(
+              left: UIHelper.padding,
+              right: UIHelper.padding,
+              top: UIHelper.size15),
           child: _buildCateTitle('Tin tức mới nhất'),
         ),
         SizedBox(
           height: UIHelper.size(180),
           child: isLoading
-              ? LoadingWidget()
+              ? LoadingWidget(type: LOADING_TYPE.WAVE)
               : news == null
                   ? EmptyWidget(message: 'Có lỗi xảy ra')
                   : ListView.separated(
@@ -283,27 +306,96 @@ class SocialPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildRecruit(BuildContext context) {
+  _showInputCode() {
+    var _code;
+    UIHelper.showCustomizeDialog(
+      'input_invite',
+      icon: Images.INVITE,
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Nhập mã code để tham gia trận đấu',
+            style: textStyleMediumTitle(color: Colors.white, size: 18),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size5),
+            child: Form(
+              key: _formCode,
+              child: InputTextWidget(
+                validator: (value) {
+                  if (value.isEmpty) return 'Vui lòng nhập mã code';
+                  return null;
+                },
+                onSaved: (value) => _code = value,
+                maxLines: 1,
+                inputType: TextInputType.text,
+                inputAction: TextInputAction.done,
+                labelText: 'Mã code',
+                focusedColor: Colors.white,
+                textStyle: textStyleInput(size: 18, color: Colors.white),
+                hintTextStyle: textStyleInput(size: 18, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+      onConfirmed: () {
+        if (validateAndSave()) {
+          NavigationService.instance.goBack();
+        }
+      },
+    );
+  }
+
+  Widget _buildRecruit(
+      BuildContext context, bool isLoading, List<MatchShare> matches,
+      {Function onJoin}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: UIHelper.padding, right: UIHelper.padding, top: UIHelper.size10),
-          child: _buildCateTitle('Tin tuyển quân'),
+        Row(
+          children: <Widget>[
+            Expanded(
+                child: Padding(
+              padding:
+                  EdgeInsets.only(left: UIHelper.padding, top: UIHelper.size15),
+              child: _buildCateTitle('Tin tuyển quân'),
+            )),
+            Expanded(
+                child: Padding(
+              padding: EdgeInsets.only(
+                  right: UIHelper.padding, top: UIHelper.size15),
+              child: InkWell(
+                onTap: () => _showInputCode(),
+                child: Text(
+                  'Nhập mã',
+                  textAlign: TextAlign.right,
+                  style: textStyleMedium(color: Colors.grey),
+                ),
+              ),
+            ))
+          ],
         ),
         Container(
           height: UIHelper.size(210),
-          child: ListView.separated(
-            itemCount: 5,
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.all(UIHelper.padding),
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (c, index) => _buildItemRecruit(context, index),
-            separatorBuilder: (BuildContext context, int index) => SizedBox(
-              width: UIHelper.padding,
-              height: 100,
-            ),
-          ),
+          child: isLoading
+              ? LoadingWidget(type: LOADING_TYPE.WAVE)
+              : matches.length == 0
+                  ? EmptyWidget(message: 'Có lỗi xảy ra')
+                  : ListView.separated(
+                      itemCount: matches.length,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.all(UIHelper.padding),
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (c, index) => _buildItemRecruit(
+                          context, matches[index],
+                          onJoin: onJoin),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          SizedBox(
+                        width: UIHelper.padding,
+                        height: 100,
+                      ),
+                    ),
         ),
       ],
     );
@@ -329,6 +421,7 @@ class SocialPage extends StatelessWidget {
                 onModelReady: (model) {
                   model.getRanking();
                   model.getSportNews();
+                  model.getMatchShare(1);
                 },
                 builder: (c, model, child) => ListView(
                   padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
@@ -339,7 +432,13 @@ class SocialPage extends StatelessWidget {
                     LineWidget(indent: 0),
                     _buildNewest(context, model.isLoadingNews, model.news),
                     LineWidget(indent: 0),
-                    _buildRecruit(context)
+                    _buildRecruit(
+                      context,
+                      model.isLoadingMatch,
+                      model.matchShares,
+                      onJoin: (shareId, code) =>
+                          model.joinMatchByCode(shareId, code),
+                    )
                   ],
                 ),
               ),

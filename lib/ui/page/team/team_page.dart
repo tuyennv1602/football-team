@@ -35,7 +35,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<BackdropState> _backdropKey =
       GlobalKey<BackdropState>(debugLabel: 'Backdrop');
 
-  Widget _buildEmptyTeam(BuildContext context) => BorderBackground(
+  _buildEmptyTeam(BuildContext context) => BorderBackground(
         child: Column(
           children: <Widget>[
             Expanded(
@@ -85,10 +85,11 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
       );
 
-  Widget _buildTeamOptions(BuildContext context, Team team) {
+  _buildTeamOptions(BuildContext context, Team team, {Function onLeaveTeam}) {
     List<Widget> _children = [];
     List<Widget> _manager = [];
-    bool isManager = team.hasManager(Provider.of<User>(context).id);
+    var userId = Provider.of<User>(context).id;
+    bool isManager = team.hasManager(userId);
     if (isManager) {
       _manager.addAll([
         ItemOptionWidget(
@@ -112,7 +113,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ItemOptionWidget(
           Images.MEMBER_MANAGE,
           'Yêu cầu gia nhập đội bóng',
-          iconColor: Colors.green,
+          iconColor: Colors.teal,
           onTap: () => NavigationService.instance.navigateTo(REQUEST_MEMBER),
         ),
       ]);
@@ -167,83 +168,88 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                   )
                 : SizedBox())
             ..add(
-              ItemOptionWidget(
-                Images.LEAVE_TEAM,
-                'Rời đội bóng',
-                iconColor: Colors.blueGrey,
-              ),
+              team.managerId != userId
+                  ? ItemOptionWidget(
+                      Images.LEAVE_TEAM,
+                      'Rời đội bóng',
+                      iconColor: Colors.blueGrey,
+                      onTap: () {
+                        UIHelper.showConfirmDialog(
+                            'Bạn có chắc chắn muốn rời đội bóng ${team.name}?',
+                            onConfirmed: onLeaveTeam);
+                      },
+                    )
+                  : SizedBox(),
             ),
         ),
     );
   }
 
-  Widget _buildHeaderWidget(BuildContext context, Team team) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
-      child: Row(
-        children: <Widget>[
-          ImageWidget(
-              source: team.logo,
-              placeHolder: Images.DEFAULT_LOGO,
-              size: UIHelper.size(90)),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: UIHelper.size15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Điểm: ${team.point.toStringAsFixed(1)}',
-                    style: textStyleAlert(color: Colors.black87),
-                  ),
-                  Text(
-                    'Xếp hạng: ${team.rank}',
-                    style: textStyleAlert(color: Colors.black87),
-                  ),
-                  InkWell(
-                    onTap: () =>
-                        NavigationService.instance.navigateTo(TEAM_COMMENT),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Đánh giá: ',
-                          style: textStyleAlert(color: Colors.black87),
-                        ),
-                        RatingBarIndicator(
-                          rating: team.rating,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.only(left: 2),
-                          itemSize: UIHelper.size20,
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
+  _buildHeaderWidget(BuildContext context, Team team) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+        child: Row(
+          children: <Widget>[
+            ImageWidget(
+                source: team.logo,
+                placeHolder: Images.DEFAULT_LOGO,
+                size: UIHelper.size(90)),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: UIHelper.size15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Điểm: ${team.point.toStringAsFixed(1)}',
+                      style: textStyleAlert(color: Colors.black87),
+                    ),
+                    Text(
+                      'Xếp hạng: ${team.rank}',
+                      style: textStyleAlert(color: Colors.black87),
+                    ),
+                    InkWell(
+                      onTap: () =>
+                          NavigationService.instance.navigateTo(TEAM_COMMENT),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Đánh giá: ',
+                            style: textStyleAlert(color: Colors.black87),
                           ),
-                        ),
-                      ],
+                          RatingBarIndicator(
+                            rating: team.rating,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.only(left: 2),
+                            itemSize: UIHelper.size20,
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Divider(
-                    height: UIHelper.size15,
-                    color: LINE_COLOR,
-                  ),
-                  Align(
-                    child: Text(
-                      '\" ${team.bio} \"',
-                      textAlign: TextAlign.center,
-                      style: textStyleItalic(size: 14, color: Colors.grey),
+                    Divider(
+                      height: UIHelper.size15,
+                      color: LINE_COLOR,
                     ),
-                  ),
-                ],
+                    Align(
+                      child: Text(
+                        '\" ${team.bio} \"',
+                        textAlign: TextAlign.center,
+                        style: textStyleItalic(size: 14, color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 
-  Widget _buildSelectTeam(BuildContext context, List<Team> teams,
+  _buildSelectTeam(BuildContext context, List<Team> teams,
           Future onChangeTeam(Team team)) =>
       ListView.separated(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
@@ -333,7 +339,12 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   children: <Widget>[
                                     _buildHeaderWidget(context, _team),
                                     UIHelper.verticalSpaceSmall,
-                                    _buildTeamOptions(context, _team),
+                                    _buildTeamOptions(
+                                      context,
+                                      _team,
+                                      onLeaveTeam: () =>
+                                          model.leaveTeam(_team.id),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -373,7 +384,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                     topRight: Radius.circular(UIHelper.radius),
                                   ),
                                   gradient: LinearGradient(
-                                      colors: LIGHT_GREEN_GRADIENT),
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [Color(0xFF02DC37), PRIMARY]),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey,

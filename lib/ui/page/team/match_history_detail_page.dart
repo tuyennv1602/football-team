@@ -16,10 +16,11 @@ import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/item_member.dart';
 import 'package:myfootball/ui/widget/item_option.dart';
 import 'package:myfootball/ui/widget/loading.dart';
+import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/ui/widget/tabbar_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/matching_detail_viewmodel.dart';
+import 'package:myfootball/viewmodel/match_history_detail_viewmodel.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +38,10 @@ class MatchHistoryDetailPage extends StatelessWidget {
         : GridView.builder(
             padding: EdgeInsets.all(UIHelper.padding),
             itemBuilder: (c, index) => ItemMember(
-                member: members[index], isCaptain: members[index].isManager),
+                  member: members[index],
+                  isManager: members[index].isManager,
+                  isCaptain: members[index].isCaptain,
+                ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.8,
@@ -76,13 +80,14 @@ class MatchHistoryDetailPage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: UIHelper.size(50)),
                     child: BorderBackground(
-                      child: BaseWidget<MatchingDetailViewModel>(
-                        model:
-                            MatchingDetailViewModel(api: Provider.of(context)),
+                      child: BaseWidget<MatchHistoryDetailViewModel>(
+                        model: MatchHistoryDetailViewModel(
+                            api: Provider.of(context),
+                            matchHistory: matchHistory),
                         onModelReady: (model) {
-                          model.getMyTeamMembers(matchHistory.matchId, team.id);
+                          model.getMyTeamMembers(team.id);
                           if (matchHistory.receiveTeam != null) {
-                            model.getOpponentTeamMembers(matchHistory.matchId,
+                            model.getOpponentTeamMembers(
                                 matchHistory.getOpponentTeam.id);
                           }
                         },
@@ -95,44 +100,62 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: UIHelper.size15,
                                     vertical: UIHelper.size5),
-                                child: Row(
-                                  children: <Widget>[
-                                    LikeButton(
-                                      size: UIHelper.size30,
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                          Icons.check_circle,
-                                          color:
-                                              isLiked ? PRIMARY : Colors.grey,
-                                          size: UIHelper.size30,
-                                        );
-                                      },
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: UIHelper.size5),
-                                        child: LinearPercentIndicator(
-                                          animation: true,
-                                          lineHeight: UIHelper.size(6),
-                                          animationDuration: 1000,
-                                          percent: matchHistory.getRatePercent,
-                                          linearStrokeCap:
-                                              LinearStrokeCap.roundAll,
-                                          progressColor:
-                                              matchHistory.getRateColor,
-                                          backgroundColor: LINE_COLOR,
-                                        ),
+                                child: matchHistory.isConfirmed
+                                    ? Row(
+                                        children: <Widget>[
+                                          LikeButton(
+                                            size: UIHelper.size30,
+                                            likeCount: model
+                                                .matchHistory.countConfirmed,
+                                            likeBuilder: (bool isLiked) {
+                                              return Icon(
+                                                Icons.check_circle,
+                                                color: isLiked
+                                                    ? PRIMARY
+                                                    : Colors.grey,
+                                                size: UIHelper.size30,
+                                              );
+                                            },
+                                            onTap: (isLiked) {
+                                              if (isLiked) {
+                                                return model
+                                                    .cancelConfirmScore();
+                                              } else {
+                                                return model.confirmScore();
+                                              }
+                                            },
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: UIHelper.size5),
+                                              child: LinearPercentIndicator(
+                                                animation: true,
+                                                lineHeight: UIHelper.size(6),
+                                                animationDuration: 1000,
+                                                percent: model.matchHistory
+                                                    .getRatePercent,
+                                                linearStrokeCap:
+                                                    LinearStrokeCap.roundAll,
+                                                progressColor: model
+                                                    .matchHistory.getRateColor,
+                                                backgroundColor: LINE_COLOR,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            '+${model.matchHistory.getBonus.toStringAsFixed(2)}',
+                                            style: textStyleSemiBold(
+                                                size: 16,
+                                                color:
+                                                    matchHistory.getRateColor),
+                                          )
+                                        ],
+                                      )
+                                    : StatusIndicator(
+                                        status: matchHistory.getStatus,
+                                        statusName: matchHistory.getStatusName,
                                       ),
-                                    ),
-                                    Text(
-                                      '+${matchHistory.getBonus.toStringAsFixed(2)}',
-                                      style: textStyleSemiBold(
-                                          size: 16,
-                                          color: matchHistory.getRateColor),
-                                    )
-                                  ],
-                                ),
                               ),
                               ItemOptionWidget(
                                 Images.STADIUM,
@@ -209,7 +232,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                 style: textStyleBold(
                                     size: 30,
                                     color: matchHistory.isConfirmed
-                                        ? Colors.red
+                                        ? Colors.black
                                         : Colors.grey),
                               ),
                               Row(

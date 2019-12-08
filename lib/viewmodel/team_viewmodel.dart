@@ -40,4 +40,22 @@ class TeamViewModel extends BaseViewModel {
     var resp = await _teamServices.changeTeam(team);
     return resp;
   }
+
+  Future<void> leaveTeam(int teamId) async {
+    UIHelper.showProgressDialog;
+    var resp = await _api.leaveTeam(teamId);
+    UIHelper.hideProgressDialog;
+    if(resp.isSuccess){
+      int index = teams.indexWhere((team) => team.id == teamId);
+      teams.removeAt(index);
+      if(teams.length > 0){
+        changeTeam(teams[0]);
+      }else{
+        changeTeam(null);
+      }
+      notifyListeners();
+    }else{
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 }

@@ -41,7 +41,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
         onTap: () =>
             NavigationService.instance.navigateTo(BOOKING, arguments: ground),
         child: Hero(
-          tag: ground.id,
+          tag: 'ground-${ground.id}',
           child: Stack(
             children: <Widget>[
               ClipRRect(
@@ -212,7 +212,8 @@ class _SearchGroundState extends State<SearchGroundPage> {
                       alignment: Alignment.bottomCenter,
                       child: Container(
                         height: UIHelper.size(180),
-                        margin: EdgeInsets.only(bottom: UIHelper.paddingBottom + UIHelper.size10),
+                        margin: EdgeInsets.only(
+                            bottom: UIHelper.paddingBottom + UIHelper.size10),
                         child: model.grounds.length == 0
                             ? SizedBox()
                             : Swiper(

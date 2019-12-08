@@ -19,7 +19,6 @@ import 'package:myfootball/ui/widget/item_transaction.dart';
 import 'package:myfootball/ui/widget/loading.dart';
 import 'package:myfootball/ui/widget/select_date.dart';
 import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/finance_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -257,7 +256,7 @@ class FinancePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          StringUtil.formatCurrency(0),
+                          model.income,
                           style: textStyleTitle(),
                           textAlign: TextAlign.right,
                         ),
@@ -274,7 +273,7 @@ class FinancePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          StringUtil.formatCurrency(0),
+                          model.outcome,
                           textAlign: TextAlign.right,
                           style: textStyleTitle(),
                         ),

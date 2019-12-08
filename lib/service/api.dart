@@ -4,6 +4,7 @@ import 'package:myfootball/model/group_matching_info.dart';
 import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/response/comments_resp.dart';
+import 'package:myfootball/model/response/create_code_resp.dart';
 import 'package:myfootball/model/response/create_matching_resp.dart';
 import 'package:myfootball/model/response/fund_request_resp.dart';
 import 'package:myfootball/model/response/fund_resp.dart';
@@ -13,6 +14,7 @@ import 'package:myfootball/model/response/list_ground_resp.dart';
 import 'package:myfootball/model/response/login_resp.dart';
 import 'package:myfootball/model/response/match_history_resp.dart';
 import 'package:myfootball/model/response/match_schedule_resp.dart';
+import 'package:myfootball/model/response/match_share_resp.dart';
 import 'package:myfootball/model/response/matching_resp.dart';
 import 'package:myfootball/model/response/member_resp.dart';
 import 'package:myfootball/model/response/notification_resp.dart';
@@ -497,18 +499,18 @@ class Api {
     }
   }
 
-  Future<BaseResponse> joinMatch(int matchId) async {
+  Future<BaseResponse> joinMatch(int teamId, int matchId) async {
     try {
-      var resp = await _api.putApi('match/$matchId/join');
+      var resp = await _api.putApi('match/$matchId/group/$teamId/join');
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
     }
   }
 
-  Future<BaseResponse> leaveMatch(int matchId) async {
+  Future<BaseResponse> leaveMatch(int teamId, int matchId) async {
     try {
-      var resp = await _api.putApi('match/$matchId/leave');
+      var resp = await _api.putApi('match/$matchId/group/$teamId/leave');
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -687,6 +689,53 @@ class Api {
   Future<BaseResponse> leaveTeam(int teamId) async {
     try {
       var resp = await _api.deleteApi('group/$teamId/leave');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> memberConfirm(int matchId) async {
+    try {
+      var resp = await _api.putApi('match/$matchId/result/confirm');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> memberCancelConfirm(int matchId) async {
+    try {
+      var resp = await _api.putApi('match/$matchId/result/cancel');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<CreateCodeResponse> createCode(int matchId, int teamId) async {
+    try {
+      var resp = await _api.postApi('match/$matchId/group/$teamId/code');
+      return CreateCodeResponse.success(resp.data);
+    } on DioError catch (e) {
+      return CreateCodeResponse.error(e.message);
+    }
+  }
+
+  Future<MatchShareResponse> getMatchShares(int page) async {
+    try {
+      FormData formData = new FormData.from({"page": page, "limit": 50});
+      var resp = await _api.getApi('match/share', queryParams: formData);
+      return MatchShareResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MatchShareResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> joinMatchByCode(int shareId, String code) async {
+    try {
+      var resp = await _api
+          .postApi('match/share/$shareId/request', body: {'code': code});
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);

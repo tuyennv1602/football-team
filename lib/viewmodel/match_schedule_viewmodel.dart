@@ -9,8 +9,10 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 class MatchScheduleViewModel extends BaseViewModel {
   Api _api;
   List<MatchSchedule> matchSchedules = [];
+  int teamId;
 
-  MatchScheduleViewModel({@required Api api}) : _api = api;
+  MatchScheduleViewModel({@required Api api, @required this.teamId})
+      : _api = api;
 
   Future<MatchScheduleResponse> getMatchSchedules(int teamId) async {
     setBusy(true);
@@ -24,12 +26,12 @@ class MatchScheduleViewModel extends BaseViewModel {
 
   Future<void> joinMatch(int index, int matchId) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.joinMatch(matchId);
+    var resp = await _api.joinMatch(teamId, matchId);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       matchSchedules[index].isJoined = true;
       notifyListeners();
-      UIHelper.showSimpleDialog('Đăng ký thành công!', isSuccess: true);
+      UIHelper.showSimpleDialog('Đăng ký thi đấu thành công!', isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -37,7 +39,7 @@ class MatchScheduleViewModel extends BaseViewModel {
 
   Future<void> leaveMatch(int index, int matchId) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.leaveMatch(matchId);
+    var resp = await _api.leaveMatch(teamId, matchId);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       matchSchedules[index].isJoined = false;

@@ -22,6 +22,12 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
   bool _isExpanded = false;
   int _selectedType = Constants.RATIO_50_50;
 
+  @override
+  void initState(){
+    super.initState();
+    widget.onSelectedType(_selectedType);
+  }
+
   Widget _buildItemType(int type) => InkWell(
         onTap: () {
           setState(() {

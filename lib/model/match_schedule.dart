@@ -17,6 +17,7 @@ class MatchSchedule {
   bool isJoined;
   int matchId;
   int teamId;
+  String requestCode;
 
   MatchSchedule(
       {this.ratio,
@@ -30,7 +31,8 @@ class MatchSchedule {
       this.groundName,
       this.groundId,
       this.isJoined,
-      this.matchId});
+      this.matchId,
+      this.requestCode});
 
   MatchSchedule.fromJson(int teamId, Map<String, dynamic> json) {
     ratio = json['ratio'];
@@ -50,6 +52,7 @@ class MatchSchedule {
     isJoined = json['is_joined'];
     matchId = json['match_id'];
     this.teamId = teamId;
+    requestCode = json['request_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -94,13 +97,15 @@ class MatchSchedule {
   Team get getMyTeam => isSender ? sendTeam : receiveTeam;
 
   String get getRatio {
-    if (ratio == null) return null;
+    if (ratio == null) return '';
     int _ratio = int.parse(ratio);
-    if (_ratio == Constants.RATIO_0_100) return '0-100';
-    if (_ratio == Constants.RATIO_20_80) return '20-80';
-    if (_ratio == Constants.RATIO_30_70) return '30-70';
-    if (_ratio == Constants.RATIO_40_60) return '40-60';
-    if (_ratio == Constants.RATIO_50_50) return '50-50';
-    return null;
+    if (_ratio == Constants.RATIO_0_100) return 'Kèo 0-100';
+    if (_ratio == Constants.RATIO_20_80) return 'Kèo 20-80';
+    if (_ratio == Constants.RATIO_30_70) return 'Kèo 30-70';
+    if (_ratio == Constants.RATIO_40_60) return 'Kèo 40-60';
+    if (_ratio == Constants.RATIO_50_50) return 'Kèo 50-50';
+    return '';
   }
+
+  String get getShareCode => 'Nhập mã \"$requestCode\" để tham gia trận đấu của $getMyTeamName';
 }

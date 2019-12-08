@@ -208,7 +208,7 @@ class MatchHistoryPage extends StatelessWidget {
                       style: textStyleBold(
                           size: 20,
                           color: matchHistory.isConfirmed
-                              ? Colors.red
+                              ? Colors.black
                               : Colors.grey),
                     )
                   ],
@@ -252,7 +252,7 @@ class MatchHistoryPage extends StatelessWidget {
                       style: textStyleBold(
                           size: 20,
                           color: matchHistory.isConfirmed
-                              ? Colors.red
+                              ? Colors.black
                               : Colors.grey),
                     )
                   ],

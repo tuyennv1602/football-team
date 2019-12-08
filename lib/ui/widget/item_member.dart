@@ -18,7 +18,7 @@ class ItemMember extends StatelessWidget {
       {Key key,
       @required this.member,
       @required this.isManager,
-      this.isCaptain,
+      this.isCaptain = false,
       this.onTap,
       this.isFullInfo = true})
       : super(key: key);
@@ -26,7 +26,7 @@ class ItemMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(UIHelper.padding),
       ),
@@ -64,7 +64,7 @@ class ItemMember extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       child: Hero(
-                        tag: member.id,
+                        tag: 'member - ${member.userId ?? member.id}',
                         child: ImageWidget(
                           source: member.avatar,
                           placeHolder: Images.DEFAULT_AVATAR,

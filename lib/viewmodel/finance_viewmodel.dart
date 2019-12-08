@@ -16,6 +16,9 @@ class FinanceViewModel extends BaseViewModel {
 
   DateTime currentDate = DateTime.now();
 
+  String income = '0đ';
+  String outcome = '0đ';
+
   FinanceViewModel({@required Api api, @required this.teamId}) : _api = api;
 
   changeMonth(DateTime dateTime) {
@@ -26,7 +29,8 @@ class FinanceViewModel extends BaseViewModel {
 
   String get getCurrentMonth => DateFormat('MM/yyyy').format(currentDate);
 
-  Future<void> createFundNotify( String title, String price, DateTime expiredDate) async {
+  Future<void> createFundNotify(
+      String title, String price, DateTime expiredDate) async {
     UIHelper.showProgressDialog;
     var resp = await _api.createFundNotify(
         teamId,
@@ -46,13 +50,24 @@ class FinanceViewModel extends BaseViewModel {
     var resp = await _api.getTransactionByTeam(teamId, getCurrentMonth);
     if (resp.isSuccess) {
       this.transactions = resp.transactions;
+      var _income = 0.0;
+      var _outcome = 0.0;
+      this.transactions.forEach((transaction) {
+        if (transaction.getType == TRANSACTION_TYPE.IN) {
+          _income += transaction.price;
+        } else {
+          _outcome += transaction.price;
+        }
+      });
+      income = StringUtil.formatCurrency(_income);
+      outcome = StringUtil.formatCurrency(_outcome);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }
 
-  Future<void> createExchange( String price, int type, String title) async {
+  Future<void> createExchange(String price, int type, String title) async {
     UIHelper.showProgressDialog;
     var resp = await _api.createExchange(
         teamId, StringUtil.getPriceFromString(price), type, title);

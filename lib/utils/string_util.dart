@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/utils/constants.dart';
 
@@ -30,15 +31,17 @@ class StringUtil {
   static String getRatioName(int type) {
     switch (type) {
       case Constants.RATIO_50_50:
-        return '50 - 50';
+        return '50-50';
       case Constants.RATIO_40_60:
-        return '40 - 60';
+        return '40-60';
       case Constants.RATIO_30_70:
-        return '30 - 70';
+        return '30-70';
       case Constants.RATIO_20_80:
-        return '20 - 80';
+        return '20-80';
+      case Constants.RATIO_0_100:
+        return '0-100';
       default:
-        return '0 - 100';
+        return null;
     }
   }
 

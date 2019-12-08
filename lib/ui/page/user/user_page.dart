@@ -206,12 +206,18 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
 //                          'Chuyển tiền',
 //                          iconColor: Colors.amber,
 //                        ),
+//                      ItemOptionWidget(
+//                        Images.TRANSACTION_HISTORY,
+//                        'Lịch sử giao dịch',
+//                        iconColor: Colors.amber,
+//                        onTap: () => NavigationService.instance
+//                            .navigateTo(USER_TRANSACTION_HISTORY),
+//                      ),
                       ItemOptionWidget(
-                        Images.TRANSACTION_HISTORY,
-                        'Lịch sử giao dịch',
-                        iconColor: Colors.amber,
-                        onTap: () => NavigationService.instance
-                            .navigateTo(USER_TRANSACTION_HISTORY),
+                        Images.MEMBER_MANAGE,
+                        'Yêu cầu tham gia trận đấu',
+                        iconColor: Colors.teal,
+                        onTap: () => NavigationService.instance.navigateTo(REQUEST_MEMBER),
                       ),
                       ItemOptionWidget(
                         Images.ADD_REQUEST,
