@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 import '../base_widget.dart';
 
 class InviteRequestPage extends StatelessWidget {
-  static const TABS = ['LỜI MỜI', 'ĐÃ GỬI'];
+  static const TABS = ['Lời mời', 'Đã gửi'];
 
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
       Card(

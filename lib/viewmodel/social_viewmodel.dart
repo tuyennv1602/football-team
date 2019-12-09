@@ -12,7 +12,7 @@ class SocialViewModel extends BaseViewModel {
 
   List<Team> teams = [];
   List<News> news;
-  List<MatchShare> matchShares;
+  List<MatchShare> matchShares = [];
   bool isLoadingNews = true;
   bool isLoadingMatch = true;
 
@@ -26,7 +26,7 @@ class SocialViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> getSportNews() async {
+  Future<bool> getSportNews() async {
     var resp = await RssServices().getSportNews();
     if (resp != null) {
       this.news = new List<News>();
@@ -34,15 +34,17 @@ class SocialViewModel extends BaseViewModel {
     }
     this.isLoadingNews = false;
     notifyListeners();
+    return Future.value(resp != null);
   }
 
-  Future<void> getMatchShare(int page) async {
+  Future<bool> getMatchShare(int page) async {
     var resp = await _api.getMatchShares(page);
-    if (resp != null) {
+    if (resp.isSuccess && resp.matchShares != null) {
       this.matchShares = resp.matchShares;
     }
     this.isLoadingMatch = false;
     notifyListeners();
+    return Future.value(resp.isSuccess);
   }
 
   Future<void> joinMatchByCode(int shareId, String code) async {

@@ -18,6 +18,7 @@ import 'package:myfootball/model/response/match_share_resp.dart';
 import 'package:myfootball/model/response/matching_resp.dart';
 import 'package:myfootball/model/response/member_resp.dart';
 import 'package:myfootball/model/response/notification_resp.dart';
+import 'package:myfootball/model/response/request_join_resp.dart';
 import 'package:myfootball/model/response/review_resp.dart';
 import 'package:myfootball/model/response/search_team_resp.dart';
 import 'package:myfootball/model/response/team_request_resp.dart';
@@ -739,6 +740,54 @@ class Api {
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<MatchShareResponse> getUserJoinMatch(int page) async {
+    try {
+      FormData formData = new FormData.from({"page": page, "limit": 50});
+      var resp =
+          await _api.getApi('match/share/user/request', queryParams: formData);
+      return MatchShareResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MatchShareResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> cancelUserJoinRequest(int matchUserId) async {
+    try {
+      var resp = await _api.putApi('match/share/$matchUserId/cancel');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> acceptUserJoinRequest(int matchUserId) async {
+    try {
+      var resp = await _api.putApi('match/share/$matchUserId/accept');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> rejectUserJoinRequest(int matchUserId) async {
+    try {
+      var resp = await _api.putApi('match/share/$matchUserId/reject');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<RequestJoinResponse> getRequestJoin(int matchId, int teamId) async {
+    try {
+      var resp =
+          await _api.getApi('match/$matchId/group/$teamId/share/request');
+      return RequestJoinResponse.success(resp.data);
+    } on DioError catch (e) {
+      return RequestJoinResponse.error(e.message);
     }
   }
 }

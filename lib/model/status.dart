@@ -1,0 +1,12 @@
+enum Status {
+  CANCEL,
+  REJECTED,
+  WAITING,
+  ACCEPTED,
+  COMPLETED,
+  FAILED,
+  REQUESTED,
+  LOGOUT
+}
+
+

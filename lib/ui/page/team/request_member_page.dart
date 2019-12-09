@@ -13,6 +13,7 @@ import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/item_position.dart';
 import 'package:myfootball/ui/widget/loading.dart';
+import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/viewmodel/request_member_viewmodel.dart';
@@ -22,22 +23,30 @@ class RequestMemberPage extends StatelessWidget {
   Widget _buildItemRequest(BuildContext context, TeamRequest teamRequest,
           {Function onAccept, Function onReject}) =>
       Card(
-        elevation: 3,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIHelper.padding),
         ),
         margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: InkWell(
-          onTap: () => _showRequestOptions(context,
-              onAccept: onAccept, onReject: onReject),
+          onTap: () => _showRequestOptions(
+            context,
+            onAccept: onAccept,
+            onReject: onReject,
+            onDetail: () => NavigationService.instance
+                .navigateTo(USER_COMMENT, arguments: teamRequest.userId),
+          ),
           child: Padding(
             padding: EdgeInsets.all(UIHelper.padding),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ImageWidget(
-                    source: teamRequest.avatar,
-                    placeHolder: Images.DEFAULT_AVATAR),
+                Hero(
+                  tag: 'member - ${teamRequest.userId}',
+                  child: ImageWidget(
+                      source: teamRequest.avatar,
+                      placeHolder: Images.DEFAULT_AVATAR),
+                ),
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: UIHelper.padding),
@@ -71,16 +80,25 @@ class RequestMemberPage extends StatelessWidget {
       );
 
   _showRequestOptions(BuildContext context,
-          {Function onAccept, Function onReject}) =>
+          {Function onAccept, Function onReject, Function onDetail}) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Chấp nhận yêu cầu', 'Từ chối yêu cầu', 'Huỷ'],
+          options: [
+            'Tuỳ chọn',
+            'Xem đánh giá',
+            'Chấp nhận yêu cầu',
+            'Từ chối yêu cầu',
+            'Huỷ'
+          ],
           onClickOption: (index) {
             if (index == 1) {
-              onAccept();
+              onDetail();
             }
             if (index == 2) {
+              onAccept();
+            }
+            if (index == 3) {
               onReject();
             }
           },

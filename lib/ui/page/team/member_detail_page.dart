@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/model/member.dart';
-import 'package:myfootball/model/member_arg.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
@@ -25,9 +24,8 @@ import 'package:myfootball/viewmodel/member_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore: must_be_immutable
 class MemberDetailPage extends StatelessWidget {
-  final MemberArgument memberArgument;
-  final bool isShowFull;
   final Member member;
   String _number;
   List<String> _positions;
@@ -42,10 +40,7 @@ class MemberDetailPage extends StatelessWidget {
     return false;
   }
 
-  MemberDetailPage({Key key, this.memberArgument})
-      : this.member = memberArgument.member,
-        this.isShowFull = memberArgument.showFull,
-        super(key: key);
+  MemberDetailPage({Key key, this.member}) : super(key: key);
 
   _writeReview(BuildContext context, {Function onSubmit}) => showGeneralDialog(
         barrierLabel: 'review_member',
@@ -92,7 +87,8 @@ class MemberDetailPage extends StatelessWidget {
                 inputAction: TextInputAction.done,
                 labelText: 'Số áo',
                 textStyle: textStyleMediumTitle(size: 20, color: Colors.white),
-                hintTextStyle: textStyleMediumTitle(size: 20,color: Colors.white),
+                hintTextStyle:
+                    textStyleMediumTitle(size: 20, color: Colors.white),
               ),
             ),
             UIHelper.verticalSpaceSmall,
@@ -117,7 +113,7 @@ class MemberDetailPage extends StatelessWidget {
         children: <Widget>[
           AppBarWidget(
             centerContent: Text(
-              'Hồ sơ thành viên',
+              'Thông tin cá nhân',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
@@ -125,17 +121,16 @@ class MemberDetailPage extends StatelessWidget {
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
-            rightContent: isShowFull
-                ? userId == member.id
-                    ? AppBarButtonWidget(
-                        imageName: Images.EDIT_PROFILE,
-                        onTap: () => _showEditForm(context, member, onSubmit: () {}),
-                      )
-                    : AppBarButtonWidget(
-                        imageName: Images.CALL,
-                        onTap: () => launch('tel://${member.phone}'),
-                      )
-                : SizedBox(),
+            rightContent: userId == member.id
+                ? AppBarButtonWidget(
+                    imageName: Images.EDIT_PROFILE,
+                    onTap: () =>
+                        _showEditForm(context, member, onSubmit: () {}),
+                  )
+                : AppBarButtonWidget(
+                    imageName: Images.CALL,
+                    onTap: () => launch('tel://${member.phone}'),
+                  ),
           ),
           Expanded(
             child: BorderBackground(

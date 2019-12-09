@@ -6,7 +6,7 @@ import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/invite_team_arg.dart';
 import 'package:myfootball/model/match_history.dart';
 import 'package:myfootball/model/match_schedule.dart';
-import 'package:myfootball/model/member_arg.dart';
+import 'package:myfootball/model/member.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/ui/page/home_page.dart';
@@ -33,6 +33,7 @@ import 'package:myfootball/ui/page/team/match_schedulde_detail_page.dart';
 import 'package:myfootball/ui/page/team/match_schedule_page.dart';
 import 'package:myfootball/ui/page/team/member_detail_page.dart';
 import 'package:myfootball/ui/page/team/member_page.dart';
+import 'package:myfootball/ui/page/team/request_join_match_page.dart';
 import 'package:myfootball/ui/page/team/team_comment_page.dart';
 import 'package:myfootball/ui/page/team/team_detail_page.dart';
 import 'package:myfootball/ui/page/team/request_member_page.dart';
@@ -46,6 +47,7 @@ import 'package:myfootball/ui/page/team/user_request_page.dart';
 import 'package:myfootball/ui/page/user/input_money_page.dart';
 import 'package:myfootball/ui/page/user/transaction_history_page.dart';
 import 'package:myfootball/ui/page/user/user_comment_page.dart';
+import 'package:myfootball/ui/page/user/user_join_match_page.dart';
 import 'package:myfootball/ui/router/fade_in_router.dart';
 import 'package:myfootball/ui/router/slide_left_router.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -145,13 +147,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case TEAM_COMMENT:
       return SlideLeftRoute(widget: TeamCommentPage());
     case MEMBER_DETAIL:
-      var memberArg = settings.arguments as MemberArgument;
-      return SlideLeftRoute(
-          widget: MemberDetailPage(
-        memberArgument: memberArg,
-      ));
+      var member = settings.arguments as Member;
+      return SlideLeftRoute(widget: MemberDetailPage(member: member));
     case USER_COMMENT:
-      return SlideLeftRoute(widget: UserCommentPage());
+      var userId = settings.arguments as int;
+      return SlideLeftRoute(widget: UserCommentPage(userId: userId));
+    case USER_JOIN_MATCH:
+      return SlideLeftRoute(widget: UserJoinMatchPage());
+    case REQUEST_JOIN_MATCH:
+      var matchId = settings.arguments as int;
+      return SlideLeftRoute(widget: RequestJoinMatchPage(matchId: matchId));
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

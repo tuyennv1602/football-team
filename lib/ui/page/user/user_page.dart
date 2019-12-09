@@ -128,18 +128,20 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               InkWell(
-                                onTap: () => NavigationService.instance.navigateTo(USER_COMMENT),
+                                onTap: () => NavigationService.instance
+                                    .navigateTo(USER_COMMENT, arguments: _user.id),
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical: UIHelper.size5),
                                   child: Row(
                                     children: <Widget>[
                                       Expanded(
-                                          child: Text(
-                                        'Đánh giá',
-                                        style:
-                                            textStyleRegular(color: Colors.white),
-                                      )),
+                                        child: Text(
+                                          'Đánh giá',
+                                          style: textStyleRegular(
+                                              color: Colors.white),
+                                        ),
+                                      ),
                                       RatingBarIndicator(
                                         rating: _user.rating,
                                         itemCount: 5,
@@ -217,7 +219,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                         Images.MEMBER_MANAGE,
                         'Yêu cầu tham gia trận đấu',
                         iconColor: Colors.teal,
-                        onTap: () => NavigationService.instance.navigateTo(REQUEST_MEMBER),
+                        onTap: () => NavigationService.instance
+                            .navigateTo(USER_JOIN_MATCH),
                       ),
                       ItemOptionWidget(
                         Images.ADD_REQUEST,
@@ -243,7 +246,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       ItemOptionWidget(
                         Images.INFO,
                         'Thông tin ứng dụng',
-                        iconColor: Colors.teal,
+                        iconColor: Colors.purple,
                       ),
                       ItemOptionWidget(
                         Images.PASSWORD,

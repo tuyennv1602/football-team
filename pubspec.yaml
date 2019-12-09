@@ -41,6 +41,7 @@ dependencies:
   webfeed: ^0.4.2
   html: ^0.13.4+1
   share: ^0.6.3+4
+  pull_to_refresh: ^1.5.7
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0

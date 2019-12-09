@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:myfootball/model/match_schedule.dart';
 import 'package:myfootball/model/member.dart';
 import 'package:myfootball/model/team.dart';
+import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
@@ -38,11 +39,16 @@ class MatchScheduleDetailPage extends StatelessWidget {
         ? EmptyWidget(message: 'Chưa có thành viên đăng ký')
         : GridView.builder(
             padding: EdgeInsets.all(UIHelper.padding),
-            itemBuilder: (c, index) => ItemMember(
-                  member: members[index],
-                  isCaptain: members[index].isCaptain,
-                  isManager: members[index].isManager,
-                ),
+            itemBuilder: (c, index) {
+              var _member = members[index];
+              return ItemMember(
+                member: _member,
+                isCaptain: _member.isCaptain,
+                isManager: _member.isManager,
+                onTap: () => NavigationService.instance
+                    .navigateTo(USER_COMMENT, arguments: _member.userId),
+              );
+            },
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.8,
@@ -54,12 +60,13 @@ class MatchScheduleDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
+    var userId = Provider.of<User>(context).id;
     return Scaffold(
       body: BaseWidget<MatchScheduleDetailViewModel>(
         model: MatchScheduleDetailViewModel(
             api: Provider.of(context), matchSchedule: matchSchedule),
         onModelReady: (model) {
-          model.getMyTeamMembers(team.id);
+          model.getMyTeamMembers(matchSchedule.getMyTeam.id);
           if (matchSchedule.receiveTeam != null) {
             model.getOpponentTeamMembers(matchSchedule.getOpponentTeam.id);
           }
@@ -86,9 +93,15 @@ class MatchScheduleDetailPage extends StatelessWidget {
                   imageName: Images.SHARE_2,
                   onTap: () async {
                     if (matchSchedule.requestCode == null) {
-                      var code = await model.createCode(team.id);
-                      if (code != null) {
-                        Share.share(model.matchSchedule.getShareCode);
+                      if (team != null && team.hasManager(userId)) {
+                        var code =
+                            await model.createCode(matchSchedule.getMyTeam.id);
+                        if (code != null) {
+                          Share.share(model.matchSchedule.getShareCode);
+                        }
+                      } else {
+                        UIHelper.showSimpleDialog(
+                            'Chưa có mã tham gia trận đấu. Vui lòng chờ đội trưởng tạo mã');
                       }
                     } else {
                       Share.share(model.matchSchedule.getShareCode);
@@ -115,11 +128,15 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                     .navigateTo(GROUND_DETAIL,
                                         arguments: matchSchedule.groundId),
                               ),
-                              matchSchedule.requestCode != null
+                              team.hasManager(userId) &&
+                                      matchSchedule.requestCode != null
                                   ? ItemOptionWidget(
                                       Images.MEMBER_MANAGE,
                                       'Yêu cầu tham gia trận đấu',
                                       iconColor: Colors.teal,
+                                      onTap: () => NavigationService.instance
+                                          .navigateTo(REQUEST_JOIN_MATCH,
+                                              arguments: matchSchedule.matchId),
                                     )
                                   : SizedBox(),
                               LineWidget(),
@@ -143,7 +160,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                           children: <Widget>[
                                             TabBarWidget(
                                               titles: [
-                                                team.name,
+                                                matchSchedule.getMyTeamName,
                                                 matchSchedule.getOpponentName
                                               ],
                                               height: UIHelper.size35,
@@ -178,9 +195,17 @@ class MatchScheduleDetailPage extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: ImageWidget(
-                                source: team.logo,
-                                placeHolder: Images.DEFAULT_LOGO,
+                              child: InkWell(
+                                onTap: () => NavigationService.instance
+                                    .navigateTo(TEAM_DETAIL,
+                                        arguments: matchSchedule.getMyTeam),
+                                child: Hero(
+                                  tag: 'team-${matchSchedule.getMyTeam.id}',
+                                  child: ImageWidget(
+                                    source: matchSchedule.getMyTeamLogo,
+                                    placeHolder: Images.DEFAULT_LOGO,
+                                  ),
+                                ),
                               ),
                             ),
                             Column(
@@ -211,7 +236,8 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                   height: UIHelper.size25,
                                   child: Text(
                                     matchSchedule.getRatio,
-                                    style: textStyleItalic(size: 14, color: Colors.grey),
+                                    style: textStyleItalic(
+                                        size: 14, color: Colors.grey),
                                   ),
                                 )
                               ],
@@ -224,7 +250,8 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                               arguments: matchSchedule
                                                   .getOpponentTeam),
                                       child: Hero(
-                                        tag: matchSchedule.getOpponentTeam.id,
+                                        tag:
+                                            'team-${matchSchedule.getOpponentTeam.id}',
                                         child: ImageWidget(
                                           source: matchSchedule.getOpponentLogo,
                                           placeHolder: Images.DEFAULT_LOGO,

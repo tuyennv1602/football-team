@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/member.dart';
-import 'package:myfootball/model/member_arg.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
@@ -31,7 +30,7 @@ class MemberPage extends StatelessWidget {
         builder: (c) => BottomSheetWidget(
           options: [
             'Tuỳ chọn',
-            'Xem hồ sơ',
+            'Thông tin cá nhân',
             'Thêm quyền đội trưởng',
             'Xoá khỏi đội',
             'Huỷ'
@@ -91,13 +90,13 @@ class MemberPage extends StatelessWidget {
                         isManager: _member.id == model.team.managerId,
                         isCaptain: _member.id == model.team.captainId,
                         onTap: () async {
-                          if (isManager) {
+                          if (isManager && _member.id != model.team.managerId) {
                             _showManagerOptions(
                               context,
                               onDetail: () {
                                 NavigationService.instance.navigateTo(
                                     MEMBER_DETAIL,
-                                    arguments: MemberArgument(member: _member));
+                                    arguments: _member);
                               },
                               onAddCaptain: () => UIHelper.showConfirmDialog(
                                 'Bạn có chắc chắn muốn thêm quyền đội trưởng cho ${_member.name}?',
@@ -110,8 +109,8 @@ class MemberPage extends StatelessWidget {
                               ),
                             );
                           } else {
-                            NavigationService.instance.navigateTo(MEMBER_DETAIL,
-                                arguments: MemberArgument(member: _member));
+                            NavigationService.instance
+                                .navigateTo(MEMBER_DETAIL, arguments: _member);
                           }
                         },
                       );

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';

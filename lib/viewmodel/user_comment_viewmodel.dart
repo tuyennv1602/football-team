@@ -20,4 +20,16 @@ class UserCommentViewModel extends BaseViewModel {
     }
     setBusy(false);
   }
+
+  Future<void> submitReview(int userId, double rating, String comment) async {
+    UIHelper.showProgressDialog;
+    var resp = await _api.reviewUser(userId, rating, comment);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      this.comments.add(resp.review.comment);
+      notifyListeners();
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 }
