@@ -325,42 +325,32 @@ class SocialPage extends StatelessWidget {
         ),
       );
 
-  _showInputCode() {
+  _showInputCode({Function onSubmit}) {
     var _code;
     UIHelper.showCustomizeDialog(
       'input_invite',
       icon: Images.INVITE,
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Nhập mã code để tham gia trận đấu',
-            style: textStyleMediumTitle(color: Colors.white, size: 18),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: UIHelper.size5),
-            child: Form(
-              key: _formCode,
-              child: InputTextWidget(
-                validator: (value) {
-                  if (value.isEmpty) return 'Vui lòng nhập mã code';
-                  return null;
-                },
-                onSaved: (value) => _code = value,
-                maxLines: 1,
-                inputType: TextInputType.text,
-                inputAction: TextInputAction.done,
-                labelText: 'Mã code',
-                focusedColor: Colors.white,
-                textStyle: textStyleInput(size: 18, color: Colors.white),
-                hintTextStyle: textStyleInput(size: 18, color: Colors.white),
-              ),
-            ),
-          ),
-        ],
+      child: Form(
+        key: _formCode,
+        child: InputTextWidget(
+          validator: (value) {
+            if (value.isEmpty) return 'Vui lòng nhập mã trận đấu';
+            return null;
+          },
+          onSaved: (value) => _code = value,
+          maxLines: 1,
+          inputType: TextInputType.text,
+          inputAction: TextInputAction.done,
+          labelText: 'Mã trận đấu',
+          focusedColor: Colors.white,
+          textStyle: textStyleMediumTitle(size: 20, color: Colors.white),
+          hintTextStyle: textStyleInput(size: 20, color: Colors.white),
+        ),
       ),
       onConfirmed: () {
         if (validateAndSave()) {
           NavigationService.instance.goBack();
+          onSubmit(_code);
         }
       },
     );
@@ -368,7 +358,7 @@ class SocialPage extends StatelessWidget {
 
   Widget _buildRecruit(
       BuildContext context, bool isLoading, List<MatchShare> matches,
-      {Function onJoin, Function onDetail, Function onRefresh}) {
+      {Function onJoin, Function onRefresh, Function onSubmitCode}) {
     return Column(
       children: <Widget>[
         Row(
@@ -384,9 +374,11 @@ class SocialPage extends StatelessWidget {
               padding: EdgeInsets.only(
                   right: UIHelper.padding, top: UIHelper.size15),
               child: InkWell(
-                onTap: () => _showInputCode(),
+                onTap: () => _showInputCode(
+                  onSubmit: (code) => onSubmitCode(code),
+                ),
                 child: Text(
-                  'Nhập mã',
+                  'Nhập mã trận đấu',
                   textAlign: TextAlign.right,
                   style: textStyleMedium(color: Colors.grey),
                 ),
@@ -457,7 +449,7 @@ class SocialPage extends StatelessWidget {
                 onModelReady: (model) {
                   model.getRanking();
                   model.getSportNews();
-                  model.getMatchShare(1);
+                  model.getMatchShares(1);
                 },
                 builder: (c, model, child) => ListView(
                   padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
@@ -466,7 +458,8 @@ class SocialPage extends StatelessWidget {
                   children: <Widget>[
                     _buildRanking(context, model.teams),
                     LineWidget(indent: 0),
-                    _buildNewest(context, model.isLoadingNews, model.news, onRefresh: () async{
+                    _buildNewest(context, model.isLoadingNews, model.news,
+                        onRefresh: () async {
                       await model.getSportNews();
                       _newsController.refreshCompleted();
                     }),
@@ -478,9 +471,10 @@ class SocialPage extends StatelessWidget {
                       onJoin: (shareId, code) =>
                           model.joinMatchByCode(shareId, code),
                       onRefresh: () async {
-                        await model.getMatchShare(1);
+                        await model.getMatchShares(1);
                         _recruitController.refreshCompleted();
                       },
+                      onSubmitCode: (code) => model.getMatchShareByCode(code),
                     )
                   ],
                 ),

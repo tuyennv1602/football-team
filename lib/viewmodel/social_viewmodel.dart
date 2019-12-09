@@ -37,7 +37,7 @@ class SocialViewModel extends BaseViewModel {
     return Future.value(resp != null);
   }
 
-  Future<bool> getMatchShare(int page) async {
+  Future<bool> getMatchShares(int page) async {
     var resp = await _api.getMatchShares(page);
     if (resp.isSuccess && resp.matchShares != null) {
       this.matchShares = resp.matchShares;
@@ -55,6 +55,16 @@ class SocialViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(
           'Yêu cầu tham gia trận đấu đã được gửi. Vui lòng chờ xác nhận từ đội bóng',
           isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  Future<void> getMatchShareByCode(String code) async {
+    UIHelper.showProgressDialog;
+    var resp = await _api.getMatchSharesByCode(code);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

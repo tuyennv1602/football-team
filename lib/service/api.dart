@@ -790,4 +790,13 @@ class Api {
       return RequestJoinResponse.error(e.message);
     }
   }
+
+  Future<MatchShareResponse> getMatchSharesByCode(String code) async {
+    try {
+      var resp = await _api.getApi('match/code?code=$code');
+      return MatchShareResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MatchShareResponse.error(e.message);
+    }
+  }
 }
