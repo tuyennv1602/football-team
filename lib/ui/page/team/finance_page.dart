@@ -17,11 +17,13 @@ import 'package:myfootball/ui/widget/input_price_widget.dart';
 import 'package:myfootball/ui/widget/input_text_widget.dart';
 import 'package:myfootball/ui/widget/item_transaction.dart';
 import 'package:myfootball/ui/widget/loading.dart';
+import 'package:myfootball/ui/widget/refresh_loading.dart';
 import 'package:myfootball/ui/widget/select_date.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/finance_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:unicorndial/unicorndial.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
@@ -30,6 +32,8 @@ class FinancePage extends StatelessWidget {
   final _formTransactionKey = GlobalKey<FormState>();
   final _formNotifyKey = GlobalKey<FormState>();
   FinanceViewModel _viewModel;
+  RefreshController _transactionController = RefreshController();
+
 
   bool validateAndSaveNotification() {
     final form = _formNotifyKey.currentState;
@@ -170,65 +174,69 @@ class FinancePage extends StatelessWidget {
       backgroundColor: PRIMARY,
       resizeToAvoidBottomPadding: false,
       floatingActionButton: isManager
-          ? UnicornDialer(
-              parentButtonBackground: PRIMARY,
-              orientation: UnicornOrientation.VERTICAL,
-              hasBackground: false,
-              parentButton: Icon(Icons.add),
-              hasNotch: true,
-              childButtons: [
-                UnicornButton(
-                  labelText: 'Tạo thông báo',
-                  hasLabel: true,
-                  labelBackgroundColor: Colors.redAccent,
-                  labelColor: Colors.white,
-                  currentButton: FloatingActionButton(
-                    heroTag: 'a',
-                    backgroundColor: Colors.redAccent,
-                    mini: true,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        Images.FUND_NOTIFY,
-                        color: Colors.white,
+          ? SizedBox(
+              width: UIHelper.size(65),
+              height: UIHelper.size(65),
+              child: UnicornDialer(
+                parentButtonBackground: PRIMARY,
+                orientation: UnicornOrientation.VERTICAL,
+                hasBackground: false,
+                parentButton: Icon(Icons.add),
+                hasNotch: true,
+                childButtons: [
+                  UnicornButton(
+                    labelText: 'Tạo thông báo',
+                    hasLabel: true,
+                    labelBackgroundColor: Colors.redAccent,
+                    labelColor: Colors.white,
+                    currentButton: FloatingActionButton(
+                      heroTag: 'a',
+                      backgroundColor: Colors.redAccent,
+                      mini: true,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          Images.FUND_NOTIFY,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () => _createFundNotification(
+                        context,
+                        onSubmit: (title, price, expiredDate) => _viewModel
+                            .createFundNotify(title, price, expiredDate),
                       ),
                     ),
-                    onPressed: () => _createFundNotification(
-                      context,
-                      onSubmit: (title, price, expiredDate) => _viewModel
-                          .createFundNotify(title, price, expiredDate),
-                    ),
                   ),
-                ),
-                UnicornButton(
-                  labelText: 'Tạo giao dịch',
-                  hasLabel: true,
-                  labelBackgroundColor: Colors.amber,
-                  labelColor: Colors.white,
-                  currentButton: FloatingActionButton(
-                    heroTag: 'b',
-                    backgroundColor: Colors.amber,
-                    mini: true,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        Images.TRANSACTIONS,
-                        color: Colors.white,
+                  UnicornButton(
+                    labelText: 'Tạo giao dịch',
+                    hasLabel: true,
+                    labelBackgroundColor: Colors.amber,
+                    labelColor: Colors.white,
+                    currentButton: FloatingActionButton(
+                      heroTag: 'b',
+                      backgroundColor: Colors.amber,
+                      mini: true,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          Images.TRANSACTIONS,
+                          color: Colors.white,
+                        ),
                       ),
+                      onPressed: () => _createTransaction(context,
+                          onSubmit: (price, type, title) =>
+                              _viewModel.createExchange(price, type, title)),
                     ),
-                    onPressed: () => _createTransaction(context,
-                        onSubmit: (price, type, title) =>
-                            _viewModel.createExchange(price, type, title)),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             )
           : SizedBox(),
       body: BaseWidget<FinanceViewModel>(
         model: FinanceViewModel(api: Provider.of(context), teamId: team.id),
         onModelReady: (model) {
           _viewModel = model;
-          model.getTransactions();
+          model.getTransactions(false);
         },
         builder: (c, model, child) => Stack(
           children: <Widget>[
@@ -292,7 +300,7 @@ class FinancePage extends StatelessWidget {
                 },
                 child: Center(
                   child: Text(
-                    model.getCurrentMonth,
+                    'Th ${model.getCurrentMonth}',
                     style: textStyleTitle(),
                   ),
                 ),
@@ -318,17 +326,27 @@ class FinancePage extends StatelessWidget {
                           ? LoadingWidget()
                           : model.transactions.length == 0
                               ? EmptyWidget(message: 'Chưa có giao dịch nào')
-                              : ListView.separated(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: UIHelper.padding),
-                                  physics: BouncingScrollPhysics(),
-                                  itemBuilder: (c, index) =>
-                                      ItemTransactionWidget(
-                                        transaction: model.transactions[index],
-                                      ),
-                                  separatorBuilder: (c, index) =>
-                                      UIHelper.verticalIndicator,
-                                  itemCount: model.transactions.length),
+                              : SmartRefresher(
+                                  controller: _transactionController,
+                                  enablePullDown: true,
+                                  header: RefreshLoading(),
+                                  onRefresh: () async {
+                                    await model.getTransactions(true);
+                                    _transactionController.refreshCompleted();
+                                  },
+                                  child: ListView.separated(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: UIHelper.padding),
+                                      physics: BouncingScrollPhysics(),
+                                      itemBuilder: (c, index) =>
+                                          ItemTransactionWidget(
+                                            transaction:
+                                                model.transactions[index],
+                                          ),
+                                      separatorBuilder: (c, index) =>
+                                          UIHelper.verticalIndicator,
+                                      itemCount: model.transactions.length),
+                                ),
                     ),
                     UIHelper.homeButtonSpace
                   ],

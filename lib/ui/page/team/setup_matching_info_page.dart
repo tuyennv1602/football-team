@@ -226,7 +226,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                           'LƯU LẠI',
                           style: textStyleButton(),
                         ),
-                        margin: EdgeInsets.all(UIHelper.size15),
+                        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding, vertical: UIHelper.size5),
                         onTap: () => model.saveMatchingInfo(_team.id),
                       ),
                     ],
@@ -234,7 +234,8 @@ class SetupMatchingInfoPage extends StatelessWidget {
                 },
               ),
             ),
-          )
+          ),
+          UIHelper.homeButtonSpace
         ],
       ),
     );

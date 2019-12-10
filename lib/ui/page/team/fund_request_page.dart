@@ -10,6 +10,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/loading.dart';
@@ -24,44 +25,34 @@ class FundRequestPage extends StatelessWidget {
   const FundRequestPage({Key key, this.fund}) : super(key: key);
 
   Widget _buildItemRequest(int index, FundMember member, {Function onTap}) =>
-      Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: InkWell(
-          onTap: () => onTap(member),
-          child: Padding(
-            padding: EdgeInsets.all(UIHelper.padding),
-            child: Row(
-              children: <Widget>[
-                ImageWidget(
-                  source: member.avatar,
-                  placeHolder: Images.DEFAULT_AVATAR,
-                  size: UIHelper.size40,
-                  radius: UIHelper.size20,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: UIHelper.padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        member.name,
-                        style: textStyleMediumTitle(),
-                      ),
-                      UIHelper.verticalSpaceSmall,
-                      StatusIndicator(
-                        statusName: member.getStatusName,
-                        status: member.getStatus,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+      BorderItemWidget(
+        onTap: () => onTap(member),
+        child: Row(
+          children: <Widget>[
+            ImageWidget(
+              source: member.avatar,
+              placeHolder: Images.DEFAULT_AVATAR,
+              size: UIHelper.size40,
+              radius: UIHelper.size20,
             ),
-          ),
+            Padding(
+              padding: EdgeInsets.only(left: UIHelper.padding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    member.name,
+                    style: textStyleMediumTitle(),
+                  ),
+                  UIHelper.verticalSpaceSmall,
+                  StatusIndicator(
+                    statusName: member.getStatusName,
+                    status: member.getStatus,
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       );
 

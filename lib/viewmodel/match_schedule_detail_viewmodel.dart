@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_schedule.dart';
 import 'package:myfootball/model/member.dart';
-import 'package:myfootball/model/response/member_resp.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
@@ -39,7 +38,7 @@ class MatchScheduleDetailViewModel extends BaseViewModel {
     var resp = await _api.createCode(matchSchedule.matchId, teamId);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
-      this.matchSchedule.requestCode = resp.code;
+      this.matchSchedule.getMyTeam.code = resp.code;
       notifyListeners();
       return resp.code;
     } else {

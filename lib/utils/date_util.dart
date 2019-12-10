@@ -42,15 +42,14 @@ class DateUtil {
     return null;
   }
 
-  static String getDateFromTimestamp(int timestamp) {
-    return DateFormat('dd/MM/yyyy')
-        .format(DateTime.fromMillisecondsSinceEpoch(timestamp));
-  }
+  static DateTime fromTimeStamp(int timestamp) =>
+      DateTime.fromMillisecondsSinceEpoch(timestamp);
 
-  static String getTimeAgo(int timestamp) {
-    return timeago.format(new DateTime.fromMillisecondsSinceEpoch(timestamp),
-        locale: 'vi');
-  }
+  static String getDateFromTimestamp(int timestamp) =>
+      DateFormat('dd/MM/yyyy').format(fromTimeStamp(timestamp));
+
+  static String getTimeAgo(int timestamp) =>
+      timeago.format(fromTimeStamp(timestamp), locale: 'vi');
 
   static String getTimeStringFromDouble(double value) {
     if (value < 0) return null;
@@ -70,18 +69,15 @@ class DateUtil {
     return [int.parse(hourValue), int.parse(minuteString)];
   }
 
-  static int getDateTimeStamp(DateTime dateTime) {
-    return DateTime(dateTime.year, dateTime.month, dateTime.day)
-        .millisecondsSinceEpoch;
-  }
+  static int getDateTimeStamp(DateTime dateTime) =>
+      DateTime(dateTime.year, dateTime.month, dateTime.day)
+          .millisecondsSinceEpoch;
 
-  static String getMinuteString(double decimalValue) {
-    return '${(decimalValue * 60).toInt()}'.padLeft(2, '0');
-  }
+  static String getMinuteString(double decimalValue) =>
+      '${(decimalValue * 60).toInt()}'.padLeft(2, '0');
 
-  static String getHourString(int flooredValue) {
-    return '${flooredValue % 24}'.padLeft(2, '0');
-  }
+  static String getHourString(int flooredValue) =>
+      '${flooredValue % 24}'.padLeft(2, '0');
 
   static DateTime getDateMatching(int dayOfWeek) {
     DateTime date = DateTime.now();
@@ -95,31 +91,26 @@ class DateUtil {
     }
   }
 
-  static Duration getDiffTime(double startTime, DateTime playDate) {
+  static Duration getDiffTime(double time, DateTime playDate) {
     DateTime _now = DateTime.now();
-    List<int> _time = getTimeFromDouble(startTime);
+    List<int> _time = getTimeFromDouble(time);
     if (_time == null) return null;
     DateTime _timeSlot = DateTime(
         playDate.year, playDate.month, playDate.day, _time[0], _time[1]);
     return _timeSlot.difference(_now);
   }
 
-  static bool isAbleBooking(double startTime, DateTime playDate) {
-    return getDiffTime(startTime, playDate).inMinutes > 0;
-  }
+  static bool isAbleBooking(double startTime, DateTime playDate) =>
+      getDiffTime(startTime, playDate).inMinutes > 0;
 
-  static bool isOverTimeCancel(double startTime, int playDate) {
-    return getDiffTime(startTime, DateTime.fromMillisecondsSinceEpoch(playDate))
-            .inDays <
-        1;
-  }
+  static bool isOverTimeCancel(double startTime, int playDate) =>
+      getDiffTime(startTime, fromTimeStamp(playDate)).inDays < 1;
 
-  static bool isExpired(int expireTime) {
-    return DateTime.fromMillisecondsSinceEpoch(expireTime)
-            .difference(DateTime.now())
-            .inDays <
-        0;
-  }
+  static bool isAbleConfirm(int createTime) =>
+      DateTime.now().difference(fromTimeStamp(createTime)).inDays < 1;
+
+  static bool isExpired(int expireTime) =>
+      fromTimeStamp(expireTime).difference(DateTime.now()).inDays < 0;
 
   static String formatMMSS(int seconds) {
     seconds = (seconds % 3600).truncate();
@@ -131,7 +122,6 @@ class DateUtil {
     return "$minutesStr:$secondsStr";
   }
 
-  DateTime parseDateRss(String date) {
-    return DateFormat('EEE, dd MMM yyyy hh:mm:ss zzz').parse(date);
-  }
+  DateTime parseDateRss(String date) =>
+      DateFormat('EEE, dd MMM yyyy hh:mm:ss zzz').parse(date);
 }

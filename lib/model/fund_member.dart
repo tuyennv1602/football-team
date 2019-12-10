@@ -21,6 +21,4 @@ class FundMember extends User {
     if (status == 0) return Status.NEW;
     return Status.DONE;
   }
-
-  bool get isActive => status == 4;
 }

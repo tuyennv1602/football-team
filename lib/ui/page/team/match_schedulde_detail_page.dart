@@ -12,6 +12,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/item_member.dart';
@@ -92,7 +93,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                 rightContent: AppBarButtonWidget(
                   imageName: Images.SHARE_2,
                   onTap: () async {
-                    if (matchSchedule.requestCode == null) {
+                    if (matchSchedule.getMyTeam.code == null) {
                       if (team != null && team.hasManager(userId)) {
                         var code =
                             await model.createCode(matchSchedule.getMyTeam.id);
@@ -114,7 +115,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: UIHelper.size(50)),
+                      margin: EdgeInsets.only(top: UIHelper.size40),
                       child: BorderBackground(
                         child: Padding(
                           padding: EdgeInsets.only(top: UIHelper.size50),
@@ -129,7 +130,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                         arguments: matchSchedule.groundId),
                               ),
                               team.hasManager(userId) &&
-                                      matchSchedule.requestCode != null
+                                      matchSchedule.getMyTeam.code != null
                                   ? ItemOptionWidget(
                                       Images.MEMBER_MANAGE,
                                       'Yêu cầu tham gia trận đấu',
@@ -139,17 +140,16 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                               arguments: matchSchedule.matchId),
                                     )
                                   : SizedBox(),
-                              LineWidget(),
-                              Align(
+                              Container(
+                                color: Colors.white,
+                                width: double.infinity,
                                 alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: UIHelper.padding,
-                                      vertical: UIHelper.size10),
-                                  child: Text(
-                                    'Danh sách đăng ký thi đấu',
-                                    style: textStyleSemiBold(),
-                                  ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: UIHelper.padding,
+                                    vertical: UIHelper.size5),
+                                child: Text(
+                                  'Danh sách đăng ký thi đấu',
+                                  style: textStyleSemiBold(),
                                 ),
                               ),
                               Expanded(
@@ -163,7 +163,6 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                                 matchSchedule.getMyTeamName,
                                                 matchSchedule.getOpponentName
                                               ],
-                                              height: UIHelper.size35,
                                             ),
                                             Expanded(
                                               child: TabBarView(children: [
@@ -185,13 +184,11 @@ class MatchScheduleDetailPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: UIHelper.size(100),
+                      height: UIHelper.size(90),
                       margin: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-                      child: Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(UIHelper.radius),
-                        ),
+                      child: BorderItemWidget(
+                        padding: EdgeInsets.zero,
+                        margin: EdgeInsets.zero,
                         child: Row(
                           children: <Widget>[
                             Expanded(

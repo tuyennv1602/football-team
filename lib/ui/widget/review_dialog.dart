@@ -101,6 +101,7 @@ class ReviewDialog extends StatelessWidget {
                                         maxLength: 500,
                                         inputType: TextInputType.text,
                                         inputAction: TextInputAction.done,
+                                        focusedColor: Colors.white,
                                         labelText: 'Viết nhận xét',
                                         textStyle: textStyleInput(
                                             color: Colors.white),

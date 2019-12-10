@@ -15,6 +15,7 @@ class SocialViewModel extends BaseViewModel {
   List<MatchShare> matchShares = [];
   bool isLoadingNews = true;
   bool isLoadingMatch = true;
+  bool isMatchByCode = false;
 
   SocialViewModel({@required Api api}) : _api = api;
 
@@ -38,6 +39,7 @@ class SocialViewModel extends BaseViewModel {
   }
 
   Future<bool> getMatchShares(int page) async {
+    this.isMatchByCode = false;
     var resp = await _api.getMatchShares(page);
     if (resp.isSuccess && resp.matchShares != null) {
       this.matchShares = resp.matchShares;
@@ -60,11 +62,18 @@ class SocialViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> getMatchShareByCode(String code) async {
+  Future<void> getMatchSharesByCode(String code) async {
     UIHelper.showProgressDialog;
     var resp = await _api.getMatchSharesByCode(code);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
+      if (resp.matchShares == null) {
+        UIHelper.showSimpleDialog('Mã trận đấu không tồn tại');
+      } else {
+        this.isMatchByCode = true;
+        this.matchShares = resp.matchShares;
+        notifyListeners();
+      }
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

@@ -21,15 +21,18 @@ import 'package:myfootball/ui/widget/input_text_widget.dart';
 import 'package:myfootball/ui/widget/item_match_schedule.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
+import 'package:myfootball/ui/widget/refresh_loading.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/match_schedule_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // ignore: must_be_immutable
 class MatchSchedulePage extends StatelessWidget {
   final _formInvite = GlobalKey<FormState>();
   Team team;
+  final RefreshController _matchController = RefreshController();
 
   bool validateAndSave() {
     final form = _formInvite.currentState;
@@ -225,19 +228,28 @@ class MatchSchedulePage extends StatelessWidget {
               child: BaseWidget<MatchScheduleViewModel>(
                 model: MatchScheduleViewModel(
                     api: Provider.of(context), teamId: team.id),
-                onModelReady: (model) => model.getMatchSchedules(team.id),
+                onModelReady: (model) => model.getMatchSchedules(1, false),
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
                     : model.matchSchedules.length == 0
                         ? EmptyWidget(message: 'Chưa có lịch thi đấu')
-                        : ListView.separated(
-                            padding: EdgeInsets.symmetric(
-                                vertical: UIHelper.padding),
-                            itemBuilder: (c, index) => _buildItemSchedule(
-                                context, isCaptain, index, model),
-                            separatorBuilder: (c, index) =>
-                                UIHelper.verticalIndicator,
-                            itemCount: model.matchSchedules.length),
+                        : SmartRefresher(
+                            controller: _matchController,
+                            enablePullDown: true,
+                            header: RefreshLoading(),
+                            onRefresh: () async {
+                              await model.getMatchSchedules(1, true);
+                              _matchController.refreshCompleted();
+                            },
+                            child: ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: UIHelper.padding),
+                                itemBuilder: (c, index) => _buildItemSchedule(
+                                    context, isCaptain, index, model),
+                                separatorBuilder: (c, index) =>
+                                    UIHelper.verticalIndicator,
+                                itemCount: model.matchSchedules.length),
+                          ),
               ),
             ),
           ),

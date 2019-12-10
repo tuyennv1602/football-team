@@ -9,6 +9,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/loading.dart';
@@ -43,51 +44,41 @@ class TeamFundPage extends StatelessWidget {
 
   Widget _buildItemFund(BuildContext context, Fund fund,
           {Function onSendRequest, Function onDetail}) =>
-      Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
+      BorderItemWidget(
+        onTap: () => fund.status == 1
+            ? onDetail(fund)
+            : _showOptions(
+          context,
+          onSendRequest: () => onSendRequest(fund.id),
+          onDetail: () => onDetail(fund),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: InkWell(
-          onTap: () => fund.status == 1
-              ? onDetail(fund)
-              : _showOptions(
-                  context,
-                  onSendRequest: () => onSendRequest(fund.id),
-                  onDetail: () => onDetail(fund),
-                ),
-          child: Padding(
-            padding: EdgeInsets.all(UIHelper.padding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(bottom: 3),
+              child: Text(
+                fund.title,
+                style: textStyleMediumTitle(),
+              ),
+            ),
+            Text(
+              'Số tiền: ${fund.getPrice}',
+              style: textStyleRegular(),
+            ),
+            Row(
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 3),
+                Expanded(
                   child: Text(
-                    fund.title,
-                    style: textStyleMediumTitle(),
+                    'Hạn thu: ${fund.getExpiredDate}',
+                    style: textStyleRegular(),
                   ),
                 ),
-                Text(
-                  'Số tiền: ${fund.getPrice}',
-                  style: textStyleRegular(),
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Hạn thu: ${fund.getExpiredDate}',
-                        style: textStyleRegular(),
-                      ),
-                    ),
-                    StatusIndicator(
-                        status: fund.getStatus, statusName: fund.getStatusName),
-                  ],
-                )
+                StatusIndicator(
+                    status: fund.getStatus, statusName: fund.getStatusName),
               ],
-            ),
-          ),
+            )
+          ],
         ),
       );
 

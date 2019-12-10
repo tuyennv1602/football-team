@@ -38,9 +38,8 @@ class ButtonWidget extends StatelessWidget {
         margin: this.margin ?? EdgeInsets.zero,
         child: RaisedButton(
           shape: RoundedRectangleBorder(
-            borderRadius:
-                borderRadius ?? BorderRadius.circular(UIHelper.size10),
-          ),
+              borderRadius:
+                  borderRadius ?? BorderRadius.circular(UIHelper.size10)),
           elevation: elevation,
           color: backgroundColor ?? PRIMARY,
           onPressed: onTap,

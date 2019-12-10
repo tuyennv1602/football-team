@@ -8,6 +8,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
@@ -22,60 +23,50 @@ import 'package:provider/provider.dart';
 class RequestMemberPage extends StatelessWidget {
   Widget _buildItemRequest(BuildContext context, TeamRequest teamRequest,
           {Function onAccept, Function onReject}) =>
-      Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
+      BorderItemWidget(
+        onTap: () => _showRequestOptions(
+          context,
+          onAccept: onAccept,
+          onReject: onReject,
+          onDetail: () => NavigationService.instance
+              .navigateTo(USER_COMMENT, arguments: teamRequest.userId),
         ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: InkWell(
-          onTap: () => _showRequestOptions(
-            context,
-            onAccept: onAccept,
-            onReject: onReject,
-            onDetail: () => NavigationService.instance
-                .navigateTo(USER_COMMENT, arguments: teamRequest.userId),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(UIHelper.padding),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Hero(
-                  tag: 'member - ${teamRequest.userId}',
-                  child: ImageWidget(
-                      source: teamRequest.avatar,
-                      placeHolder: Images.DEFAULT_AVATAR),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: UIHelper.padding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          teamRequest.name ?? teamRequest.username,
-                          style: textStyleMediumTitle(),
-                        ),
-                        Text(
-                          'Giới thiệu: ${teamRequest.content}',
-                          style: textStyleRegular(),
-                        ),
-                        Row(
-                            children: teamRequest.getPositions
-                                .map((pos) => ItemPosition(position: pos))
-                                .toList()),
-                        Text(
-                          'Ngày gửi: ${teamRequest.getCreateDate}',
-                          style: textStyleRegularBody(color: Colors.grey),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Hero(
+              tag: 'member - ${teamRequest.userId}',
+              child: ImageWidget(
+                  source: teamRequest.avatar,
+                  placeHolder: Images.DEFAULT_AVATAR),
             ),
-          ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: UIHelper.padding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      teamRequest.name ?? teamRequest.username,
+                      style: textStyleMediumTitle(),
+                    ),
+                    Text(
+                      'Giới thiệu: ${teamRequest.content}',
+                      style: textStyleRegular(),
+                    ),
+                    Row(
+                        children: teamRequest.getPositions
+                            .map((pos) => ItemPosition(position: pos))
+                            .toList()),
+                    Text(
+                      'Ngày gửi: ${teamRequest.getCreateDate}',
+                      style: textStyleRegularBody(color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       );
 

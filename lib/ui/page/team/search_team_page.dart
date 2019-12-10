@@ -8,6 +8,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
@@ -47,145 +48,132 @@ class SearchTeamPage extends StatelessWidget {
 
   Widget _buildItemTeam(BuildContext context, Team team,
           {Function onSubmitRequest}) =>
-      Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: InkWell(
-          onTap: () {
-            if (type == SEARCH_TYPE.COMPARE_TEAM) {
-              NavigationService.instance
-                  .navigateTo(COMPARE_TEAM, arguments: team);
-            } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
-              _positions = null;
-              _showOptions(
-                context,
-                onDetail: () => NavigationService.instance
-                    .navigateTo(TEAM_DETAIL, arguments: team),
-                onRequest: () =>
-                    _showRequestForm(context, team, onSubmit: onSubmitRequest),
-              );
-            } else if (type == SEARCH_TYPE.TEAM_DETAIL) {
-              NavigationService.instance
-                  .navigateTo(TEAM_DETAIL, arguments: team);
-            } else {
-              Navigator.of(context).pop(team);
-            }
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(UIHelper.padding),
-                child: Hero(
-                  tag: team.id,
-                  child: ImageWidget(
-                    source: team.logo,
-                    placeHolder: Images.DEFAULT_LOGO,
-                  ),
+      BorderItemWidget(
+        onTap: () {
+          if (type == SEARCH_TYPE.COMPARE_TEAM) {
+            NavigationService.instance
+                .navigateTo(COMPARE_TEAM, arguments: team);
+          } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
+            _positions = null;
+            _showOptions(
+              context,
+              onDetail: () => NavigationService.instance
+                  .navigateTo(TEAM_DETAIL, arguments: team),
+              onRequest: () =>
+                  _showRequestForm(context, team, onSubmit: onSubmitRequest),
+            );
+          } else if (type == SEARCH_TYPE.TEAM_DETAIL) {
+            NavigationService.instance.navigateTo(TEAM_DETAIL, arguments: team);
+          } else {
+            Navigator.of(context).pop(team);
+          }
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: UIHelper.padding),
+              child: Hero(
+                tag: 'team-${team.id}',
+                child: ImageWidget(
+                  source: team.logo,
+                  placeHolder: Images.DEFAULT_LOGO,
                 ),
               ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(
-                      0, UIHelper.padding, UIHelper.padding, UIHelper.padding),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(UIHelper.size15),
-                      bottomRight: Radius.circular(UIHelper.size15),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        team.name,
-                        style: textStyleSemiBold(),
-                      ),
-                      UIHelper.verticalSpaceSmall,
-                      Text(
-                        team.bio,
-                        maxLines: 2,
-                        overflow: TextOverflow.fade,
-                        style: textStyleRegularBody(color: Colors.black54),
-                      ),
-                      UIHelper.verticalSpaceSmall,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  Images.MEMBER,
-                                  width: UIHelper.size15,
-                                  height: UIHelper.size15,
-                                  color: Colors.green,
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: UIHelper.size5),
-                                  child: Text(
-                                    team.countMember.toString(),
-                                    style:
-                                        textStyleRegular(color: Colors.black87),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  Images.RANK,
-                                  width: UIHelper.size(13),
-                                  height: UIHelper.size(13),
-                                  color: Colors.deepPurpleAccent,
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: UIHelper.size5),
-                                  child: Text(
-                                    team.rank.toString(),
-                                    style:
-                                        textStyleRegular(color: Colors.black87),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                  size: UIHelper.size20,
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: UIHelper.size5),
-                                  child: Text(
-                                    team.rating.toStringAsFixed(1),
-                                    style:
-                                        textStyleRegular(color: Colors.black87),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    ],
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(UIHelper.size15),
+                    bottomRight: Radius.circular(UIHelper.size15),
                   ),
                 ),
-              )
-            ],
-          ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      team.name,
+                      style: textStyleSemiBold(),
+                    ),
+                    UIHelper.verticalSpaceSmall,
+                    Text(
+                      team.bio,
+                      maxLines: 2,
+                      overflow: TextOverflow.fade,
+                      style: textStyleRegularBody(color: Colors.black54),
+                    ),
+                    UIHelper.verticalSpaceSmall,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                Images.MEMBER,
+                                width: UIHelper.size15,
+                                height: UIHelper.size15,
+                                color: Colors.green,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: UIHelper.size5),
+                                child: Text(
+                                  team.countMember.toString(),
+                                  style:
+                                      textStyleRegular(color: Colors.black87),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                Images.RANK,
+                                width: UIHelper.size(13),
+                                height: UIHelper.size(13),
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: UIHelper.size5),
+                                child: Text(
+                                  team.rank.toString(),
+                                  style:
+                                      textStyleRegular(color: Colors.black87),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: UIHelper.size20,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: UIHelper.size5),
+                                child: Text(
+                                  team.rating.toStringAsFixed(1),
+                                  style:
+                                      textStyleRegular(color: Colors.black87),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
       );
 
@@ -301,8 +289,8 @@ class SearchTeamPage extends StatelessWidget {
                                 ? EmptyWidget(message: 'Không tìm thấy kết quả')
                                 : ListView.separated(
                                     physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.only(
-                                        bottom: UIHelper.padding),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: UIHelper.padding),
                                     itemCount: model.teams.length,
                                     separatorBuilder: (c, index) =>
                                         UIHelper.verticalIndicator,

@@ -10,8 +10,8 @@ class MatchHistoryViewModel extends BaseViewModel {
 
   MatchHistoryViewModel({@required Api api}) : _api = api;
 
-  Future<void> getHistories(int teamId, int page) async {
-    setBusy(true);
+  Future<void> getHistories(int teamId, int page, bool isRefresh) async {
+    setBusy(!isRefresh);
     var resp = await _api.getHistories(teamId, page);
     if (resp.isSuccess) {
       this.matchHistories = resp.matchHistories;

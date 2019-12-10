@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';
@@ -48,9 +50,11 @@ class Fund {
 
   String get getPrice => StringUtil.formatCurrency(price);
 
-  String get getExpiredDate => DateUtil.getDateFromTimestamp(expireDate);
+  String get getExpiredDate => expireDate != null
+      ? DateUtil.getDateFromTimestamp(expireDate)
+      : 'Không xác định';
 
-  bool get isExpired => DateUtil.isExpired(expireDate);
+  bool get isExpired => expireDate != null && DateUtil.isExpired(expireDate);
 
   String get getStatusName {
     if (status == 0) {

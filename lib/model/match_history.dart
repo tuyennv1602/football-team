@@ -14,6 +14,7 @@ class MatchHistory extends MatchSchedule {
   double receiveGroupPoint;
   bool isConfirmed;
   int countConfirmed;
+  int countJoined;
 
   MatchHistory(
       {this.id,
@@ -24,7 +25,8 @@ class MatchHistory extends MatchSchedule {
       this.receiveGroupScore,
       this.receiveGroupPoint,
       this.countConfirmed,
-      this.isConfirmed});
+      this.isConfirmed,
+      this.countJoined});
 
   MatchHistory.fromJson(int teamId, Map<String, dynamic> json)
       : super.fromJson(teamId, json) {
@@ -36,7 +38,8 @@ class MatchHistory extends MatchSchedule {
     receiveGroupScore = json['receive_group_score'];
     receiveGroupPoint = json['receive_group_point'];
     isConfirmed = json['is_confirmed'];
-    countConfirmed = json['count_confirm'];
+    countConfirmed = json['count_confirmed'];
+    countJoined = json['count_joined'];
   }
 
   String get getPlayTime => '${DateUtil.getDateFromTimestamp(playDate)}';
@@ -60,27 +63,40 @@ class MatchHistory extends MatchSchedule {
 
   bool get isUpdated => sendGroupScore != null && receiveGroupScore != null;
 
+  bool get isAbleConfirm => DateUtil.isAbleConfirm(createDate);
+
   String get getStatusName {
-    if (!isUpdated) {
-      return 'Chưa cập nhật';
+    if (isUpdated && isConfirmed) {
+      return 'Đã xác nhận';
+    } else {
+      if (!isAbleConfirm) {
+        return 'Không được cập nhật';
+      } else if (!isUpdated) {
+        return 'Chưa cập nhật';
+      } else {
+        return 'Chờ xác nhận';
+      }
     }
-    if (!isConfirmed) {
-      return 'Chờ xác nhận';
-    }
-    return 'Đã xác nhận';
   }
 
   Status get getStatus {
-    if (!isUpdated) {
-      return Status.NEW;
+    if (isUpdated && isConfirmed) {
+      return Status.DONE;
+    } else {
+      if (!isAbleConfirm) {
+        return Status.FAILED;
+      } else if (!isUpdated) {
+        return Status.NEW;
+      } else {
+        return Status.PENDING;
+      }
     }
-    if (!isConfirmed) {
-      return Status.PENDING;
-    }
-    return Status.DONE;
   }
 
-  double get getRatePercent => 0.4;
+  String get getCurrentConfirm => '$countConfirmed/$countJoined';
+
+  double get getRatePercent =>
+      countJoined > 0 ? countConfirmed / countJoined : 0;
 
   Color get getRateColor {
     if (getRatePercent >= 0.3 && getRatePercent < 0.5) return Colors.green;

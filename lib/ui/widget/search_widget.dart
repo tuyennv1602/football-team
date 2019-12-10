@@ -36,9 +36,15 @@ class SearchWidget extends StatelessWidget {
       margin: EdgeInsets.all(UIHelper.padding),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(_kSearchHeight / 2),
-          border: Border.all(width: 0.5, color: Colors.grey)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(_kSearchHeight / 2),
+        boxShadow: [
+          BoxShadow(
+            color: LINE_COLOR,
+            blurRadius: 4,
+          ),
+        ],
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -75,21 +81,19 @@ class SearchWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(_kSearchHeight / 2),
             ),
-            child: ClipRRect(
+            child: InkWell(
               borderRadius: BorderRadius.circular(_kSearchHeight / 2),
-              child: InkWell(
-                onTap: () {
-                  if (length > 0) {
-                    onChangedText('');
-                  }
-                },
-                child: this.isLoading
-                    ? Image.asset('assets/images/ic_loading.gif')
-                    : Icon(
-                        length > 0 ? Icons.close : Icons.search,
-                        color: Colors.grey,
-                      ),
-              ),
+              onTap: () {
+                if (length > 0) {
+                  onChangedText('');
+                }
+              },
+              child: this.isLoading
+                  ? Image.asset('assets/images/ic_loading.gif')
+                  : Icon(
+                      length > 0 ? Icons.close : Icons.search,
+                      color: Colors.grey,
+                    ),
             ),
           )
         ],

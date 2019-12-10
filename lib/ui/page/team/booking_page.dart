@@ -14,6 +14,7 @@ import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/authentication_widget.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
 import 'package:myfootball/ui/widget/select_date.dart';
@@ -61,37 +62,20 @@ class BookingPage extends StatelessWidget {
           )
         ],
       ),
-      onConfirmed: () => _showAuthenticationBottomSheet(
-        context,
-        onSuccess: () =>
-            model.booking(Provider.of<Team>(context).id, timeSlot.id),
-      ),
+      onConfirmed: () =>
+          model.booking(Provider.of<Team>(context).id, timeSlot.id),
     );
   }
 
-  _showAuthenticationBottomSheet(BuildContext context, {Function onSuccess}) =>
-      showModalBottomSheet(
-        context: context,
-        builder: (c) => AuthenticationWidget(onAuthentication: (isSuccess) {
-          if (isSuccess) {
-            Navigator.of(context).pop();
-            onSuccess();
-          }
-        }),
-      );
-
   Widget _buildTicket(BuildContext context, DateTime playDate,
       TimeSlot timeSlot, Function onTap) {
-    return InkWell(
+    return BorderItemWidget(
+      margin: EdgeInsets.zero,
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.all(1),
-        width: UIHelper.size(135),
+        width: UIHelper.size(130),
         height: UIHelper.size(110),
-        padding: EdgeInsets.all(UIHelper.size10),
-        decoration: BoxDecoration(
-            color: GREY_BACKGROUND,
-            borderRadius: BorderRadius.circular(UIHelper.size10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

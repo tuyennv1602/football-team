@@ -23,6 +23,7 @@ class Team {
   List<GroupMatchingInfo> groupMatchingInfo;
   int mp;
   int win;
+  String code;
 
   Team(
       {this.id,
@@ -70,6 +71,7 @@ class Team {
     }
     mp = json['number_match'];
     win = json['number_match_win'];
+    code = json['request_code'];
   }
 
   Map<String, dynamic> toJson() {

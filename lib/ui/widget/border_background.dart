@@ -20,7 +20,7 @@ class BorderBackground extends StatelessWidget {
             topRight: Radius.circular(this.radius ?? UIHelper.radius),
             topLeft: Radius.circular(this.radius ?? UIHelper.radius)),
         child: Container(
-          color: this.backgroundColor ?? Color(0xFFFCFCFC),
+          color: this.backgroundColor ?? GREY_BACKGROUND,
           child: this.child,
         ),
       ),

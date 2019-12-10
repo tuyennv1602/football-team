@@ -14,6 +14,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/search_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -37,7 +38,9 @@ class _SearchGroundState extends State<SearchGroundPage> {
   BitmapDescriptor _groundMarker;
 
   Widget _buildItemGround(BuildContext context, int index, Ground ground) =>
-      InkWell(
+      BorderItemWidget(
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
         onTap: () =>
             NavigationService.instance.navigateTo(BOOKING, arguments: ground),
         child: Hero(
@@ -45,7 +48,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
           child: Stack(
             children: <Widget>[
               ClipRRect(
-                borderRadius: BorderRadius.circular(UIHelper.size15),
+                borderRadius: BorderRadius.circular(UIHelper.padding),
                 child: SizedBox.expand(
                   child: FadeInImage.assetNetwork(
                     placeholder: Images.DEFAULT_GROUND,

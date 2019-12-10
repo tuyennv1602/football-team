@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const Color PRIMARY = Color(0xFF03be31);
 const Color WHITE_OPACITY = Color(0xCCF9F9F9);
 const Color LINE_COLOR = Color(0xFFE0E0E0);
-const Color GREY_BACKGROUND = Color(0xFFF2F3F4);
+const Color GREY_BACKGROUND = Color(0xFFFCFCFC);
 const Color BLACK_TRANSPARENT = Color(0x66000000);
 const Color RED_ERROR = Color(0xFFC01D04);
 const Color GREEN_SUCCESS = Color(0xFF01A028);

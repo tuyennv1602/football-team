@@ -24,7 +24,7 @@ class FinanceViewModel extends BaseViewModel {
   changeMonth(DateTime dateTime) {
     this.currentDate = dateTime;
     notifyListeners();
-    getTransactions();
+    getTransactions(false);
   }
 
   String get getCurrentMonth => DateFormat('MM/yyyy').format(currentDate);
@@ -45,8 +45,8 @@ class FinanceViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> getTransactions() async {
-    setBusy(true);
+  Future<void> getTransactions(bool isRefresh) async {
+    setBusy(!isRefresh);
     var resp = await _api.getTransactionByTeam(teamId, getCurrentMonth);
     if (resp.isSuccess) {
       this.transactions = resp.transactions;

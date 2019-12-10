@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+enum REFRESH_TYPE { HORIZONTAL, VERTICAL }
+
 class RefreshLoading extends StatelessWidget {
   final IconPosition iconPosition;
-  final Widget idleIcon;
+  final REFRESH_TYPE type;
 
   const RefreshLoading(
       {Key key,
       this.iconPosition = IconPosition.top,
-      this.idleIcon = const Icon(Icons.arrow_downward, color: Colors.grey)})
+      this.type = REFRESH_TYPE.VERTICAL})
       : super(key: key);
 
   @override
@@ -25,7 +26,9 @@ class RefreshLoading extends StatelessWidget {
       idleText: '',
       failedIcon: const Icon(Icons.error, color: Colors.red),
       completeIcon: const Icon(Icons.done, color: Colors.green),
-      idleIcon: idleIcon,
+      idleIcon: Icon(
+          type == REFRESH_TYPE.HORIZONTAL ? Icons.arrow_forward : Icons.arrow_downward,
+          color: Colors.grey),
       releaseIcon: const Icon(Icons.refresh, color: Colors.grey),
       refreshingIcon: Image.asset(
         'assets/images/ic_circle_loading.gif',
@@ -35,6 +38,7 @@ class RefreshLoading extends StatelessWidget {
       outerBuilder: (child) {
         return Container(
           width: UIHelper.size50,
+          height: UIHelper.size50,
           child: Center(
             child: child,
           ),

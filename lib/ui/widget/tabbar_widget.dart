@@ -19,7 +19,11 @@ class TabBarWidget extends StatelessWidget {
       height: height ?? UIHelper.size40,
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: LINE_COLOR, width: 0.5))),
+        color: Colors.white,
+        border: Border(
+          bottom: BorderSide(color: LINE_COLOR, width: 0.5),
+        ),
+      ),
       child: TabBar(
         tabs: titles
             .map(

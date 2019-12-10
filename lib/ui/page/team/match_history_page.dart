@@ -10,23 +10,27 @@ import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/input_score_widget.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
+import 'package:myfootball/ui/widget/refresh_loading.dart';
 import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/match_history_viewmodel.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base_widget.dart';
 
 class MatchHistoryPage extends StatelessWidget {
-  void _showSenderOptions(BuildContext context,
+  final RefreshController _matchController = RefreshController();
+
+  _showSenderOptions(BuildContext context,
           {Function onUpdateScore, Function onDetail}) =>
       showModalBottomSheet(
         context: context,
@@ -43,7 +47,7 @@ class MatchHistoryPage extends StatelessWidget {
         ),
       );
 
-  void _showReceiveOptions(BuildContext context,
+  _showReceiveOptions(BuildContext context,
           {Function onConfirmScore, Function onDetail}) =>
       showModalBottomSheet(
         context: context,
@@ -60,7 +64,7 @@ class MatchHistoryPage extends StatelessWidget {
         ),
       );
 
-  void _showUpdateScore(BuildContext context, MatchHistory matchHistory,
+  _showUpdateScore(BuildContext context, MatchHistory matchHistory,
       {Function onSubmit}) {
     String firstScore;
     String secondScore;
@@ -136,169 +140,162 @@ class MatchHistoryPage extends StatelessWidget {
       {Function onSubmit, Function onConfirm}) {
     bool isCaptain =
         Provider.of<Team>(context).managerId == Provider.of<User>(context).id;
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.padding),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-      child: InkWell(
-        onTap: () {
-          if (isCaptain && !matchHistory.isConfirmed) {
-            if (matchHistory.isSender) {
-              _showSenderOptions(context,
-                  onUpdateScore: () => _showUpdateScore(
-                        context,
-                        matchHistory,
-                        onSubmit: (firstScore, secondScore) =>
-                            onSubmit(matchHistory.id, firstScore, secondScore),
-                      ),
-                  onDetail: () => NavigationService.instance.navigateTo(
-                      MATCH_HISTORY_DETAIL,
-                      arguments: matchHistory));
-            } else {
-              _showReceiveOptions(
-                context,
-                onConfirmScore: () {
-                  if (!matchHistory.isUpdated) {
-                    UIHelper.showSimpleDialog(
-                        'Đối tác chưa cập nhật tỉ số. Vui lòng chờ đối tác cập nhật tỉ số!');
-                  } else {
-                    UIHelper.showConfirmDialog(
-                        'Bạn có chắc chắn tỉ số mà ${matchHistory.getOpponentName} đã cập nhật cho trận đấu này là chính xác?',
-                        onConfirmed: () => onConfirm(matchHistory.id));
-                  }
-                },
+    return BorderItemWidget(
+      onTap: () {
+        if (isCaptain &&
+            !matchHistory.isConfirmed &&
+            matchHistory.isAbleConfirm) {
+          if (matchHistory.isSender) {
+            _showSenderOptions(context,
+                onUpdateScore: () => _showUpdateScore(
+                      context,
+                      matchHistory,
+                      onSubmit: (firstScore, secondScore) =>
+                          onSubmit(matchHistory.id, firstScore, secondScore),
+                    ),
                 onDetail: () => NavigationService.instance
-                    .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory),
-              );
-            }
+                    .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory));
           } else {
-            NavigationService.instance
-                .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory);
+            _showReceiveOptions(
+              context,
+              onConfirmScore: () {
+                if (!matchHistory.isUpdated) {
+                  UIHelper.showSimpleDialog(
+                      'Đối tác chưa cập nhật tỉ số. Vui lòng chờ đối tác cập nhật tỉ số!');
+                } else {
+                  UIHelper.showConfirmDialog(
+                      'Bạn có chắc chắn tỉ số mà ${matchHistory.getOpponentName} đã cập nhật cho trận đấu này là chính xác?',
+                      onConfirmed: () => onConfirm(matchHistory.id));
+                }
+              },
+              onDetail: () => NavigationService.instance
+                  .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory),
+            );
           }
-        },
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: UIHelper.padding, horizontal: UIHelper.size10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: UIHelper.size35,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: UIHelper.size10),
-                      child: ImageWidget(
-                        source: matchHistory.getMyTeamLogo,
-                        placeHolder: Images.DEFAULT_LOGO,
-                        size: UIHelper.size35,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        matchHistory.getMyTeamName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textStyleMediumTitle(),
-                      ),
-                    ),
-                    Text(
-                      matchHistory.getMyTeamScore,
-                      style: textStyleBold(
-                          size: 20,
-                          color: matchHistory.isConfirmed
-                              ? Colors.black
-                              : Colors.grey),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                height: UIHelper.size20,
-                padding: EdgeInsets.only(left: UIHelper.size45),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      'VS',
-                      style: textStyleMedium(size: 12, color: Colors.grey),
-                    ),
-                    Expanded(child: LineWidget())
-                  ],
-                ),
-              ),
-              Container(
-                height: UIHelper.size35,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: UIHelper.size10),
-                      child: ImageWidget(
-                        source: matchHistory.getOpponentLogo,
-                        placeHolder: Images.DEFAULT_LOGO,
-                        size: UIHelper.size35,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        matchHistory.getOpponentName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textStyleMediumTitle(),
-                      ),
-                    ),
-                    Text(
-                      matchHistory.getOpponentTeamScore,
-                      style: textStyleBold(
-                          size: 20,
-                          color: matchHistory.isConfirmed
-                              ? Colors.black
-                              : Colors.grey),
-                    )
-                  ],
-                ),
-              ),
-              UIHelper.verticalSpaceMedium,
-              LineWidget(indent: 0),
-              UIHelper.verticalSpaceMedium,
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: StatusIndicator(
-                      statusName: matchHistory.getStatusName,
-                      status: matchHistory.getStatus,
-                    ),
+        } else {
+          NavigationService.instance
+              .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory);
+        }
+      },
+      padding: EdgeInsets.symmetric(
+          vertical: UIHelper.padding, horizontal: UIHelper.size10),
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: UIHelper.size35,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: UIHelper.size10),
+                  child: ImageWidget(
+                    source: matchHistory.getMyTeamLogo,
+                    placeHolder: Images.DEFAULT_LOGO,
+                    size: UIHelper.size35,
                   ),
-                  matchHistory.isConfirmed
-                      ? Text(
-                          matchHistory.getMyTeamPoint.toStringAsFixed(2),
-                          style: textStyleSemiBold(
-                              size: 14,
-                              color: matchHistory.getMyTeamPoint > 0
-                                  ? GREEN_TEXT
-                                  : Colors.red),
-                        )
-                      : SizedBox(),
-                  matchHistory.isConfirmed
-                      ? Padding(
-                          padding: EdgeInsets.only(left: 2),
-                          child: Image.asset(
-                            matchHistory.getMyTeamPoint > 0
-                                ? Images.UP
-                                : Images.DOWN,
-                            width: UIHelper.size(12),
-                            height: UIHelper.size(12),
-                            color: matchHistory.getMyTeamPoint > 0
-                                ? GREEN_TEXT
-                                : Colors.red,
-                          ),
-                        )
-                      : SizedBox(),
-                ],
+                ),
+                Expanded(
+                  child: Text(
+                    matchHistory.getMyTeamName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textStyleMediumTitle(),
+                  ),
+                ),
+                Text(
+                  matchHistory.getMyTeamScore,
+                  style: textStyleBold(
+                      size: 20,
+                      color: matchHistory.isConfirmed
+                          ? Colors.black
+                          : Colors.grey),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: UIHelper.size20,
+            padding: EdgeInsets.only(left: UIHelper.size45),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  'VS',
+                  style: textStyleMedium(size: 12, color: Colors.grey),
+                ),
+                Expanded(child: LineWidget())
+              ],
+            ),
+          ),
+          Container(
+            height: UIHelper.size35,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: UIHelper.size10),
+                  child: ImageWidget(
+                    source: matchHistory.getOpponentLogo,
+                    placeHolder: Images.DEFAULT_LOGO,
+                    size: UIHelper.size35,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    matchHistory.getOpponentName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textStyleMediumTitle(),
+                  ),
+                ),
+                Text(
+                  matchHistory.getOpponentTeamScore,
+                  style: textStyleBold(
+                      size: 20,
+                      color: matchHistory.isConfirmed
+                          ? Colors.black
+                          : Colors.grey),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+            child: LineWidget(indent: 0),
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: StatusIndicator(
+                  statusName: matchHistory.getStatusName,
+                  status: matchHistory.getStatus,
+                ),
               ),
+              matchHistory.isConfirmed
+                  ? Text(
+                      matchHistory.getMyTeamPoint.toStringAsFixed(2),
+                      style: textStyleSemiBold(
+                          size: 14,
+                          color: matchHistory.getMyTeamPoint > 0
+                              ? GREEN_TEXT
+                              : Colors.red),
+                    )
+                  : SizedBox(),
+              matchHistory.isConfirmed
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 2),
+                      child: Image.asset(
+                        matchHistory.getMyTeamPoint > 0
+                            ? Images.UP
+                            : Images.DOWN,
+                        width: UIHelper.size(12),
+                        height: UIHelper.size(12),
+                        color: matchHistory.getMyTeamPoint > 0
+                            ? GREEN_TEXT
+                            : Colors.red,
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
@@ -329,31 +326,41 @@ class MatchHistoryPage extends StatelessWidget {
             child: BorderBackground(
               child: BaseWidget<MatchHistoryViewModel>(
                 model: MatchHistoryViewModel(api: Provider.of(context)),
-                onModelReady: (model) => model.getHistories(_team.id, 1),
+                onModelReady: (model) => model.getHistories(_team.id, 1, false),
                 builder: (c, model, child) => model.busy
                     ? LoadingWidget()
                     : model.matchHistories.length == 0
                         ? EmptyWidget(message: 'Chưa có lịch sử thi đấu')
-                        : ListView.separated(
-                            padding: EdgeInsets.symmetric(
-                                vertical: UIHelper.padding),
-                            itemBuilder: (c, index) => _buildItemHistory(
-                                  context,
-                                  index,
-                                  model.matchHistories[index],
-                                  onSubmit:
-                                      (historyId, firstScore, secondScore) =>
+                        : SmartRefresher(
+                            controller: _matchController,
+                            enablePullDown: true,
+                            header: RefreshLoading(),
+                            onRefresh: () async {
+                              await model.getHistories(_team.id, 1, true);
+                              _matchController.refreshCompleted();
+                            },
+                            child: ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: UIHelper.padding),
+                                itemBuilder: (c, index) => _buildItemHistory(
+                                      context,
+                                      index,
+                                      model.matchHistories[index],
+                                      onSubmit: (historyId, firstScore,
+                                              secondScore) =>
                                           model.updateScore(index, historyId,
                                               firstScore, secondScore),
-                                  onConfirm: (historyId) =>
-                                      model.confirmScore(index, historyId),
-                                ),
-                            separatorBuilder: (c, index) =>
-                                UIHelper.verticalIndicator,
-                            itemCount: model.matchHistories.length),
+                                      onConfirm: (historyId) =>
+                                          model.confirmScore(index, historyId),
+                                    ),
+                                separatorBuilder: (c, index) =>
+                                    UIHelper.verticalIndicator,
+                                itemCount: model.matchHistories.length),
+                          ),
               ),
             ),
           ),
+          UIHelper.homeButtonSpace
         ],
       ),
     );

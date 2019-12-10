@@ -10,8 +10,8 @@ class NotificationViewModel extends BaseViewModel {
 
   NotificationViewModel({@required Api api}) : _api = api;
 
-  Future<NotificationResponse> getNotifications() async {
-    setBusy(true);
+  Future<NotificationResponse> getNotifications(bool isRefresh) async {
+    setBusy(!isRefresh);
     var resp = await _api.getNotifications();
     if (resp.isSuccess) {
       notifications = resp.notifications;

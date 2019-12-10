@@ -34,7 +34,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
-          options: ['Chọn ảnh logo', 'Từ máy ảnh', 'Từ thư viện', 'Huỷ'],
+          options: ['Chọn ảnh đại diện', 'Từ máy ảnh', 'Từ thư viện', 'Huỷ'],
           paddingBottom: 0,
           onClickOption: (index) async {
             if (index == 1) {

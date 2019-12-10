@@ -11,6 +11,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/item_member.dart';
@@ -37,11 +38,16 @@ class MatchHistoryDetailPage extends StatelessWidget {
         ? EmptyWidget(message: 'Chưa có thành viên nào')
         : GridView.builder(
             padding: EdgeInsets.all(UIHelper.padding),
-            itemBuilder: (c, index) => ItemMember(
-                  member: members[index],
-                  isManager: members[index].isManager,
-                  isCaptain: members[index].isCaptain,
-                ),
+            itemBuilder: (c, index) {
+              var _member = members[index];
+              return ItemMember(
+                member: _member,
+                isManager: _member.isManager,
+                isCaptain: _member.isCaptain,
+                onTap: () => NavigationService.instance
+                    .navigateTo(USER_COMMENT, arguments: _member.userId),
+              );
+            },
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.8,
@@ -78,7 +84,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: UIHelper.size(50)),
+                    margin: EdgeInsets.only(top: UIHelper.size40),
                     child: BorderBackground(
                       child: BaseWidget<MatchHistoryDetailViewModel>(
                         model: MatchHistoryDetailViewModel(
@@ -96,34 +102,46 @@ class MatchHistoryDetailPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: UIHelper.size15,
-                                    vertical: UIHelper.size5),
-                                child: matchHistory.isConfirmed
-                                    ? Row(
+                              matchHistory.isConfirmed
+                                  ? Padding(
+                                      padding: EdgeInsets.only(
+                                          left: UIHelper.size15,
+                                          right: UIHelper.size15,
+                                          top: UIHelper.size15,
+                                          bottom: UIHelper.size5),
+                                      child: Row(
                                         children: <Widget>[
-                                          LikeButton(
-                                            size: UIHelper.size30,
-                                            likeCount: model
-                                                .matchHistory.countConfirmed,
-                                            likeBuilder: (bool isLiked) {
-                                              return Icon(
-                                                Icons.check_circle,
-                                                color: isLiked
-                                                    ? PRIMARY
-                                                    : Colors.grey,
-                                                size: UIHelper.size30,
-                                              );
-                                            },
-                                            onTap: (isLiked) {
-                                              if (isLiked) {
-                                                return model
-                                                    .cancelConfirmScore();
-                                              } else {
-                                                return model.confirmScore();
-                                              }
-                                            },
+                                          matchHistory.isAbleConfirm
+                                              ? LikeButton(
+                                                  size: UIHelper.size30,
+                                                  likeBuilder: (bool isLiked) {
+                                                    return Icon(
+                                                      Icons.check_circle,
+                                                      color: isLiked
+                                                          ? PRIMARY
+                                                          : Colors.grey,
+                                                      size: UIHelper.size30,
+                                                    );
+                                                  },
+                                                  onTap: (isLiked) {
+                                                    if (isLiked) {
+                                                      return model
+                                                          .cancelConfirmScore();
+                                                    } else {
+                                                      return model
+                                                          .confirmScore();
+                                                    }
+                                                  },
+                                                )
+                                              : SizedBox(),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: UIHelper.size5),
+                                            child: Text(
+                                              matchHistory.getCurrentConfirm,
+                                              style: textStyleSemiBold(
+                                                  color: Colors.grey),
+                                            ),
                                           ),
                                           Expanded(
                                             child: Padding(
@@ -146,17 +164,13 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                           Text(
                                             '+${model.matchHistory.getBonus.toStringAsFixed(2)}',
                                             style: textStyleSemiBold(
-                                                size: 16,
                                                 color:
                                                     matchHistory.getRateColor),
                                           )
                                         ],
-                                      )
-                                    : StatusIndicator(
-                                        status: matchHistory.getStatus,
-                                        statusName: matchHistory.getStatusName,
                                       ),
-                              ),
+                                    )
+                                  : SizedBox(),
                               ItemOptionWidget(
                                 Images.STADIUM,
                                 matchHistory.groundName,
@@ -165,10 +179,12 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                     .navigateTo(GROUND_DETAIL,
                                         arguments: matchHistory.groundId),
                               ),
-                              Padding(
+                              Container(
+                                color: Colors.white,
+                                width: double.infinity,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: UIHelper.padding,
-                                    vertical: UIHelper.size10),
+                                    vertical: UIHelper.size5),
                                 child: Text(
                                   'Danh sách thi đấu',
                                   style: textStyleSemiBold(),
@@ -185,7 +201,6 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                                 team.name,
                                                 matchHistory.getOpponentName
                                               ],
-                                              height: UIHelper.size35,
                                             ),
                                             Expanded(
                                               child: TabBarView(children: [
@@ -208,13 +223,11 @@ class MatchHistoryDetailPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: UIHelper.size(100),
+                    height: UIHelper.size(90),
                     margin: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(UIHelper.radius),
-                      ),
+                    child: BorderItemWidget(
+                      padding: EdgeInsets.zero,
+                      margin: EdgeInsets.zero,
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -226,6 +239,9 @@ class MatchHistoryDetailPage extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
+                              SizedBox(
+                                height: UIHelper.size20,
+                              ),
                               Text(
                                 '${matchHistory.getMyTeamScore} - ${matchHistory.getOpponentTeamScore}',
                                 textAlign: TextAlign.center,
@@ -235,38 +251,43 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                         ? Colors.black
                                         : Colors.grey),
                               ),
-                              Row(
-                                children: <Widget>[
-                                  matchHistory.isConfirmed
-                                      ? Text(
-                                          matchHistory.getMyTeamPoint
-                                              .toStringAsFixed(2),
-                                          style: textStyleSemiBold(
-                                              size: 14,
+                              SizedBox(
+                                height: UIHelper.size20,
+                                child: matchHistory.isConfirmed
+                                    ? Row(
+                                        children: <Widget>[
+                                          Text(
+                                            matchHistory.getMyTeamPoint
+                                                .toStringAsFixed(2),
+                                            style: textStyleSemiBold(
+                                                size: 14,
+                                                color: matchHistory
+                                                            .getMyTeamPoint >
+                                                        0
+                                                    ? GREEN_TEXT
+                                                    : Colors.red),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 2),
+                                            child: Image.asset(
+                                              matchHistory.getMyTeamPoint > 0
+                                                  ? Images.UP
+                                                  : Images.DOWN,
+                                              width: UIHelper.size(12),
+                                              height: UIHelper.size(12),
                                               color:
                                                   matchHistory.getMyTeamPoint >
                                                           0
                                                       ? GREEN_TEXT
-                                                      : Colors.red),
-                                        )
-                                      : SizedBox(),
-                                  matchHistory.isConfirmed
-                                      ? Padding(
-                                          padding: EdgeInsets.only(left: 2),
-                                          child: Image.asset(
-                                            matchHistory.getMyTeamPoint > 0
-                                                ? Images.UP
-                                                : Images.DOWN,
-                                            width: UIHelper.size(12),
-                                            height: UIHelper.size(12),
-                                            color:
-                                                matchHistory.getMyTeamPoint > 0
-                                                    ? GREEN_TEXT
-                                                    : Colors.red,
+                                                      : Colors.red,
+                                            ),
                                           ),
-                                        )
-                                      : SizedBox(),
-                                ],
+                                        ],
+                                      )
+                                    : StatusIndicator(
+                                        status: matchHistory.getStatus,
+                                        statusName: matchHistory.getStatusName,
+                                      ),
                               ),
                             ],
                           ),

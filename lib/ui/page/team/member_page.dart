@@ -119,8 +119,8 @@ class MemberPage extends StatelessWidget {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         childAspectRatio: 0.8,
-                        crossAxisSpacing: UIHelper.size10,
-                        mainAxisSpacing: UIHelper.size10),
+                        crossAxisSpacing: UIHelper.padding,
+                        mainAxisSpacing: UIHelper.padding),
                   );
                 },
               ),

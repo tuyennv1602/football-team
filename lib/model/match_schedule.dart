@@ -17,7 +17,6 @@ class MatchSchedule {
   bool isJoined;
   int matchId;
   int teamId;
-  String requestCode;
 
   MatchSchedule(
       {this.ratio,
@@ -31,8 +30,7 @@ class MatchSchedule {
       this.groundName,
       this.groundId,
       this.isJoined,
-      this.matchId,
-      this.requestCode});
+      this.matchId});
 
   MatchSchedule.fromJson(int teamId, Map<String, dynamic> json) {
     ratio = json['ratio'];
@@ -52,7 +50,6 @@ class MatchSchedule {
     isJoined = json['is_joined'];
     matchId = json['match_id'];
     this.teamId = teamId;
-    requestCode = json['request_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -107,5 +104,5 @@ class MatchSchedule {
     return '';
   }
 
-  String get getShareCode => 'Nhập mã \"$requestCode\" để tham gia trận đấu của $getMyTeamName';
+  String get getShareCode => 'Nhập mã \"${getMyTeam.code}\" để tham gia trận đấu của $getMyTeamName';
 }

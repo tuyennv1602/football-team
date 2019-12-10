@@ -8,6 +8,7 @@ import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/expandable_text_widget.dart';
@@ -27,77 +28,70 @@ class InviteRequestPage extends StatelessWidget {
   static const TABS = ['Lời mời', 'Đã gửi'];
 
   Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
-      Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: InkWell(
-          onTap: () {
-            if (inviteRequest.status == Constants.INVITE_WAITING &&
-                !inviteRequest.isOverTime) {
-              _showOptions(
-                context,
-                onInviteDetail: () => NavigationService.instance
-                    .navigateTo(INVITE_DETAIL, arguments: inviteRequest),
-                onTeamDetail: () => NavigationService.instance.navigateTo(
-                    TEAM_DETAIL,
-                    arguments: Team(
-                        id: inviteRequest.getId,
-                        name: inviteRequest.getName,
-                        logo: inviteRequest.getLogo)),
-              );
-            } else {
-              NavigationService.instance.navigateTo(TEAM_DETAIL,
-                  arguments: Team(
-                      id: inviteRequest.getId,
-                      name: inviteRequest.getName,
-                      logo: inviteRequest.getLogo));
-            }
-          },
-          child: Padding(
-            padding: EdgeInsets.all(UIHelper.padding),
-            child: Row(
-              children: <Widget>[
-                ImageWidget(
-                  source: inviteRequest.getLogo,
-                  placeHolder: Images.DEFAULT_LOGO,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: UIHelper.padding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      BorderItemWidget(
+        onTap: () {
+          if (inviteRequest.status == Constants.INVITE_WAITING &&
+              !inviteRequest.isOverTime) {
+            _showOptions(
+              context,
+              onInviteDetail: () => NavigationService.instance
+                  .navigateTo(INVITE_DETAIL, arguments: inviteRequest),
+              onTeamDetail: () => NavigationService.instance.navigateTo(
+                TEAM_DETAIL,
+                arguments: Team(
+                    id: inviteRequest.getId,
+                    name: inviteRequest.getName,
+                    logo: inviteRequest.getLogo),
+              ),
+            );
+          } else {
+            NavigationService.instance.navigateTo(
+              TEAM_DETAIL,
+              arguments: Team(
+                  id: inviteRequest.getId,
+                  name: inviteRequest.getName,
+                  logo: inviteRequest.getLogo),
+            );
+          }
+        },
+        child: Row(
+          children: <Widget>[
+            ImageWidget(
+              source: inviteRequest.getLogo,
+              placeHolder: Images.DEFAULT_LOGO,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: UIHelper.padding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 3),
+                      child: Text(
+                        inviteRequest.getName,
+                        style: textStyleMediumTitle(),
+                      ),
+                    ),
+                    ExpandableTextWidget(inviteRequest.title),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 3),
-                          child: Text(
-                            inviteRequest.getName,
-                            style: textStyleMediumTitle(),
-                          ),
+                        Text(
+                          inviteRequest.getCreateTime,
+                          style: textStyleRegularBody(color: Colors.grey),
                         ),
-                        ExpandableTextWidget(inviteRequest.title),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              inviteRequest.getCreateTime,
-                              style: textStyleRegularBody(color: Colors.grey),
-                            ),
-                            StatusIndicator(
-                              statusName: inviteRequest.getStatusName,
-                              status: inviteRequest.getStatus,
-                            )
-                          ],
+                        StatusIndicator(
+                          statusName: inviteRequest.getStatusName,
+                          status: inviteRequest.getStatus,
                         )
                       ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
       );
 
@@ -166,7 +160,7 @@ class InviteRequestPage extends StatelessWidget {
                                           message: 'Chưa có lời mời nào')
                                       : ListView.separated(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size15),
+                                              vertical: UIHelper.padding),
                                           itemBuilder: (c, index) =>
                                               _buildItemRequest(context,
                                                   model.receivedInvites[index]),
@@ -179,7 +173,7 @@ class InviteRequestPage extends StatelessWidget {
                                           message: 'Chưa có lời mời nào')
                                       : ListView.separated(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size15),
+                                              vertical: UIHelper.padding),
                                           itemBuilder: (c, index) =>
                                               _buildItemRequest(context,
                                                   model.sentInvites[index]),

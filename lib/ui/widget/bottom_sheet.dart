@@ -40,6 +40,7 @@ class BottomSheetWidget extends StatelessWidget {
           ButtonWidget(
             height: _kButtonHeight,
             elevation: 0,
+            borderRadius: BorderRadius.circular(0),
             alignment: Alignment.centerLeft,
             backgroundColor: Colors.white,
             child: Padding(
@@ -60,6 +61,7 @@ class BottomSheetWidget extends StatelessWidget {
             elevation: 0,
             alignment: Alignment.centerLeft,
             backgroundColor: Colors.white,
+            borderRadius: BorderRadius.circular(0),
             child: Padding(
               padding: EdgeInsets.only(left: UIHelper.size10),
               child: Text(

@@ -13,6 +13,7 @@ import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/input_text_widget.dart';
@@ -27,6 +28,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore: must_be_immutable
 class SocialPage extends StatelessWidget {
   final _formCode = GlobalKey<FormState>();
 
@@ -42,250 +44,212 @@ class SocialPage extends StatelessWidget {
     return false;
   }
 
-  Widget _buildCateTitle(String title) => Text(
+  _buildCateTitle(String title) => Text(
         title,
-        style: textStyleSemiBold(size: 17),
+        style: textStyleSemiBold(size: 18),
       );
 
-  Widget _buildItemNew(BuildContext context, News news) => Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
-        ),
+  _buildItemNews(BuildContext context, News news) => BorderItemWidget(
+        onTap: () => launch(news.getLink),
         margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
         child: InkWell(
-          onTap: () => launch(news.getLink),
-          child: Container(
-            width: UIHelper.screenWidth * 0.6,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(UIHelper.padding),
-            ),
-            child: Stack(
+          child: SizedBox(
+            width: UIHelper.screenWidth * 0.45,
+            child: Column(
               children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(UIHelper.padding),
-                  child: SizedBox.expand(
-                    child: FadeInImage.assetNetwork(
-                      placeholder: Images.DEFAULT_GROUND,
-                      image: news.getImage,
-                      fit: BoxFit.cover,
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(UIHelper.padding),
+                      topRight: Radius.circular(UIHelper.padding),
+                    ),
+                    child: SizedBox.expand(
+                      child: FadeInImage.assetNetwork(
+                        placeholder: Images.DEFAULT_GROUND,
+                        image: news.getImage,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
+                Container(
+                  height: UIHelper.size(65),
+                  alignment: Alignment.bottomCenter,
+                  padding: EdgeInsets.all(UIHelper.size5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(UIHelper.padding),
+                      bottomRight: Radius.circular(UIHelper.padding),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          news.getTitle,
+                          maxLines: 2,
+                          style: textStyleMedium(),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Image.asset(
+                            Images.CLOCK,
+                            width: UIHelper.size10,
+                            height: UIHelper.size10,
+                            color: Colors.grey,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: UIHelper.size5),
+                            child: Text(
+                              news.getTime,
+                              style:
+                                  textStyleItalic(color: Colors.grey, size: 12),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  _buildItemRecruit(BuildContext context, MatchShare match,
+          {Function onJoin, Function onDetail}) =>
+      BorderItemWidget(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.all(UIHelper.size10),
+        onTap: () => onDetail(match.matchInfo),
+        child: SizedBox(
+          width: UIHelper.screenWidth * 0.45,
+          child: Column(
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ImageWidget(
+                    source: match.matchInfo.getMyTeamLogo,
+                    placeHolder: Images.DEFAULT_LOGO,
+                    size: UIHelper.size45,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: UIHelper.size10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            match.matchInfo.getMyTeamName,
+                            style: textStyleMedium(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: RatingBarIndicator(
+                              rating: match.matchInfo.getMyTeam.rating,
+                              itemCount: 5,
+                              itemPadding: EdgeInsets.only(right: 2),
+                              itemSize: UIHelper.size15,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: UIHelper.size10, bottom: UIHelper.size10),
+                child: LineWidget(indent: 0),
+              ),
+              Row(
+                children: <Widget>[
+                  Image.asset(
+                    Images.CLOCK,
+                    width: UIHelper.size15,
+                    height: UIHelper.size15,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: UIHelper.size10),
+                      child: Text(
+                        match.matchInfo.getFullPlayTime,
+                        style: textStyleMedium(),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: UIHelper.size5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Image.asset(
+                        Images.STADIUM,
+                        width: UIHelper.size15,
+                        height: UIHelper.size15,
+                        color: Colors.green,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: UIHelper.size10),
+                          child: Text(
+                            match.matchInfo.groundName,
+                            style: textStyleMedium(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(UIHelper.size5),
+                child: InkWell(
+                  onTap: () => onJoin(match.id, match.requestCode),
                   child: Container(
-                    height: UIHelper.size(100),
-                    alignment: Alignment.bottomCenter,
-                    padding: EdgeInsets.all(UIHelper.size10),
+                    height: UIHelper.size30,
+                    width: double.infinity,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: BLACK_GRADIENT,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(UIHelper.padding),
-                        bottomRight: Radius.circular(UIHelper.padding),
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0xFF02DC37), PRIMARY],
                       ),
                     ),
                     child: Text(
-                      news.getTitle,
-                      maxLines: 2,
-                      style: textStyleMediumTitle(color: Colors.white),
-                      overflow: TextOverflow.ellipsis,
+                      'THAM GIA',
+                      style: textStyleMedium(color: Colors.white),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
 
-  Widget _buildItemRecruit(BuildContext context, MatchShare match,
-          {Function onJoin, Function onDetail}) =>
-      Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(UIHelper.padding),
-        ),
-        margin: EdgeInsets.zero,
-        child: InkWell(
-          onTap: () => onDetail(match.matchInfo),
-          child: Container(
-            width: UIHelper.screenWidth * 0.5,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(UIHelper.padding)),
-            padding: EdgeInsets.all(UIHelper.size10),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    ImageWidget(
-                      source: match.matchInfo.getMyTeamLogo,
-                      placeHolder: Images.DEFAULT_LOGO,
-                      size: UIHelper.size45,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: UIHelper.size10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              match.matchInfo.getMyTeamName,
-                              style: textStyleMediumTitle(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 3),
-                              child: RatingBarIndicator(
-                                rating: match.matchInfo.getMyTeam.rating,
-                                itemCount: 5,
-                                itemPadding: EdgeInsets.only(right: 2),
-                                itemSize: UIHelper.size15,
-                                itemBuilder: (context, index) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: UIHelper.size10, bottom: UIHelper.size10),
-                  child: LineWidget(indent: 0),
-                ),
-                Row(
-                  children: <Widget>[
-                    Image.asset(
-                      Images.CLOCK,
-                      width: UIHelper.size15,
-                      height: UIHelper.size15,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: UIHelper.size10),
-                        child: Text(
-                          match.matchInfo.getShortPlayTime,
-                          style: textStyleMedium(),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: UIHelper.size5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Image.asset(
-                          Images.STADIUM,
-                          width: UIHelper.size15,
-                          height: UIHelper.size15,
-                          color: Colors.green,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: UIHelper.size10),
-                            child: Text(
-                              match.matchInfo.groundName,
-                              style: textStyleMedium(),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(UIHelper.size5),
-                  child: InkWell(
-                    onTap: () => onJoin(match.id, match.requestCode),
-                    child: Container(
-                      height: UIHelper.size30,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Color(0xFF02DC37), PRIMARY],
-                        ),
-                      ),
-                      child: Text(
-                        'THAM GIA',
-                        style: textStyleMedium(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-
-  Widget _buildNewest(BuildContext context, bool isLoading, List<News> news,
-      {Function onRefresh}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(
-              left: UIHelper.padding,
-              right: UIHelper.padding,
-              top: UIHelper.size15),
-          child: _buildCateTitle('Tin tức mới nhất'),
-        ),
-        SizedBox(
-          height: UIHelper.size(180),
-          child: isLoading
-              ? LoadingWidget(type: LOADING_TYPE.WAVE)
-              : news == null
-                  ? EmptyWidget(message: 'Có lỗi xảy ra')
-                  : SmartRefresher(
-                      controller: _newsController,
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: RefreshLoading(
-                        idleIcon: Icon(Icons.arrow_forward, color: Colors.grey),
-                      ),
-                      onRefresh: onRefresh,
-                      child: ListView.separated(
-                        itemCount: news.length,
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.all(UIHelper.padding),
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (c, index) =>
-                            _buildItemNew(context, news[index]),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(
-                          width: UIHelper.padding,
-                          height: 100,
-                        ),
-                      ),
-                    ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRanking(BuildContext context, List<Team> teams) => Padding(
+  _buildRanking(BuildContext context, List<Team> teams) => Padding(
         padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,79 +320,6 @@ class SocialPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRecruit(
-      BuildContext context, bool isLoading, List<MatchShare> matches,
-      {Function onJoin, Function onRefresh, Function onSubmitCode}) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-                child: Padding(
-              padding:
-                  EdgeInsets.only(left: UIHelper.padding, top: UIHelper.size15),
-              child: _buildCateTitle('Tin tuyển quân'),
-            )),
-            Expanded(
-                child: Padding(
-              padding: EdgeInsets.only(
-                  right: UIHelper.padding, top: UIHelper.size15),
-              child: InkWell(
-                onTap: () => _showInputCode(
-                  onSubmit: (code) => onSubmitCode(code),
-                ),
-                child: Text(
-                  'Nhập mã trận đấu',
-                  textAlign: TextAlign.right,
-                  style: textStyleMedium(color: Colors.grey),
-                ),
-              ),
-            ))
-          ],
-        ),
-        Container(
-          height: UIHelper.size(210),
-          child: isLoading
-              ? LoadingWidget(type: LOADING_TYPE.WAVE)
-              : matches.length == 0
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: Text('Chưa có tin nào',
-                          style: textStyleMediumTitle(color: Colors.grey)),
-                    )
-                  : SmartRefresher(
-                      controller: _recruitController,
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: RefreshLoading(
-                        idleIcon: Icon(Icons.arrow_forward, color: Colors.grey),
-                      ),
-                      onRefresh: onRefresh,
-                      child: ListView.separated(
-                        itemCount: matches.length,
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.all(UIHelper.padding),
-                        physics: AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (c, index) => _buildItemRecruit(
-                          context,
-                          matches[index],
-                          onJoin: onJoin,
-                          onDetail: (matchInfo) => NavigationService.instance
-                              .navigateTo(MATCH_SCHEDULE_DETAIL,
-                                  arguments: matchInfo),
-                        ),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(
-                          width: UIHelper.padding,
-                          height: 100,
-                        ),
-                      ),
-                    ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -452,30 +343,132 @@ class SocialPage extends StatelessWidget {
                   model.getMatchShares(1);
                 },
                 builder: (c, model, child) => ListView(
-                  padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
+                  padding: EdgeInsets.only(top: UIHelper.padding),
                   physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   children: <Widget>[
                     _buildRanking(context, model.teams),
                     LineWidget(indent: 0),
-                    _buildNewest(context, model.isLoadingNews, model.news,
-                        onRefresh: () async {
-                      await model.getSportNews();
-                      _newsController.refreshCompleted();
-                    }),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: UIHelper.padding,
+                          right: UIHelper.padding,
+                          top: UIHelper.size15),
+                      child: _buildCateTitle('Tin tức bóng đá'),
+                    ),
+                    SizedBox(
+                      height: UIHelper.size(210),
+                      child: model.isLoadingNews
+                          ? LoadingWidget(type: LOADING_TYPE.WAVE)
+                          : model.news == null
+                              ? EmptyWidget(message: 'Có lỗi xảy ra')
+                              : SmartRefresher(
+                                  controller: _newsController,
+                                  enablePullDown: true,
+                                  header: RefreshLoading(
+                                      type: REFRESH_TYPE.HORIZONTAL),
+                                  onRefresh: () async {
+                                    await model.getSportNews();
+                                    _newsController.refreshCompleted();
+                                  },
+                                  child: ListView.separated(
+                                    itemCount: model.news.length,
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.all(UIHelper.padding),
+                                    physics: BouncingScrollPhysics(),
+                                    itemBuilder: (c, index) => _buildItemNews(
+                                        context, model.news[index]),
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            SizedBox(
+                                      width: UIHelper.padding,
+                                      height: 100,
+                                    ),
+                                  ),
+                                ),
+                    ),
                     LineWidget(indent: 0),
-                    _buildRecruit(
-                      context,
-                      model.isLoadingMatch,
-                      model.matchShares,
-                      onJoin: (shareId, code) =>
-                          model.joinMatchByCode(shareId, code),
-                      onRefresh: () async {
-                        await model.getMatchShares(1);
-                        _recruitController.refreshCompleted();
-                      },
-                      onSubmitCode: (code) => model.getMatchShareByCode(code),
-                    )
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: UIHelper.padding, top: UIHelper.size15),
+                            child: _buildCateTitle('Tin tuyển quân'),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                right: UIHelper.padding, top: UIHelper.size15),
+                            child: InkWell(
+                              onTap: () {
+                                if (model.isMatchByCode) {
+                                  model.getMatchShares(1);
+                                } else {
+                                  _showInputCode(
+                                    onSubmit: (code) =>
+                                        model.getMatchSharesByCode(code),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                model.isMatchByCode
+                                    ? 'Xem tất cả'
+                                    : 'Nhập mã trận đấu',
+                                textAlign: TextAlign.right,
+                                style: textStyleMedium(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      height: UIHelper.size(210),
+                      child: model.isLoadingMatch
+                          ? LoadingWidget(type: LOADING_TYPE.WAVE)
+                          : model.matchShares.length == 0
+                              ? Align(
+                                  alignment: Alignment.center,
+                                  child: Text('Chưa có tin nào',
+                                      style: textStyleMediumTitle(
+                                          color: Colors.grey)),
+                                )
+                              : SmartRefresher(
+                                  controller: _recruitController,
+                                  enablePullDown: true,
+                                  header: RefreshLoading(
+                                      type: REFRESH_TYPE.HORIZONTAL),
+                                  onRefresh: () async {
+                                    await model.getMatchShares(1);
+                                    _recruitController.refreshCompleted();
+                                  },
+                                  child: ListView.separated(
+                                    itemCount: model.matchShares.length,
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.all(UIHelper.padding),
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    itemBuilder: (c, index) =>
+                                        _buildItemRecruit(
+                                      context,
+                                      model.matchShares[index],
+                                      onJoin: (shareId, code) =>
+                                          model.joinMatchByCode(shareId, code),
+                                      onDetail: (matchInfo) => NavigationService
+                                          .instance
+                                          .navigateTo(MATCH_SCHEDULE_DETAIL,
+                                              arguments: matchInfo),
+                                    ),
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            SizedBox(
+                                      width: UIHelper.padding,
+                                      height: 100,
+                                    ),
+                                  ),
+                                ),
+                    ),
                   ],
                 ),
               ),

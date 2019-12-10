@@ -56,7 +56,6 @@ class Images {
   static const String MARKER = '$FOLDER/ic_marker.png';
   static const String MY_LOCATION = '$FOLDER/ic_my_location.png';
   static const String HISTORY = '$FOLDER/ic_history.png';
-  static const String PIN = '$FOLDER/ic_pin.png';
   static const String FUND_NOTIFY = '$FOLDER/ic_fund_notify.png';
   static const String CLOSE = '$FOLDER/ic_close.png';
   static const String FINGERPRINT = '$FOLDER/ic_fingerprint.png';
@@ -74,7 +73,6 @@ class Images {
   static const String CANCEL = '$FOLDER/ic_cancel.png';
   static const String QUESTION = '$FOLDER/ic_question.png';
   static const String STADIUM = '$FOLDER/ic_stadium.png';
-  static const String NOTIFICATION = '$FOLDER/ic_notification.png';
   static const String SHARE_2 = '$FOLDER/ic_share_2.png';
 
 }

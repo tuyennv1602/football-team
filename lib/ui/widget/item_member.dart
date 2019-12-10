@@ -4,6 +4,7 @@ import 'package:myfootball/model/member.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'image_widget.dart';
 
@@ -25,38 +26,35 @@ class ItemMember extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.padding),
-      ),
+    return BorderItemWidget(
+      onTap: onTap,
+      padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,
-      child: InkWell(
-        onTap: onTap,
-        child: Stack(
-          children: <Widget>[
-            isManager || isCaptain
-                ? Positioned(
-                    top: 0,
-                    left: 0,
-                    child: Container(
-                      width: UIHelper.size25,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: isManager ? Colors.red : Colors.blue,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(UIHelper.padding),
-                          bottomRight: Radius.circular(UIHelper.padding),
-                        ),
-                      ),
-                      child: Text(
-                        isManager ? 'M' : 'C',
-                        style: textStyleSemiBold(size: 14, color: Colors.white),
+      child: Stack(
+        children: <Widget>[
+          isManager || isCaptain
+              ? Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Container(
+                    width: UIHelper.size25,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: isManager ? Colors.red : Colors.blue,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(UIHelper.padding),
+                        bottomRight: Radius.circular(UIHelper.padding),
                       ),
                     ),
-                  )
-                : SizedBox(),
-            Column(
+                    child: Text(
+                      isManager ? 'M' : 'C',
+                      style: textStyleSemiBold(size: 14, color: Colors.white),
+                    ),
+                  ),
+                )
+              : SizedBox(),
+          Container(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Stack(
@@ -146,8 +144,8 @@ class ItemMember extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
