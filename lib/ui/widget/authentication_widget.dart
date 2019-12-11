@@ -190,10 +190,12 @@ class _AuthenticationState extends State<AuthenticationWidget>
                         height: UIHelper.size25,
                         color: Colors.grey,
                       ),
-                      UIHelper.horizontalSpaceMedium,
-                      Text(
-                        'Xác thực vân tay/Face Id',
-                        style: textStyleRegular(color: Colors.grey),
+                      Padding(
+                        padding: EdgeInsets.only(left: UIHelper.size10),
+                        child: Text(
+                          'Xác thực vân tay/Face Id',
+                          style: textStyleRegular(color: Colors.grey),
+                        ),
                       )
                     ],
                   ),

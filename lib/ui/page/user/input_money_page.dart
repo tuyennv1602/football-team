@@ -35,20 +35,22 @@ class InputMoneyPage extends StatelessWidget {
               width: UIHelper.size45,
               height: UIHelper.size45,
             ),
-            UIHelper.horizontalSpaceMedium,
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    name,
-                    style: textStyleMediumTitle(),
-                  ),
-                  Text(
-                    'Miễn phí',
-                    style: textStyleRegularBody(color: Colors.grey),
-                  )
-                ],
+              child: Padding(
+                padding: EdgeInsets.only(left: UIHelper.size10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      name,
+                      style: textStyleMediumTitle(),
+                    ),
+                    Text(
+                      'Miễn phí',
+                      style: textStyleRegularBody(color: Colors.grey),
+                    )
+                  ],
+                ),
               ),
             ),
             Image.asset(
@@ -95,14 +97,16 @@ class InputMoneyPage extends StatelessWidget {
                                 'Số tiền:',
                                 style: textStyleSemiBold(size: 22),
                               ),
-                              UIHelper.horizontalSpaceMedium,
                               Expanded(
-                                child: InputPriceWidget(
-                                  onChangedText: (text) {},
-                                  textStyle: textStyleSemiBold(size: 22),
-                                  hintTextStyle: textStyleMediumTitle(
-                                      size: 22, color: Colors.grey),
-                                  hint: '0đ',
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: UIHelper.size10),
+                                  child: InputPriceWidget(
+                                    onChangedText: (text) {},
+                                    textStyle: textStyleSemiBold(size: 22),
+                                    hintTextStyle: textStyleMediumTitle(
+                                        size: 22, color: Colors.grey),
+                                    hint: '0đ',
+                                  ),
                                 ),
                               ),
                             ],

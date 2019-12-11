@@ -86,10 +86,10 @@ class AddAddressPage extends StatelessWidget {
                   style: textStyleMediumTitle(),
                 ),
               ),
-              UIHelper.horizontalSpaceSmall,
-              SizedBox(
+              Container(
                 height: UIHelper.size25,
                 width: UIHelper.size25,
+                margin: EdgeInsets.only(left: UIHelper.size5),
                 child: Checkbox(
                     value: isSelected,
                     activeColor: PRIMARY,

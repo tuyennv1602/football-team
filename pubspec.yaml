@@ -43,6 +43,7 @@ dependencies:
   html: ^0.13.4+1
   share: ^0.6.3+4
   pull_to_refresh: ^1.5.7
+  dash_chat: ^1.0.9
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0

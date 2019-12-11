@@ -34,7 +34,6 @@ class FinancePage extends StatelessWidget {
   FinanceViewModel _viewModel;
   RefreshController _transactionController = RefreshController();
 
-
   bool validateAndSaveNotification() {
     final form = _formNotifyKey.currentState;
     if (form.validate()) {
@@ -67,23 +66,27 @@ class FinancePage extends StatelessWidget {
             'Số tiền cần thu',
             style: textStyleRegularBody(color: Colors.white),
           ),
-          UIHelper.verticalSpaceSmall,
-          InputPriceWidget(
-              textStyle: textStyleSemiBold(size: 18, color: Colors.white),
-              hint: '0đ',
-              hintTextStyle: textStyleSemiBold(size: 18, color: Colors.white),
-              onChangedText: (text) => _price = text),
-          UIHelper.verticalSpaceMedium,
+          Padding(
+            padding:
+                EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size10),
+            child: InputPriceWidget(
+                textStyle: textStyleSemiBold(size: 18, color: Colors.white),
+                hint: '0đ',
+                hintTextStyle: textStyleSemiBold(size: 18, color: Colors.white),
+                onChangedText: (text) => _price = text),
+          ),
           Text(
             'Chọn hạn thu quỹ',
             style: textStyleRegularBody(color: Colors.white),
           ),
-          UIHelper.verticalSpaceSmall,
-          SelectDateWidget(
-            textStyle: textStyleSemiBold(size: 18, color: Colors.white),
-            onSelectedDate: (date) => _expireDate = date,
+          Padding(
+            padding:
+                EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size10),
+            child: SelectDateWidget(
+              textStyle: textStyleSemiBold(size: 18, color: Colors.white),
+              onSelectedDate: (date) => _expireDate = date,
+            ),
           ),
-          UIHelper.verticalSpaceMedium,
           Form(
             key: _formNotifyKey,
             child: InputTextWidget(
@@ -126,12 +129,14 @@ class FinancePage extends StatelessWidget {
             'Số tiền giao dịch',
             style: textStyleRegularBody(color: Colors.white),
           ),
-          UIHelper.verticalSpaceSmall,
-          InputPriceWidget(
-              textStyle: textStyleSemiBold(size: 18, color: Colors.white),
-              hint: '0đ',
-              hintTextStyle: textStyleSemiBold(size: 18, color: Colors.white),
-              onChangedText: (text) => _price = text),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size5),
+            child: InputPriceWidget(
+                textStyle: textStyleSemiBold(size: 18, color: Colors.white),
+                hint: '0đ',
+                hintTextStyle: textStyleSemiBold(size: 18, color: Colors.white),
+                onChangedText: (text) => _price = text),
+          ),
           Padding(
             padding:
                 EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size20),
@@ -271,22 +276,24 @@ class FinancePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  UIHelper.verticalSpaceMedium,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Đã chi',
-                        style: textStyleTitle(),
-                      ),
-                      Expanded(
-                        child: Text(
-                          model.outcome,
-                          textAlign: TextAlign.right,
+                  Padding(
+                    padding: EdgeInsets.only(top: UIHelper.size10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Đã chi',
                           style: textStyleTitle(),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Text(
+                            model.outcome,
+                            textAlign: TextAlign.right,
+                            style: textStyleTitle(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

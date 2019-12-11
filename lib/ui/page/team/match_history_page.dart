@@ -84,11 +84,13 @@ class MatchHistoryPage extends StatelessWidget {
                       placeHolder: Images.DEFAULT_LOGO,
                       size: UIHelper.size35,
                     ),
-                    UIHelper.horizontalSpaceMedium,
                     Expanded(
-                      child: Text(
-                        matchHistory.getMyTeamName,
-                        style: textStyleAlert(),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: UIHelper.size10),
+                        child: Text(
+                          matchHistory.getMyTeamName,
+                          style: textStyleAlert(),
+                        ),
                       ),
                     )
                   ],
@@ -99,33 +101,37 @@ class MatchHistoryPage extends StatelessWidget {
               )
             ],
           ),
-          UIHelper.verticalSpaceLarge,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    ImageWidget(
-                      source: matchHistory.getOpponentLogo,
-                      placeHolder: Images.DEFAULT_LOGO,
-                      size: UIHelper.size35,
-                    ),
-                    UIHelper.horizontalSpaceMedium,
-                    Expanded(
-                      child: Text(
-                        matchHistory.getOpponentName,
-                        style: textStyleAlert(),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: Row(
+                    children: <Widget>[
+                      ImageWidget(
+                        source: matchHistory.getOpponentLogo,
+                        placeHolder: Images.DEFAULT_LOGO,
+                        size: UIHelper.size35,
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: UIHelper.size10),
+                          child: Text(
+                            matchHistory.getOpponentName,
+                            style: textStyleAlert(),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              InputScoreWidget(
-                onChangedText: (text) => secondScore = text,
-              )
-            ],
+                InputScoreWidget(
+                  onChangedText: (text) => secondScore = text,
+                )
+              ],
+            ),
           ),
         ],
       ),

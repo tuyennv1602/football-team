@@ -109,54 +109,56 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                             )
                           ],
                         ),
-                        UIHelper.horizontalSpaceLarge,
                         Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                _user.name,
-                                textAlign: TextAlign.center,
-                                style: textStyleSemiBold(
-                                    size: 20, color: Colors.white),
-                              ),
-                              Text(
-                                _user.email,
-                                style: textStyleRegular(color: Colors.white),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              InkWell(
-                                onTap: () => NavigationService.instance
-                                    .navigateTo(USER_COMMENT, arguments: _user.id),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: UIHelper.size5),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Text(
-                                          'Đánh giá',
-                                          style: textStyleRegular(
-                                              color: Colors.white),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: UIHelper.size20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  _user.name,
+                                  textAlign: TextAlign.center,
+                                  style: textStyleSemiBold(
+                                      size: 20, color: Colors.white),
+                                ),
+                                Text(
+                                  _user.email,
+                                  style: textStyleRegular(color: Colors.white),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                InkWell(
+                                  onTap: () => NavigationService.instance
+                                      .navigateTo(USER_COMMENT, arguments: _user.id),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: UIHelper.size5),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Text(
+                                            'Đánh giá',
+                                            style: textStyleRegular(
+                                                color: Colors.white),
+                                          ),
                                         ),
-                                      ),
-                                      RatingBarIndicator(
-                                        rating: _user.rating,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.only(right: 2),
-                                        itemSize: UIHelper.size20,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
+                                        RatingBarIndicator(
+                                          rating: _user.rating,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.only(right: 2),
+                                          itemSize: UIHelper.size20,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       ],

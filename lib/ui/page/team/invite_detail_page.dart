@@ -41,26 +41,27 @@ class InviteDetailPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
         child: Row(
           children: <Widget>[
-            UIHelper.horizontalSpaceSmall,
-            Column(
-              children: <Widget>[
-                Text(
-                  timeSlot.getStartTime,
-                  style: textStyleRegular(),
-                ),
-                Container(
-                  height: 1,
-                  width: UIHelper.size45,
-                  padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
-                  color: PRIMARY,
-                ),
-                Text(
-                  timeSlot.getEndTime,
-                  style: textStyleRegular(),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    timeSlot.getStartTime,
+                    style: textStyleRegular(),
+                  ),
+                  Container(
+                    height: 1,
+                    width: UIHelper.size45,
+                    padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+                    color: PRIMARY,
+                  ),
+                  Text(
+                    timeSlot.getEndTime,
+                    style: textStyleRegular(),
+                  ),
+                ],
+              ),
             ),
-            UIHelper.horizontalSpaceMedium,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +267,7 @@ class InviteDetailPage extends StatelessWidget {
                                           backgroundColor: Colors.grey,
                                         ),
                                       ),
-                                      UIHelper.horizontalSpaceMedium,
+                                      SizedBox(width: UIHelper.size10, height: 10),
                                       Expanded(
                                         child: ButtonWidget(
                                           child: Text(

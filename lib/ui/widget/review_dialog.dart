@@ -136,7 +136,6 @@ class ReviewDialog extends StatelessWidget {
                             style: textStyleButton(),
                           ),
                         ),
-                        UIHelper.horizontalSpaceMedium,
                         ButtonWidget(
                           onTap: () {
                             Navigator.of(context).pop();
@@ -144,6 +143,7 @@ class ReviewDialog extends StatelessWidget {
                           },
                           width: UIHelper.screenWidth / 3,
                           backgroundColor: GREEN_SUCCESS,
+                          margin: EdgeInsets.only(left: UIHelper.size10),
                           height: UIHelper.size40,
                           borderRadius: BorderRadius.circular(UIHelper.size40),
                           child: Text(

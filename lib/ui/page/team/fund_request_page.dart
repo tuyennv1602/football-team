@@ -44,10 +44,12 @@ class FundRequestPage extends StatelessWidget {
                     member.name,
                     style: textStyleMediumTitle(),
                   ),
-                  UIHelper.verticalSpaceSmall,
-                  StatusIndicator(
-                    statusName: member.getStatusName,
-                    status: member.getStatus,
+                  Padding(
+                    padding: EdgeInsets.only(top: UIHelper.size5),
+                    child: StatusIndicator(
+                      statusName: member.getStatusName,
+                      status: member.getStatus,
+                    ),
                   )
                 ],
               ),

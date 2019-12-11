@@ -69,7 +69,7 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
                     style: textStyleSemiBold(color: Colors.white, size: 18),
                   ),
                 ),
-                UIHelper.horizontalSpaceMedium
+                SizedBox(width: UIHelper.size10, height: 5),
               ],
             );
           },

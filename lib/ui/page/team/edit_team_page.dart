@@ -177,8 +177,8 @@ class EditTeamPage extends StatelessWidget {
                               )
                             ],
                           ),
-                          UIHelper.verticalSpaceMedium,
-                          SizedBox(
+                          Container(
+                            margin: EdgeInsets.only(top: UIHelper.size10),
                             height: UIHelper.size50,
                             width: UIHelper.screenWidth,
                             child: Swiper(

@@ -85,13 +85,15 @@ class _SearchGroundState extends State<SearchGroundPage> {
                         maxLines: 1,
                         style: textStyleMediumTitle(color: Colors.white),
                       ),
-                      Text(
-                        ground.address,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textStyleRegularBody(color: Colors.white),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: UIHelper.size5),
+                        child: Text(
+                          ground.address,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyleRegularBody(color: Colors.white),
+                        ),
                       ),
-                      UIHelper.verticalSpaceSmall,
                       Row(
                         children: <Widget>[
                           Expanded(

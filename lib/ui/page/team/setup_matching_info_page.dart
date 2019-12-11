@@ -136,7 +136,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: UIHelper.size15,
+                                  horizontal: UIHelper.padding,
                                   vertical: UIHelper.size10),
                               child: Row(
                                 mainAxisAlignment:
@@ -168,18 +168,16 @@ class SetupMatchingInfoPage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: UIHelper.size15),
+                              padding: EdgeInsets.only(left: UIHelper.padding, right: UIHelper.padding, bottom: UIHelper.size10),
                               child: Wrap(
                                 spacing: UIHelper.size5,
                                 children: _timeChildren,
                               ),
                             ),
-                            UIHelper.verticalSpaceMedium,
                             LineWidget(),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: UIHelper.size15,
+                                  horizontal: UIHelper.padding,
                                   vertical: UIHelper.size10),
                               child: Row(
                                 mainAxisAlignment:
@@ -213,7 +211,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: UIHelper.size15),
+                                  horizontal: UIHelper.padding),
                               child: Wrap(
                                   spacing: UIHelper.size5,
                                   children: _addressChildren),

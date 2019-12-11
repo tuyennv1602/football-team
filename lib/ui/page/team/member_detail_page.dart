@@ -91,10 +91,12 @@ class MemberDetailPage extends StatelessWidget {
                     textStyleMediumTitle(size: 20, color: Colors.white),
               ),
             ),
-            UIHelper.verticalSpaceSmall,
-            Text(
-              'Vị trí có thể chơi',
-              style: textStyleRegularBody(color: Colors.white),
+            Padding(
+              padding: EdgeInsets.only(top: UIHelper.size5),
+              child: Text(
+                'Vị trí có thể chơi',
+                style: textStyleRegularBody(color: Colors.white),
+              ),
             ),
             MultiChoicePosition(
               initPositions: member.getPositions,
@@ -157,7 +159,7 @@ class MemberDetailPage extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(left: UIHelper.padding),
+                              padding: EdgeInsets.only(left: UIHelper.padding, bottom: UIHelper.size10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -165,11 +167,13 @@ class MemberDetailPage extends StatelessWidget {
                                     member.name ?? member.userName,
                                     style: textStyleSemiBold(size: 18),
                                   ),
-                                  Text(
-                                    member.email,
-                                    style: textStyleRegular(),
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: UIHelper.size5),
+                                    child: Text(
+                                      member.email,
+                                      style: textStyleRegular(),
+                                    ),
                                   ),
-                                  UIHelper.verticalSpaceSmall,
                                   Row(
                                     children: member.getPositions
                                         .map<Widget>(
@@ -185,7 +189,6 @@ class MemberDetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      UIHelper.verticalSpaceMedium,
                       InkWell(
                         onTap: () {
                           if (Provider.of<User>(context).id != member.id) {

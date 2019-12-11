@@ -35,7 +35,6 @@ class LoginViewModel extends BaseViewModel {
     var resp =
         await _authServices.loginEmail(deviceInfo.deviceId, email, password);
     if (resp.isSuccess) {
-      FirebaseServices.instance.signInAnonymous();
       var _registerDeviceResp = await registerDevice();
       UIHelper.hideProgressDialog;
       if (_registerDeviceResp.isSuccess) {

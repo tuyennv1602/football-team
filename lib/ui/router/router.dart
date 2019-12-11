@@ -17,7 +17,7 @@ import 'package:myfootball/ui/page/login/verify_otp_page.dart';
 import 'package:myfootball/ui/page/social/ranking_page.dart';
 import 'package:myfootball/ui/page/team/add_address_page.dart';
 import 'package:myfootball/ui/page/team/booking_page.dart';
-import 'package:myfootball/ui/page/team/compare_team_page.dart';
+import 'package:myfootball/ui/page/team/conversation_page.dart';
 import 'package:myfootball/ui/page/team/create_team_page.dart';
 import 'package:myfootball/ui/page/team/edit_team_page.dart';
 import 'package:myfootball/ui/page/team/finance_page.dart';
@@ -87,9 +87,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case SEARCH_TEAM:
       var type = settings.arguments as SEARCH_TYPE;
       return SlideLeftRoute(widget: SearchTeamPage(type: type));
-    case COMPARE_TEAM:
-      var team = settings.arguments as Team;
-      return SlideLeftRoute(widget: CompareTeamPage(team: team));
     case EDIT_TEAM_INFO:
       return SlideLeftRoute(widget: EditTeamPage());
     case INVITE_TEAM:
@@ -157,6 +154,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case REQUEST_JOIN_MATCH:
       var matchId = settings.arguments as int;
       return SlideLeftRoute(widget: RequestJoinMatchPage(matchId: matchId));
+    case CONVERSATION:
+      return SlideLeftRoute(widget: ConversationPage());
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

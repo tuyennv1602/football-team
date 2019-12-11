@@ -86,10 +86,12 @@ class UserRequestPage extends StatelessWidget {
                 hintTextStyle: textStyleInput(color: Colors.white),
               ),
             ),
-            UIHelper.verticalSpaceSmall,
-            Text(
-              'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
-              style: textStyleRegularBody(color: Colors.white),
+            Padding(
+              padding: EdgeInsets.only(top: UIHelper.size5),
+              child: Text(
+                'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+                style: textStyleRegularBody(color: Colors.white),
+              ),
             ),
             MultiChoicePosition(
               initPositions: userRequest.getPositions,
@@ -169,11 +171,13 @@ class UserRequestPage extends StatelessWidget {
                         request.content,
                         style: textStyleRegular(),
                       ),
-                      UIHelper.verticalSpaceSmall,
-                      Row(
-                          children: request.getPositions
-                              .map((pos) => ItemPosition(position: pos))
-                              .toList()),
+                      Padding(
+                        padding: EdgeInsets.only(top: UIHelper.size5),
+                        child: Row(
+                            children: request.getPositions
+                                .map((pos) => ItemPosition(position: pos))
+                                .toList()),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

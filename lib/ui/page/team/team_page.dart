@@ -50,10 +50,12 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                       width: UIHelper.size50,
                       height: UIHelper.size50,
                     ),
-                    UIHelper.verticalSpaceMedium,
-                    Text(
-                      'Thành lập đội bóng',
-                      style: textStyleTitle(color: BLACK_TEXT),
+                    Padding(
+                      padding: EdgeInsets.only(top: UIHelper.size10),
+                      child: Text(
+                        'Thành lập đội bóng',
+                        style: textStyleTitle(color: BLACK_TEXT),
+                      ),
                     )
                   ],
                 ),
@@ -72,10 +74,12 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                       width: UIHelper.size50,
                       height: UIHelper.size50,
                     ),
-                    UIHelper.verticalSpaceMedium,
-                    Text(
-                      'Tham gia đội bóng',
-                      style: textStyleTitle(color: BLACK_TEXT),
+                    Padding(
+                      padding: EdgeInsets.only(top: UIHelper.size10),
+                      child: Text(
+                        'Tham gia đội bóng',
+                        style: textStyleTitle(color: BLACK_TEXT),
+                      ),
                     )
                   ],
                 ),
@@ -101,7 +105,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ItemOptionWidget(
           Images.INVITE,
           'Lời mời ghép đối',
-          iconColor: Colors.pinkAccent,
+          iconColor: Colors.purple,
           onTap: () => NavigationService.instance.navigateTo(INVITE_REQUESTS),
         ),
         ItemOptionWidget(
@@ -141,7 +145,8 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ItemOptionWidget(
               Images.COMMENT,
               'Thảo luận',
-              iconColor: Colors.cyan,
+              iconColor: Colors.green,
+              onTap: () => NavigationService.instance.navigateTo(CONVERSATION),
             ),
           ]
             ..addAll(_manager)
@@ -271,11 +276,13 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                       placeHolder: Images.DEFAULT_LOGO,
                       size: UIHelper.size35,
                     ),
-                    UIHelper.horizontalSpaceMedium,
                     Expanded(
-                      child: Text(
-                        _team.name,
-                        style: textStyleMediumTitle(),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: UIHelper.size10),
+                        child: Text(
+                          _team.name,
+                          style: textStyleMediumTitle(),
+                        ),
                       ),
                     ),
                   ],
@@ -338,7 +345,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   physics: BouncingScrollPhysics(),
                                   children: <Widget>[
                                     _buildHeaderWidget(context, _team),
-                                    UIHelper.verticalSpaceSmall,
                                     _buildTeamOptions(
                                       context,
                                       _team,

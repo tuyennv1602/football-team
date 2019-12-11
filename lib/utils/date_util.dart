@@ -51,6 +51,9 @@ class DateUtil {
   static String getTimeAgo(int timestamp) =>
       timeago.format(fromTimeStamp(timestamp), locale: 'vi');
 
+  static String getMessageTime(DateTime date) =>
+      DateFormat('HH:mm').format(date);
+
   static String getTimeStringFromDouble(double value) {
     if (value < 0) return null;
     int flooredValue = value.floor();

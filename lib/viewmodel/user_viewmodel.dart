@@ -23,7 +23,6 @@ class UserViewModel extends BaseViewModel {
 
   Future<void> logout() async {
     UIHelper.showProgressDialog;
-    await FirebaseServices.instance.signOut();
     var _logout = await _api.logout();
     var _token = await _preferences.clearToken();
     var _lastTeam = await _preferences.clearLastTeam();

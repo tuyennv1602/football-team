@@ -12,7 +12,6 @@ import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
-import 'package:myfootball/ui/widget/authentication_widget.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
 import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/line.dart';
@@ -51,10 +50,12 @@ class BookingPage extends StatelessWidget {
             'Tiền đặt cọc:  ${_ground.getDeposit}',
             style: textStyleAlert(),
           ),
-          UIHelper.verticalSpaceMedium,
-          Text(
-            '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
-            style: textStyleItalic(color: Colors.white),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size10),
+            child: Text(
+              '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
+              style: textStyleItalic(color: Colors.white),
+            ),
           ),
           Text(
             '- Vui lòng đọc kỹ nội quy của sân bóng trước khi đặt sân',
@@ -87,10 +88,12 @@ class BookingPage extends StatelessWidget {
               timeSlot.getTime,
               style: textStyleMediumTitle(),
             ),
-            UIHelper.verticalSpaceSmall,
-            Text(
-              'Giá thuê sân',
-              style: textStyleRegularBody(color: Colors.grey),
+            Padding(
+              padding: EdgeInsets.only(top: UIHelper.size5),
+              child: Text(
+                'Giá thuê sân',
+                style: textStyleRegularBody(color: Colors.grey),
+              ),
             ),
             Text(
               timeSlot.getPrice,
@@ -115,10 +118,12 @@ class BookingPage extends StatelessWidget {
                   field.name,
                   style: textStyleSemiBold(color: PRIMARY, size: 18),
                 ),
-                UIHelper.horizontalSpaceMedium,
-                Text(
-                  '( ${field.getFieldType} )',
-                  style: textStyleMediumTitle(),
+                Padding(
+                  padding: EdgeInsets.only(left: UIHelper.size10),
+                  child: Text(
+                    '( ${field.getFieldType} )',
+                    style: textStyleMediumTitle(),
+                  ),
                 ),
               ],
             ),
@@ -194,7 +199,7 @@ class BookingPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(left: UIHelper.size15),
+                            padding: EdgeInsets.only(left: UIHelper.size15, right: UIHelper.size5),
                             child: SizedBox(
                               height: UIHelper.size(70),
                               child: Column(
@@ -240,7 +245,6 @@ class BookingPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        UIHelper.horizontalSpaceSmall,
                         Image.asset(
                           Images.NEXT,
                           width: UIHelper.size15,
@@ -254,8 +258,10 @@ class BookingPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       child,
-                      UIHelper.verticalSpaceMedium,
-                      LineWidget(indent: 0),
+                      Padding(
+                        padding: EdgeInsets.only(top: UIHelper.size10),
+                        child: LineWidget(indent: 0),
+                      ),
                       Row(
                         children: <Widget>[
                           Expanded(

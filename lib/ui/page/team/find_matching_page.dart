@@ -39,33 +39,34 @@ class FindMatchingPage extends StatelessWidget {
               '- Tiêu chí ghép đối sẽ giúp bạn tự động tìm kiếm những đối tác phù hợp nhất với đội bóng của bạn',
               style: textStyleRegular(),
             ),
-            UIHelper.verticalSpaceMedium,
-            Text(
-              '- Tiêu chí ghép đối sẽ giúp mọi người có thể tìm đến bạn phù hợp với những tiêu chí bạn đã đặt ra',
-              style: textStyleRegular(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+              child: Text(
+                '- Tiêu chí ghép đối sẽ giúp mọi người có thể tìm đến bạn phù hợp với những tiêu chí bạn đã đặt ra',
+                style: textStyleRegular(),
+              ),
             ),
-            UIHelper.verticalSpaceMedium,
             Text(
               '- Thay đổi tiêu chí ghép đối trong mục thiết lập ghép đối',
               style: textStyleRegular(),
             ),
-            UIHelper.verticalSpaceMedium,
-            Text(
-              '- Bạn có thể chọn nhiều thời gian và nhiều khu vực có thể chơi để ghép đói',
-              style: textStyleRegular(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+              child: Text(
+                '- Bạn có thể chọn nhiều thời gian và nhiều khu vực có thể chơi để ghép đói',
+                style: textStyleRegular(),
+              ),
             ),
-            UIHelper.verticalSpaceMedium,
             Text(
               '- Sử dụng chức năng tìm kiếm để tìm kiếm thủ công đối tác mà bạn muốn ghép',
               style: textStyleRegular(),
             ),
-            UIHelper.verticalSpaceLarge,
             ButtonWidget(
                 child: Text(
                   'THIẾT LẬP GHÉP ĐỐI',
                   style: textStyleButton(),
                 ),
-                margin: EdgeInsets.only(top: UIHelper.size40),
+                margin: EdgeInsets.only(top: UIHelper.size(60)),
                 onTap: () =>
                     NavigationService.instance.navigateTo(SETUP_MATCHING))
           ],
@@ -96,26 +97,27 @@ class FindMatchingPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
           child: Row(
             children: <Widget>[
-              UIHelper.horizontalSpaceSmall,
-              Column(
-                children: <Widget>[
-                  Text(
-                    timeSlot.getStartTime,
-                    style: textStyleRegular(),
-                  ),
-                  Container(
-                    height: 1,
-                    width: UIHelper.size45,
-                    padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
-                    color: PRIMARY,
-                  ),
-                  Text(
-                    timeSlot.getEndTime,
-                    style: textStyleRegular(),
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      timeSlot.getStartTime,
+                      style: textStyleRegular(),
+                    ),
+                    Container(
+                      height: 1,
+                      width: UIHelper.size45,
+                      padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+                      color: PRIMARY,
+                    ),
+                    Text(
+                      timeSlot.getEndTime,
+                      style: textStyleRegular(),
+                    ),
+                  ],
+                ),
               ),
-              UIHelper.horizontalSpaceMedium,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +128,7 @@ class FindMatchingPage extends StatelessWidget {
                       style: textStyleRegular(size: 15),
                     ),
                     Text(
-                      'Giá sân: ${timeSlot}',
+                      'Giá sân: ${timeSlot.getPrice}',
                       maxLines: 1,
                       style: textStyleRegularBody(color: Colors.grey),
                     )
@@ -184,11 +186,13 @@ class FindMatchingPage extends StatelessWidget {
                           background: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              UIHelper.verticalSpaceSmall,
-                              _buildItemCompare(
-                                  'Điểm',
-                                  '${team1.point.toStringAsFixed(1)}',
-                                  '${team2.point.toStringAsFixed(1)}'),
+                              Padding(
+                                padding: EdgeInsets.only(top: UIHelper.size5),
+                                child: _buildItemCompare(
+                                    'Điểm',
+                                    '${team1.point.toStringAsFixed(1)}',
+                                    '${team2.point.toStringAsFixed(1)}'),
+                              ),
                               _buildItemCompare(
                                   'Xếp hạng', '${team1.rank}', '${team2.rank}'),
                               _buildItemCompare(
@@ -276,15 +280,17 @@ class FindMatchingPage extends StatelessWidget {
                                 'Gợi ý sân thi đấu',
                                 style: textStyleSemiBold(),
                               ),
-                              UIHelper.verticalSpaceSmall,
-                              TabBarWidget(
-                                titles: team2.getMappedTimeSlot.keys
-                                    .toList()
-                                    .map((item) => DateFormat('dd/MM')
-                                        .format(DateUtil.getDateMatching(item)))
-                                    .toList(),
-                                isScrollable: true,
-                                height: UIHelper.size35,
+                              Padding(
+                                padding: EdgeInsets.only(top: UIHelper.size5),
+                                child: TabBarWidget(
+                                  titles: team2.getMappedTimeSlot.keys
+                                      .toList()
+                                      .map((item) => DateFormat('dd/MM')
+                                          .format(DateUtil.getDateMatching(item)))
+                                      .toList(),
+                                  isScrollable: true,
+                                  height: UIHelper.size35,
+                                ),
                               ),
                             ],
                           ),

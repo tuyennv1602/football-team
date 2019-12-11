@@ -23,7 +23,7 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
   int _selectedType = Constants.RATIO_50_50;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     widget.onSelectedType(_selectedType);
   }
@@ -71,7 +71,7 @@ class _ChooseRatioTypeState extends State<ChooseRatioTypeWidget> {
                     style: textStyleSemiBold(color: widget.primaryColor),
                   ),
                 ),
-                UIHelper.horizontalSpaceMedium
+                SizedBox(width: UIHelper.size10, height: 5),
               ],
             );
           },

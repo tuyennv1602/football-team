@@ -26,40 +26,44 @@ class ItemComment extends StatelessWidget {
             size: UIHelper.size40,
             radius: UIHelper.size20,
           ),
-          UIHelper.horizontalSpaceMedium,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        comment.userName,
-                        style: textStyleMediumTitle(),
+          Padding(
+            padding: EdgeInsets.only(left: UIHelper.size10),
+            child: Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          comment.userName,
+                          style: textStyleMediumTitle(),
+                        ),
                       ),
-                    ),
-                    UIHelper.horizontalSpaceMedium,
-                    RatingBarIndicator(
-                      rating: comment.rating,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.only(right: UIHelper.size(2)),
-                      itemSize: UIHelper.size15,
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                    )
-                  ],
-                ),
-                Text(
-                  comment.getCreateTime,
-                  style: textStyleRegularBody(color: Colors.grey),
-                ),
-                ExpandableTextWidget(
-                  comment.comment,
-                )
-              ],
+                      Padding(
+                        padding: EdgeInsets.only(left: UIHelper.size10),
+                        child: RatingBarIndicator(
+                          rating: comment.rating,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.only(right: UIHelper.size(2)),
+                          itemSize: UIHelper.size15,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Text(
+                    comment.getCreateTime,
+                    style: textStyleRegularBody(color: Colors.grey),
+                  ),
+                  ExpandableTextWidget(
+                    comment.comment,
+                  )
+                ],
+              ),
             ),
           )
         ],

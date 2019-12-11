@@ -97,14 +97,15 @@ class SearchTeamPage extends StatelessWidget {
                       team.name,
                       style: textStyleSemiBold(),
                     ),
-                    UIHelper.verticalSpaceSmall,
-                    Text(
-                      team.bio,
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      style: textStyleRegularBody(color: Colors.black54),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                      child: Text(
+                        team.bio,
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                        style: textStyleRegularBody(color: Colors.black54),
+                      ),
                     ),
-                    UIHelper.verticalSpaceSmall,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -222,10 +223,12 @@ class SearchTeamPage extends StatelessWidget {
                 hintTextStyle: textStyleInput(color: Colors.white),
               ),
             ),
-            UIHelper.verticalSpaceSmall,
-            Text(
-              'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
-              style: textStyleRegularBody(color: Colors.white),
+            Padding(
+              padding: EdgeInsets.only(top: UIHelper.size5),
+              child: Text(
+                'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+                style: textStyleRegularBody(color: Colors.white),
+              ),
             ),
             MultiChoicePosition(
               initPositions: [],

@@ -16,7 +16,6 @@ import 'package:myfootball/ui/widget/choose_ratio_widget.dart';
 import 'package:myfootball/ui/widget/input_text_widget.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/tabbar_widget.dart';
-import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -51,26 +50,27 @@ class InviteTeamPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
           child: Row(
             children: <Widget>[
-              UIHelper.horizontalSpaceSmall,
-              Column(
-                children: <Widget>[
-                  Text(
-                    timeSlot.getStartTime,
-                    style: textStyleRegular(),
-                  ),
-                  Container(
-                    height: 1,
-                    width: UIHelper.size45,
-                    padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
-                    color: PRIMARY,
-                  ),
-                  Text(
-                    timeSlot.getEndTime,
-                    style: textStyleRegular(),
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      timeSlot.getStartTime,
+                      style: textStyleRegular(),
+                    ),
+                    Container(
+                      height: 1,
+                      width: UIHelper.size45,
+                      padding: EdgeInsets.symmetric(horizontal: UIHelper.size5),
+                      color: PRIMARY,
+                    ),
+                    Text(
+                      timeSlot.getEndTime,
+                      style: textStyleRegular(),
+                    ),
+                  ],
+                ),
               ),
-              UIHelper.horizontalSpaceMedium,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,19 +127,21 @@ class InviteTeamPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    UIHelper.verticalSpaceSmall,
-                    Form(
-                      key: _formKey,
-                      child: InputTextWidget(
-                        validator: (value) {
-                          if (value.isEmpty) return 'Vui lòng nhập lời mời';
-                          return null;
-                        },
-                        maxLines: 3,
-                        inputType: TextInputType.text,
-                        inputAction: TextInputAction.done,
-                        labelText: 'Nội dung lời mời',
-                        onSaved: (text) => _invite = text,
+                    Padding(
+                      padding: EdgeInsets.only(top: UIHelper.size10),
+                      child: Form(
+                        key: _formKey,
+                        child: InputTextWidget(
+                          validator: (value) {
+                            if (value.isEmpty) return 'Vui lòng nhập lời mời';
+                            return null;
+                          },
+                          maxLines: 3,
+                          inputType: TextInputType.text,
+                          inputAction: TextInputAction.done,
+                          labelText: 'Nội dung lời mời',
+                          onSaved: (text) => _invite = text,
+                        ),
                       ),
                     ),
                     ChooseRatioTypeWidget(

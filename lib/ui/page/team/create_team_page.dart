@@ -106,20 +106,21 @@ class CreateTeamPage extends StatelessWidget {
                                 labelText: 'Tên đội bóng',
                                 onSaved: (value) => _teamName = value,
                               ),
-                              UIHelper.verticalSpaceMedium,
-                              InputTextWidget(
-                                validator: (value) {
-                                  if (value.isEmpty)
-                                    return 'Vui lòng nhập giới thiệu';
-                                  return null;
-                                },
-                                maxLines: 3,
-                                inputType: TextInputType.text,
-                                inputAction: TextInputAction.done,
-                                labelText: 'Giới thiệu đội bóng',
-                                onSaved: (value) => _bio = value,
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                child: InputTextWidget(
+                                  validator: (value) {
+                                    if (value.isEmpty)
+                                      return 'Vui lòng nhập giới thiệu';
+                                    return null;
+                                  },
+                                  maxLines: 3,
+                                  inputType: TextInputType.text,
+                                  inputAction: TextInputAction.done,
+                                  labelText: 'Giới thiệu đội bóng',
+                                  onSaved: (value) => _bio = value,
+                                ),
                               ),
-                              UIHelper.verticalSpaceMedium,
                               Text(
                                 'Màu áo',
                                 style: textStyleInput(color: Colors.grey),
@@ -184,10 +185,10 @@ class CreateTeamPage extends StatelessWidget {
                               )
                             ],
                           ),
-                          UIHelper.verticalSpaceMedium,
-                          SizedBox(
+                          Container(
                             height: UIHelper.size50,
                             width: UIHelper.screenWidth,
+                            margin: EdgeInsets.only(top: UIHelper.size10, bottom: UIHelper.size20),
                             child: Swiper(
                               physics: BouncingScrollPhysics(),
                               viewportFraction:
@@ -200,7 +201,6 @@ class CreateTeamPage extends StatelessWidget {
                               itemCount: DRESS_COLORS.length,
                             ),
                           ),
-                          UIHelper.verticalSpaceLarge,
                           ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {

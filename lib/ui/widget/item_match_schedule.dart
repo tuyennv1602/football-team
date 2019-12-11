@@ -27,9 +27,9 @@ class ItemMatchSchedule extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UIHelper.verticalSpaceMedium,
           Container(
             height: UIHelper.size35,
+            margin: EdgeInsets.only(top: UIHelper.size10),
             child: Row(
               children: <Widget>[
                 Padding(
@@ -98,9 +98,9 @@ class ItemMatchSchedule extends StatelessWidget {
                   )
                 : SizedBox(),
           ),
-          UIHelper.verticalSpaceMedium,
           Container(
             height: UIHelper.size30,
+            margin: EdgeInsets.only(top: UIHelper.size10),
             decoration: BoxDecoration(
                 color: LIGHT_GREEN,
                 borderRadius: BorderRadius.only(
