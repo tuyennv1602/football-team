@@ -149,7 +149,7 @@ class MemberDetailPage extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Hero(
-                            tag: 'member - ${member.userId ?? member.id}',
+                            tag: 'member - ${member.id}',
                             child: ImageWidget(
                               source: member.avatar,
                               placeHolder: Images.DEFAULT_AVATAR,

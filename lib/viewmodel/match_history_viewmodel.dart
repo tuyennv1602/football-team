@@ -46,9 +46,10 @@ class MatchHistoryViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       matchHistories[index].isConfirmed = true;
+      matchHistories[index].updatePoint(resp.point);
       notifyListeners();
       UIHelper.showSimpleDialog(
-          'Cảm ơn vì đã xác nhận. Các cầu thủ có thể tham gia xác nhận tỉ số để nhận điểm thưởng',
+          'Cảm ơn bạn vì đã xác nhận. Các cầu thủ có thể tham gia xác nhận tỉ số để tăng độ tín nhiệm của kết quả và nhận điểm thưởng',
           isSuccess: true);
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);

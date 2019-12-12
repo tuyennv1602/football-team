@@ -42,7 +42,8 @@ class InviteDetailPage extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+              padding:
+                  EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
               child: Column(
                 children: <Widget>[
                   Text(
@@ -267,7 +268,8 @@ class InviteDetailPage extends StatelessWidget {
                                           backgroundColor: Colors.grey,
                                         ),
                                       ),
-                                      SizedBox(width: UIHelper.size10, height: 10),
+                                      SizedBox(
+                                          width: UIHelper.size10, height: 10),
                                       Expanded(
                                         child: ButtonWidget(
                                           child: Text(

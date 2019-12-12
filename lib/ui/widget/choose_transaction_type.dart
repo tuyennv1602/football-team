@@ -18,7 +18,7 @@ class ChooseTransactionTypeWidget extends StatefulWidget {
 
 class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
   bool _isExpanded = false;
-  int _selectedType = Constants.TRANSACTION_IN;
+  int _selectedType = Constants.TRANSACTION_OUT;
 
   @override
   void initState() {
@@ -81,8 +81,8 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionTypeWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  _buildItemType(Constants.TRANSACTION_IN),
                   _buildItemType(Constants.TRANSACTION_OUT),
+                  _buildItemType(Constants.TRANSACTION_IN),
                 ],
               ),
             ),

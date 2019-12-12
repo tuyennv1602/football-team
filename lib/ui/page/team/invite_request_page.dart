@@ -27,15 +27,26 @@ import '../base_widget.dart';
 class InviteRequestPage extends StatelessWidget {
   static const TABS = ['Lời mời', 'Đã gửi'];
 
-  Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest) =>
+  Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest,
+          {Function onCancel, Function onAccepted}) =>
       BorderItemWidget(
         onTap: () {
           if (inviteRequest.status == Constants.INVITE_WAITING &&
               !inviteRequest.isOverTime) {
             _showOptions(
               context,
-              onInviteDetail: () => NavigationService.instance
-                  .navigateTo(INVITE_DETAIL, arguments: inviteRequest),
+              onInviteDetail: () async {
+                Status status = await NavigationService.instance
+                    .navigateTo(INVITE_DETAIL, arguments: inviteRequest);
+                if (status != null) {
+                  if (status == Status.ABORTED) {
+                    onCancel();
+                  }
+                  if (status == Status.DONE) {
+                    onAccepted();
+                  }
+                }
+              },
               onTeamDetail: () => NavigationService.instance.navigateTo(
                 TEAM_DETAIL,
                 arguments: Team(
@@ -162,8 +173,14 @@ class InviteRequestPage extends StatelessWidget {
                                           padding: EdgeInsets.symmetric(
                                               vertical: UIHelper.padding),
                                           itemBuilder: (c, index) =>
-                                              _buildItemRequest(context,
-                                                  model.receivedInvites[index]),
+                                              _buildItemRequest(
+                                                context,
+                                                model.receivedInvites[index],
+                                                onCancel: () => model
+                                                    .removeRequest(0, index),
+                                                onAccepted: () =>
+                                                    model.acceptRequest(index),
+                                              ),
                                           separatorBuilder: (c, index) =>
                                               UIHelper.verticalIndicator,
                                           itemCount:
@@ -175,8 +192,12 @@ class InviteRequestPage extends StatelessWidget {
                                           padding: EdgeInsets.symmetric(
                                               vertical: UIHelper.padding),
                                           itemBuilder: (c, index) =>
-                                              _buildItemRequest(context,
-                                                  model.sentInvites[index]),
+                                              _buildItemRequest(
+                                                context,
+                                                model.sentInvites[index],
+                                                onCancel: () => model
+                                                    .removeRequest(1, index),
+                                              ),
                                           separatorBuilder: (c, index) =>
                                               UIHelper.verticalIndicator,
                                           itemCount: model.sentInvites.length),

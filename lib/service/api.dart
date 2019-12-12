@@ -4,7 +4,8 @@ import 'package:myfootball/model/group_matching_info.dart';
 import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/response/comments_resp.dart';
-import 'package:myfootball/model/response/create_code_resp.dart';
+import 'package:myfootball/model/response/create_transaction_resp.dart';
+import 'package:myfootball/model/response/dynamic_resp.dart';
 import 'package:myfootball/model/response/create_matching_resp.dart';
 import 'package:myfootball/model/response/fund_request_resp.dart';
 import 'package:myfootball/model/response/fund_resp.dart';
@@ -560,12 +561,12 @@ class Api {
     }
   }
 
-  Future<BaseResponse> confirmMatchResult(int historyId) async {
+  Future<DynamicResponse> confirmMatchResult(int historyId) async {
     try {
       var resp = await _api.putApi('match/history/$historyId/confirm');
-      return BaseResponse.success(resp.data);
+      return DynamicResponse.success(resp.data);
     } on DioError catch (e) {
-      return BaseResponse.error(e.message);
+      return DynamicResponse.error(e.message);
     }
   }
 
@@ -647,14 +648,14 @@ class Api {
     }
   }
 
-  Future<BaseResponse> createExchange(
+  Future<CreateTransactionResponse> createExchange(
       int teamId, double price, int type, String title) async {
     try {
       var resp = await _api.postApi('group/$teamId/exchange',
           body: {'price': price, 'type': type, 'title': title});
-      return BaseResponse.success(resp.data);
+      return CreateTransactionResponse.success(resp.data);
     } on DioError catch (e) {
-      return BaseResponse.error(e.message);
+      return CreateTransactionResponse.error(e.message);
     }
   }
 
@@ -714,12 +715,12 @@ class Api {
     }
   }
 
-  Future<CreateCodeResponse> createCode(int matchId, int teamId) async {
+  Future<DynamicResponse> createCode(int matchId, int teamId) async {
     try {
       var resp = await _api.postApi('match/$matchId/group/$teamId/code');
-      return CreateCodeResponse.success(resp.data);
+      return DynamicResponse.success(resp.data);
     } on DioError catch (e) {
-      return CreateCodeResponse.error(e.message);
+      return DynamicResponse.error(e.message);
     }
   }
 

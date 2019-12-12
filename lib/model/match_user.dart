@@ -15,6 +15,21 @@ class MatchUser extends User {
     createDate = json['create_date'];
   }
 
+  Map<String, dynamic> toMemberJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['username'] = this.userName;
+    data['avatar'] = this.avatar;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['rating'] = this.rating;
+    data['position'] = this.position;
+    data['is_captain'] = false;
+    data['is_manager'] = false;
+    return data;
+  }
+
   String get getStatusName {
     if (status == 4) return 'Chờ xác nhận';
     if (status == 0) return 'Chưa đóng';

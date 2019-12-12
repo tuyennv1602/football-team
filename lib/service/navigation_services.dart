@@ -27,7 +27,7 @@ class NavigationService {
         .pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false);
   }
 
-  bool goBack() {
-    return navigatorKey.currentState.pop();
+  bool goBack({dynamic result}) {
+    return navigatorKey.currentState.pop(result);
   }
 }

@@ -9,6 +9,7 @@ import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
@@ -21,10 +22,7 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/user_request_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class UserRequestPage extends StatelessWidget {
-  String _content;
-  List<String> _positions;
   final _formKey = GlobalKey<FormState>();
 
   bool validateAndSave() {
@@ -44,7 +42,6 @@ class UserRequestPage extends StatelessWidget {
           options: ['Tuỳ chọn', 'Sửa đăng ký', 'Huỷ đăng ký', 'Huỷ'],
           onClickOption: (position) async {
             if (position == 1) {
-              _positions = null;
               onEdit();
             } else if (position == 2) {
               onCancel();
@@ -54,151 +51,143 @@ class UserRequestPage extends StatelessWidget {
       );
 
   _showEditForm(
-          BuildContext context, UserRequest userRequest, Function onSubmit) =>
-      UIHelper.showCustomizeDialog(
-        'edit_request',
-        icon: Images.EDIT_PROFILE,
-        confirmLabel: 'CẬP NHẬT',
-        onConfirmed: () {
-          if (validateAndSave()) {
-            NavigationService.instance.goBack();
-            onSubmit();
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: InputTextWidget(
-                validator: (value) {
-                  if (value.isEmpty) return 'Vui lòng nhập nội dung';
-                  return null;
-                },
-                initValue: userRequest.content,
-                onSaved: (value) => _content = value,
-                maxLines: 3,
-                focusedColor: Colors.white,
-                inputType: TextInputType.text,
-                inputAction: TextInputAction.done,
-                labelText: 'Giới thiệu bản thân',
-                textStyle: textStyleInput(color: Colors.white),
-                hintTextStyle: textStyleInput(color: Colors.white),
-              ),
+      BuildContext context, UserRequest userRequest, Function onSubmit) {
+    String _content;
+    List<String> _positions;
+    return UIHelper.showCustomizeDialog(
+      'edit_request',
+      icon: Images.EDIT_PROFILE,
+      confirmLabel: 'CẬP NHẬT',
+      onConfirmed: () {
+        if (validateAndSave()) {
+          NavigationService.instance.goBack();
+          onSubmit(_content, _positions);
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Form(
+            key: _formKey,
+            child: InputTextWidget(
+              validator: (value) {
+                if (value.isEmpty) return 'Vui lòng nhập nội dung';
+                return null;
+              },
+              initValue: userRequest.content,
+              onSaved: (value) => _content = value,
+              maxLines: 3,
+              focusedColor: Colors.white,
+              inputType: TextInputType.text,
+              inputAction: TextInputAction.done,
+              labelText: 'Giới thiệu bản thân',
+              textStyle: textStyleInput(color: Colors.white),
+              hintTextStyle: textStyleInput(color: Colors.white),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: UIHelper.size5),
-              child: Text(
-                'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
-                style: textStyleRegularBody(color: Colors.white),
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size5),
+            child: Text(
+              'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+              style: textStyleRegularBody(color: Colors.white),
             ),
-            MultiChoicePosition(
-              initPositions: userRequest.getPositions,
-              onChangePositions: (positions) => _positions = positions,
-            )
-          ],
-        ),
-      );
-
-  Widget _buildItemRequest(
-      BuildContext context, UserRequestModel model, int index) {
-    UserRequest request = model.userRequests[index];
-    return Card(
-      elevation:3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.padding),
+          ),
+          MultiChoicePosition(
+            initPositions: userRequest.getPositions,
+            onChangePositions: (positions) => _positions = positions,
+          )
+        ],
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-      child: InkWell(
-        onTap: () {
-          if (request.status == Constants.REQUEST_REJECTED ||
-              request.status == Constants.REQUEST_ACCEPTED) return;
-          _showChooseAction(
+    );
+  }
+
+  _buildItemRequest(BuildContext context, UserRequestModel model, int index) {
+    UserRequest request = model.userRequests[index];
+    return BorderItemWidget(
+      onTap: () {
+        if (request.status == Constants.REQUEST_REJECTED ||
+            request.status == Constants.REQUEST_ACCEPTED) return;
+        _showChooseAction(
+          context,
+          onEdit: () => _showEditForm(
             context,
-            onEdit: () => _showEditForm(
-              context,
-              request,
-              () => model.updateRequest(
-                  index,
-                  request.idRequest,
-                  request.idTeam,
-                  _content,
-                  _positions != null ? _positions.join(',') : request.position),
-            ),
-            onCancel: () => UIHelper.showConfirmDialog(
-              'Bạn có chắc chắn muốn xoá yêu cầu?',
-              onConfirmed: () => model.cancelRequest(index, request.idRequest),
-            ),
-          );
-        },
-        child: Padding(
-          padding: EdgeInsets.all(UIHelper.padding),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ImageWidget(
-                  source: request.teamLogo, placeHolder: Images.DEFAULT_LOGO),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: UIHelper.padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Gửi tới: ',
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontFamily: REGULAR,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                            TextSpan(
-                              text: request.teamName,
-                              style: TextStyle(
-                                fontFamily: SEMI_BOLD,
-                                color: Colors.black,
-                                fontSize: UIHelper.size(16),
-                              ),
-                            ),
-                          ],
+            request,
+            (content, position) => model.updateRequest(
+                index,
+                request.idRequest,
+                request.idTeam,
+                content,
+                position != null ? position.join(',') : request.position),
+          ),
+          onCancel: () => UIHelper.showConfirmDialog(
+            'Bạn có chắc chắn muốn xoá yêu cầu?',
+            onConfirmed: () => model.cancelRequest(index, request.idRequest),
+          ),
+        );
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ImageWidget(
+              source: request.teamLogo, placeHolder: Images.DEFAULT_LOGO),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: UIHelper.padding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Gửi tới: ',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontFamily: REGULAR,
+                            fontSize: UIHelper.size(16),
+                          ),
                         ),
+                        TextSpan(
+                          text: request.teamName,
+                          style: TextStyle(
+                            fontFamily: SEMI_BOLD,
+                            color: Colors.black,
+                            fontSize: UIHelper.size(16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    request.content,
+                    style: textStyleRegular(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: UIHelper.size5),
+                    child: Row(
+                        children: request.getPositions
+                            .map((pos) => ItemPosition(position: pos))
+                            .toList()),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Ngày gửi: ${request.getCreateDate}',
+                        style: textStyleRegularBody(color: Colors.grey),
                       ),
                       Text(
-                        request.content,
-                        style: textStyleRegular(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: UIHelper.size5),
-                        child: Row(
-                            children: request.getPositions
-                                .map((pos) => ItemPosition(position: pos))
-                                .toList()),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Ngày gửi: ${request.getCreateDate}',
-                            style: textStyleRegularBody(color: Colors.grey),
-                          ),
-                          Text(
-                            request.getStatus,
-                            style: textStyleRegularBody(
-                                color: request.getStatusColor),
-                          )
-                        ],
+                        request.getStatus,
+                        style:
+                            textStyleRegularBody(color: request.getStatusColor),
                       )
                     ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

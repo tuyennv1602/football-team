@@ -65,6 +65,14 @@ class MatchHistory extends MatchSchedule {
 
   bool get isAbleConfirm => DateUtil.isAbleConfirm(createDate);
 
+  void updatePoint(double point) {
+    if (isSender) {
+      sendGroupPoint = point;
+    } else {
+      receiveGroupPoint = point;
+    }
+  }
+
   String get getStatusName {
     if (isUpdated && isConfirmed) {
       return 'Đã xác nhận';

@@ -26,9 +26,9 @@ class ItemComment extends StatelessWidget {
             size: UIHelper.size40,
             radius: UIHelper.size20,
           ),
-          Padding(
-            padding: EdgeInsets.only(left: UIHelper.size10),
-            child: Expanded(
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: UIHelper.size10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

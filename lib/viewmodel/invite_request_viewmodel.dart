@@ -28,4 +28,18 @@ class InviteRequestViewModel extends BaseViewModel {
     setBusy(false);
     return resp;
   }
+
+  void removeRequest(int tab, int index) {
+    if (tab == 0) {
+      receivedInvites.removeAt(index);
+    } else {
+      sentInvites.removeAt(index);
+    }
+    notifyListeners();
+  }
+
+  void acceptRequest(int index) {
+    receivedInvites[index].status = 2;
+    notifyListeners();
+  }
 }

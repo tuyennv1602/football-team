@@ -33,6 +33,7 @@ class UserRequestModel extends BaseViewModel {
       var _userRequest = userRequests[index];
       _userRequest.status = Constants.REQUEST_WAITING;
       _userRequest.content = content;
+      _userRequest.position = positions;
       userRequests[index] = _userRequest;
       notifyListeners();
       UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!', isSuccess: true);

@@ -7,6 +7,7 @@ class MatchShare {
   int matchId;
   int groupId;
   int requestStatus;
+  int matchUserId;
   MatchSchedule matchInfo;
 
   MatchShare(
@@ -28,19 +29,7 @@ class MatchShare {
     matchInfo = json['match_info'] != null
         ? new MatchSchedule.fromJson(groupId, json['match_info'])
         : null;
+    matchUserId = json['match_user_id'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['status'] = this.status;
-    data['request_code'] = this.requestCode;
-    data['match_id'] = this.matchId;
-    data['group_id'] = this.groupId;
-    data['request_status'] = this.requestStatus;
-    if (this.matchInfo != null) {
-      data['match_info'] = this.matchInfo.toJson();
-    }
-    return data;
-  }
 }

@@ -73,6 +73,8 @@ class FinanceViewModel extends BaseViewModel {
         teamId, StringUtil.getPriceFromString(price), type, title);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
+      this.transactions.insert(0, resp.transaction);
+      notifyListeners();
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

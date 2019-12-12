@@ -95,11 +95,16 @@ class UserJoinMatchPage extends StatelessWidget {
                                                       MATCH_SCHEDULE_DETAIL,
                                                       arguments: matchInfo),
                                               onCancel: () =>
-                                                  model.cancelJoinRequest(
-                                                      0,
-                                                      index,
-                                                      model.waitRequests[index]
-                                                          .id),
+                                                  UIHelper.showConfirmDialog(
+                                                'Bạn có chắc chắn muốn huỷ yêu cầu tham gia trận đấu',
+                                                onConfirmed: () =>
+                                                    model.cancelJoinRequest(
+                                                        0,
+                                                        index,
+                                                        model
+                                                            .waitRequests[index]
+                                                            .matchUserId),
+                                              ),
                                             ),
                                           );
                                         },
@@ -129,11 +134,17 @@ class UserJoinMatchPage extends StatelessWidget {
                                                       MATCH_SCHEDULE_DETAIL,
                                                       arguments: matchInfo),
                                               onCancel: () =>
-                                                  model.cancelJoinRequest(
-                                                      1,
-                                                      index,
-                                                      model.waitRequests[index]
-                                                          .id),
+                                                  UIHelper.showConfirmDialog(
+                                                'Bạn có chắc chắn muốn huỷ tham gia trận đấu?',
+                                                onConfirmed: () =>
+                                                    model.cancelJoinRequest(
+                                                        1,
+                                                        index,
+                                                        model
+                                                            .acceptedRequest[
+                                                                index]
+                                                            .matchUserId),
+                                              ),
                                             ),
                                           );
                                         },
@@ -141,7 +152,30 @@ class UserJoinMatchPage extends StatelessWidget {
                                             UIHelper.verticalIndicator,
                                         itemCount:
                                             model.acceptedRequest.length),
-                            EmptyWidget(message: 'Chưa có trận đấu nào')
+                            model.busy
+                                ? LoadingWidget()
+                                : model.joined.length == 0
+                                    ? EmptyWidget(
+                                        message: 'Chưa có trận đấu nào')
+                                    : ListView.separated(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: UIHelper.padding),
+                                        physics: BouncingScrollPhysics(),
+                                        itemBuilder: (c, index) {
+                                          var matchInfo =
+                                              model.joined[index].matchInfo;
+                                          return ItemMatchSchedule(
+                                            matchSchedule: matchInfo,
+                                            onTapSchedule: () =>
+                                                NavigationService.instance
+                                                    .navigateTo(
+                                                        MATCH_SCHEDULE_DETAIL,
+                                                        arguments: matchInfo),
+                                          );
+                                        },
+                                        separatorBuilder: (c, index) =>
+                                            UIHelper.verticalIndicator,
+                                        itemCount: model.joined.length),
                           ],
                         ),
                       ),

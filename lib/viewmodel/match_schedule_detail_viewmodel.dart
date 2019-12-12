@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_schedule.dart';
+import 'package:myfootball/model/match_user.dart';
 import 'package:myfootball/model/member.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -8,27 +9,23 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 class MatchScheduleDetailViewModel extends BaseViewModel {
   Api _api;
   List<Member> myTeamMembers;
-  List<Member> opponentTeamMembers;
   MatchSchedule matchSchedule;
 
   MatchScheduleDetailViewModel(
       {@required Api api, @required this.matchSchedule})
       : _api = api;
 
+  void addMember(List<MatchUser> matchUsers) {
+    matchUsers.forEach(
+        (user) => this.myTeamMembers.add(Member.fromJson(user.toMemberJson())));
+    notifyListeners();
+  }
+
   Future<void> getMyTeamMembers(int teamId) async {
     setBusy(true);
     var resp = await _api.getJoinedMember(matchSchedule.matchId, teamId);
     if (resp.isSuccess) {
       this.myTeamMembers = resp.members;
-    }
-    setBusy(false);
-  }
-
-  Future<void> getOpponentTeamMembers(int teamId) async {
-    setBusy(true);
-    var resp = await _api.getJoinedMember(matchSchedule.matchId, teamId);
-    if (resp.isSuccess) {
-      this.opponentTeamMembers = resp.members;
     }
     setBusy(false);
   }

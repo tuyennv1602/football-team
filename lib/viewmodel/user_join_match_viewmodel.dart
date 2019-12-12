@@ -8,6 +8,7 @@ class UserJoinMatchViewModel extends BaseViewModel {
   Api _api;
   List<MatchShare> waitRequests = [];
   List<MatchShare> acceptedRequest = [];
+  List<MatchShare> joined = [];
 
   UserJoinMatchViewModel({@required Api api}) : _api = api;
 
@@ -16,23 +17,25 @@ class UserJoinMatchViewModel extends BaseViewModel {
     var resp = await _api.getUserJoinMatch(page);
     if (resp.isSuccess && resp.matchShares != null) {
       resp.matchShares.forEach((item) {
-        if (item.requestStatus == 0) {
+        if (item.requestStatus == 4) {
           waitRequests.add(item);
-        } else {
+        } else if (item.requestStatus == 1) {
           acceptedRequest.add(item);
-        }
+        } else {}
       });
     }
     setBusy(false);
   }
 
-  Future<void> cancelJoinRequest(int tab, int index, int matchShareId) async {
+  Future<void> cancelJoinRequest(int tab, int index, int matchUserId) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.cancelUserJoinRequest(matchShareId);
+    var resp = await _api.cancelUserJoinRequest(matchUserId);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       if (tab == 0) {
         waitRequests.removeAt(index);
+      } else if (tab == 1) {
+        acceptedRequest.removeAt(index);
       }
       notifyListeners();
     } else {

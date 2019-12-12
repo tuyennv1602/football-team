@@ -62,7 +62,7 @@ class ItemMember extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       child: Hero(
-                        tag: 'member - ${member.userId ?? member.id}',
+                        tag: 'member - ${member.id}',
                         child: ImageWidget(
                           source: member.avatar,
                           placeHolder: Images.DEFAULT_AVATAR,

@@ -17,12 +17,9 @@ import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/item_member.dart';
 import 'package:myfootball/ui/widget/item_option.dart';
-import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
-import 'package:myfootball/ui/widget/tabbar_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/match_history_detail_viewmodel.dart';
 import 'package:myfootball/viewmodel/match_schedule_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -47,7 +44,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                 isCaptain: _member.isCaptain,
                 isManager: _member.isManager,
                 onTap: () => NavigationService.instance
-                    .navigateTo(USER_COMMENT, arguments: _member.userId),
+                    .navigateTo(USER_COMMENT, arguments: _member.id),
               );
             },
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -66,12 +63,8 @@ class MatchScheduleDetailPage extends StatelessWidget {
       body: BaseWidget<MatchScheduleDetailViewModel>(
         model: MatchScheduleDetailViewModel(
             api: Provider.of(context), matchSchedule: matchSchedule),
-        onModelReady: (model) {
-          model.getMyTeamMembers(matchSchedule.getMyTeam.id);
-          if (matchSchedule.receiveTeam != null) {
-            model.getOpponentTeamMembers(matchSchedule.getOpponentTeam.id);
-          }
-        },
+        onModelReady: (model) =>
+            model.getMyTeamMembers(matchSchedule.getMyTeam.id),
         builder: (c, model, child) => Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -102,7 +95,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                         }
                       } else {
                         UIHelper.showSimpleDialog(
-                            'Chưa có mã tham gia trận đấu. Vui lòng chờ đội trưởng tạo mã');
+                            'Chưa có mã tham gia trận đấu');
                       }
                     } else {
                       Share.share(model.matchSchedule.getShareCode);
@@ -135,9 +128,16 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                       Images.MEMBER_MANAGE,
                                       'Yêu cầu tham gia trận đấu',
                                       iconColor: Colors.teal,
-                                      onTap: () => NavigationService.instance
-                                          .navigateTo(REQUEST_JOIN_MATCH,
-                                              arguments: matchSchedule.matchId),
+                                      onTap: () async {
+                                        var _matchUsers = await NavigationService
+                                            .instance
+                                            .navigateTo(REQUEST_JOIN_MATCH,
+                                                arguments:
+                                                    matchSchedule.matchId);
+                                        if(_matchUsers != null){
+                                          model.addMember(_matchUsers);
+                                        }
+                                      },
                                     )
                                   : SizedBox(),
                               Container(
@@ -146,37 +146,15 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: UIHelper.padding,
-                                    vertical: UIHelper.size5),
+                                    vertical: UIHelper.size10),
                                 child: Text(
                                   'Danh sách đăng ký thi đấu',
                                   style: textStyleSemiBold(),
                                 ),
                               ),
                               Expanded(
-                                child: matchSchedule.receiveTeam != null
-                                    ? DefaultTabController(
-                                        length: 2,
-                                        child: Column(
-                                          children: <Widget>[
-                                            TabBarWidget(
-                                              titles: [
-                                                matchSchedule.getMyTeamName,
-                                                matchSchedule.getOpponentName
-                                              ],
-                                            ),
-                                            Expanded(
-                                              child: TabBarView(children: [
-                                                _buildTeamMembers(context,
-                                                    model.myTeamMembers),
-                                                _buildTeamMembers(context,
-                                                    model.opponentTeamMembers)
-                                              ]),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : _buildTeamMembers(
-                                        context, model.myTeamMembers),
+                                child: _buildTeamMembers(
+                                    context, model.myTeamMembers),
                               )
                             ],
                           ),

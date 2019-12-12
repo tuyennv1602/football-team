@@ -45,7 +45,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                 isManager: _member.isManager,
                 isCaptain: _member.isCaptain,
                 onTap: () => NavigationService.instance
-                    .navigateTo(USER_COMMENT, arguments: _member.userId),
+                    .navigateTo(USER_COMMENT, arguments: _member.id),
               );
             },
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

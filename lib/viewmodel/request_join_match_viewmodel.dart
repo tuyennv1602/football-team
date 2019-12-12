@@ -22,7 +22,7 @@ class RequestJoinMatchViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<void> acceptRequest(int index, int matchUserId) async {
+  Future<bool> acceptRequest(int index, int matchUserId) async {
     UIHelper.showProgressDialog;
     var resp = await _api.acceptUserJoinRequest(matchUserId);
     UIHelper.hideProgressDialog;
@@ -32,6 +32,7 @@ class RequestJoinMatchViewModel extends BaseViewModel {
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp.isSuccess;
   }
 
   Future<void> rejectRequest(int index, int matchUserId) async {
