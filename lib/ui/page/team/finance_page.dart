@@ -180,58 +180,58 @@ class FinancePage extends StatelessWidget {
       resizeToAvoidBottomPadding: false,
       floatingActionButton: isManager
           ? UnicornDialer(
-            parentButtonBackground: PRIMARY,
-            orientation: UnicornOrientation.VERTICAL,
-            hasBackground: false,
-            parentButton: Icon(Icons.add),
-            hasNotch: true,
-            childButtons: [
-              UnicornButton(
-                labelText: 'Tạo thông báo',
-                hasLabel: true,
-                labelBackgroundColor: Colors.redAccent,
-                labelColor: Colors.white,
-                currentButton: FloatingActionButton(
-                  heroTag: 'a',
-                  backgroundColor: Colors.redAccent,
-                  mini: true,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      Images.FUND_NOTIFY,
-                      color: Colors.white,
+              parentButtonBackground: PRIMARY,
+              orientation: UnicornOrientation.VERTICAL,
+              hasBackground: true,
+              backgroundColor: BLACK_TRANSPARENT,
+              parentButton: Icon(Icons.add),
+              childButtons: [
+                UnicornButton(
+                  labelText: 'Tạo thông báo',
+                  hasLabel: true,
+                  labelBackgroundColor: Colors.white,
+                  labelColor: Colors.black,
+                  currentButton: FloatingActionButton(
+                    heroTag: 'a',
+                    backgroundColor: PRIMARY,
+                    mini: true,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        Images.FUND_NOTIFY,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () => _createFundNotification(
+                      context,
+                      onSubmit: (title, price, expiredDate) => _viewModel
+                          .createFundNotify(title, price, expiredDate),
                     ),
                   ),
-                  onPressed: () => _createFundNotification(
-                    context,
-                    onSubmit: (title, price, expiredDate) => _viewModel
-                        .createFundNotify(title, price, expiredDate),
-                  ),
                 ),
-              ),
-              UnicornButton(
-                labelText: 'Tạo giao dịch',
-                hasLabel: true,
-                labelBackgroundColor: Colors.amber,
-                labelColor: Colors.white,
-                currentButton: FloatingActionButton(
-                  heroTag: 'b',
-                  backgroundColor: Colors.amber,
-                  mini: true,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      Images.TRANSACTIONS,
-                      color: Colors.white,
+                UnicornButton(
+                  labelText: 'Tạo giao dịch',
+                  hasLabel: true,
+                  labelBackgroundColor: Colors.white,
+                  labelColor: Colors.black,
+                  currentButton: FloatingActionButton(
+                    heroTag: 'b',
+                    backgroundColor: PRIMARY,
+                    mini: true,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        Images.TRANSACTIONS,
+                        color: Colors.white,
+                      ),
                     ),
+                    onPressed: () => _createTransaction(context,
+                        onSubmit: (price, type, title) =>
+                            _viewModel.createExchange(price, type, title)),
                   ),
-                  onPressed: () => _createTransaction(context,
-                      onSubmit: (price, type, title) =>
-                          _viewModel.createExchange(price, type, title)),
-                ),
-              )
-            ],
-          )
+                )
+              ],
+            )
           : SizedBox(),
       body: BaseWidget<FinanceViewModel>(
         model: FinanceViewModel(api: Provider.of(context), teamId: team.id),
@@ -299,7 +299,9 @@ class FinancePage extends StatelessWidget {
                 onTap: () async {
                   var date = await showMonthPicker(
                       context: context, initialDate: DateTime.now());
-                  model.changeMonth(date);
+                  if (date != null) {
+                    model.changeMonth(date);
+                  }
                 },
                 child: Center(
                   child: Text(

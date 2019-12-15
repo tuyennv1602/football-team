@@ -26,7 +26,7 @@ class TeamServices {
   }
 
   Future<TeamResponse> getTeamDetail(int teamId) async {
-    var resp = await _api.getTeamDetail(teamId);
+    var resp = await _api.getTeamDetail(teamId ?? _currentTeam.id);
     if (resp.isSuccess) {
       setTeam(resp.team);
     }

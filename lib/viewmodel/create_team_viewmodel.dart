@@ -49,17 +49,16 @@ class CreateTeamViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       var _team = resp.team;
       if (image != null) {
-        var _imageLink = await _uploadImage(_team.id, name);
+        var _imageLink = await FirebaseServices.instance
+            .uploadImage(image, 'team', 'id_${_team.id}');
         if (_imageLink != null) {
           // upload image success and update team info
           _team.logo = _imageLink;
           await _api.updateTeam(_team);
         }
-        UIHelper.hideProgressDialog;
-      } else {
-        UIHelper.hideProgressDialog;
       }
       _sharePreferences.setLastTeam(_team);
+      UIHelper.hideProgressDialog;
       user.addTeam(_team);
       _authServices.updateUser(user);
       UIHelper.showSimpleDialog('Đăng ký đội bóng thành công', isSuccess: true);
@@ -68,12 +67,6 @@ class CreateTeamViewModel extends BaseViewModel {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
     return resp;
-  }
-
-  Future<String> _uploadImage(int teamId, String teamName) async {
-    if (image == null) return null;
-    var name = 'id_$teamId';
-    return FirebaseServices.instance.uploadImage(image, 'team', name);
   }
 
   void setDressColor(Color color) {

@@ -6,13 +6,15 @@ class ImageWidget extends StatelessWidget {
   final double size;
   final double radius;
   final String placeHolder;
+  final BoxFit boxFit;
 
   ImageWidget(
       {Key key,
       @required this.source,
       @required this.placeHolder,
       this.size,
-      this.radius})
+      this.radius,
+      this.boxFit = BoxFit.contain})
       : assert(placeHolder != null),
         super(key: key);
 
@@ -26,7 +28,7 @@ class ImageWidget extends StatelessWidget {
               placeholder: placeHolder,
               width: size ?? UIHelper.size(55),
               height: size ?? UIHelper.size(55),
-              fit: BoxFit.contain,
+              fit: boxFit,
               fadeInDuration: Duration(milliseconds: 100),
               fadeOutDuration: Duration(milliseconds: 100),
             ),

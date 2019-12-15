@@ -27,10 +27,7 @@ enum SEARCH_TYPE {
   TEAM_DETAIL
 }
 
-// ignore: must_be_immutable
 class SearchTeamPage extends StatelessWidget {
-  String _content;
-  List<String> _positions;
   final _formKey = GlobalKey<FormState>();
   final SEARCH_TYPE type;
 
@@ -54,7 +51,6 @@ class SearchTeamPage extends StatelessWidget {
             NavigationService.instance
                 .navigateTo(COMPARE_TEAM, arguments: team);
           } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
-            _positions = null;
             _showOptions(
               context,
               onDetail: () => NavigationService.instance
@@ -198,55 +194,58 @@ class SearchTeamPage extends StatelessWidget {
                 },
               ));
 
-  _showRequestForm(BuildContext context, Team team, {Function onSubmit}) =>
-      UIHelper.showCustomizeDialog(
-        'request_member',
-        icon: Images.EDIT_PROFILE,
-        confirmLabel: 'GỬI',
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: InputTextWidget(
-                validator: (value) {
-                  if (value.isEmpty) return 'Vui lòng nhập nội dung';
-                  return null;
-                },
-                onSaved: (value) => _content = value,
-                maxLines: 3,
-                focusedColor: Colors.white,
-                inputType: TextInputType.text,
-                inputAction: TextInputAction.done,
-                labelText: 'Giới thiệu bản thân',
-                textStyle: textStyleInput(color: Colors.white),
-                hintTextStyle: textStyleInput(color: Colors.white),
-              ),
+  _showRequestForm(BuildContext context, Team team, {Function onSubmit}) {
+    String _content;
+    List<String> _positions;
+    return UIHelper.showCustomizeDialog(
+      'request_member',
+      icon: Images.EDIT_PROFILE,
+      confirmLabel: 'GỬI',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Form(
+            key: _formKey,
+            child: InputTextWidget(
+              validator: (value) {
+                if (value.isEmpty) return 'Vui lòng nhập nội dung';
+                return null;
+              },
+              onSaved: (value) => _content = value,
+              maxLines: 3,
+              focusedColor: Colors.white,
+              inputType: TextInputType.text,
+              inputAction: TextInputAction.done,
+              labelText: 'Giới thiệu bản thân',
+              textStyle: textStyleInput(color: Colors.white),
+              hintTextStyle: textStyleInput(color: Colors.white),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: UIHelper.size5),
-              child: Text(
-                'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
-                style: textStyleRegularBody(color: Colors.white),
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size5),
+            child: Text(
+              'Vị trí có thể chơi (Chọn 1 hoặc nhiều)',
+              style: textStyleRegularBody(color: Colors.white),
             ),
-            MultiChoicePosition(
-              initPositions: [],
-              onChangePositions: (positions) => _positions = positions,
-            )
-          ],
-        ),
-        onConfirmed: () {
-          if (validateAndSave()) {
-            if (_positions == null || _positions.length == 0) {
-              UIHelper.showSimpleDialog('Bạn chưa chọn vị trí có thể chơi');
-            } else {
-              NavigationService.instance.goBack();
-              onSubmit(team.id);
-            }
+          ),
+          MultiChoicePosition(
+            initPositions: [],
+            onChangePositions: (positions) => _positions = positions,
+          )
+        ],
+      ),
+      onConfirmed: () {
+        if (validateAndSave()) {
+          if (_positions == null || _positions.length == 0) {
+            UIHelper.showSimpleDialog('Bạn chưa chọn vị trí có thể chơi');
+          } else {
+            NavigationService.instance.goBack();
+            onSubmit(team.id, _content, _positions);
           }
-        },
-      );
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -300,9 +299,10 @@ class SearchTeamPage extends StatelessWidget {
                                     itemBuilder: (c, index) => _buildItemTeam(
                                       context,
                                       model.teams[index],
-                                      onSubmitRequest: (teamId) =>
-                                          model.createRequest(
-                                              teamId, _content, _positions),
+                                      onSubmitRequest:
+                                          (teamId, content, position) =>
+                                              model.createRequest(
+                                                  teamId, content, position),
                                     ),
                                   ),
                           ),

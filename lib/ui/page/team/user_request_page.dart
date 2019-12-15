@@ -53,7 +53,7 @@ class UserRequestPage extends StatelessWidget {
   _showEditForm(
       BuildContext context, UserRequest userRequest, Function onSubmit) {
     String _content;
-    List<String> _positions;
+    List<String> _position;
     return UIHelper.showCustomizeDialog(
       'edit_request',
       icon: Images.EDIT_PROFILE,
@@ -61,7 +61,8 @@ class UserRequestPage extends StatelessWidget {
       onConfirmed: () {
         if (validateAndSave()) {
           NavigationService.instance.goBack();
-          onSubmit(_content, _positions);
+          onSubmit(_content,
+              _position != null ? _position.join(',') : userRequest.position);
         }
       },
       child: Column(
@@ -94,7 +95,7 @@ class UserRequestPage extends StatelessWidget {
           ),
           MultiChoicePosition(
             initPositions: userRequest.getPositions,
-            onChangePositions: (positions) => _positions = positions,
+            onChangePositions: (positions) => _position = positions,
           )
         ],
       ),
@@ -113,11 +114,7 @@ class UserRequestPage extends StatelessWidget {
             context,
             request,
             (content, position) => model.updateRequest(
-                index,
-                request.idRequest,
-                request.idTeam,
-                content,
-                position != null ? position.join(',') : request.position),
+                index, request.idRequest, request.idTeam, content, position),
           ),
           onCancel: () => UIHelper.showConfirmDialog(
             'Bạn có chắc chắn muốn xoá yêu cầu?',

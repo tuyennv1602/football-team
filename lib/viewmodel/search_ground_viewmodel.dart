@@ -19,8 +19,10 @@ class SearchGroundViewModel extends BaseViewModel {
 
   Future<void> getMyLocation() async {
     var position = await LocationServices().getCurrentLocation();
-    this.myPosition = LatLng(position.latitude, position.longitude);
-    notifyListeners();
+    if (position != null) {
+      this.myPosition = LatLng(position.latitude, position.longitude);
+      notifyListeners();
+    }
   }
 
   Future<ListGroundResponse> getGroundsByLocation() async {

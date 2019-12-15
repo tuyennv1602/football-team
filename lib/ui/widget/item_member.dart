@@ -67,32 +67,36 @@ class ItemMember extends StatelessWidget {
                           source: member.avatar,
                           placeHolder: Images.DEFAULT_AVATAR,
                           radius: UIHelper.size(55) / 2,
+                          boxFit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 3,
-                      right: 0,
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size5),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(UIHelper.size10),
-                          border: Border.all(color: Colors.white),
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xFF02DC37), PRIMARY],
-                          ),
-                        ),
-                        child: Text(
-                          '10',
-                          style:
-                              textStyleSemiBold(size: 14, color: Colors.white),
-                        ),
-                      ),
-                    )
+                    member.number != null
+                        ? Positioned(
+                            bottom: 3,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.size5),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius:
+                                    BorderRadius.circular(UIHelper.size10),
+                                border: Border.all(color: Colors.white),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [Color(0xFF02DC37), PRIMARY],
+                                ),
+                              ),
+                              child: Text(
+                                member.number,
+                                style: textStyleSemiBold(
+                                    size: 14, color: Colors.white),
+                              ),
+                            ),
+                          )
+                        : SizedBox()
                   ],
                 ),
                 Expanded(

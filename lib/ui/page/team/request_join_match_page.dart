@@ -65,7 +65,10 @@ class RequestJoinMatchPage extends StatelessWidget {
         child: Row(
           children: <Widget>[
             ImageWidget(
-                source: matchUser.avatar, placeHolder: Images.DEFAULT_AVATAR),
+              source: matchUser.avatar,
+              placeHolder: Images.DEFAULT_AVATAR,
+              boxFit: BoxFit.cover,
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: UIHelper.padding),

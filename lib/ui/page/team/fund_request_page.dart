@@ -34,6 +34,7 @@ class FundRequestPage extends StatelessWidget {
               placeHolder: Images.DEFAULT_AVATAR,
               size: UIHelper.size40,
               radius: UIHelper.size20,
+              boxFit: BoxFit.cover,
             ),
             Padding(
               padding: EdgeInsets.only(left: UIHelper.padding),

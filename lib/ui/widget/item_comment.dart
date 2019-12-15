@@ -25,6 +25,7 @@ class ItemComment extends StatelessWidget {
             placeHolder: Images.DEFAULT_AVATAR,
             size: UIHelper.size40,
             radius: UIHelper.size20,
+            boxFit: BoxFit.cover,
           ),
           Expanded(
             child: Padding(

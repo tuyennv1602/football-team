@@ -12,9 +12,11 @@ class MatchHistory extends MatchSchedule {
   double sendGroupPoint;
   int receiveGroupScore;
   double receiveGroupPoint;
+  bool isJoined;
   bool isConfirmed;
   int countConfirmed;
   int countJoined;
+  bool userConfirmed;
 
   MatchHistory(
       {this.id,
@@ -26,7 +28,9 @@ class MatchHistory extends MatchSchedule {
       this.receiveGroupPoint,
       this.countConfirmed,
       this.isConfirmed,
-      this.countJoined});
+      this.countJoined,
+      this.isJoined,
+      this.userConfirmed});
 
   MatchHistory.fromJson(int teamId, Map<String, dynamic> json)
       : super.fromJson(teamId, json) {
@@ -40,6 +44,8 @@ class MatchHistory extends MatchSchedule {
     isConfirmed = json['is_confirmed'];
     countConfirmed = json['count_confirmed'];
     countJoined = json['count_joined'];
+    isJoined = json['is_joined'];
+    userConfirmed = json['user_confirmed'];
   }
 
   String get getPlayTime => '${DateUtil.getDateFromTimestamp(playDate)}';

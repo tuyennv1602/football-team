@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/model/member.dart';
+import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
@@ -27,8 +28,6 @@ import 'package:url_launcher/url_launcher.dart';
 // ignore: must_be_immutable
 class MemberDetailPage extends StatelessWidget {
   final Member member;
-  String _number;
-  List<String> _positions;
   final _formKey = GlobalKey<FormState>();
 
   bool validateAndSave() {
@@ -58,91 +57,95 @@ class MemberDetailPage extends StatelessWidget {
         ),
       );
 
-  _showEditForm(BuildContext context, Member member, {Function onSubmit}) =>
-      UIHelper.showCustomizeDialog(
-        'edit_member',
-        icon: Images.EDIT_PROFILE,
-        confirmLabel: 'CẬP NHẬT',
-        onConfirmed: () {
-          if (validateAndSave()) {
-            NavigationService.instance.goBack();
-            onSubmit();
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: InputTextWidget(
-                validator: (value) {
-                  if (value.isEmpty) return 'Vui lòng nhập số áo';
-                  return null;
-                },
-                initValue: '0',
-                onSaved: (value) => _number = value,
-                maxLines: 1,
-                focusedColor: Colors.white,
-                inputType: TextInputType.number,
-                inputAction: TextInputAction.done,
-                labelText: 'Số áo',
-                textStyle: textStyleMediumTitle(size: 20, color: Colors.white),
-                hintTextStyle:
-                    textStyleMediumTitle(size: 20, color: Colors.white),
-              ),
+  _showEditForm(BuildContext context, Member member, {Function onSubmit}) {
+    String _number;
+    List<String> _position;
+    return UIHelper.showCustomizeDialog(
+      'edit_member',
+      icon: Images.EDIT_PROFILE,
+      confirmLabel: 'CẬP NHẬT',
+      onConfirmed: () {
+        if (validateAndSave()) {
+          NavigationService.instance.goBack();
+          onSubmit(_position != null ? _position.join(',') : member.position,
+              _number.isEmpty ? null : _number);
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Form(
+            key: _formKey,
+            child: InputTextWidget(
+              onSaved: (value) => _number = value,
+              maxLines: 1,
+              focusedColor: Colors.white,
+              inputType: TextInputType.number,
+              inputAction: TextInputAction.done,
+              labelText: 'Số áo',
+              textStyle: textStyleMediumTitle(size: 20, color: Colors.white),
+              hintTextStyle:
+                  textStyleMediumTitle(size: 20, color: Colors.white),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: UIHelper.size5),
-              child: Text(
-                'Vị trí có thể chơi',
-                style: textStyleRegularBody(color: Colors.white),
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: UIHelper.size5),
+            child: Text(
+              'Vị trí có thể chơi',
+              style: textStyleRegularBody(color: Colors.white),
             ),
-            MultiChoicePosition(
-              initPositions: member.getPositions,
-              onChangePositions: (positions) => _positions = positions,
-            )
-          ],
-        ),
-      );
+          ),
+          MultiChoicePosition(
+            initPositions: member.getPositions,
+            onChangePositions: (positions) => _position = positions,
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     var userId = Provider.of<User>(context).id;
+    var teamId = Provider.of<Team>(context).id;
     return Scaffold(
       backgroundColor: PRIMARY,
-      body: Column(
-        children: <Widget>[
-          AppBarWidget(
-            centerContent: Text(
-              'Thông tin cá nhân',
-              textAlign: TextAlign.center,
-              style: textStyleTitle(),
+      body: BaseWidget<MemberDetailViewModel>(
+        model: MemberDetailViewModel(api: Provider.of(context)),
+        onModelReady: (model) {
+          model.initMember(member);
+          model.getCommentsByUser(member.id, 1);
+        },
+        builder: (c, model, child) => Column(
+          children: <Widget>[
+            AppBarWidget(
+              centerContent: Text(
+                'Thông tin cá nhân',
+                textAlign: TextAlign.center,
+                style: textStyleTitle(),
+              ),
+              leftContent: AppBarButtonWidget(
+                imageName: Images.BACK,
+                onTap: () => Navigator.of(context).pop(),
+              ),
+              rightContent: userId == member.id
+                  ? AppBarButtonWidget(
+                      imageName: Images.EDIT_PROFILE,
+                      onTap: () => _showEditForm(
+                        context,
+                        member,
+                        onSubmit: (position, number) =>
+                            model.updateInfo(teamId, position, number),
+                      ),
+                    )
+                  : AppBarButtonWidget(
+                      imageName: Images.CALL,
+                      onTap: () => launch('tel://${member.phone}'),
+                    ),
             ),
-            leftContent: AppBarButtonWidget(
-              imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            rightContent: userId == member.id
-                ? AppBarButtonWidget(
-                    imageName: Images.EDIT_PROFILE,
-                    onTap: () =>
-                        _showEditForm(context, member, onSubmit: () {}),
-                  )
-                : AppBarButtonWidget(
-                    imageName: Images.CALL,
-                    onTap: () => launch('tel://${member.phone}'),
-                  ),
-          ),
-          Expanded(
-            child: BorderBackground(
-              child: BaseWidget<MemberDetailViewModel>(
-                model: MemberDetailViewModel(api: Provider.of(context)),
-                onModelReady: (model) {
-                  model.initMember(member);
-                  model.getCommentsByUser(member.id, 1);
-                },
-                builder: (c, model, child) => Padding(
+            Expanded(
+              child: BorderBackground(
+                child: Padding(
                   padding: EdgeInsets.all(UIHelper.padding),
                   child: Column(
                     children: <Widget>[
@@ -155,20 +158,26 @@ class MemberDetailPage extends StatelessWidget {
                               placeHolder: Images.DEFAULT_AVATAR,
                               size: UIHelper.size(80),
                               radius: UIHelper.size(40),
+                              boxFit: BoxFit.cover,
                             ),
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(left: UIHelper.padding, bottom: UIHelper.size10),
+                              padding: EdgeInsets.only(
+                                  left: UIHelper.padding,
+                                  bottom: UIHelper.size10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    member.name ?? member.userName,
+                                    member.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: textStyleSemiBold(size: 18),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(bottom: UIHelper.size5),
+                                    padding: EdgeInsets.only(
+                                        top: UIHelper.size5, bottom: 2),
                                     child: Text(
                                       member.email,
                                       style: textStyleRegular(),
@@ -240,9 +249,9 @@ class MemberDetailPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

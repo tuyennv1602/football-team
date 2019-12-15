@@ -37,8 +37,10 @@ class RequestMemberPage extends StatelessWidget {
             Hero(
               tag: 'member - ${teamRequest.userId}',
               child: ImageWidget(
-                  source: teamRequest.avatar,
-                  placeHolder: Images.DEFAULT_AVATAR),
+                source: teamRequest.avatar,
+                placeHolder: Images.DEFAULT_AVATAR,
+                boxFit: BoxFit.cover,
+              ),
             ),
             Expanded(
               child: Padding(

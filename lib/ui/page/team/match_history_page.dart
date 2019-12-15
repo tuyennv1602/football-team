@@ -274,7 +274,7 @@ class MatchHistoryPage extends StatelessWidget {
                   status: matchHistory.getStatus,
                 ),
               ),
-              matchHistory.isConfirmed
+              matchHistory.getMyTeamPoint != null
                   ? Text(
                       matchHistory.getMyTeamPoint.toStringAsFixed(2),
                       style: textStyleSemiBold(
@@ -284,7 +284,7 @@ class MatchHistoryPage extends StatelessWidget {
                               : Colors.red),
                     )
                   : SizedBox(),
-              matchHistory.isConfirmed
+              matchHistory.getMyTeamPoint != null
                   ? Padding(
                       padding: EdgeInsets.only(left: 2),
                       child: Image.asset(

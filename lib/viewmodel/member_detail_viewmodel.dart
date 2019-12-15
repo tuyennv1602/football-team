@@ -40,4 +40,17 @@ class MemberDetailViewModel extends BaseViewModel {
     }
     return this.member.rating;
   }
+
+  Future<void> updateInfo(int teamId, String position, String number) async {
+    UIHelper.showProgressDialog;
+    var resp = await _api.updateMember(teamId, position, number);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      this.member.position = position;
+      this.member.number = number;
+      notifyListeners();
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 }

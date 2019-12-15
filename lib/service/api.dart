@@ -123,6 +123,16 @@ class Api {
     }
   }
 
+  Future<BaseResponse> updateProfile(String avatar, String name) async {
+    try {
+      var response =
+          await _api.putApi('user', body: {'avatar': avatar, 'name': name});
+      return BaseResponse.success(response.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
   Future<UserRequestResponse> getUserRequest() async {
     try {
       var resp = await _api.getApi('request-member/find-by-user-id');
@@ -798,6 +808,17 @@ class Api {
       return MatchShareResponse.success(resp.data);
     } on DioError catch (e) {
       return MatchShareResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> updateMember(
+      int teamId, String position, String number) async {
+    try {
+      var resp = await _api.putApi('group/$teamId/member',
+          body: {'position': position, 'number': number});
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
     }
   }
 }
