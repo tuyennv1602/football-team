@@ -14,20 +14,20 @@ import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
 import 'package:myfootball/ui/widget/border_item.dart';
-import 'package:myfootball/ui/widget/line.dart';
+import 'package:myfootball/ui/widget/choose_day_of_week.dart';
 import 'package:myfootball/ui/widget/loading.dart';
-import 'package:myfootball/ui/widget/select_date.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/booking_viewmodel.dart';
+import 'package:myfootball/viewmodel/booking_fixed_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class BookingPage extends StatelessWidget {
+class BookingFixedPage extends StatelessWidget {
   final Ground _ground;
 
-  BookingPage({@required Ground ground}) : _ground = ground;
+  BookingFixedPage({@required Ground ground}) : _ground = ground;
 
-  _handleBooking(BuildContext context, DateTime currentDate, TimeSlot timeSlot,
+  _handleBooking(BuildContext context, int dayOfWeek, TimeSlot timeSlot,
       {Function onConfirmed}) async {
     UIHelper.showConfirmDialog(
       'confirm_booking',
@@ -35,7 +35,7 @@ class BookingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Ngày đá:  ${DateFormat('dd/MM/yyyy').format(currentDate)}',
+            'Ngày đá: ${DateUtil.getDayOfWeek(dayOfWeek)} hàng tuần',
             style: textStyleAlert(),
           ),
           Text(
@@ -63,7 +63,7 @@ class BookingPage extends StatelessWidget {
     );
   }
 
-  _buildTicket(BuildContext context, TimeSlot timeSlot, Function onTap) {
+  Widget _buildTicket(BuildContext context, TimeSlot timeSlot, Function onTap) {
     return BorderItemWidget(
       margin: EdgeInsets.zero,
       onTap: onTap,
@@ -99,7 +99,8 @@ class BookingPage extends StatelessWidget {
     );
   }
 
-  _buildFieldTicket(BuildContext context, Field field, Function booking) =>
+  Widget _buildFieldTicket(
+          BuildContext context, Field field, Function booking) =>
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -149,7 +150,7 @@ class BookingPage extends StatelessWidget {
         children: <Widget>[
           AppBarWidget(
             centerContent: Text(
-              'Đặt sân bóng',
+              'Đặt sân cố định',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
@@ -162,9 +163,8 @@ class BookingPage extends StatelessWidget {
             child: BorderBackground(
               child: Padding(
                 padding: EdgeInsets.all(UIHelper.padding),
-                child: BaseWidget<BookingViewModel>(
-                  model: BookingViewModel(api: Provider.of(context)),
-                  onModelReady: (model) => model.getFreeTimeSlot(_ground.id),
+                child: BaseWidget<BookingFixedViewModel>(
+                  model: BookingFixedViewModel(api: Provider.of(context)),
                   child: InkWell(
                     onTap: () => NavigationService.instance
                         .navigateTo(GROUND_DETAIL, arguments: _ground.id),
@@ -248,27 +248,12 @@ class BookingPage extends StatelessWidget {
                     children: <Widget>[
                       child,
                       SizedBox(
-                        height: UIHelper.size10,
+                        height: UIHelper.padding,
                         width: UIHelper.screenWidth,
                       ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              'Chọn ngày đá',
-                              style: textStyleMediumTitle(),
-                            ),
-                          ),
-                          SelectDateWidget(
-                            padding:
-                                EdgeInsets.symmetric(vertical: UIHelper.size15),
-                            onSelectedDate: (date) =>
-                                model.setDate(_ground.id, date),
-                            formatDate: 'EEE, dd/MM/yyyy',
-                          ),
-                        ],
-                      ),
-                      LineWidget(indent: 0),
+                      ChooseDayOfWeekWidget(
+                          onSelectedType: (type) =>
+                              model.setDayOfWeek(_ground.id, type)),
                       Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: UIHelper.size10),
@@ -288,7 +273,7 @@ class BookingPage extends StatelessWidget {
                                       model.fields[index],
                                       (timeSlot) => _handleBooking(
                                         context,
-                                        model.currentDate,
+                                        model.dayOfWeek,
                                         timeSlot,
                                         onConfirmed: (timeSlotId) =>
                                             model.booking(

@@ -14,12 +14,9 @@ import 'package:myfootball/ui/widget/app_bar.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
 import 'package:myfootball/ui/widget/bottom_sheet.dart';
 import 'package:myfootball/ui/widget/choose_ratio_widget.dart';
-import 'package:myfootball/ui/widget/clipper_right_widget.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
-import 'package:myfootball/ui/widget/image_widget.dart';
 import 'package:myfootball/ui/widget/input_text_widget.dart';
 import 'package:myfootball/ui/widget/item_match_schedule.dart';
-import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
 import 'package:myfootball/ui/widget/refresh_loading.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -135,7 +132,7 @@ class MatchSchedulePage extends StatelessWidget {
               hintTextStyle: textStyleInput(color: Colors.white),
             ),
           ),
-          ChooseRatioTypeWidget(
+          ChooseRatioWidget(
             onSelectedType: (type) => _ratio = type,
             primaryColor: Colors.white,
           ),

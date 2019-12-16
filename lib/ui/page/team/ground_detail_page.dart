@@ -57,18 +57,18 @@ class GroundDetailPage extends StatelessWidget {
           return Stack(
             children: <Widget>[
               ground != null
-                  ? Hero(
-                      tag: _groundId,
-                      child: Container(
-                        width: double.infinity,
-                        height: UIHelper.size(200) + UIHelper.paddingTop,
-                        child: FadeInImage.assetNetwork(
-                          placeholder: Images.DEFAULT_GROUND,
-                          image: ground.avatar,
-                          fit: BoxFit.cover,
-                        ),
+                  ? Container(
+                    width: double.infinity,
+                    height: UIHelper.size(200) + UIHelper.paddingTop,
+                    child: Hero(
+                      tag: 'ground-$_groundId',
+                      child: FadeInImage.assetNetwork(
+                        placeholder: Images.DEFAULT_GROUND,
+                        image: ground.avatar,
+                        fit: BoxFit.cover,
                       ),
-                    )
+                    ),
+                  )
                   : Image.asset(
                       Images.DEFAULT_GROUND,
                       width: double.infinity,

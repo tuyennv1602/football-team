@@ -331,6 +331,20 @@ class Api {
     }
   }
 
+  Future<GroundResponse> getFreeFixedTimeSlots(
+      int groundId, int dayOfWeek) async {
+    try {
+      FormData formData = new FormData.from({
+        "day_of_week": dayOfWeek,
+      });
+      var resp = await _api.getApi("ground/$groundId/time-slot",
+          queryParams: formData);
+      return GroundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return GroundResponse.error(e.message);
+    }
+  }
+
   Future<BaseResponse> booking(int teamId, int timeSlotId, int playDate) async {
     try {
       var resp = await _api.postApi("ticket", body: {
@@ -340,6 +354,17 @@ class Api {
         "prepayment_status": 0,
         "payment_status": 0
       });
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<BaseResponse> requestFixedBooking(
+      int teamId, int timeSlotId, int dayOfWeek) async {
+    try {
+      var resp = await _api.postApi('ground/time-slot/$timeSlotId/fixed',
+          body: {"group_id": teamId, "day_of_week": dayOfWeek});
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);

@@ -65,7 +65,7 @@ class CustomExpansionPanelList extends StatelessWidget {
             child: ExpandIcon(
               padding: EdgeInsets.symmetric(horizontal: 10),
               isExpanded: _isChildExpanded(index),
-              color: _isChildExpanded(index) ? focusedColor : Colors.grey,
+              color: _isChildExpanded(index) ? focusedColor : LINE_COLOR,
               onPressed: (bool isExpanded) {
                 if (expansionCallback != null)
                   expansionCallback(index, isExpanded);
@@ -83,7 +83,7 @@ class CustomExpansionPanelList extends StatelessWidget {
                       width: _isChildExpanded(index) ? 1.2 : 1,
                       color: _isChildExpanded(index)
                           ? focusedColor
-                          : Colors.grey))),
+                          : LINE_COLOR))),
           key: _SaltedKey<BuildContext, int>(context, index * 2),
           child: Column(
             children: <Widget>[

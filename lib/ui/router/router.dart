@@ -16,12 +16,15 @@ import 'package:myfootball/ui/page/login/register_page.dart';
 import 'package:myfootball/ui/page/login/verify_otp_page.dart';
 import 'package:myfootball/ui/page/social/ranking_page.dart';
 import 'package:myfootball/ui/page/team/add_address_page.dart';
+import 'package:myfootball/ui/page/team/booking_fixed_page.dart';
+import 'package:myfootball/ui/page/team/booking_manage_page.dart';
 import 'package:myfootball/ui/page/team/booking_page.dart';
 import 'package:myfootball/ui/page/team/conversation_page.dart';
 import 'package:myfootball/ui/page/team/create_team_page.dart';
 import 'package:myfootball/ui/page/team/edit_team_page.dart';
 import 'package:myfootball/ui/page/team/finance_page.dart';
 import 'package:myfootball/ui/page/team/find_matching_page.dart';
+import 'package:myfootball/ui/page/team/fixed_time_slot_page.dart';
 import 'package:myfootball/ui/page/team/fund_request_page.dart';
 import 'package:myfootball/ui/page/team/ground_detail_page.dart';
 import 'package:myfootball/ui/page/team/invite_detail_page.dart';
@@ -34,10 +37,10 @@ import 'package:myfootball/ui/page/team/match_schedule_page.dart';
 import 'package:myfootball/ui/page/team/member_detail_page.dart';
 import 'package:myfootball/ui/page/team/member_page.dart';
 import 'package:myfootball/ui/page/team/request_join_match_page.dart';
+import 'package:myfootball/ui/page/team/search_ground_page.dart';
 import 'package:myfootball/ui/page/team/team_comment_page.dart';
 import 'package:myfootball/ui/page/team/team_detail_page.dart';
 import 'package:myfootball/ui/page/team/request_member_page.dart';
-import 'package:myfootball/ui/page/team/search_ground_page.dart';
 import 'package:myfootball/ui/page/team/search_team_page.dart';
 import 'package:myfootball/ui/page/team/setup_matching_info_page.dart';
 import 'package:myfootball/ui/page/team/setup_team_page.dart';
@@ -97,7 +100,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       int groundId = settings.arguments as int;
       return SlideLeftRoute(widget: GroundDetailPage(groundId: groundId));
     case SEARCH_GROUND:
-      return SlideLeftRoute(widget: SearchGroundPage());
+      var type = settings.arguments as BOOKING_TYPE;
+      return SlideLeftRoute(widget: SearchGroundPage(type: type));
     case BOOKING:
       var ground = settings.arguments as Ground;
       return SlideLeftRoute(widget: BookingPage(ground: ground));
@@ -156,6 +160,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: RequestJoinMatchPage(matchId: matchId));
     case CONVERSATION:
       return SlideLeftRoute(widget: ConversationPage());
+    case BOOKING_MANAGE:
+      return SlideLeftRoute(widget: BookingManagePage());
+    case FIXED_TIME_SLOT:
+      return SlideLeftRoute(widget: FixedTimeSlotPage());
+    case BOOKING_FIXED:
+      var ground = settings.arguments as Ground;
+      return SlideLeftRoute(widget: BookingFixedPage(ground: ground));
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

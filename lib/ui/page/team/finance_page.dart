@@ -140,7 +140,7 @@ class FinancePage extends StatelessWidget {
           Padding(
             padding:
                 EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size20),
-            child: ChooseTransactionTypeWidget(
+            child: ChooseTransactionWidget(
                 onSelectedType: (type) => _type = type),
           ),
           Form(

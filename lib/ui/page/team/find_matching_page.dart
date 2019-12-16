@@ -466,7 +466,7 @@ class FindMatchingPage extends StatelessWidget {
                                             ),
                                             margin: EdgeInsets.symmetric(
                                               vertical: UIHelper.size10,
-                                                horizontal: UIHelper.padding),
+                                                horizontal: UIHelper.size25),
                                             onTap: () => NavigationService
                                                 .instance
                                                 .navigateTo(

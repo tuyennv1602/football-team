@@ -79,6 +79,7 @@ class MemberDetailPage extends StatelessWidget {
             child: InputTextWidget(
               onSaved: (value) => _number = value,
               maxLines: 1,
+              initValue: member.number,
               focusedColor: Colors.white,
               inputType: TextInputType.number,
               inputAction: TextInputAction.done,

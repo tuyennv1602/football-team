@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/resource/colors.dart';
+import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 enum LOADING_TYPE { CIRCLE, WAVE }
@@ -14,8 +16,13 @@ class LoadingWidget extends StatelessWidget {
             ? Container(
                 width: UIHelper.size50,
                 height: UIHelper.size50,
-                padding: EdgeInsets.all(UIHelper.size5),
-                child: Image.asset('assets/images/ic_circle_loading.gif'),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: GREY_BACKGROUND,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/ic_circle_loading.gif'),
+                  ),
+                ),
               )
             : Image.asset(
                 'assets/images/ic_loading.gif',

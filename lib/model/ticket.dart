@@ -1,3 +1,4 @@
+import 'package:myfootball/ui/widget/status_indicator.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';
 
@@ -87,5 +88,17 @@ class Ticket {
   bool get isOverTime => DateUtil.isOverTimeCancel(startTime, playDate);
 
   String get getPrice => StringUtil.formatCurrency(price);
+
+  Status get getPaymentStatus {
+    if(paymentStatus == 4) return Status.PENDING;
+    if(paymentStatus == 2) return Status.DONE;
+    return Status.NEW;
+  }
+
+  String get getPaymentName {
+    if(paymentStatus == 4) return 'Chờ xác nhận';
+    if(paymentStatus == 2) return 'Đã thanh toán';
+    return 'Chưa thanh toán';
+  }
 
 }

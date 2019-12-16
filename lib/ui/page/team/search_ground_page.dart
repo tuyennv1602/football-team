@@ -21,7 +21,13 @@ import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/search_ground_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+enum BOOKING_TYPE { NORMAL, FIXED }
+
 class SearchGroundPage extends StatefulWidget {
+  final BOOKING_TYPE type;
+
+  SearchGroundPage({Key key, @required this.type}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _SearchGroundState();
@@ -41,8 +47,14 @@ class _SearchGroundState extends State<SearchGroundPage> {
       BorderItemWidget(
         padding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
-        onTap: () =>
-            NavigationService.instance.navigateTo(BOOKING, arguments: ground),
+        onTap: () {
+          if (widget.type == BOOKING_TYPE.NORMAL) {
+            NavigationService.instance.navigateTo(BOOKING, arguments: ground);
+          } else {
+            NavigationService.instance
+                .navigateTo(BOOKING_FIXED, arguments: ground);
+          }
+        },
         child: Hero(
           tag: 'ground-${ground.id}',
           child: Stack(
@@ -173,10 +185,6 @@ class _SearchGroundState extends State<SearchGroundPage> {
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
               onTap: () => NavigationService.instance.goBack(),
-            ),
-            rightContent: AppBarButtonWidget(
-              imageName: Images.HISTORY,
-              onTap: () => NavigationService.instance.navigateTo(TICKETS),
             ),
           ),
           Expanded(

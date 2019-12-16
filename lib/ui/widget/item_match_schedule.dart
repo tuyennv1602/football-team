@@ -20,7 +20,6 @@ class ItemMatchSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _hasReceiveTeam = matchSchedule.receiveTeam != null;
     return BorderItemWidget(
       padding: EdgeInsets.zero,
       onTap: onTapSchedule,
@@ -69,8 +68,8 @@ class ItemMatchSchedule extends StatelessWidget {
             ),
           ),
           Container(
-            height: _hasReceiveTeam ? UIHelper.size35 : UIHelper.size20,
-            child: _hasReceiveTeam
+            height: matchSchedule.hasOpponentTeam ? UIHelper.size35 : UIHelper.size20,
+            child: matchSchedule.hasOpponentTeam
                 ? Row(
                     children: <Widget>[
                       Padding(

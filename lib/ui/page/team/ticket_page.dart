@@ -9,9 +9,8 @@ import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/ui/page/base_widget.dart';
 import 'package:myfootball/ui/widget/app_bar_button.dart';
 import 'package:myfootball/ui/widget/app_bar.dart';
-import 'package:myfootball/ui/widget/authentication_widget.dart';
 import 'package:myfootball/ui/widget/border_background.dart';
-import 'package:myfootball/ui/widget/bottom_sheet.dart';
+import 'package:myfootball/ui/widget/border_item.dart';
 import 'package:myfootball/ui/widget/empty_widget.dart';
 import 'package:myfootball/ui/widget/line.dart';
 import 'package:myfootball/ui/widget/loading.dart';
@@ -22,209 +21,168 @@ import 'package:myfootball/viewmodel/ticket_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class TicketPage extends StatelessWidget {
-  _showOptions(BuildContext context, {Function onCancel, Function onPay}) =>
-      showModalBottomSheet(
-        context: context,
-        builder: (c) => BottomSheetWidget(
-          options: ['Tuỳ chọn', 'Huỷ đặt sân', 'Thanh toán sân', 'Huỷ'],
-          onClickOption: (index) {
-            if (index == 1) {
-              onCancel();
-            }
-            if (index == 2) {
-              onPay();
-            }
-          },
-        ),
-      );
-
-  _showAuthenticationBottomSheet(BuildContext context, {Function onSuccess}) =>
-      showModalBottomSheet(
-        context: context,
-        builder: (c) => AuthenticationWidget(
-          onAuthentication: (isSuccess) {
-            if (isSuccess) {
-              Navigator.of(context).pop();
-              onSuccess();
-            }
-          },
-        ),
-      );
 
   Widget _buildItemTicket(
       BuildContext context, TicketViewModel model, int index) {
     Ticket ticket = model.tickets[index];
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UIHelper.padding),
+    return BorderItemWidget(
+      onTap: () => UIHelper.showConfirmDialog(
+        '${ticket.isOverTime ? 'Đã quá giờ huỷ vé. Nếu tiếp tục huỷ, bạn sẽ không được hoàn tiền cọc.\n' : ''}Bạn có chắc muốn huỷ vé #${ticket.id}?',
+        onConfirmed: () => model.cancelBooking(index, ticket.id),
       ),
-      margin: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-      child: InkWell(
-        onTap: () => _showOptions(
-          context,
-          onCancel: () => UIHelper.showConfirmDialog(
-            '${ticket.isOverTime ? 'Đã quá giờ huỷ vé. Nếu tiếp tục huỷ, bạn sẽ không được hoàn tiền cọc.\n' : ''}Bạn có chắc muốn huỷ vé #${ticket.id}?',
-            onConfirmed: () => _showAuthenticationBottomSheet(
-              context,
-              onSuccess: () => model.cancelBooking(index, ticket.id),
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: UIHelper.padding, vertical: UIHelper.size10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'ID #${ticket.id}',
+                  style: textStyleSemiBold(color: PRIMARY),
+                ),
+                StatusIndicator(
+                  status: ticket.getPaymentStatus,
+                  statusName: ticket.getPaymentName,
+                ),
+              ],
             ),
           ),
-          onPay: () => _showAuthenticationBottomSheet(context),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: UIHelper.padding, vertical: UIHelper.size10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'ID #${ticket.id}',
-                    style: textStyleSemiBold(color: PRIMARY),
-                  ),
-                  StatusIndicator(
-                    status: Status.PENDING,
-                    statusName: 'Chưa thanh toán',
-                  ),
-                ],
-              ),
-            ),
-            LineWidget(indent: 0),
-            Padding(
-              padding: EdgeInsets.all(UIHelper.padding),
-              child: Column(
-                children: <Widget>[
-                  Row(
+          LineWidget(indent: 0),
+          Padding(
+            padding: EdgeInsets.all(UIHelper.padding),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Image.asset(
+                      Images.CLOCK,
+                      width: UIHelper.size20,
+                      height: UIHelper.size20,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: UIHelper.size15),
+                        child: Text(
+                          ticket.getFullPlayTime,
+                          style: textStyleMediumTitle(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: UIHelper.size10),
+                  child: Row(
                     children: <Widget>[
                       Image.asset(
-                        Images.CLOCK,
+                        Images.STADIUM,
                         width: UIHelper.size20,
                         height: UIHelper.size20,
-                        color: Colors.deepPurpleAccent,
+                        color: Colors.green,
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left: UIHelper.size15),
-                          child: Text(
-                            ticket.getFullPlayTime,
-                            style: textStyleSemiBold(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: UIHelper.size10),
-                    child: Row(
-                      children: <Widget>[
-                        Image.asset(
-                          Images.STADIUM,
-                          width: UIHelper.size20,
-                          height: UIHelper.size20,
-                          color: Colors.green,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: UIHelper.padding),
-                            child: RichText(
-                              text: TextSpan(
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '${ticket.fieldName}',
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontFamily: SEMI_BOLD,
-                                      fontSize: UIHelper.size(17),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: ' - ${ticket.groundName}',
-                                    style: TextStyle(
-                                      fontFamily: REGULAR,
-                                      color: Colors.black87,
-                                      fontSize: UIHelper.size(17),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: UIHelper.size10),
-                    child: Row(
-                      children: <Widget>[
-                        Image.asset(
-                          Images.TRANSACTIONS,
-                          width: UIHelper.size20,
-                          height: UIHelper.size20,
-                          color: Colors.amber,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: UIHelper.padding),
-                            child: RichText(
-                              text: TextSpan(
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Tổng: ',
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontFamily: REGULAR,
-                                      fontSize: UIHelper.size(17),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: ticket.getPrice,
-                                    style: TextStyle(
-                                      fontFamily: SEMI_BOLD,
-                                      color: Colors.black87,
-                                      fontSize: UIHelper.size(17),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
+                          padding: EdgeInsets.only(left: UIHelper.padding),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: 'Đặt cọc: ',
+                                  text: '${ticket.fieldName}',
                                   style: TextStyle(
                                     color: Colors.black87,
-                                    fontFamily: REGULAR,
-                                    fontSize: UIHelper.size(17),
+                                    fontFamily: MEDIUM,
+                                    fontSize: UIHelper.size(16),
                                   ),
                                 ),
                                 TextSpan(
-                                  text: StringUtil.formatCurrency(0),
+                                  text: ' - ${ticket.groundName}',
                                   style: TextStyle(
-                                    fontFamily: SEMI_BOLD,
+                                    fontFamily: REGULAR,
                                     color: Colors.black87,
-                                    fontSize: UIHelper.size(17),
+                                    fontSize: UIHelper.size(16),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: UIHelper.size10),
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        Images.TRANSACTIONS,
+                        width: UIHelper.size20,
+                        height: UIHelper.size20,
+                        color: Colors.amber,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: UIHelper.padding),
+                          child: RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Tổng: ',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontFamily: REGULAR,
+                                    fontSize: UIHelper.size(16),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ticket.getPrice,
+                                  style: TextStyle(
+                                    fontFamily: MEDIUM,
+                                    color: Colors.black87,
+                                    fontSize: UIHelper.size(16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Đặt cọc: ',
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontFamily: REGULAR,
+                                  fontSize: UIHelper.size(16),
+                                ),
+                              ),
+                              TextSpan(
+                                text: StringUtil.formatCurrency(0),
+                                style: TextStyle(
+                                  fontFamily: MEDIUM,
+                                  color: Colors.black87,
+                                  fontSize: UIHelper.size(16),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -237,7 +195,7 @@ class TicketPage extends StatelessWidget {
         children: <Widget>[
           AppBarWidget(
             centerContent: Text(
-              'Vé đã đặt',
+              'Vé đặt sân',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),

@@ -27,6 +27,7 @@ import 'package:provider/provider.dart';
 
 class MatchHistoryDetailPage extends StatelessWidget {
   final MatchHistory matchHistory;
+  MatchHistoryDetailViewModel _model;
 
   MatchHistoryDetailPage({Key key, @required MatchHistory matchHistory})
       : matchHistory = matchHistory,
@@ -59,13 +60,16 @@ class MatchHistoryDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
+    var _isLiked = matchHistory.userConfirmed;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.center,
-                colors: [PRIMARY, Color(0xFFE5F230)])),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.center,
+            colors: [PRIMARY, Color(0xFFE5F230)],
+          ),
+        ),
         child: Column(
           children: <Widget>[
             AppBarWidget(
@@ -91,12 +95,37 @@ class MatchHistoryDetailPage extends StatelessWidget {
                             api: Provider.of(context),
                             matchHistory: matchHistory),
                         onModelReady: (model) {
+                          _model = model;
                           model.getMyTeamMembers(team.id);
                           if (matchHistory.receiveTeam != null) {
                             model.getOpponentTeamMembers(
                                 matchHistory.getOpponentTeam.id);
                           }
                         },
+                        child: LikeButton(
+                          size: UIHelper.size30,
+                          isLiked: _isLiked,
+                          likeBuilder: (bool isLiked) {
+                            return Icon(
+                              Icons.check_circle,
+                              color: isLiked ? PRIMARY : Colors.grey,
+                              size: UIHelper.size30,
+                            );
+                          },
+                          onTap: (isLiked) {
+                            if (isLiked) {
+                              return _model.cancelConfirmScore().then((resp) {
+                                _isLiked = !isLiked;
+                                return _isLiked;
+                              });
+                            } else {
+                              return _model.confirmScore().then((reps) {
+                                _isLiked = !isLiked;
+                                return _isLiked;
+                              });
+                            }
+                          },
+                        ),
                         builder: (c, model, child) => Padding(
                           padding: EdgeInsets.only(top: UIHelper.size50),
                           child: Column(
@@ -111,28 +140,9 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                           bottom: UIHelper.size5),
                                       child: Row(
                                         children: <Widget>[
-                                          matchHistory.isAbleConfirm
-                                              ? LikeButton(
-                                                  size: UIHelper.size30,
-                                                  likeBuilder: (bool isLiked) {
-                                                    return Icon(
-                                                      Icons.check_circle,
-                                                      color: isLiked
-                                                          ? PRIMARY
-                                                          : Colors.grey,
-                                                      size: UIHelper.size30,
-                                                    );
-                                                  },
-                                                  onTap: (isLiked) {
-                                                    if (isLiked) {
-                                                      return model
-                                                          .cancelConfirmScore();
-                                                    } else {
-                                                      return model
-                                                          .confirmScore();
-                                                    }
-                                                  },
-                                                )
+                                          matchHistory.isAbleConfirm &&
+                                                  matchHistory.isJoined
+                                              ? child
                                               : SizedBox(),
                                           Padding(
                                             padding: EdgeInsets.only(
@@ -162,7 +172,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            '+${model.matchHistory.getBonus.toStringAsFixed(2)}',
+                                            '+${model.matchHistory.getBonus}',
                                             style: textStyleSemiBold(
                                                 color:
                                                     matchHistory.getRateColor),
@@ -213,8 +223,11 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                           ],
                                         ),
                                       )
-                                    : _buildTeamMembers(
-                                        context, model.myTeamMembers),
+                                    : Container(
+                                        width: double.infinity,
+                                        child: _buildTeamMembers(
+                                            context, model.myTeamMembers),
+                                      ),
                               )
                             ],
                           ),

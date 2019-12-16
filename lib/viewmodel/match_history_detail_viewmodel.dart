@@ -39,6 +39,7 @@ class MatchHistoryDetailViewModel extends BaseViewModel {
     var resp = await _api.memberConfirm(matchHistory.matchId);
     if (resp.isSuccess) {
       matchHistory.countConfirmed++;
+      matchHistory.userConfirmed = true;
       notifyListeners();
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
@@ -50,6 +51,7 @@ class MatchHistoryDetailViewModel extends BaseViewModel {
     var resp = await _api.memberCancelConfirm(matchHistory.matchId);
     if (resp.isSuccess) {
       matchHistory.countConfirmed--;
+      matchHistory.userConfirmed = false;
       notifyListeners();
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);

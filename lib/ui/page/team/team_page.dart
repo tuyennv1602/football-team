@@ -110,9 +110,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
         ItemOptionWidget(
           Images.BOOKING,
-          'Đặt sân bóng',
+          'Quản lý đặt sân',
           iconColor: Colors.green,
-          onTap: () => NavigationService.instance.navigateTo(SEARCH_GROUND),
+          onTap: () => NavigationService.instance.navigateTo(BOOKING_MANAGE),
         ),
         ItemOptionWidget(
           Images.MEMBER_MANAGE,

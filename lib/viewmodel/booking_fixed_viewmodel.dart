@@ -9,41 +9,34 @@ import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
-class BookingViewModel extends BaseViewModel {
+class BookingFixedViewModel extends BaseViewModel {
   Api _api;
-  DateTime currentDate = DateTime.now();
+  int dayOfWeek = 1;
   List<Field> fields = [];
 
-  BookingViewModel({@required Api api}) : _api = api;
+  BookingFixedViewModel({@required Api api}) : _api = api;
 
-  setDate(int groundId, DateTime dateTime) {
-    this.currentDate = dateTime;
-    getFreeTimeSlot(groundId);
+  setDayOfWeek(int groundId, int dayOfWeek) {
+    this.dayOfWeek = dayOfWeek;
+    getFreeFixedTimeSlot(groundId);
   }
 
-  Future<void> getFreeTimeSlot(int groundId) async {
+  Future<void> getFreeFixedTimeSlot(int groundId) async {
     setBusy(true);
-    var resp = await _api.getFreeTimeSlots(
-      groundId,
-      DateFormat('dd/MM/yyyy').format(currentDate),
-    );
+    var resp = await _api.getFreeFixedTimeSlots(groundId, dayOfWeek);
     if (resp.isSuccess) {
       this.fields = resp.ground.fields;
-      this.fields.forEach((field) => field.timeSlots = field.timeSlots
-          .where((timeSlot) =>
-              DateUtil.isAbleBooking(timeSlot.startTime, currentDate))
-          .toList());
     }
     setBusy(false);
   }
 
   Future<void> booking(int teamId, int timeSlotId) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.booking(
-        teamId, timeSlotId, DateUtil.getDateTimeStamp(currentDate));
+    var resp = await _api.requestFixedBooking(teamId, timeSlotId, dayOfWeek);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đặt sân thành công',
+      UIHelper.showSimpleDialog(
+          'Yêu cầu đã được gửi. Vui lòng chờ quản lý sân xác nhận',
           isSuccess: true,
           onConfirmed: () => NavigationService.instance.goBack());
     } else {

@@ -135,10 +135,11 @@ class InviteDetailPage extends StatelessWidget {
                     iconColor: Colors.red,
                   ),
                   _inviteRequest.matchId == null
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: UIHelper.padding,
-                              vertical: UIHelper.size10),
+                      ? Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                          padding:
+                              EdgeInsets.symmetric(vertical: UIHelper.size10, horizontal: UIHelper.padding),
                           child: Text(
                             'Chọn thời gian, sân thi đấu',
                             style: textStyleSemiBold(),
@@ -173,66 +174,65 @@ class InviteDetailPage extends StatelessWidget {
                                       ),
                                     ],
                                   )
-                                : Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: UIHelper.padding),
-                                    child: DefaultTabController(
-                                      length: _inviteRequest
-                                          .getMappedTimeSlot.length,
-                                      child: Column(
-                                        children: <Widget>[
-                                          TabBarWidget(
-                                            titles: _inviteRequest
-                                                .getMappedTimeSlot.keys
-                                                .toList()
-                                                .map((item) => DateFormat(
-                                                        'dd/MM')
-                                                    .format(DateTime
-                                                        .fromMillisecondsSinceEpoch(
-                                                            item)))
-                                                .toList(),
-                                            isScrollable: true,
-                                            height: UIHelper.size35,
-                                          ),
-                                          Expanded(
-                                            child: TabBarView(
-                                              children: _inviteRequest
-                                                  .getMappedTimeSlot.values
-                                                  .toList()
-                                                  .map(
-                                                    (timeSlots) =>
-                                                        ListView.separated(
-                                                            physics:
-                                                                BouncingScrollPhysics(),
-                                                            padding: EdgeInsets
-                                                                .zero,
-                                                            itemBuilder: (c, index) => _buildItemTimeSlot(
-                                                                context,
-                                                                model
-                                                                    .selectedTimeSlot,
-                                                                timeSlots[
-                                                                    index],
-                                                                (isSelected,
-                                                                        timeSlot) =>
-                                                                    model.setSelectedTimeSlot(
-                                                                        !isSelected
-                                                                            ? null
-                                                                            : timeSlot)),
-                                                            separatorBuilder:
-                                                                (c, index) =>
-                                                                    LineWidget(
-                                                                      indent: 0,
-                                                                    ),
-                                                            itemCount: timeSlots
-                                                                .length),
-                                                  )
-                                                  .toList(),
-                                            ),
-                                          ),
-                                        ],
+                                : DefaultTabController(
+                                  length: _inviteRequest
+                                      .getMappedTimeSlot.length,
+                                  child: Column(
+                                    children: <Widget>[
+                                      TabBarWidget(
+                                        titles: _inviteRequest
+                                            .getMappedTimeSlot.keys
+                                            .toList()
+                                            .map((item) => DateFormat(
+                                                    'dd/MM')
+                                                .format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        item)))
+                                            .toList(),
+                                        isScrollable: true,
+                                        height: UIHelper.size35,
                                       ),
-                                    ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: UIHelper.padding),                                              child: TabBarView(
+                                            children: _inviteRequest
+                                                .getMappedTimeSlot.values
+                                                .toList()
+                                                .map(
+                                                  (timeSlots) =>
+                                                      ListView.separated(
+                                                          physics:
+                                                              BouncingScrollPhysics(),
+                                                          padding: EdgeInsets
+                                                              .zero,
+                                                          itemBuilder: (c, index) => _buildItemTimeSlot(
+                                                              context,
+                                                              model
+                                                                  .selectedTimeSlot,
+                                                              timeSlots[
+                                                                  index],
+                                                              (isSelected,
+                                                                      timeSlot) =>
+                                                                  model.setSelectedTimeSlot(
+                                                                      !isSelected
+                                                                          ? null
+                                                                          : timeSlot)),
+                                                          separatorBuilder:
+                                                              (c, index) =>
+                                                                  LineWidget(
+                                                                    indent: 0,
+                                                                  ),
+                                                          itemCount: timeSlots
+                                                              .length),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(

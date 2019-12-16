@@ -122,71 +122,62 @@ class InviteTeamPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: UIHelper.size10),
-                      child: Form(
-                        key: _formKey,
-                        child: InputTextWidget(
-                          validator: (value) {
-                            if (value.isEmpty) return 'Vui lòng nhập lời mời';
-                            return null;
-                          },
-                          maxLines: 3,
-                          inputType: TextInputType.text,
-                          inputAction: TextInputAction.done,
-                          labelText: 'Nội dung lời mời',
-                          onSaved: (text) => _invite = text,
-                        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: UIHelper.size10, left: UIHelper.padding, right: UIHelper.padding),
+                    child: Form(
+                      key: _formKey,
+                      child: InputTextWidget(
+                        validator: (value) {
+                          if (value.isEmpty) return 'Vui lòng nhập lời mời';
+                          return null;
+                        },
+                        maxLines: 3,
+                        inputType: TextInputType.text,
+                        inputAction: TextInputAction.done,
+                        labelText: 'Nội dung lời mời',
+                        onSaved: (text) => _invite = text,
                       ),
                     ),
-                    ChooseRatioTypeWidget(
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
+                    child: ChooseRatioWidget(
                       onSelectedType: (type) => _ratio = type,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: UIHelper.size20, bottom: UIHelper.size5),
-                          child: Text(
-                            'Chọn ngày, giờ, sân',
-                            style: textStyleMediumTitle(),
-                          ),
-                        ),
-                        InkWell(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                top: UIHelper.size20, bottom: UIHelper.size5),
-                            child: Text(
-                              'Chọn tất cả',
-                              style: textStyleMediumTitle(),
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                  Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    margin: EdgeInsets.only(top: UIHelper.size10),
+                    padding: EdgeInsets.only(
+                        top: UIHelper.size10, bottom: UIHelper.size5, left: UIHelper.padding, right: UIHelper.padding),
+                    child: Text(
+                      'Chọn ngày, giờ, sân',
+                      style: textStyleMediumTitle(),
                     ),
-                    Expanded(
-                      child: BaseWidget<InviteTeamViewModel>(
-                        model: InviteTeamViewModel(api: Provider.of(context)),
-                        builder: (c, model, child) => DefaultTabController(
-                          length: _inviteTeamArgument.mappedTimeSlots.length,
-                          child: Column(
-                            children: <Widget>[
-                              TabBarWidget(
-                                titles: _inviteTeamArgument.mappedTimeSlots.keys
-                                    .toList()
-                                    .map((item) => DateFormat('dd/MM')
-                                        .format(DateUtil.getDateMatching(item)))
-                                    .toList(),
-                                isScrollable: true,
-                                height: UIHelper.size35,
-                              ),
-                              Expanded(
+                  ),
+                  Expanded(
+                    child: BaseWidget<InviteTeamViewModel>(
+                      model: InviteTeamViewModel(api: Provider.of(context)),
+                      builder: (c, model, child) => DefaultTabController(
+                        length: _inviteTeamArgument.mappedTimeSlots.length,
+                        child: Column(
+                          children: <Widget>[
+                            TabBarWidget(
+                              titles: _inviteTeamArgument.mappedTimeSlots.keys
+                                  .toList()
+                                  .map((item) => DateFormat('dd/MM')
+                                      .format(DateUtil.getDateMatching(item)))
+                                  .toList(),
+                              isScrollable: true,
+                              height: UIHelper.size35,
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
                                 child: TabBarView(
                                   children: _inviteTeamArgument
                                       .mappedTimeSlots.values
@@ -221,35 +212,35 @@ class InviteTeamPage extends StatelessWidget {
                                       .toList(),
                                 ),
                               ),
-                              ButtonWidget(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size5),
-                                child: Text(
-                                  'GỬI LỜI MỜI',
-                                  style: textStyleButton(),
-                                ),
-                                onTap: () {
-                                  if (validateAndSave()) {
-                                    model.sendInvite(InviteRequest(
-                                        title: _invite,
-                                        sendGroupId:
-                                            _inviteTeamArgument.fromTeamId,
-                                        receiveGroupId:
-                                            _inviteTeamArgument.toTeamId,
-                                        ratio: _ratio,
-                                        matchingTimeSlots:
-                                            model.selectedTimeSlots));
-                                  }
-                                },
+                            ),
+                            ButtonWidget(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: UIHelper.size5, horizontal: UIHelper.padding),
+                              child: Text(
+                                'GỬI LỜI MỜI',
+                                style: textStyleButton(),
                               ),
-                            ],
-                          ),
+                              onTap: () {
+                                if (validateAndSave()) {
+                                  model.sendInvite(InviteRequest(
+                                      title: _invite,
+                                      sendGroupId:
+                                          _inviteTeamArgument.fromTeamId,
+                                      receiveGroupId:
+                                          _inviteTeamArgument.toTeamId,
+                                      ratio: _ratio,
+                                      matchingTimeSlots:
+                                          model.selectedTimeSlots));
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    UIHelper.homeButtonSpace
-                  ],
-                ),
+                  ),
+                  UIHelper.homeButtonSpace
+                ],
               ),
             ),
           ),

@@ -80,6 +80,7 @@ class MatchHistory extends MatchSchedule {
   }
 
   String get getStatusName {
+    if(!hasOpponentTeam) return 'Tập luyện';
     if (isUpdated && isConfirmed) {
       return 'Đã xác nhận';
     } else {
@@ -94,6 +95,7 @@ class MatchHistory extends MatchSchedule {
   }
 
   Status get getStatus {
+    if(!hasOpponentTeam) return Status.ABORTED;
     if (isUpdated && isConfirmed) {
       return Status.DONE;
     } else {
@@ -119,12 +121,14 @@ class MatchHistory extends MatchSchedule {
     return Colors.grey;
   }
 
-  double get getBonus {
-    if (getMyTeamPoint == null) return 0;
+  String get getBonus {
+    if (getMyTeamPoint == null) return '0';
     var myPoint = getMyTeamPoint > 0 ? getMyTeamPoint : (-1 * getMyTeamPoint);
-    if (getRatePercent >= 0.3 && getRatePercent < 0.5) return myPoint * 0.05;
-    if (getRatePercent >= 0.5 && getRatePercent < 0.8) return myPoint * 0.1;
-    if (getRatePercent >= 0.8) return myPoint * 0.15;
-    return 0;
+    if (getRatePercent >= 0.3 && getRatePercent < 0.5)
+      return (myPoint * 0.05).toStringAsFixed(2);
+    if (getRatePercent >= 0.5 && getRatePercent < 0.8)
+      return (myPoint * 0.1).toStringAsFixed(2);
+    if (getRatePercent >= 0.8) return (myPoint * 0.15).toStringAsFixed(2);
+    return '0';
   }
 }

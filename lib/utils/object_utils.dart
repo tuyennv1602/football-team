@@ -1,6 +1,5 @@
 import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
-import 'package:myfootball/model/status.dart';
 import 'package:queries/collections.dart';
 import 'package:queries/queries.dart';
 
@@ -45,24 +44,4 @@ class ObjectUtil {
     return result;
   }
 
-  static Status getStatus(int code) {
-    switch (code) {
-      case -2:
-        return Status.CANCEL;
-      case -1:
-        return Status.REJECTED;
-      case 0:
-        return Status.WAITING;
-      case 1:
-        return Status.ACCEPTED;
-      case 2:
-        return Status.COMPLETED;
-      case 4:
-        return Status.REQUESTED;
-      case 5:
-        return Status.LOGOUT;
-      default:
-        return Status.FAILED;
-    }
-  }
 }

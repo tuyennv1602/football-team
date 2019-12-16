@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/resource/colors.dart';
+import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 bool _isShowing = false;
@@ -87,14 +89,16 @@ class _BodyState extends State<_Body> {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: <Widget>[
         Container(
-          width: UIHelper.size(60),
-          height: UIHelper.size(60),
-          padding: EdgeInsets.all(UIHelper.size5),
+          width: UIHelper.size50,
+          height: UIHelper.size50,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(UIHelper.size30),
+            color: GREY_BACKGROUND,
+            borderRadius: BorderRadius.circular(UIHelper.size25),
+            image: DecorationImage(
+              image: AssetImage('assets/images/ic_circle_loading.gif'),
+            ),
           ),
-          child: Image.asset('assets/images/ic_circle_loading.gif'),
         )
       ],
     );

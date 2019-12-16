@@ -150,7 +150,8 @@ class MatchHistoryPage extends StatelessWidget {
       onTap: () {
         if (isCaptain &&
             !matchHistory.isConfirmed &&
-            matchHistory.isAbleConfirm) {
+            matchHistory.isAbleConfirm &&
+            matchHistory.hasOpponentTeam) {
           if (matchHistory.isSender) {
             _showSenderOptions(context,
                 onUpdateScore: () => _showUpdateScore(
@@ -218,49 +219,53 @@ class MatchHistoryPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            height: UIHelper.size20,
-            padding: EdgeInsets.only(left: UIHelper.size45),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  'VS',
-                  style: textStyleMedium(size: 12, color: Colors.grey),
-                ),
-                Expanded(child: LineWidget())
-              ],
-            ),
-          ),
-          Container(
-            height: UIHelper.size35,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: UIHelper.size10),
-                  child: ImageWidget(
-                    source: matchHistory.getOpponentLogo,
-                    placeHolder: Images.DEFAULT_LOGO,
-                    size: UIHelper.size35,
+          matchHistory.hasOpponentTeam
+              ? Container(
+                  height: UIHelper.size20,
+                  padding: EdgeInsets.only(left: UIHelper.size45),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'VS',
+                        style: textStyleMedium(size: 12, color: Colors.grey),
+                      ),
+                      Expanded(child: LineWidget())
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    matchHistory.getOpponentName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyleMediumTitle(),
-                  ),
-                ),
-                Text(
-                  matchHistory.getOpponentTeamScore,
-                  style: textStyleBold(
-                      size: 20,
-                      color: matchHistory.isConfirmed
-                          ? Colors.black
-                          : Colors.grey),
                 )
-              ],
-            ),
+              : SizedBox(),
+          Container(
+            height: matchHistory.hasOpponentTeam ? UIHelper.size35 : 0,
+            child: matchHistory.hasOpponentTeam
+                ? Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: UIHelper.size10),
+                        child: ImageWidget(
+                          source: matchHistory.getOpponentLogo,
+                          placeHolder: Images.DEFAULT_LOGO,
+                          size: UIHelper.size35,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          matchHistory.getOpponentName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyleMediumTitle(),
+                        ),
+                      ),
+                      Text(
+                        matchHistory.getOpponentTeamScore,
+                        style: textStyleBold(
+                            size: 20,
+                            color: matchHistory.isConfirmed
+                                ? Colors.black
+                                : Colors.grey),
+                      )
+                    ],
+                  )
+                : SizedBox(),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
@@ -277,7 +282,7 @@ class MatchHistoryPage extends StatelessWidget {
               matchHistory.getMyTeamPoint != null
                   ? Text(
                       matchHistory.getMyTeamPoint.toStringAsFixed(2),
-                      style: textStyleSemiBold(
+                      style: textStyleMedium(
                           size: 14,
                           color: matchHistory.getMyTeamPoint > 0
                               ? GREEN_TEXT
@@ -299,6 +304,13 @@ class MatchHistoryPage extends StatelessWidget {
                       ),
                     )
                   : SizedBox(),
+              matchHistory.countConfirmed > 0
+                  ? Text(
+                      ' +${matchHistory.getBonus}',
+                      style: textStyleMedium(
+                          size: 14, color: matchHistory.getRateColor),
+                    )
+                  : SizedBox()
             ],
           ),
         ],

@@ -122,19 +122,20 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                     .navigateTo(GROUND_DETAIL,
                                         arguments: matchSchedule.groundId),
                               ),
-                              team.hasManager(userId) &&
+                              team != null &&
+                                      team.hasManager(userId) &&
                                       matchSchedule.getMyTeam.code != null
                                   ? ItemOptionWidget(
                                       Images.MEMBER_MANAGE,
                                       'Yêu cầu tham gia trận đấu',
                                       iconColor: Colors.teal,
                                       onTap: () async {
-                                        var _matchUsers = await NavigationService
-                                            .instance
-                                            .navigateTo(REQUEST_JOIN_MATCH,
-                                                arguments:
-                                                    matchSchedule.matchId);
-                                        if(_matchUsers != null){
+                                        var _matchUsers =
+                                            await NavigationService.instance
+                                                .navigateTo(REQUEST_JOIN_MATCH,
+                                                    arguments:
+                                                        matchSchedule.matchId);
+                                        if (_matchUsers != null) {
                                           model.addMember(_matchUsers);
                                         }
                                       },
