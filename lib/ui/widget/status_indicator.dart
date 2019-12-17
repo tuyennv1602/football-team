@@ -30,6 +30,7 @@ class StatusIndicator extends StatelessWidget {
       color = Colors.red;
     }
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
           width: UIHelper.size(8),

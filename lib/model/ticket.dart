@@ -23,22 +23,22 @@ class Ticket {
 
   Ticket(
       {this.id,
-        this.status,
-        this.type,
-        this.groundId,
-        this.groundName,
-        this.rating,
-        this.fieldId,
-        this.fieldName,
-        this.price,
-        this.startTime,
-        this.endTime,
-        this.createDate,
-        this.timeSlotId,
-        this.groupId,
-        this.playDate,
-        this.prepaymentStatus,
-        this.paymentStatus});
+      this.status,
+      this.type,
+      this.groundId,
+      this.groundName,
+      this.rating,
+      this.fieldId,
+      this.fieldName,
+      this.price,
+      this.startTime,
+      this.endTime,
+      this.createDate,
+      this.timeSlotId,
+      this.groupId,
+      this.playDate,
+      this.prepaymentStatus,
+      this.paymentStatus});
 
   Ticket.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -90,15 +90,17 @@ class Ticket {
   String get getPrice => StringUtil.formatCurrency(price);
 
   Status get getPaymentStatus {
-    if(paymentStatus == 4) return Status.PENDING;
-    if(paymentStatus == 2) return Status.DONE;
+    if (paymentStatus == 4) return Status.PENDING;
+    if (paymentStatus == 2) return Status.DONE;
     return Status.NEW;
   }
 
   String get getPaymentName {
-    if(paymentStatus == 4) return 'Chờ xác nhận';
-    if(paymentStatus == 2) return 'Đã thanh toán';
+    if (paymentStatus == 4) return 'Chờ xác nhận';
+    if (paymentStatus == 2) return 'Đã thanh toán';
     return 'Chưa thanh toán';
   }
 
+  String get getBookingDate =>
+      'Ngày đặt: ${DateUtil.getDateFromTimestamp(createDate)}';
 }

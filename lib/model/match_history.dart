@@ -85,7 +85,7 @@ class MatchHistory extends MatchSchedule {
       return 'Đã xác nhận';
     } else {
       if (!isAbleConfirm) {
-        return 'Không được cập nhật';
+        return 'Không cập nhật';
       } else if (!isUpdated) {
         return 'Chưa cập nhật';
       } else {

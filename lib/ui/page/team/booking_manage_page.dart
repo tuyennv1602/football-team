@@ -108,7 +108,7 @@ class BookingManagePage extends StatelessWidget {
                     'Sân cố định',
                     iconColor: Colors.blue,
                     onTap: () =>
-                        NavigationService.instance.navigateTo(FIXED_TIME_SLOT),
+                        NavigationService.instance.navigateTo(FIXED_TIME),
                   ),
                   LineWidget(),
                   Padding(

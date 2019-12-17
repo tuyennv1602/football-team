@@ -24,7 +24,7 @@ import 'package:myfootball/ui/page/team/create_team_page.dart';
 import 'package:myfootball/ui/page/team/edit_team_page.dart';
 import 'package:myfootball/ui/page/team/finance_page.dart';
 import 'package:myfootball/ui/page/team/find_matching_page.dart';
-import 'package:myfootball/ui/page/team/fixed_time_slot_page.dart';
+import 'package:myfootball/ui/page/team/fixed_time_page.dart';
 import 'package:myfootball/ui/page/team/fund_request_page.dart';
 import 'package:myfootball/ui/page/team/ground_detail_page.dart';
 import 'package:myfootball/ui/page/team/invite_detail_page.dart';
@@ -162,11 +162,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: ConversationPage());
     case BOOKING_MANAGE:
       return SlideLeftRoute(widget: BookingManagePage());
-    case FIXED_TIME_SLOT:
-      return SlideLeftRoute(widget: FixedTimeSlotPage());
     case BOOKING_FIXED:
       var ground = settings.arguments as Ground;
       return SlideLeftRoute(widget: BookingFixedPage(ground: ground));
+    case FIXED_TIME:
+      return SlideLeftRoute(widget: FixedTimeRequestPage());
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

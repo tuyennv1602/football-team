@@ -47,9 +47,12 @@ class FundRequestPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: UIHelper.size5),
-                    child: StatusIndicator(
-                      statusName: member.getStatusName,
-                      status: member.getStatus,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: StatusIndicator(
+                        statusName: member.getStatusName,
+                        status: member.getStatus,
+                      ),
                     ),
                   )
                 ],

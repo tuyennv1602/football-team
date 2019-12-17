@@ -268,49 +268,52 @@ class MatchHistoryPage extends StatelessWidget {
                 : SizedBox(),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+            padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
             child: LineWidget(indent: 0),
           ),
           Row(
             children: <Widget>[
               Expanded(
-                child: StatusIndicator(
-                  statusName: matchHistory.getStatusName,
-                  status: matchHistory.getStatus,
-                ),
+                  child: Row(
+                children: <Widget>[
+                  matchHistory.getMyTeamPoint != null
+                      ? Text(
+                          matchHistory.getMyTeamPoint.toStringAsFixed(2),
+                          style: textStyleMedium(
+                              size: 14,
+                              color: matchHistory.getMyTeamPoint > 0
+                                  ? GREEN_TEXT
+                                  : Colors.red),
+                        )
+                      : SizedBox(),
+                  matchHistory.getMyTeamPoint != null
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 2),
+                          child: Image.asset(
+                            matchHistory.getMyTeamPoint > 0
+                                ? Images.UP
+                                : Images.DOWN,
+                            width: UIHelper.size(12),
+                            height: UIHelper.size(12),
+                            color: matchHistory.getMyTeamPoint > 0
+                                ? GREEN_TEXT
+                                : Colors.red,
+                          ),
+                        )
+                      : SizedBox(),
+                  matchHistory.countConfirmed > 0
+                      ? Text(
+                          ' +${matchHistory.getBonus}',
+                          style: textStyleMedium(
+                              size: 14, color: matchHistory.getRateColor),
+                        )
+                      : SizedBox(),
+                ],
+              )),
+              StatusIndicator(
+                statusName: matchHistory.getStatusName,
+                status: matchHistory.getStatus,
               ),
-              matchHistory.getMyTeamPoint != null
-                  ? Text(
-                      matchHistory.getMyTeamPoint.toStringAsFixed(2),
-                      style: textStyleMedium(
-                          size: 14,
-                          color: matchHistory.getMyTeamPoint > 0
-                              ? GREEN_TEXT
-                              : Colors.red),
-                    )
-                  : SizedBox(),
-              matchHistory.getMyTeamPoint != null
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 2),
-                      child: Image.asset(
-                        matchHistory.getMyTeamPoint > 0
-                            ? Images.UP
-                            : Images.DOWN,
-                        width: UIHelper.size(12),
-                        height: UIHelper.size(12),
-                        color: matchHistory.getMyTeamPoint > 0
-                            ? GREEN_TEXT
-                            : Colors.red,
-                      ),
-                    )
-                  : SizedBox(),
-              matchHistory.countConfirmed > 0
-                  ? Text(
-                      ' +${matchHistory.getBonus}',
-                      style: textStyleMedium(
-                          size: 14, color: matchHistory.getRateColor),
-                    )
-                  : SizedBox()
             ],
           ),
         ],

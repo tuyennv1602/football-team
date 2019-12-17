@@ -7,6 +7,7 @@ import 'package:myfootball/model/response/comments_resp.dart';
 import 'package:myfootball/model/response/create_transaction_resp.dart';
 import 'package:myfootball/model/response/dynamic_resp.dart';
 import 'package:myfootball/model/response/create_matching_resp.dart';
+import 'package:myfootball/model/response/fixed_time_resp.dart';
 import 'package:myfootball/model/response/fund_request_resp.dart';
 import 'package:myfootball/model/response/fund_resp.dart';
 import 'package:myfootball/model/response/ground_resp.dart';
@@ -844,6 +845,15 @@ class Api {
       return BaseResponse.success(resp.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<FixedTimeResponse> getFixedTimes(int teamId) async {
+    try {
+      var resp = await _api.getApi('ground/fixed/group/$teamId');
+      return FixedTimeResponse.success(resp.data);
+    } on DioError catch (e) {
+      return FixedTimeResponse.error(e.message);
     }
   }
 }
