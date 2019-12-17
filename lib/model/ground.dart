@@ -24,6 +24,7 @@ class Ground {
   String provinceName;
   int countField;
   int countFreeField;
+  double distance;
   List<Field> fields;
 
   Ground(
@@ -49,7 +50,8 @@ class Ground {
       this.provinceName,
       this.countField,
       this.countFreeField,
-      this.fields});
+      this.fields,
+      this.distance});
 
   Ground.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,6 +82,7 @@ class Ground {
         fields.add(new Field.fromJson(v));
       });
     }
+    distance = json['distance'];
   }
 
   Map<String, dynamic> toJson() {
@@ -116,4 +119,6 @@ class Ground {
 
   String get getDeposit => StringUtil.formatCurrency(deposit);
 
+  String get getDistance =>
+      distance == null ? 'NaN' : '${(distance / 1000).toStringAsFixed(1)} km';
 }

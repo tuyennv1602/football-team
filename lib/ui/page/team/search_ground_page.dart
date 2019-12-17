@@ -110,7 +110,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              'Đánh giá',
+                              ground.getDistance,
                               style: textStyleRegularBody(color: Colors.white),
                             ),
                           ),
