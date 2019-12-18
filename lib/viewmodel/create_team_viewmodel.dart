@@ -11,6 +11,7 @@ import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/auth_services.dart';
 import 'package:myfootball/service/firebase_services.dart';
 import 'package:myfootball/service/local_storage.dart';
+import 'package:myfootball/service/navigation_services.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
@@ -61,7 +62,9 @@ class CreateTeamViewModel extends BaseViewModel {
       UIHelper.hideProgressDialog;
       user.addTeam(_team);
       _authServices.updateUser(user);
-      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công', isSuccess: true);
+      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công',
+          isSuccess: true,
+          onConfirmed: () => NavigationService.instance.goBack());
     } else {
       UIHelper.hideProgressDialog;
       UIHelper.showSimpleDialog(resp.errorMessage);
