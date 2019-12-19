@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/date_util.dart';
 
 class UserRequest {
   String content;

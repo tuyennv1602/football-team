@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
@@ -44,7 +44,7 @@ class RegisterViewModel extends BaseViewModel {
         (String verificationId, [int forceResendingToken]) async {
       UIHelper.hideProgressDialog;
       print('code sent: ' + verificationId);
-      NavigationService.instance.navigateTo(VERIFY_OTP,
+      Navigation.instance.navigateTo(VERIFY_OTP,
           arguments: VerifyArgument(
               userId: userId,
               phoneNumber: phoneNumber,

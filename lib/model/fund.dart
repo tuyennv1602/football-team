@@ -1,7 +1,5 @@
-import 'dart:math';
-
-import 'package:myfootball/ui/widget/status_indicator.dart';
-import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/model/status.dart';
+import 'package:myfootball/router/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';
 
 class Fund {

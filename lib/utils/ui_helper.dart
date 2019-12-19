@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/service/navigation_services.dart';
-import 'package:myfootball/ui/widget/button_widget.dart';
-import 'package:myfootball/ui/widget/progress_dialog.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/progress_dialog.dart';
 
 class UIHelper {
   static MediaQueryData _mediaQueryData;
@@ -53,8 +52,8 @@ class UIHelper {
 
   static double horizontalIndicator = padding;
 
-  static Widget homeButtonSpace =
-      Container(color: GREY_BACKGROUND, height: paddingBottom, width: screenWidth);
+  static Widget homeButtonSpace = Container(
+      color: GREY_BACKGROUND, height: paddingBottom, width: screenWidth);
 
   static double size(double size) {
     if (size == 0) return 0;
@@ -79,7 +78,7 @@ class UIHelper {
           icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
           gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
           confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR, onConfirmed: () {
-        NavigationService.instance.goBack();
+        Navigator.of(_buildContext).pop();
         if (onConfirmed != null) {
           onConfirmed();
         }
@@ -97,7 +96,7 @@ class UIHelper {
         'confirm_dialog',
         dismissiable: true,
         onConfirmed: () {
-          NavigationService.instance.goBack();
+          Navigator.of(_buildContext).pop();
           onConfirmed();
         },
         child: child ??

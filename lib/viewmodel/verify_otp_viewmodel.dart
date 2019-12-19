@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/firebase_services.dart';
-import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
@@ -48,7 +48,7 @@ class VerifyOTPViewModel extends BaseViewModel {
       if (resp.isSuccess) {
         UIHelper.showSimpleDialog('Tài khoản đã được kích hoạt thành công!',
             onConfirmed: () =>
-                NavigationService.instance.navigateAndRemove(LOGIN),
+                Navigation.instance.navigateAndRemove(LOGIN),
             isSuccess: true);
       } else {
         UIHelper.showSimpleDialog(resp.errorMessage);

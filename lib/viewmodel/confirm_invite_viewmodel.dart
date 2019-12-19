@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
+import 'package:myfootball/model/status.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/service/navigation_services.dart';
-import 'package:myfootball/ui/widget/status_indicator.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/object_utils.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
@@ -33,7 +32,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance.goBack(result: Status.DONE));
+          onConfirmed: () => Navigation.instance.goBack(result: Status.DONE));
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -46,7 +45,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance.goBack(result: Status.DONE));
+          onConfirmed: () => Navigation.instance.goBack(result: Status.DONE));
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -59,7 +58,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã từ chối lời mời',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance.goBack(result: Status.ABORTED));
+          onConfirmed: () => Navigation.instance.goBack(result: Status.ABORTED));
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }
@@ -72,7 +71,7 @@ class ConfirmInviteViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã huỷ lời mời',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance.goBack(result: Status.ABORTED));
+          onConfirmed: () => Navigation.instance.goBack(result: Status.ABORTED));
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

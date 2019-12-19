@@ -9,9 +9,8 @@ import 'package:myfootball/model/headers.dart';
 import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/auth_services.dart';
-import 'package:myfootball/service/base_api.dart';
-import 'package:myfootball/service/firebase_services.dart';
-import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/service/api_config.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -27,7 +26,7 @@ class LoginViewModel extends BaseViewModel {
   Future<void> setupDeviceInfo() async {
     var resp = await getDeviceInfo();
     this.deviceInfo = resp;
-    BaseApi.setHeader(Headers(deviceId: deviceInfo.deviceId));
+    ApiConfig.setHeader(Headers(deviceId: deviceInfo.deviceId));
   }
 
   Future<void> loginEmail(String email, String password) async {
@@ -38,7 +37,7 @@ class LoginViewModel extends BaseViewModel {
       var _registerDeviceResp = await registerDevice();
       UIHelper.hideProgressDialog;
       if (_registerDeviceResp.isSuccess) {
-        NavigationService.instance.navigateAndRemove(HOME);
+        Navigation.instance.navigateAndRemove(HOME);
       } else {
         UIHelper.showSimpleDialog(_registerDeviceResp.errorMessage);
       }
@@ -107,7 +106,7 @@ class LoginViewModel extends BaseViewModel {
         (String verificationId, [int forceResendingToken]) async {
       UIHelper.hideProgressDialog;
       print('code sent: ' + verificationId);
-      NavigationService.instance.navigateTo(VERIFY_OTP,
+      Navigation.instance.navigateTo(VERIFY_OTP,
           arguments: VerifyArgument(
               userId: userId,
               phoneNumber: phoneNumber,

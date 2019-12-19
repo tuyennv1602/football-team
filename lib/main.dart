@@ -3,13 +3,13 @@ import 'package:myfootball/provider_setup.dart' as setupProvider;
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/service/local_storage.dart';
-import 'package:myfootball/service/navigation_services.dart';
-import 'package:myfootball/ui/page/home_page.dart';
-import 'package:myfootball/ui/page/login/login_page.dart';
+import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/page/home_page.dart';
+import 'package:myfootball/view/page/login/login_page.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import 'package:myfootball/ui/router/router.dart';
+import 'package:myfootball/router/router.dart';
 import 'package:myfootball/utils/local_timeago.dart';
 import 'package:provider/provider.dart';
 import 'http.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       providers: setupProvider.providers,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: NavigationService().navigatorKey,
+        navigatorKey: Navigation().navigatorKey,
         onGenerateRoute: generateRoute,
         theme: ThemeData(
           canvasColor: Colors.transparent,

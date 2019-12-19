@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/model/field.dart';
-import 'package:myfootball/model/response/base_response.dart';
-import 'package:myfootball/model/response/ground_resp.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/service/navigation_services.dart';
-import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/router/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
@@ -45,7 +43,7 @@ class BookingViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đặt sân thành công',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance.goBack());
+          onConfirmed: () => Navigation.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

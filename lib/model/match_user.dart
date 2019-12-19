@@ -1,6 +1,6 @@
+import 'package:myfootball/model/status.dart';
 import 'package:myfootball/model/user.dart';
-import 'package:myfootball/ui/widget/status_indicator.dart';
-import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/date_util.dart';
 
 class MatchUser extends User {
   String position;

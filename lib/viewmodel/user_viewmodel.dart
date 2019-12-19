@@ -6,7 +6,7 @@ import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/auth_services.dart';
 import 'package:myfootball/service/firebase_services.dart';
 import 'package:myfootball/service/local_storage.dart';
-import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/service/team_services.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -37,7 +37,7 @@ class UserViewModel extends BaseViewModel {
     var resp = _token && _lastTeam && _logout.isSuccess;
     if (resp) {
       _teamServices.setTeam(null);
-      NavigationService.instance.navigateAndRemove(LOGIN);
+      Navigation.instance.navigateAndRemove(LOGIN);
     }
   }
 

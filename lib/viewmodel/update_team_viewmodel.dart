@@ -5,7 +5,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/firebase_services.dart';
-import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/service/team_services.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
@@ -45,7 +45,7 @@ class UpdateTeamViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       _teamServices.setTeam(team);
-      NavigationService.instance.goBack();
+      Navigation.instance.goBack();
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

@@ -3,7 +3,7 @@ import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
 import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/service/navigation_services.dart';
+import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
@@ -35,7 +35,7 @@ class InviteTeamViewModel extends BaseViewModel {
     if (resp.isSuccess) {
       UIHelper.showSimpleDialog('Đã gửi lời mời',
           isSuccess: true,
-          onConfirmed: () => NavigationService.instance.goBack());
+          onConfirmed: () => Navigation.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

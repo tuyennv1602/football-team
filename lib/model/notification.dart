@@ -1,4 +1,4 @@
-import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/date_util.dart';
 
 class Notification {
   int id;

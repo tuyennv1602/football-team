@@ -30,10 +30,10 @@ import 'package:myfootball/model/response/transaction_resp.dart';
 import 'package:myfootball/model/response/user_request_resp.dart';
 import 'package:myfootball/model/team.dart';
 
-import 'base_api.dart';
+import 'api_config.dart';
 
 class Api {
-  final _api = BaseApi.getInstance();
+  final _api = ApiConfig.getInstance();
 
   Future<LoginResponse> loginEmail(String email, String password) async {
     try {

@@ -1,5 +1,5 @@
+import 'package:myfootball/model/status.dart';
 import 'package:myfootball/model/user.dart';
-import 'package:myfootball/ui/widget/status_indicator.dart';
 
 class FundMember extends User {
   int status;

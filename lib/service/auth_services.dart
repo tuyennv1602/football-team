@@ -6,7 +6,7 @@ import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/response/login_resp.dart';
 import 'package:myfootball/model/token.dart';
 import 'package:myfootball/model/user.dart';
-import 'package:myfootball/service/base_api.dart';
+import 'package:myfootball/service/api_config.dart';
 import 'package:myfootball/service/local_storage.dart';
 
 import 'api.dart';
@@ -36,7 +36,7 @@ class AuthServices {
           deviceId: deviceId,
           token: resp.token,
           refreshToken: resp.refreshToken));
-      BaseApi.setHeader(Headers(accessToken: resp.token, deviceId: deviceId));
+      ApiConfig.setHeader(Headers(accessToken: resp.token, deviceId: deviceId));
     }
     return resp;
   }
@@ -47,7 +47,7 @@ class AuthServices {
 
   Future<LoginResponse> refreshToken() async {
     var token = await _preferences.getToken();
-    BaseApi.setHeader(Headers(deviceId: token.deviceId));
+    ApiConfig.setHeader(Headers(deviceId: token.deviceId));
     if (token != null) {
       var resp = await _api.refreshToken(token.refreshToken);
       if (resp.isSuccess) {
@@ -56,7 +56,7 @@ class AuthServices {
             deviceId: token.deviceId,
             token: resp.token,
             refreshToken: resp.refreshToken));
-        BaseApi.setHeader(
+        ApiConfig.setHeader(
             Headers(deviceId: token.deviceId, accessToken: resp.token));
       } else {
         _preferences.clearLastTeam();
