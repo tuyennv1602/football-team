@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/fonts.dart';
+import 'package:myfootball/ui/page/social/ranking_page.dart';
 import 'package:myfootball/ui/page/social/social_page.dart';
 import 'package:myfootball/ui/page/team/team_page.dart';
 import 'package:myfootball/ui/page/user/user_page.dart';
@@ -12,14 +13,19 @@ import 'notification/notification_page.dart';
 class HomePage extends StatelessWidget {
   final List<BottomNavigationBarItem> tabBarItems = [
     BottomNavigationBarItem(
-      icon: Icon(Icons.people, size: 25),
-      title:
-          Text('Đội bóng', style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
-    ),
-    BottomNavigationBarItem(
       icon: Icon(Icons.rss_feed, size: 25),
       title: Text('Cộng đồng',
           style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.equalizer, size: 25),
+      title:
+          Text('Xếp hạng', style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.people, size: 25),
+      title:
+          Text('Đội bóng', style: TextStyle(fontSize: 10, fontFamily: REGULAR)),
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications, size: 25),
@@ -35,6 +41,8 @@ class HomePage extends StatelessWidget {
     ),
   ];
 
+  //verified_user
+
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -42,19 +50,22 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white,
         activeColor: PRIMARY,
         items: tabBarItems,
-        currentIndex: 0,
+        currentIndex: 2,
       ),
       tabBuilder: (BuildContext context, int index) {
         if (index == 0)
           return CupertinoTabView(
-              builder: (BuildContext context) => TeamPage());
+              builder: (BuildContext context) => SocialPage());
         if (index == 1)
           return CupertinoTabView(
-              builder: (BuildContext context) => SocialPage());
+              builder: (BuildContext context) => RankingPage());
         if (index == 2)
           return CupertinoTabView(
-              builder: (BuildContext context) => NotificationPage());
+              builder: (BuildContext context) => TeamPage());
         if (index == 3)
+          return CupertinoTabView(
+              builder: (BuildContext context) => NotificationPage());
+        if (index == 4)
           return CupertinoTabView(
               builder: (BuildContext context) => UserPage());
         return null;

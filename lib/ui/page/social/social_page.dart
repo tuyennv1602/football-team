@@ -253,28 +253,7 @@ class SocialPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                _buildCateTitle('Bảng xếp hạng'),
-                teams.length != 0
-                    ? InkWell(
-                        onTap: () => NavigationService.instance
-                            .navigateTo(RANKING, arguments: teams),
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                          child: Text(
-                            'Xem Top 100',
-                            style:
-                                textStyleSemiBold(color: Colors.grey, size: 15),
-                          ),
-                        ),
-                      )
-                    : SizedBox()
-              ],
-            ),
+            _buildCateTitle('Bảng xếp hạng'),
             Container(
               margin: EdgeInsets.only(bottom: UIHelper.size20),
               padding: EdgeInsets.only(top: UIHelper.size10),
@@ -346,13 +325,11 @@ class SocialPage extends StatelessWidget {
                   physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   children: <Widget>[
-                    _buildRanking(context, model.teams),
-                    LineWidget(indent: 0),
+//                    _buildRanking(context, model.teams),
+//                    LineWidget(indent: 0),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: UIHelper.padding,
-                          right: UIHelper.padding,
-                          top: UIHelper.size15),
+                          left: UIHelper.padding, right: UIHelper.padding),
                       child: _buildCateTitle('Tin tức bóng đá'),
                     ),
                     SizedBox(

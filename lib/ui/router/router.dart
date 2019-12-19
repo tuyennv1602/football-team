@@ -136,12 +136,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case FUND_REQUEST:
       var fund = settings.arguments as Fund;
       return SlideLeftRoute(widget: FundRequestPage(fund: fund));
-    case RANKING:
-      var teams = settings.arguments as List<Team>;
-      return SlideLeftRoute(
-          widget: RankingPage(
-        teams: teams,
-      ));
     case VERIFY_OTP:
       var verify = settings.arguments as VerifyArgument;
       return SlideLeftRoute(widget: VerifyOTPPage(verifyArgument: verify));
