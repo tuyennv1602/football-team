@@ -3,19 +3,14 @@ import 'package:myfootball/model/matching.dart';
 import 'package:myfootball/model/response/matching_resp.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/service/team_services.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class FindMatchingViewModel extends BaseViewModel {
   Api _api;
-  TeamServices _teamServices;
   List<Matching> matchings;
   Matching currentTeam;
 
-  FindMatchingViewModel(
-      {@required Api api, @required TeamServices teamServices})
-      : _api = api,
-        _teamServices = teamServices;
+  FindMatchingViewModel({@required Api api}) : _api = api;
 
   Future<MatchingResponse> findMatching(Team team) async {
     setBusy(true);

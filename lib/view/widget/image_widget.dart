@@ -37,7 +37,7 @@ class ImageWidget extends StatelessWidget {
             placeHolder,
             width: size ?? UIHelper.size(55),
             height: size ?? UIHelper.size(55),
-            fit: BoxFit.cover,
+            fit: boxFit,
           );
   }
 }

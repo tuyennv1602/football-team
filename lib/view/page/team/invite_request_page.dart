@@ -5,7 +5,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
@@ -28,7 +28,7 @@ import '../base_widget.dart';
 class InviteRequestPage extends StatelessWidget {
   static const TABS = ['Lời mời', 'Đã gửi'];
 
-  Widget _buildItemRequest(BuildContext context, InviteRequest inviteRequest,
+  _buildItemRequest(BuildContext context, InviteRequest inviteRequest,
           {Function onCancel, Function onAccepted}) =>
       BorderItemWidget(
         onTap: () {
@@ -107,7 +107,7 @@ class InviteRequestPage extends StatelessWidget {
         ),
       );
 
-  void _showOptions(BuildContext context,
+  _showOptions(BuildContext context,
           {Function onInviteDetail, Function onTeamDetail}) =>
       showModalBottomSheet(
         context: context,

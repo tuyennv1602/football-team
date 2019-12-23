@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/fund_member.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class FundRequestViewModel extends BaseViewModel {
@@ -15,21 +15,16 @@ class FundRequestViewModel extends BaseViewModel {
     var resp = await _api.getFundStatusByNoticeId(teamId, noticeId);
     if (resp.isSuccess) {
       this.members = resp.members;
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }
 
-  Future<void> acceptRequest(int index, int requestId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> acceptRequest(int index, int requestId) async {
     var resp = await _api.acceptFundRequest(requestId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.members[index].status = 1;
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

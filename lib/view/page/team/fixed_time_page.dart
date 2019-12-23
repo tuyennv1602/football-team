@@ -7,7 +7,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_ground_page.dart';
 import 'package:myfootball/view/widget/app_bar.dart';

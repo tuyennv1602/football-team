@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/model/field.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class BookingFixedViewModel extends BaseViewModel {
@@ -26,17 +26,10 @@ class BookingFixedViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<void> booking(int teamId, int timeSlotId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> booking(int teamId, int timeSlotId) async {
     var resp = await _api.requestFixedBooking(teamId, timeSlotId, dayOfWeek);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog(
-          'Yêu cầu đã được gửi. Vui lòng chờ quản lý sân xác nhận',
-          isSuccess: true,
-          onConfirmed: () => Navigation.instance.goBack());
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
+
+  String get getDayOfWeek => DateUtil.getDayOfWeek(dayOfWeek);
 }

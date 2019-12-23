@@ -7,7 +7,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -31,7 +31,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
       : matchSchedule = matchSchedule,
         super(key: key);
 
-  Widget _buildTeamMembers(BuildContext context, List<Member> members) {
+  _buildTeamMembers(BuildContext context, List<Member> members) {
     if (members == null) return LoadingWidget();
     return members.length == 0
         ? EmptyWidget(message: 'Chưa có thành viên đăng ký')
@@ -53,6 +53,17 @@ class MatchScheduleDetailPage extends StatelessWidget {
                 crossAxisSpacing: UIHelper.size10,
                 mainAxisSpacing: UIHelper.size10),
             itemCount: members.length);
+  }
+
+  _handleCreateCode(int teamId, MatchScheduleDetailViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.createCode(teamId);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      Share.share(model.matchSchedule.getShareCode);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
   @override
@@ -88,11 +99,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                   onTap: () async {
                     if (matchSchedule.getMyTeam.code == null) {
                       if (team != null && team.hasManager(userId)) {
-                        var code =
-                            await model.createCode(matchSchedule.getMyTeam.id);
-                        if (code != null) {
-                          Share.share(model.matchSchedule.getShareCode);
-                        }
+                        _handleCreateCode(matchSchedule.getMyTeam.id, model);
                       } else {
                         UIHelper.showSimpleDialog(
                             'Chưa có mã tham gia trận đấu');
@@ -118,9 +125,9 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                 Images.STADIUM,
                                 matchSchedule.groundName,
                                 iconColor: Colors.green,
-                                onTap: () => Navigation.instance
-                                    .navigateTo(GROUND_DETAIL,
-                                        arguments: matchSchedule.groundId),
+                                onTap: () => Navigation.instance.navigateTo(
+                                    GROUND_DETAIL,
+                                    arguments: matchSchedule.groundId),
                               ),
                               team != null &&
                                       team.hasManager(userId) &&
@@ -130,11 +137,11 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                       'Yêu cầu tham gia trận đấu',
                                       iconColor: Colors.teal,
                                       onTap: () async {
-                                        var _matchUsers =
-                                            await Navigation.instance
-                                                .navigateTo(REQUEST_JOIN_MATCH,
-                                                    arguments:
-                                                        matchSchedule.matchId);
+                                        var _matchUsers = await Navigation
+                                            .instance
+                                            .navigateTo(REQUEST_JOIN_MATCH,
+                                                arguments:
+                                                    matchSchedule.matchId);
                                         if (_matchUsers != null) {
                                           model.addMember(_matchUsers);
                                         }
@@ -172,9 +179,9 @@ class MatchScheduleDetailPage extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: InkWell(
-                                onTap: () => Navigation.instance
-                                    .navigateTo(TEAM_DETAIL,
-                                        arguments: matchSchedule.getMyTeam),
+                                onTap: () => Navigation.instance.navigateTo(
+                                    TEAM_DETAIL,
+                                    arguments: matchSchedule.getMyTeam),
                                 child: Hero(
                                   tag: 'team-${matchSchedule.getMyTeam.id}',
                                   child: ImageWidget(

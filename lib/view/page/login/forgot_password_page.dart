@@ -3,7 +3,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/light_input_text.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
@@ -31,6 +31,32 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
       return true;
     }
     return false;
+  }
+
+  handleGetCode(ForgotPasswordViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.forgotPassword(_email);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      model.switchMode(true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  handleChangePassword(ForgotPasswordViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.changePassword(_email, _password, _code);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+        'Mật khẩu đã được thay đổi',
+        isSuccess: true,
+        onConfirmed: () => Navigation.instance.goBack(),
+      );
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
   @override
@@ -169,10 +195,9 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                             onTap: () {
                               if (validateAndSave()) {
                                 if (model.isChangePassword) {
-                                  model.changePassword(
-                                      _email, _password, _code);
+                                  handleChangePassword(model);
                                 } else {
-                                  model.forgotPassword(_email);
+                                  handleGetCode(model);
                                 }
                               }
                             },

@@ -4,7 +4,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -18,7 +18,7 @@ import 'package:myfootball/viewmodel/setup_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class SetupMatchingInfoPage extends StatelessWidget {
-  Widget _buildItemAddress(
+  _buildItemAddress(
           BuildContext context, AddressInfo addressInfo, Function onDeleted) =>
       Chip(
         key: ValueKey<String>(addressInfo.getAddress),
@@ -31,8 +31,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
         onDeleted: () => onDeleted(),
       );
 
-  Widget _buildItemTime(
-          BuildContext context, TimeInfo timeInfo, Function onDeleted) =>
+  _buildItemTime(BuildContext context, TimeInfo timeInfo, Function onDeleted) =>
       Chip(
         key: ValueKey<String>(timeInfo.getTimes),
         backgroundColor: PRIMARY,
@@ -44,7 +43,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
         onDeleted: () => onDeleted(),
       );
 
-  void _showAddTime(BuildContext context, Function onAddTime) =>
+  _showAddTime(BuildContext context, Function onAddTime) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => Container(
@@ -74,6 +73,18 @@ class SetupMatchingInfoPage extends StatelessWidget {
           ),
         ),
       );
+
+  _handleSave(int teamId, SetupMatchingInfoViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.saveMatchingInfo(teamId);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã cập nhật thông tin ghép đối',
+          isSuccess: true, onConfirmed: () => Navigation.instance.goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +179,10 @@ class SetupMatchingInfoPage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: UIHelper.padding, right: UIHelper.padding, bottom: UIHelper.size10),
+                              padding: EdgeInsets.only(
+                                  left: UIHelper.padding,
+                                  right: UIHelper.padding,
+                                  bottom: UIHelper.size10),
                               child: Wrap(
                                 spacing: UIHelper.size5,
                                 children: _timeChildren,
@@ -191,9 +205,8 @@ class SetupMatchingInfoPage extends StatelessWidget {
                                     padding: EdgeInsets.all(UIHelper.size10),
                                     child: InkWell(
                                       onTap: () async {
-                                        var result =
-                                            await Navigation.instance
-                                                .navigateTo(SETUP_ADDRESS);
+                                        var result = await Navigation.instance
+                                            .navigateTo(SETUP_ADDRESS);
                                         if (result != null) {
                                           model.addAddressInfos(result);
                                         }
@@ -224,8 +237,10 @@ class SetupMatchingInfoPage extends StatelessWidget {
                           'LƯU LẠI',
                           style: textStyleButton(),
                         ),
-                        margin: EdgeInsets.symmetric(horizontal: UIHelper.padding, vertical: UIHelper.size5),
-                        onTap: () => model.saveMatchingInfo(_team.id),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: UIHelper.padding,
+                            vertical: UIHelper.size5),
+                        onTap: () => _handleSave(_team.id, model),
                       ),
                     ],
                   );

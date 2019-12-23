@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/response/ticket_resp.dart';
 import 'package:myfootball/model/ticket.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class TicketViewModel extends BaseViewModel {
@@ -21,16 +21,12 @@ class TicketViewModel extends BaseViewModel {
     return resp;
   }
 
-  Future<void> cancelBooking(int index, int ticketId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> cancelBooking(int index, int ticketId) async {
     var resp = await _api.cancelBooking(ticketId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.tickets.removeAt(index);
       notifyListeners();
-      UIHelper.showSimpleDialog('Đã huỷ thành công vé #$ticketId', isSuccess: true);
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

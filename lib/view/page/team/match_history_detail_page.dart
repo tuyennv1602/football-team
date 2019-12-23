@@ -6,7 +6,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -25,6 +25,7 @@ import 'package:myfootball/viewmodel/match_history_detail_viewmodel.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class MatchHistoryDetailPage extends StatelessWidget {
   final MatchHistory matchHistory;
   MatchHistoryDetailViewModel _model;
@@ -33,7 +34,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
       : matchHistory = matchHistory,
         super(key: key);
 
-  Widget _buildTeamMembers(BuildContext context, List<Member> members) {
+  _buildTeamMembers(BuildContext context, List<Member> members) {
     if (members == null) return LoadingWidget();
     return members.length == 0
         ? EmptyWidget(message: 'Chưa có thành viên nào')
@@ -54,7 +55,8 @@ class MatchHistoryDetailPage extends StatelessWidget {
                 childAspectRatio: 0.8,
                 crossAxisSpacing: UIHelper.size10,
                 mainAxisSpacing: UIHelper.size10),
-            itemCount: members.length);
+            itemCount: members.length,
+          );
   }
 
   @override
@@ -105,13 +107,11 @@ class MatchHistoryDetailPage extends StatelessWidget {
                         child: LikeButton(
                           size: UIHelper.size30,
                           isLiked: _isLiked,
-                          likeBuilder: (bool isLiked) {
-                            return Icon(
+                          likeBuilder: (bool isLiked) => Icon(
                               Icons.check_circle,
                               color: isLiked ? PRIMARY : Colors.grey,
                               size: UIHelper.size30,
-                            );
-                          },
+                            ),
                           onTap: (isLiked) {
                             if (isLiked) {
                               return _model.cancelConfirmScore().then((resp) {
@@ -185,9 +185,9 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                 Images.STADIUM,
                                 matchHistory.groundName,
                                 iconColor: Colors.green,
-                                onTap: () => Navigation.instance
-                                    .navigateTo(GROUND_DETAIL,
-                                        arguments: matchHistory.groundId),
+                                onTap: () => Navigation.instance.navigateTo(
+                                    GROUND_DETAIL,
+                                    arguments: matchHistory.groundId),
                               ),
                               Container(
                                 color: Colors.white,
@@ -307,10 +307,10 @@ class MatchHistoryDetailPage extends StatelessWidget {
                           Expanded(
                             child: matchHistory.getOpponentTeam != null
                                 ? InkWell(
-                                    onTap: () => Navigation.instance
-                                        .navigateTo(TEAM_DETAIL,
-                                            arguments:
-                                                matchHistory.getOpponentTeam),
+                                    onTap: () => Navigation.instance.navigateTo(
+                                        TEAM_DETAIL,
+                                        arguments:
+                                            matchHistory.getOpponentTeam),
                                     child: Hero(
                                       tag: matchHistory.getOpponentTeam.id,
                                       child: ImageWidget(

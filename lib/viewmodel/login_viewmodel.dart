@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/model/device_info.dart';
 import 'package:myfootball/model/headers.dart';
 import 'package:myfootball/model/response/base_response.dart';
+import 'package:myfootball/model/response/login_resp.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/auth_services.dart';
 import 'package:myfootball/service/api_config.dart';
-import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class LoginViewModel extends BaseViewModel {
@@ -29,29 +29,17 @@ class LoginViewModel extends BaseViewModel {
     ApiConfig.setHeader(Headers(deviceId: deviceInfo.deviceId));
   }
 
-  Future<void> loginEmail(String email, String password) async {
-    UIHelper.showProgressDialog;
+  Future<LoginResponse> loginEmail(String email, String password) async {
     var resp =
         await _authServices.loginEmail(deviceInfo.deviceId, email, password);
     if (resp.isSuccess) {
       var _registerDeviceResp = await registerDevice();
-      UIHelper.hideProgressDialog;
-      if (_registerDeviceResp.isSuccess) {
-        Navigation.instance.navigateAndRemove(HOME);
-      } else {
-        UIHelper.showSimpleDialog(_registerDeviceResp.errorMessage);
-      }
-    } else {
-      UIHelper.hideProgressDialog;
-      if (resp.statusCode == Constants.CODE_NOT_ACCEPTABLE) {
-        UIHelper.showConfirmDialog(
-            'Tài khoản chưa được kích hoạt! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
-            onConfirmed: () =>
-                verifyPhoneNumber(resp.user.id, resp.user.phone));
-      } else {
-        UIHelper.showSimpleDialog(resp.errorMessage);
+      if (!_registerDeviceResp.isSuccess) {
+        resp.success = false;
+        resp.errorMessage = _registerDeviceResp.errorMessage;
       }
     }
+    return resp;
   }
 
   Future<DeviceInfo> getDeviceInfo() async {

@@ -9,7 +9,7 @@ import 'package:myfootball/model/ground.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -43,7 +43,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
   final Completer<GoogleMapController> _controller = Completer();
   BitmapDescriptor _groundMarker;
 
-  Widget _buildItemGround(BuildContext context, int index, Ground ground) =>
+  _buildItemGround(BuildContext context, int index, Ground ground) =>
       BorderItemWidget(
         padding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
@@ -51,8 +51,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
           if (widget.type == BOOKING_TYPE.NORMAL) {
             Navigation.instance.navigateTo(BOOKING, arguments: ground);
           } else {
-            Navigation.instance
-                .navigateTo(BOOKING_FIXED, arguments: ground);
+            Navigation.instance.navigateTo(BOOKING_FIXED, arguments: ground);
           }
         },
         child: Hero(
@@ -151,17 +150,23 @@ class _SearchGroundState extends State<SearchGroundPage> {
     });
   }
 
-  Future<void> _updateMyLocation(SearchGroundViewModel model) async {
+  _updateMyLocation(SearchGroundViewModel model) async {
     await model.getMyLocation();
     _animateToPosition(model.myPosition);
-    await model.getGroundsByLocation();
-    if (model.currentGround != null) {
-      _animateToPosition(
-          LatLng(model.currentGround.lat, model.currentGround.lng));
+    UIHelper.showProgressDialog;
+    var resp = await model.getGroundsByLocation();
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      if (model.currentGround != null) {
+        _animateToPosition(
+            LatLng(model.currentGround.lat, model.currentGround.lng));
+      }
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
     }
   }
 
-  Future<void> _animateToPosition(LatLng target) async {
+  _animateToPosition(LatLng target) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(

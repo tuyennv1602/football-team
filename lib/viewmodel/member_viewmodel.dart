@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/model/member.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/team_services.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class MemberViewModel extends BaseViewModel {
@@ -18,31 +17,23 @@ class MemberViewModel extends BaseViewModel {
       : _api = api,
         _teamServices = teamServices;
 
-  Future<void> addCaptain(int memberId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> addCaptain(int memberId) async {
     var resp = await _api.addCaptain(team.id, memberId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       team.captainId = memberId;
       _teamServices.setTeam(team);
       notifyListeners();
-      UIHelper.showSimpleDialog('Đã thêm đội trưởng đội bóng!',
-          isSuccess: true);
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 
-  Future<void> kickMember(int index, int memberId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> kickMember(int index, int memberId) async {
     var resp = await _api.removeMember(team.id, memberId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       team.members.removeAt(index);
       _teamServices.setTeam(team);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

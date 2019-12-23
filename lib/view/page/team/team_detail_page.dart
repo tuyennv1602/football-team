@@ -5,7 +5,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -39,6 +39,16 @@ class TeamDetailPage extends StatelessWidget {
           child: child,
         ),
       );
+
+  _handleSubmitReview(
+      double rating, String comment, OtherTeamViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.submitReview(rating, comment);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,14 +161,12 @@ class TeamDetailPage extends StatelessWidget {
                           onTap: () => _writeReview(
                             context,
                             onSubmit: (rating, comment) =>
-                                model.submitReview(rating, comment),
+                                _handleSubmitReview(rating, comment, model),
                           ),
                           child: Padding(
-                            padding:
-                            EdgeInsets.all(UIHelper.padding),
+                            padding: EdgeInsets.all(UIHelper.padding),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
                                   'Đánh giá và nhận xét',
@@ -178,25 +186,20 @@ class TeamDetailPage extends StatelessWidget {
                           child: model.busy
                               ? LoadingWidget()
                               : model.comments == null
-                                  ? LoadingWidget(
-                                      type: LOADING_TYPE.WAVE)
+                                  ? LoadingWidget(type: LOADING_TYPE.WAVE)
                                   : model.comments.length == 0
                                       ? EmptyWidget(
-                                          message:
-                                              'Chưa có nhận xét nào')
+                                          message: 'Chưa có nhận xét nào')
                                       : ListView.separated(
                                           padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  UIHelper.padding),
+                                              vertical: UIHelper.padding),
                                           itemBuilder: (c, index) =>
                                               ItemComment(
-                                                  comment: model
-                                                      .comments[index]),
-                                          separatorBuilder:
-                                              (c, index) =>
-                                                  LineWidget(),
-                                          itemCount:
-                                              model.comments.length),
+                                                  comment:
+                                                      model.comments[index]),
+                                          separatorBuilder: (c, index) =>
+                                              LineWidget(),
+                                          itemCount: model.comments.length),
                         )
                       ],
                     );

@@ -4,7 +4,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -42,16 +42,16 @@ class TeamFundPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemFund(BuildContext context, Fund fund,
+  _buildItemFund(BuildContext context, Fund fund,
           {Function onSendRequest, Function onDetail}) =>
       BorderItemWidget(
         onTap: () => fund.status == 1
             ? onDetail(fund)
             : _showOptions(
-          context,
-          onSendRequest: () => onSendRequest(fund.id),
-          onDetail: () => onDetail(fund),
-        ),
+                context,
+                onSendRequest: () => onSendRequest(fund.id),
+                onDetail: () => onDetail(fund),
+              ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -81,6 +81,19 @@ class TeamFundPage extends StatelessWidget {
           ],
         ),
       );
+
+  _handleSendRequest(int index, int noticeId, TeamFundViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.sendRequest(index, noticeId);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+          'Yêu cầu của bạn đã được gửi. Vui lòng chờ xác nhận',
+          isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +129,8 @@ class TeamFundPage extends StatelessWidget {
                                   context,
                                   model.funds[index],
                                   onSendRequest: (noticeId) =>
-                                      model.sendRequest(index, noticeId),
+                                      _handleSendRequest(
+                                          index, noticeId, model),
                                   onDetail: (fund) => Navigation.instance
                                       .navigateTo(FUND_REQUEST,
                                           arguments: fund),

@@ -15,20 +15,15 @@ class Images {
   static const String ADD_REQUEST = '$FOLDER/ic_add_request.png';
   static const String ADD_TEAM = '$FOLDER/ic_add_team.png';
   static const String BACK = '$FOLDER/ic_left_arrow.png';
-  static const String GALLERY = '$FOLDER/ic_gallery.png';
   static const String SHIRT = '$FOLDER/ic_shirt.png';
-  static const String ANALYTIC = '$FOLDER/ic_analytics.png';
   static const String BOOKING = '$FOLDER/ic_booking.png';
   static const String COMMENT = '$FOLDER/ic_comment.png';
   static const String RANK = '$FOLDER/ic_rank.png';
   static const String MEMBER_MANAGE = '$FOLDER/ic_member_manage.png';
   static const String MEMBER = '$FOLDER/ic_member.png';
   static const String SCHEDULE = '$FOLDER/ic_schedule.png';
-  static const String ADMIN = '$FOLDER/ic_admin.png';
   static const String STACK = '$FOLDER/ic_stack.png';
-  static const String QR_SEARCH = '$FOLDER/ic_qr_search.png';
   static const String DEFAULT_LOGO = '$FOLDER/ic_club.png';
-  static const String SWITCH_TEAM = '$FOLDER/icn_switch.png';
   static const String LEFT_ARROW = '$FOLDER/ic_left_arrow.png';
   static const String FIND_MATCH = '$FOLDER/ic_find_match.png';
   static const String EDIT_TEAM = '$FOLDER/ic_edit_team.png';
@@ -42,8 +37,6 @@ class Images {
   static const String PHONE = '$FOLDER/ic_phone.png';
   static const String CALL = '$FOLDER/ic_call.png';
   static const String MORE = '$FOLDER/ic_more.png';
-  static const String ACCEPT = '$FOLDER/ic_accept.png';
-  static const String DENY = '$FOLDER/ic_deny.png';
   static const String SEARCH = '$FOLDER/ic_search.png';
   static const String ADD = '$FOLDER/ic_add.png';
   static const String NEXT = '$FOLDER/ic_next.png';
@@ -58,7 +51,6 @@ class Images {
   static const String HISTORY = '$FOLDER/ic_history.png';
   static const String FUND_NOTIFY = '$FOLDER/ic_fund_notify.png';
   static const String CLOSE = '$FOLDER/ic_close.png';
-  static const String FINGERPRINT = '$FOLDER/ic_fingerprint.png';
   static const String DELETE = '$FOLDER/ic_delete.png';
   static const String CLOCK = '$FOLDER/ic_clock.png';
   static const String UP = '$FOLDER/ic_up.png';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/fixed_time.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class FixedTimeViewModel extends BaseViewModel {
@@ -16,8 +15,6 @@ class FixedTimeViewModel extends BaseViewModel {
     var resp = await _api.getFixedTimes(teamId);
     if (resp.isSuccess) {
       this.times = resp.requests;
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }

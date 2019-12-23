@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 
 class UserRequest {
   String content;
@@ -37,13 +37,9 @@ class UserRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.idRequest;
     data['content'] = this.content;
-    data['status'] = this.status;
-    data['createDate'] = this.createDate;
-    data['id_request'] = this.idRequest;
-    data['id_name'] = this.idTeam;
-    data['team_name'] = this.teamName;
-    data['team_logo'] = this.teamLogo;
+    data['group_id'] = this.idTeam;
     data['position'] = this.position;
     return data;
   }

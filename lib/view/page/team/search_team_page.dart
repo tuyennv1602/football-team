@@ -3,7 +3,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -43,18 +43,16 @@ class SearchTeamPage extends StatelessWidget {
     return false;
   }
 
-  Widget _buildItemTeam(BuildContext context, Team team,
-          {Function onSubmitRequest}) =>
+  _buildItemTeam(BuildContext context, Team team, {Function onSubmitRequest}) =>
       BorderItemWidget(
         onTap: () {
           if (type == SEARCH_TYPE.COMPARE_TEAM) {
-            Navigation.instance
-                .navigateTo(COMPARE_TEAM, arguments: team);
+            Navigation.instance.navigateTo(COMPARE_TEAM, arguments: team);
           } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
             _showOptions(
               context,
-              onDetail: () => Navigation.instance
-                  .navigateTo(TEAM_DETAIL, arguments: team),
+              onDetail: () =>
+                  Navigation.instance.navigateTo(TEAM_DETAIL, arguments: team),
               onRequest: () =>
                   _showRequestForm(context, team, onSubmit: onSubmitRequest),
             );
@@ -240,11 +238,23 @@ class SearchTeamPage extends StatelessWidget {
             UIHelper.showSimpleDialog('Bạn chưa chọn vị trí có thể chơi');
           } else {
             Navigation.instance.goBack();
-            onSubmit(team.id, _content, _positions);
+            onSubmit(team.id, _content, _positions.join(','));
           }
         }
       },
     );
+  }
+
+  _handleCreateRequest(int teamId, String content, String position,
+      SearchTeamViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.createRequest(teamId, content, position);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã gửi đăng ký!', isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
   @override
@@ -266,8 +276,7 @@ class SearchTeamPage extends StatelessWidget {
             rightContent: type == SEARCH_TYPE.REQUEST_MEMBER
                 ? AppBarButtonWidget(
                     imageName: Images.STACK,
-                    onTap: () =>
-                        Navigation.instance.navigateTo(USER_REQUESTS))
+                    onTap: () => Navigation.instance.navigateTo(USER_REQUESTS))
                 : AppBarButtonWidget(),
           ),
           Expanded(
@@ -299,10 +308,10 @@ class SearchTeamPage extends StatelessWidget {
                                     itemBuilder: (c, index) => _buildItemTeam(
                                       context,
                                       model.teams[index],
-                                      onSubmitRequest:
-                                          (teamId, content, position) =>
-                                              model.createRequest(
-                                                  teamId, content, position),
+                                      onSubmitRequest: (teamId, content,
+                                              position) =>
+                                          _handleCreateRequest(
+                                              teamId, content, position, model),
                                     ),
                                   ),
                           ),

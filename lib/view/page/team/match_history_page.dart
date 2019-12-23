@@ -5,7 +5,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
@@ -140,8 +140,7 @@ class MatchHistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildItemHistory(
-      BuildContext context, int index, MatchHistory matchHistory,
+  _buildItemHistory(BuildContext context, int index, MatchHistory matchHistory,
       {Function onSubmit, Function onConfirm}) {
     bool isCaptain =
         Provider.of<Team>(context).managerId == Provider.of<User>(context).id;
@@ -157,7 +156,7 @@ class MatchHistoryPage extends StatelessWidget {
                       context,
                       matchHistory,
                       onSubmit: (firstScore, secondScore) =>
-                          onSubmit(matchHistory.id, firstScore, secondScore),
+                          onSubmit(firstScore, secondScore),
                     ),
                 onDetail: () => Navigation.instance
                     .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory));
@@ -171,7 +170,7 @@ class MatchHistoryPage extends StatelessWidget {
                 } else {
                   UIHelper.showConfirmDialog(
                       'Bạn có chắc chắn tỉ số mà ${matchHistory.getOpponentName} đã cập nhật cho trận đấu này là chính xác?',
-                      onConfirmed: () => onConfirm(matchHistory.id));
+                      onConfirmed: () => onConfirm());
                 }
               },
               onDetail: () => Navigation.instance
@@ -320,6 +319,33 @@ class MatchHistoryPage extends StatelessWidget {
     );
   }
 
+  _handleSubmit(int index, String firstScore, String secondScore,
+      MatchHistoryViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.updateScore(index, firstScore, secondScore);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+          'Đã gửi yêu cầu xác nhận tỉ số tới đối tác. Vui lòng chờ đối tác xác nhận!',
+          isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleConfirm(int index, MatchHistoryViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.confirmScore(index);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+          'Cảm ơn bạn vì đã xác nhận. Các cầu thủ có thể tham gia xác nhận tỉ số để tăng độ tín nhiệm của kết quả và nhận điểm thưởng',
+          isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var _team = Provider.of<Team>(context);
@@ -335,10 +361,6 @@ class MatchHistoryPage extends StatelessWidget {
             ),
             leftContent: AppBarButtonWidget(
               imageName: Images.BACK,
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            rightContent: AppBarButtonWidget(
-              imageName: Images.INFO,
               onTap: () => Navigator.of(context).pop(),
             ),
           ),
@@ -366,12 +388,11 @@ class MatchHistoryPage extends StatelessWidget {
                                       context,
                                       index,
                                       model.matchHistories[index],
-                                      onSubmit: (historyId, firstScore,
-                                              secondScore) =>
-                                          model.updateScore(index, historyId,
-                                              firstScore, secondScore),
-                                      onConfirm: (historyId) =>
-                                          model.confirmScore(index, historyId),
+                                      onSubmit: (firstScore, secondScore) =>
+                                          _handleSubmit(index, firstScore,
+                                              secondScore, model),
+                                      onConfirm: () =>
+                                          _handleConfirm(index, model),
                                     ),
                                 separatorBuilder: (c, index) =>
                                     UIHelper.verticalIndicator,

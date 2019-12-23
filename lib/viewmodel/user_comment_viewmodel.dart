@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/comment.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class UserCommentViewModel extends BaseViewModel {
@@ -15,21 +15,17 @@ class UserCommentViewModel extends BaseViewModel {
     var resp = await _api.getCommentByUserId(userId, 1);
     if (resp.isSuccess) {
       comments = resp.comments;
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }
 
-  Future<void> submitReview(int userId, double rating, String comment) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> submitReview(
+      int userId, double rating, String comment) async {
     var resp = await _api.reviewUser(userId, rating, comment);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.comments.add(resp.review.comment);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

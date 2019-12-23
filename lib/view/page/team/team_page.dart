@@ -5,7 +5,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_team_page.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -133,8 +133,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
               Images.SCHEDULE,
               'Lịch thi đấu',
               iconColor: Colors.deepOrange,
-              onTap: () =>
-                  Navigation.instance.navigateTo(MATCH_SCHEDULE),
+              onTap: () => Navigation.instance.navigateTo(MATCH_SCHEDULE),
             ),
             ItemOptionWidget(
               Images.MATCH_HISTORY,
@@ -168,8 +167,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     Images.SETTING,
                     'Thiết lập đội bóng',
                     iconColor: Colors.orange,
-                    onTap: () =>
-                        Navigation.instance.navigateTo(SETUP_TEAM),
+                    onTap: () => Navigation.instance.navigateTo(SETUP_TEAM),
                   )
                 : SizedBox())
             ..add(
@@ -213,8 +211,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                       style: textStyleAlert(color: Colors.black87),
                     ),
                     InkWell(
-                      onTap: () =>
-                          Navigation.instance.navigateTo(TEAM_COMMENT),
+                      onTap: () => Navigation.instance.navigateTo(TEAM_COMMENT),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -293,6 +290,15 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           separatorBuilder: (c, index) => LineWidget(),
           itemCount: teams.length);
 
+  _handleLeaveTeam(int teamId, TeamViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.leaveTeam(teamId);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -305,7 +311,15 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           teamServices: Provider.of(context),
           api: Provider.of(context),
         ),
-        onModelReady: (model) => model.refreshToken(),
+        onModelReady: (model) async {
+          var resp = await model.refreshToken();
+          if (!resp.isSuccess) {
+            UIHelper.showSimpleDialog(
+              resp.getErrorMessage,
+              onConfirmed: () => Navigation.instance.navigateAndRemove(LOGIN),
+            );
+          }
+        },
         builder: (context, model, child) {
           var _teams = model.teams;
           var _team = Provider.of<Team>(context);
@@ -349,7 +363,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                       context,
                                       _team,
                                       onLeaveTeam: () =>
-                                          model.leaveTeam(_team.id),
+                                          _handleLeaveTeam(_team.id, model),
                                     ),
                                   ],
                                 ),
@@ -374,9 +388,9 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                               frontTrailing: AppBarButtonWidget(
                                 imageName: Images.SEARCH,
                                 iconColor: Colors.white,
-                                onTap: () => Navigation.instance
-                                    .navigateTo(SEARCH_TEAM,
-                                        arguments: SEARCH_TYPE.TEAM_DETAIL),
+                                onTap: () => Navigation.instance.navigateTo(
+                                    SEARCH_TEAM,
+                                    arguments: SEARCH_TYPE.TEAM_DETAIL),
                               ),
                               frontHeading: Container(
                                 width: double.infinity,

@@ -2,7 +2,7 @@ import 'package:myfootball/model/match_schedule.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
 import 'package:myfootball/model/status.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/object_utils.dart';
 import 'package:myfootball/utils/string_util.dart';
 

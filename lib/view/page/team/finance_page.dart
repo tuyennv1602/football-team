@@ -6,7 +6,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -140,8 +140,8 @@ class FinancePage extends StatelessWidget {
           Padding(
             padding:
                 EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size20),
-            child: ChooseTransactionWidget(
-                onSelectedType: (type) => _type = type),
+            child:
+                ChooseTransactionWidget(onSelectedType: (type) => _type = type),
           ),
           Form(
             key: _formTransactionKey,
@@ -204,8 +204,18 @@ class FinancePage extends StatelessWidget {
                     ),
                     onPressed: () => _createFundNotification(
                       context,
-                      onSubmit: (title, price, expiredDate) => _viewModel
-                          .createFundNotify(title, price, expiredDate),
+                      onSubmit: (title, price, expiredDate) async {
+                        UIHelper.showProgressDialog;
+                        var resp = await _viewModel.createFundNotify(
+                            title, price, expiredDate);
+                        UIHelper.hideProgressDialog;
+                        if (resp.isSuccess) {
+                          UIHelper.showSimpleDialog('Thông báo đã được tạo',
+                              isSuccess: true);
+                        } else {
+                          UIHelper.showSimpleDialog(resp.errorMessage);
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -225,9 +235,21 @@ class FinancePage extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    onPressed: () => _createTransaction(context,
-                        onSubmit: (price, type, title) =>
-                            _viewModel.createExchange(price, type, title)),
+                    onPressed: () => _createTransaction(
+                      context,
+                      onSubmit: (price, type, title) async {
+                        UIHelper.showProgressDialog;
+                        var resp =
+                            await _viewModel.createExchange(price, type, title);
+                        UIHelper.hideProgressDialog;
+                        if (resp.isSuccess) {
+                          UIHelper.showSimpleDialog('Giao dịch đã được tạo',
+                              isSuccess: true);
+                        } else {
+                          UIHelper.showSimpleDialog(resp.errorMessage);
+                        }
+                      },
+                    ),
                   ),
                 )
               ],

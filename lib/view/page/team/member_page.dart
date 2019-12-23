@@ -5,7 +5,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -23,7 +23,7 @@ class MemberPage extends StatelessWidget {
 
   MemberPage({this.team});
 
-  void _showManagerOptions(BuildContext context,
+  _showManagerOptions(BuildContext context,
           {Function onDetail, Function onAddCaptain, Function onRemove}) =>
       showModalBottomSheet(
         context: context,
@@ -47,6 +47,35 @@ class MemberPage extends StatelessWidget {
             }
           },
         ),
+      );
+
+  _handleAddCaptain(Member member, MemberViewModel model) =>
+      UIHelper.showConfirmDialog(
+        'Bạn có chắc chắn muốn thêm quyền đội trưởng cho ${member.name}?',
+        onConfirmed: () async {
+          UIHelper.showProgressDialog;
+          var resp = await model.addCaptain(member.id);
+          UIHelper.hideProgressDialog;
+          if (resp.isSuccess) {
+            UIHelper.showSimpleDialog('Đã thêm đội trưởng đội bóng!',
+                isSuccess: true);
+          } else {
+            UIHelper.showSimpleDialog(resp.errorMessage);
+          }
+        },
+      );
+
+  _handleKickMember(int index, Member member, MemberViewModel model) =>
+      UIHelper.showConfirmDialog(
+        'Bạn có chắc chắn muốn xoá ${member.name} khỏi đội bóng?',
+        onConfirmed: () async {
+          UIHelper.showProgressDialog;
+          var resp = await model.kickMember(index, member.id);
+          UIHelper.hideProgressDialog;
+          if (!resp.isSuccess) {
+            UIHelper.showSimpleDialog(resp.errorMessage);
+          }
+        },
       );
 
   @override
@@ -94,19 +123,13 @@ class MemberPage extends StatelessWidget {
                             _showManagerOptions(
                               context,
                               onDetail: () {
-                                Navigation.instance.navigateTo(
-                                    MEMBER_DETAIL,
+                                Navigation.instance.navigateTo(MEMBER_DETAIL,
                                     arguments: _member);
                               },
-                              onAddCaptain: () => UIHelper.showConfirmDialog(
-                                'Bạn có chắc chắn muốn thêm quyền đội trưởng cho ${_member.name}?',
-                                onConfirmed: () => model.addCaptain(_member.id),
-                              ),
-                              onRemove: () => UIHelper.showConfirmDialog(
-                                'Bạn có chắc chắn muốn xoá ${_member.name} khỏi đội bóng?',
-                                onConfirmed: () =>
-                                    model.kickMember(index, _member.id),
-                              ),
+                              onAddCaptain: () =>
+                                  _handleAddCaptain(_member, model),
+                              onRemove: () =>
+                                  _handleKickMember(index, _member, model),
                             );
                           } else {
                             Navigation.instance

@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_team_page.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
   final _formName = GlobalKey<FormState>();
 
-  bool validateAndSave() {
+  _validateAndSave() {
     final form = _formName.currentState;
     if (form.validate()) {
       form.save();
@@ -85,13 +87,43 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
         ),
       ),
       onConfirmed: () {
-        if (validateAndSave()) {
+        if (_validateAndSave()) {
           Navigation.instance.goBack();
           onSubmit(_name);
         }
       },
     );
   }
+
+  _handleUpdateAvatar(User user, File image, UserViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.updateAvatar(user, image);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleUpdateName(User user, String name, UserViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.updateName(user, name);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleLogout(UserViewModel model) => UIHelper.showConfirmDialog(
+      'Bạn có chắc chắn muốn đăng xuất?',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.logout();
+        UIHelper.hideProgressDialog;
+        if (resp) {
+          Navigation.instance.navigateAndRemove(LOGIN);
+        }
+      },
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +143,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                 Images.MEMBER_MANAGE,
                 'Yêu cầu tham gia trận đấu',
                 iconColor: Colors.teal,
-                onTap: () =>
-                    Navigation.instance.navigateTo(USER_JOIN_MATCH),
+                onTap: () => Navigation.instance.navigateTo(USER_JOIN_MATCH),
               ),
               ItemOptionWidget(
                 Images.ADD_REQUEST,
@@ -181,8 +212,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                                     child: InkWell(
                                       onTap: () => _showChooseImage(
                                         context,
-                                        (image) =>
-                                            model.updateAvatar(_user, image),
+                                        (image) => _handleUpdateAvatar(
+                                            _user, image, model),
                                       ),
                                       child: Container(
                                         width: UIHelper.size35,
@@ -215,8 +246,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                                       InkWell(
                                         onTap: () => _showInputName(
                                           _user.name,
-                                          onSubmit: (name) =>
-                                              model.updateName(_user, name),
+                                          onSubmit: (name) => _handleUpdateName(
+                                              _user, name, model),
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
@@ -305,10 +336,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           Images.LOGOUT,
                           'Đăng xuất',
                           iconColor: Colors.grey,
-                          onTap: () => UIHelper.showConfirmDialog(
-                            'Bạn có chắc chắn muốn đăng xuất?',
-                            onConfirmed: () => model.logout(),
-                          ),
+                          onTap: () => _handleLogout(model),
                         )
                       ],
                     ),

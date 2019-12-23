@@ -5,7 +5,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
@@ -119,6 +119,28 @@ class RequestJoinMatchPage extends StatelessWidget {
         ),
       );
 
+  _handleAccept(
+      int index, MatchUser matchUser, RequestJoinMatchViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.acceptRequest(index, matchUser.matchUserId);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      acceptedUsers.add(matchUser);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleReject(
+      int index, int matchUserId, RequestJoinMatchViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.rejectRequest(index, matchUserId);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
@@ -139,8 +161,7 @@ class RequestJoinMatchPage extends StatelessWidget {
               ),
               leftContent: AppBarButtonWidget(
                 imageName: Images.BACK,
-                onTap: () =>
-                    Navigation.instance.goBack(result: acceptedUsers),
+                onTap: () => Navigation.instance.goBack(result: acceptedUsers),
               ),
             ),
             Expanded(
@@ -158,15 +179,10 @@ class RequestJoinMatchPage extends StatelessWidget {
                                   vertical: UIHelper.padding),
                               itemBuilder: (c, index) => _buildItemRequest(
                                   context, model.matchUsers[index],
-                                  onAccept: (MatchUser matchUser) async {
-                                    var resp = await model.acceptRequest(
-                                        index, matchUser.matchUserId);
-                                    if (resp) {
-                                      acceptedUsers.add(matchUser);
-                                    }
-                                  },
+                                  onAccept: (MatchUser matchUser) =>
+                                      _handleAccept(index, matchUser, model),
                                   onReject: (matchUserId) =>
-                                      model.rejectRequest(index, matchUserId)),
+                                      _handleReject(index, matchUserId, model)),
                               separatorBuilder: (c, index) =>
                                   UIHelper.verticalIndicator,
                               itemCount: model.matchUsers.length),

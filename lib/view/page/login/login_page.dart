@@ -5,7 +5,8 @@ import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/utils/constants.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/light_input_text.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/utils/router_paths.dart';
@@ -35,6 +36,26 @@ class _LoginState extends State<LoginPage> {
       return true;
     }
     return false;
+  }
+
+  handleLogin(LoginViewModel model) async {
+    if (validateAndSave()) {
+      UIHelper.showProgressDialog;
+      var resp = await model.loginEmail(_email, _password);
+      UIHelper.hideProgressDialog;
+      if (resp.isSuccess) {
+        Navigation.instance.navigateAndRemove(HOME);
+      } else {
+        if (resp.statusCode == Constants.CODE_NOT_ACCEPTABLE) {
+          UIHelper.showConfirmDialog(
+              'Tài khoản chưa được kích hoạt! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
+              onConfirmed: () =>
+                  model.verifyPhoneNumber(resp.user.id, resp.user.phone));
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      }
+    }
   }
 
   @override
@@ -90,7 +111,9 @@ class _LoginState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.only(top: UIHelper.size20, bottom: UIHelper.size10),
+                              padding: EdgeInsets.only(
+                                  top: UIHelper.size20,
+                                  bottom: UIHelper.size10),
                               child: LightInputTextWidget(
                                 labelText: 'Email',
                                 validator: Validator.validEmail,
@@ -127,11 +150,7 @@ class _LoginState extends State<LoginPage> {
                                   'ĐĂNG NHẬP',
                                   style: textStyleButton(),
                                 ),
-                                onTap: () {
-                                  if (validateAndSave()) {
-                                    model.loginEmail(_email, _password);
-                                  }
-                                },
+                                onTap: () => handleLogin(model),
                               ),
                             ),
                           ],

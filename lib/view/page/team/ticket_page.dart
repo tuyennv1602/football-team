@@ -5,7 +5,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -21,14 +21,10 @@ import 'package:myfootball/viewmodel/ticket_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class TicketPage extends StatelessWidget {
-  Widget _buildItemTicket(
-      BuildContext context, TicketViewModel model, int index) {
+  _buildItemTicket(BuildContext context, TicketViewModel model, int index) {
     Ticket ticket = model.tickets[index];
     return BorderItemWidget(
-      onTap: () => UIHelper.showConfirmDialog(
-        '${ticket.isOverTime ? 'Đã quá giờ huỷ vé. Nếu tiếp tục huỷ, bạn sẽ không được hoàn tiền cọc.\n' : ''}Bạn có chắc muốn huỷ vé #${ticket.id}?',
-        onConfirmed: () => model.cancelBooking(index, ticket.id),
-      ),
+      onTap: () => _handleCancel(index, ticket, model),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -179,6 +175,23 @@ class TicketPage extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  _handleCancel(int index, Ticket ticket, TicketViewModel model) async {
+    UIHelper.showConfirmDialog(
+      '${ticket.isOverTime ? 'Đã quá giờ huỷ vé. Nếu tiếp tục huỷ, bạn sẽ không được hoàn tiền cọc.\n' : ''}Bạn có chắc muốn huỷ vé #${ticket.id}?',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.cancelBooking(index, ticket.id);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog('Đã huỷ thành công vé #${ticket.id}',
+              isSuccess: true);
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
     );
   }
 

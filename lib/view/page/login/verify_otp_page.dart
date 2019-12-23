@@ -5,7 +5,7 @@ import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/count_down_timer.dart';
@@ -19,7 +19,7 @@ class VerifyOTPPage extends StatelessWidget {
 
   VerifyOTPPage({Key key, @required this.verifyArgument}) : super(key: key);
 
-  Widget _buildItemCode(String code) => Container(
+  _buildItemCode(String code) => Container(
         height: UIHelper.size40,
         width: UIHelper.size35,
         margin: EdgeInsets.symmetric(horizontal: UIHelper.size(8)),
@@ -36,7 +36,7 @@ class VerifyOTPPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemNumber(String title, {Function onTap}) => ButtonWidget(
+  _buildItemNumber(String title, {Function onTap}) => ButtonWidget(
         onTap: onTap,
         elevation: 2,
         backgroundColor: Colors.white,
@@ -52,6 +52,21 @@ class VerifyOTPPage extends StatelessWidget {
       return otpCode.substring(index, index + 1);
     }
     return '';
+  }
+
+  handleVerifyOtp(VerifyOTPViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.verifyOtp(verifyArgument);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+        'Tài khoản của bạn đã được kích hoạt. Vui lòng đăng nhập lại để sử dụng',
+        isSuccess: true,
+        onConfirmed: () => Navigation.instance.navigateAndRemove(LOGIN),
+      );
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
   }
 
   @override
@@ -216,10 +231,7 @@ class VerifyOTPPage extends StatelessWidget {
                                   model.verifyPhoneNumber(
                                       verifyArgument.phoneNumber);
                                 } else {
-                                  model.verifyOtp(
-                                      verifyArgument.userId,
-                                      verifyArgument.phoneNumber,
-                                      verifyArgument.verificationId);
+                                  handleVerifyOtp(model);
                                 }
                               },
                             ),

@@ -46,13 +46,12 @@ import 'package:myfootball/view/page/team/setup_team_page.dart';
 import 'package:myfootball/view/page/team/team_fund_page.dart';
 import 'package:myfootball/view/page/team/ticket_page.dart';
 import 'package:myfootball/view/page/team/user_request_page.dart';
-import 'package:myfootball/view/page/user/input_money_page.dart';
-import 'package:myfootball/view/page/user/transaction_history_page.dart';
 import 'package:myfootball/view/page/user/user_comment_page.dart';
 import 'package:myfootball/view/page/user/user_join_match_page.dart';
-import 'package:myfootball/router/fade_in_router.dart';
-import 'package:myfootball/router/slide_left_router.dart';
 import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/router/slide_left_router.dart';
+
+import 'fade_in_router.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -112,8 +111,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case TEAM_DETAIL:
       var team = settings.arguments as Team;
       return SlideLeftRoute(widget: TeamDetailPage(team: team));
-    case INPUT_MONEY:
-      return SlideLeftRoute(widget: InputMoneyPage());
     case MATCH_SCHEDULE:
       return SlideLeftRoute(widget: MatchSchedulePage());
     case MATCH_HISTORY:
@@ -130,8 +127,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: TicketPage());
     case INVITE_REQUESTS:
       return SlideLeftRoute(widget: InviteRequestPage());
-    case USER_TRANSACTION_HISTORY:
-      return SlideLeftRoute(widget: TransactionHistoryPage());
     case FUND_REQUEST:
       var fund = settings.arguments as Fund;
       return SlideLeftRoute(widget: FundRequestPage(fund: fund));

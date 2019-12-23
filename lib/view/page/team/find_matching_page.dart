@@ -9,7 +9,8 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -22,14 +23,13 @@ import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/router/date_util.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/find_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class FindMatchingPage extends StatelessWidget {
-  Widget _renderNoMatchingInfo(BuildContext context) => Padding(
+  _renderNoMatchingInfo(BuildContext context) => Padding(
         padding: EdgeInsets.symmetric(horizontal: UIHelper.size20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -67,13 +67,12 @@ class FindMatchingPage extends StatelessWidget {
                   style: textStyleButton(),
                 ),
                 margin: EdgeInsets.only(top: UIHelper.size(60)),
-                onTap: () =>
-                    Navigation.instance.navigateTo(SETUP_MATCHING))
+                onTap: () => Navigation.instance.navigateTo(SETUP_MATCHING))
           ],
         ),
       );
 
-  Widget _buildItemCompare(String title, String left, String right) => Padding(
+  _buildItemCompare(String title, String left, String right) => Padding(
         padding: EdgeInsets.symmetric(vertical: UIHelper.size5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +88,7 @@ class FindMatchingPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemTimeSlot(BuildContext context, MatchingTimeSlot timeSlot) =>
+  _buildItemTimeSlot(BuildContext context, MatchingTimeSlot timeSlot) =>
       InkWell(
         onTap: () => Navigation.instance
             .navigateTo(GROUND_DETAIL, arguments: timeSlot.groundId),
@@ -98,7 +97,8 @@ class FindMatchingPage extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+                padding: EdgeInsets.only(
+                    left: UIHelper.size5, right: UIHelper.size10),
                 child: Column(
                   children: <Widget>[
                     Text(
@@ -146,166 +146,166 @@ class FindMatchingPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildSwiperItem(BuildContext context, Team team1, Matching team2) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(UIHelper.size10),
-        border: Border.all(color: PRIMARY),
-      ),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
-              child: DefaultTabController(
-                length: team2.getMappedTimeSlot.length,
-                child: NestedScrollView(
-                  body: TabBarView(
-                    children: team2.getMappedTimeSlot.values
-                        .toList()
-                        .map((timeSlots) => ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (c, index) =>
-                                _buildItemTimeSlot(context, timeSlots[index]),
-                            separatorBuilder: (c, index) =>
-                                LineWidget(indent: 0),
-                            itemCount: timeSlots.length))
-                        .toList(),
-                  ),
-                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                    SliverOverlapAbsorber(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                          context),
-                      child: SliverAppBar(
-                        expandedHeight: UIHelper.size(180),
-                        forceElevated: false,
-                        automaticallyImplyLeading: false,
-                        backgroundColor: Colors.white,
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(top: UIHelper.size5),
-                                child: _buildItemCompare(
-                                    'Điểm',
-                                    '${team1.point.toStringAsFixed(1)}',
-                                    '${team2.point.toStringAsFixed(1)}'),
-                              ),
-                              _buildItemCompare(
-                                  'Xếp hạng', '${team1.rank}', '${team2.rank}'),
-                              _buildItemCompare(
-                                  'Đối đầu',
-                                  '${team2.confrontation1}',
-                                  '${team2.confrontation2}'),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: UIHelper.size5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    RatingBarIndicator(
-                                      rating: team1.rating,
-                                      itemCount: 5,
-                                      itemPadding: EdgeInsets.only(right: 2),
-                                      itemSize: UIHelper.size15,
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Đánh giá',
-                                      style: textStyleRegular(),
-                                    ),
-                                    RatingBarIndicator(
-                                      rating: team2.rating,
-                                      itemCount: 5,
-                                      itemPadding: EdgeInsets.only(left: 2),
-                                      itemSize: UIHelper.size15,
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                    ),
-                                  ],
+  _buildSwiperItem(BuildContext context, Team team1, Matching team2) =>
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(UIHelper.size10),
+          border: Border.all(color: PRIMARY),
+        ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                child: DefaultTabController(
+                  length: team2.getMappedTimeSlot.length,
+                  child: NestedScrollView(
+                    body: TabBarView(
+                      children: team2.getMappedTimeSlot.values
+                          .toList()
+                          .map((timeSlots) => ListView.separated(
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (c, index) =>
+                                  _buildItemTimeSlot(context, timeSlots[index]),
+                              separatorBuilder: (c, index) =>
+                                  LineWidget(indent: 0),
+                              itemCount: timeSlots.length))
+                          .toList(),
+                    ),
+                    headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                      SliverOverlapAbsorber(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                        child: SliverAppBar(
+                          expandedHeight: UIHelper.size(180),
+                          forceElevated: false,
+                          automaticallyImplyLeading: false,
+                          backgroundColor: Colors.white,
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: UIHelper.size5),
+                                  child: _buildItemCompare(
+                                      'Điểm',
+                                      '${team1.point.toStringAsFixed(1)}',
+                                      '${team2.point.toStringAsFixed(1)}'),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: UIHelper.size5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      height: UIHelper.size10,
-                                      width: 100,
-                                      child: ClipPath(
-                                        clipper: ClipperLeftWidget(),
-                                        child: Container(
-                                          color: parseColor(team1.dress),
-                                          child: SizedBox(),
+                                _buildItemCompare('Xếp hạng', '${team1.rank}',
+                                    '${team2.rank}'),
+                                _buildItemCompare(
+                                    'Đối đầu',
+                                    '${team2.confrontation1}',
+                                    '${team2.confrontation2}'),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: UIHelper.size5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      RatingBarIndicator(
+                                        rating: team1.rating,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.only(right: 2),
+                                        itemSize: UIHelper.size15,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
                                         ),
                                       ),
-                                    ),
-                                    Text(
-                                      'Màu áo',
-                                      style: textStyleRegular(),
-                                    ),
-                                    Container(
-                                      height: UIHelper.size10,
-                                      width: 100,
-                                      child: ClipPath(
-                                        clipper: ClipperRightWidget(),
-                                        child: Container(
-                                          color: parseColor(team2.dress),
-                                          child: SizedBox(),
+                                      Text(
+                                        'Đánh giá',
+                                        style: textStyleRegular(),
+                                      ),
+                                      RatingBarIndicator(
+                                        rating: team2.rating,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.only(left: 2),
+                                        itemSize: UIHelper.size15,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.only(top: UIHelper.size5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        height: UIHelper.size10,
+                                        width: 100,
+                                        child: ClipPath(
+                                          clipper: ClipperLeftWidget(),
+                                          child: Container(
+                                            color: parseColor(team1.dress),
+                                            child: SizedBox(),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Màu áo',
+                                        style: textStyleRegular(),
+                                      ),
+                                      Container(
+                                        height: UIHelper.size10,
+                                        width: 100,
+                                        child: ClipPath(
+                                          clipper: ClipperRightWidget(),
+                                          child: Container(
+                                            color: parseColor(team2.dress),
+                                            child: SizedBox(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        bottom: PreferredSize(
-                          preferredSize: Size.fromHeight(5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Gợi ý sân thi đấu',
-                                style: textStyleSemiBold(),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: UIHelper.size5),
-                                child: TabBarWidget(
-                                  titles: team2.getMappedTimeSlot.keys
-                                      .toList()
-                                      .map((item) => DateFormat('dd/MM')
-                                          .format(DateUtil.getDateMatching(item)))
-                                      .toList(),
-                                  isScrollable: true,
-                                  height: UIHelper.size35,
+                          bottom: PreferredSize(
+                            preferredSize: Size.fromHeight(5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Gợi ý sân thi đấu',
+                                  style: textStyleSemiBold(),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.only(top: UIHelper.size5),
+                                  child: TabBarWidget(
+                                    titles: team2.getMappedTimeSlot.keys
+                                        .toList()
+                                        .map((item) => DateFormat('dd/MM')
+                                            .format(
+                                                DateUtil.getDateMatching(item)))
+                                        .toList(),
+                                    isScrollable: true,
+                                    height: UIHelper.size35,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+            )
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -315,8 +315,7 @@ class FindMatchingPage extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: BaseWidget<FindMatchingViewModel>(
-          model: FindMatchingViewModel(
-              api: Provider.of(context), teamServices: Provider.of(context)),
+          model: FindMatchingViewModel(api: Provider.of(context)),
           onModelReady: (model) {
             if (team.groupMatchingInfo.length > 0) {
               model.findMatching(team);
@@ -373,15 +372,14 @@ class FindMatchingPage extends StatelessWidget {
                                 children: <Widget>[
                                   model.currentTeam != null
                                       ? InkWell(
-                                          onTap: () => Navigation
-                                              .instance
+                                          onTap: () => Navigation.instance
                                               .navigateTo(TEAM_DETAIL,
                                                   arguments: Team(
-                                                      id: model
-                                                          .currentTeam.groupId,
-                                                      name:
+                                                      id:
                                                           model.currentTeam
-                                                              .groupName,
+                                                              .groupId,
+                                                      name: model.currentTeam
+                                                          .groupName,
                                                       rank: model
                                                           .currentTeam.rank,
                                                       rating: model
@@ -465,11 +463,10 @@ class FindMatchingPage extends StatelessWidget {
                                               style: textStyleButton(),
                                             ),
                                             margin: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size10,
+                                                vertical: UIHelper.size10,
                                                 horizontal: UIHelper.size25),
-                                            onTap: () => Navigation
-                                                .instance
-                                                .navigateTo(
+                                            onTap: () =>
+                                                Navigation.instance.navigateTo(
                                               INVITE_TEAM,
                                               arguments: InviteTeamArgument(
                                                   fromTeamId: team.id,

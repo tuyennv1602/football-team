@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/model/match_share.dart';
 import 'package:myfootball/model/news.dart';
-import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
@@ -19,7 +18,6 @@ import 'package:myfootball/view/widget/input_text_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
-import 'package:myfootball/view/widget/top_ranking.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/social_viewmodel.dart';
@@ -248,24 +246,6 @@ class SocialPage extends StatelessWidget {
         ),
       );
 
-  _buildRanking(BuildContext context, List<Team> teams) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildCateTitle('Bảng xếp hạng'),
-            Container(
-              margin: EdgeInsets.only(bottom: UIHelper.size20),
-              padding: EdgeInsets.only(top: UIHelper.size10),
-              child: TopRankingWidget(
-                firstTeam: teams.length > 0 ? teams[0] : null,
-                secondTeam: teams.length > 1 ? teams[1] : null,
-                thirdTeam: teams.length > 2 ? teams[2] : null,
-              ),
-            ),
-          ],
-        ),
-      );
 
   _showInputCode({Function onSubmit}) {
     var _code;
@@ -298,6 +278,32 @@ class SocialPage extends StatelessWidget {
     );
   }
 
+  handleSubmitCode(String code, SocialViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.getMatchSharesByCode(code);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      if (resp.matchShares == null) {
+        UIHelper.showSimpleDialog('Trận đấu không tồn tại');
+      }
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  handleJoinMatch(int shareId, String code, SocialViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.joinMatchByCode(shareId, code);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+          'Yêu cầu tham gia trận đấu đã được gửi. Vui lòng chờ xác nhận từ đội bóng',
+          isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -325,8 +331,6 @@ class SocialPage extends StatelessWidget {
                   physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   children: <Widget>[
-//                    _buildRanking(context, model.teams),
-//                    LineWidget(indent: 0),
                     Padding(
                       padding: EdgeInsets.only(
                           left: UIHelper.padding, right: UIHelper.padding),
@@ -384,7 +388,7 @@ class SocialPage extends StatelessWidget {
                                 } else {
                                   _showInputCode(
                                     onSubmit: (code) =>
-                                        model.getMatchSharesByCode(code),
+                                        handleSubmitCode(code, model),
                                   );
                                 }
                               },
@@ -430,7 +434,7 @@ class SocialPage extends StatelessWidget {
                                       context,
                                       model.matchShares[index],
                                       onJoin: (shareId, code) =>
-                                          model.joinMatchByCode(shareId, code),
+                                          handleJoinMatch(shareId, code, model),
                                       onDetail: (matchInfo) => Navigation
                                           .instance
                                           .navigateTo(MATCH_SCHEDULE_DETAIL,

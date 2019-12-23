@@ -3,7 +3,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/team_request.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -21,7 +21,7 @@ import 'package:myfootball/viewmodel/request_member_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class RequestMemberPage extends StatelessWidget {
-  Widget _buildItemRequest(BuildContext context, TeamRequest teamRequest,
+  _buildItemRequest(BuildContext context, TeamRequest teamRequest,
           {Function onAccept, Function onReject}) =>
       BorderItemWidget(
         onTap: () => _showRequestOptions(
@@ -98,9 +98,29 @@ class RequestMemberPage extends StatelessWidget {
         ),
       );
 
+  _handleAccept(int index, int requestId, int teamId,
+      RequestMemberViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.acceptRequest(index, requestId, teamId);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleRejectRequest(
+      int index, int requestId, RequestMemberViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.rejectRequest(index, requestId);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Team _team = Provider.of<Team>(context);
+    var _teamId = Provider.of<Team>(context).id;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -122,7 +142,7 @@ class RequestMemberPage extends StatelessWidget {
                   model: RequestMemberViewModel(
                       api: Provider.of(context),
                       teamServices: Provider.of(context)),
-                  onModelReady: (model) => model.getTeamRequests(_team.id),
+                  onModelReady: (model) => model.getTeamRequests(_teamId),
                   builder: (c, model, child) => model.busy
                       ? LoadingWidget()
                       : model.teamRequests.length > 0
@@ -135,10 +155,10 @@ class RequestMemberPage extends StatelessWidget {
                                 return _buildItemRequest(
                                   context,
                                   _request,
-                                  onAccept: () => model.acceptRequest(
-                                      index, _request.idRequest, _team.id),
-                                  onReject: () => model.rejectRequest(
-                                      index, _request.idRequest),
+                                  onAccept: () => _handleAccept(index,
+                                      _request.idRequest, _teamId, model),
+                                  onReject: () => _handleRejectRequest(
+                                      index, _request.idRequest, model),
                                 );
                               },
                               separatorBuilder: (c, index) =>

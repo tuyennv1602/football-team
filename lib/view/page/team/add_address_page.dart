@@ -5,7 +5,7 @@ import 'package:myfootball/model/ward.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -19,7 +19,7 @@ import 'package:myfootball/viewmodel/add_address_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class AddAddressPage extends StatelessWidget {
-  Widget _buildItemProvince(
+   _buildItemProvince(
           BuildContext context, Province province, Function onTap) =>
       InkWell(
         onTap: () => onTap(province),
@@ -44,7 +44,7 @@ class AddAddressPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemDistrict(BuildContext context, District district,
+   _buildItemDistrict(BuildContext context, District district,
           Province province, Function onTap) =>
       InkWell(
         onTap: () => onTap(district),
@@ -69,7 +69,7 @@ class AddAddressPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemWard(BuildContext context, Ward ward, District district,
+   _buildItemWard(BuildContext context, Ward ward, District district,
           Province province, bool isSelected, Function onTap) =>
       InkWell(
         onTap: () => onTap(!isSelected, ward),

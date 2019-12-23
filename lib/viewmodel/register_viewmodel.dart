@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:myfootball/model/response/login_resp.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class RegisterViewModel extends BaseViewModel {
@@ -12,19 +13,10 @@ class RegisterViewModel extends BaseViewModel {
 
   RegisterViewModel({@required Api api}) : _api = api;
 
-  Future<void> registerWithEmail(String name, String email, String password,
-      String phoneNumber, List<int> roles) async {
-    UIHelper.showProgressDialog;
+  Future<LoginResponse> registerWithEmail(String name, String email,
+      String password, String phoneNumber, List<int> roles) async {
     var resp = await _api.register(name, email, password, phoneNumber, roles);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog(
-          'Đăng ký thành công! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
-          isSuccess: true,
-          onConfirmed: () => verifyPhoneNumber(resp.user.id, resp.user.phone));
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
 
   Future<void> verifyPhoneNumber(int userId, String phoneNumber) async {
@@ -63,4 +55,5 @@ class RegisterViewModel extends BaseViewModel {
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
   }
+
 }

@@ -5,7 +5,7 @@ import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
@@ -34,7 +34,7 @@ class EditTeamPage extends StatelessWidget {
     return false;
   }
 
-  void _showChooseImage(BuildContext context, Function onImageReady) =>
+  _showChooseImage(BuildContext context, Function onImageReady) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
@@ -53,7 +53,7 @@ class EditTeamPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemColor(BuildContext context, Color color) => Padding(
+  _buildItemColor(BuildContext context, Color color) => Padding(
         padding: EdgeInsets.all(UIHelper.size5),
         child: Container(
           height: UIHelper.size40,
@@ -66,6 +66,18 @@ class EditTeamPage extends StatelessWidget {
           ),
         ),
       );
+
+  handleUpdateTeam(Team team, UpdateTeamViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.updateTeam(team);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã cập nhật thông tin đội bóng',
+          isSuccess: true, onConfirmed: () => Navigation.instance.goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,10 +210,12 @@ class EditTeamPage extends StatelessWidget {
                               if (validateAndSave()) {
                                 _team.name = _teamName;
                                 _team.bio = _bio;
-                                model.updateTeam(_team);
+                                handleUpdateTeam(_team, model);
                               }
                             },
-                            margin: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: UIHelper.size15,
+                                vertical: UIHelper.size10),
                             child: Text(
                               'CẬP NHẬT',
                               style: textStyleButton(),

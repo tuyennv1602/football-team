@@ -4,6 +4,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -31,7 +32,7 @@ class CreateTeamPage extends StatelessWidget {
     return false;
   }
 
-   _showChooseImage(BuildContext context, Function onImageReady) =>
+  _showChooseImage(BuildContext context, Function onImageReady) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
@@ -50,7 +51,7 @@ class CreateTeamPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemColor(BuildContext context, Color color) => Padding(
+  _buildItemColor(BuildContext context, Color color) => Padding(
         padding: EdgeInsets.all(UIHelper.size5),
         child: Container(
           height: UIHelper.size40,
@@ -63,6 +64,18 @@ class CreateTeamPage extends StatelessWidget {
           ),
         ),
       );
+
+  handleRegisterTeam(User user, CreateTeamViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.createTeam(user, _teamName, _bio);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đăng ký đội bóng thành công',
+          isSuccess: true, onConfirmed: () => Navigation.instance.goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +120,8 @@ class CreateTeamPage extends StatelessWidget {
                                 onSaved: (value) => _teamName = value,
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: UIHelper.size10),
                                 child: InputTextWidget(
                                   validator: (value) {
                                     if (value.isEmpty)
@@ -188,7 +202,8 @@ class CreateTeamPage extends StatelessWidget {
                           Container(
                             height: UIHelper.size50,
                             width: UIHelper.screenWidth,
-                            margin: EdgeInsets.only(top: UIHelper.size10, bottom: UIHelper.size20),
+                            margin: EdgeInsets.only(
+                                top: UIHelper.size10, bottom: UIHelper.size20),
                             child: Swiper(
                               physics: BouncingScrollPhysics(),
                               viewportFraction:
@@ -204,8 +219,8 @@ class CreateTeamPage extends StatelessWidget {
                           ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {
-                                model.createTeam(Provider.of<User>(context),
-                                    _teamName, _bio);
+                                handleRegisterTeam(
+                                    Provider.of<User>(context), model);
                               }
                             },
                             margin: EdgeInsets.symmetric(

@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -40,6 +40,16 @@ class GroundDetailPage extends StatelessWidget {
         ),
       );
 
+  handleSubmitReview(
+      double rating, String comment, GroundDetailViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.submitReview(rating, comment);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,17 +68,17 @@ class GroundDetailPage extends StatelessWidget {
             children: <Widget>[
               ground != null
                   ? Container(
-                    width: double.infinity,
-                    height: UIHelper.size(200) + UIHelper.paddingTop,
-                    child: Hero(
-                      tag: 'ground-$_groundId',
-                      child: FadeInImage.assetNetwork(
-                        placeholder: Images.DEFAULT_GROUND,
-                        image: ground.avatar,
-                        fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: UIHelper.size(200) + UIHelper.paddingTop,
+                      child: Hero(
+                        tag: 'ground-$_groundId',
+                        child: FadeInImage.assetNetwork(
+                          placeholder: Images.DEFAULT_GROUND,
+                          image: ground.avatar,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  )
+                    )
                   : Image.asset(
                       Images.DEFAULT_GROUND,
                       width: double.infinity,
@@ -80,7 +90,8 @@ class GroundDetailPage extends StatelessWidget {
                     top: UIHelper.size(80) + UIHelper.paddingTop),
                 height: UIHelper.size(120),
                 width: double.infinity,
-                padding: EdgeInsets.fromLTRB(UIHelper.size10, 0, UIHelper.size10, UIHelper.size30),
+                padding: EdgeInsets.fromLTRB(
+                    UIHelper.size10, 0, UIHelper.size10, UIHelper.size30),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
@@ -164,9 +175,11 @@ class GroundDetailPage extends StatelessWidget {
                               ),
                             ),
                             InkWell(
-                              onTap: () => _writeReview(context,
-                                  onSubmit: (rating, comment) =>
-                                      model.submitReview(rating, comment)),
+                              onTap: () => _writeReview(
+                                context,
+                                onSubmit: (rating, comment) =>
+                                    handleSubmitReview(rating, comment, model),
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.all(UIHelper.padding),
                                 child: Row(

@@ -7,7 +7,7 @@ import 'package:myfootball/model/time_slot.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -15,7 +15,6 @@ import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/choose_day_of_week.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/router/date_util.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/booking_fixed_viewmodel.dart';
@@ -26,44 +25,51 @@ class BookingFixedPage extends StatelessWidget {
 
   BookingFixedPage({@required Ground ground}) : _ground = ground;
 
-  _handleBooking(BuildContext context, int dayOfWeek, TimeSlot timeSlot,
-      {Function onConfirmed}) async {
-    UIHelper.showConfirmDialog(
-      'confirm_booking',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Ngày đá: ${DateUtil.getDayOfWeek(dayOfWeek)} hàng tuần',
-            style: textStyleAlert(),
-          ),
-          Text(
-            'Giờ đá:  ${timeSlot.getTime}',
-            style: textStyleAlert(),
-          ),
-          Text(
-            'Tiền sân:  ${timeSlot.getPrice}',
-            style: textStyleAlert(),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: UIHelper.size10),
-            child: Text(
-              '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
-              style: textStyleItalic(color: Colors.white),
+  _handleBooking(BuildContext context, TimeSlot timeSlot,
+      BookingFixedViewModel model) async => UIHelper.showConfirmDialog('confirm_booking',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Ngày đá: ${model.getDayOfWeek} hàng tuần',
+              style: textStyleAlert(),
             ),
-          ),
-          Text(
-            '- Vui lòng đọc kỹ nội quy của sân bóng trước khi đặt sân',
-            style: textStyleItalic(color: Colors.white),
-          )
-        ],
-      ),
-      onConfirmed: () => onConfirmed(timeSlot.id),
-    );
-  }
+            Text(
+              'Giờ đá:  ${timeSlot.getTime}',
+              style: textStyleAlert(),
+            ),
+            Text(
+              'Tiền sân:  ${timeSlot.getPrice}',
+              style: textStyleAlert(),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: UIHelper.size10),
+              child: Text(
+                '- Vui lòng đọc kỹ điều khoản đặt, huỷ sân trong phần trợ giúp',
+                style: textStyleItalic(color: Colors.white),
+              ),
+            ),
+            Text(
+              '- Vui lòng đọc kỹ nội quy của sân bóng trước khi đặt sân',
+              style: textStyleItalic(color: Colors.white),
+            )
+          ],
+        ), onConfirmed: () async {
+      UIHelper.showProgressDialog;
+      var resp =
+          await model.booking(Provider.of<Team>(context).id, timeSlot.id);
+      UIHelper.hideProgressDialog;
+      if (resp.isSuccess) {
+        UIHelper.showSimpleDialog(
+            'Yêu cầu đã được gửi. Vui lòng chờ quản lý sân xác nhận',
+            isSuccess: true,
+            onConfirmed: () => Navigation.instance.goBack());
+      } else {
+        UIHelper.showSimpleDialog(resp.errorMessage);
+      }
+    });
 
-  Widget _buildTicket(BuildContext context, TimeSlot timeSlot, Function onTap) {
-    return BorderItemWidget(
+  _buildTicket(BuildContext context, TimeSlot timeSlot, Function onTap) => BorderItemWidget(
       margin: EdgeInsets.zero,
       onTap: onTap,
       child: Container(
@@ -96,10 +102,8 @@ class BookingFixedPage extends StatelessWidget {
         ),
       ),
     );
-  }
 
-  Widget _buildFieldTicket(
-          BuildContext context, Field field, Function booking) =>
+  _buildFieldTicket(BuildContext context, Field field, Function booking) =>
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -272,12 +276,8 @@ class BookingFixedPage extends StatelessWidget {
                                       model.fields[index],
                                       (timeSlot) => _handleBooking(
                                         context,
-                                        model.dayOfWeek,
                                         timeSlot,
-                                        onConfirmed: (timeSlotId) =>
-                                            model.booking(
-                                                Provider.of<Team>(context).id,
-                                                timeSlotId),
+                                        model,
                                       ),
                                     ),
                                 separatorBuilder: (c, index) => SizedBox(

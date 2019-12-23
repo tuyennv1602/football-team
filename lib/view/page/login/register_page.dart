@@ -36,6 +36,22 @@ class _RegisterState extends State<RegisterPage> {
     return false;
   }
 
+  handleRegister(RegisterViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.registerWithEmail(
+        _name, _email, _password, _phone, [Constants.TEAM_LEADER]);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog(
+          'Đăng ký thành công! Một mã xác thực gồm 6 ký tự sẽ được gửi đến số điện thoại của bạn. Vui lòng nhập mã xác thực để kích hoạt tài khoản',
+          isSuccess: true,
+          onConfirmed: () =>
+              model.verifyPhoneNumber(resp.user.id, resp.user.phone));
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +151,8 @@ class _RegisterState extends State<RegisterPage> {
                             child: Column(
                               children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: UIHelper.size10),
                                   child: LightInputTextWidget(
                                     labelText: 'Tên đầy đủ',
                                     validator: Validator.validName,
@@ -157,7 +174,8 @@ class _RegisterState extends State<RegisterPage> {
                                   onSaved: (value) => _phone = value.trim(),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: UIHelper.size10),
                                   child: LightInputTextWidget(
                                     labelText: 'Email',
                                     validator: Validator.validEmail,
@@ -186,12 +204,7 @@ class _RegisterState extends State<RegisterPage> {
                                     ),
                                     onTap: () {
                                       if (validateAndSave()) {
-                                        model.registerWithEmail(
-                                            _name,
-                                            _email,
-                                            _password,
-                                            _phone,
-                                            [Constants.TEAM_LEADER]);
+                                        handleRegister(model);
                                       }
                                     },
                                   ),

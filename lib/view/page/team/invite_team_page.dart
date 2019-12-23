@@ -6,7 +6,8 @@ import 'package:myfootball/model/matching_time_slot.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -16,7 +17,6 @@ import 'package:myfootball/view/widget/choose_ratio_widget.dart';
 import 'package:myfootball/view/widget/input_text_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/router/date_util.dart';
 import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/invite_team_viewmodel.dart';
@@ -32,7 +32,7 @@ class InviteTeamPage extends StatelessWidget {
   InviteTeamPage({@required InviteTeamArgument inviteTeamArgument})
       : _inviteTeamArgument = inviteTeamArgument;
 
-  bool validateAndSave() {
+  validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
@@ -41,7 +41,7 @@ class InviteTeamPage extends StatelessWidget {
     return false;
   }
 
-  Widget _buildItemTimeSlot(BuildContext context, int index, bool isSelected,
+  _buildItemTimeSlot(BuildContext context, int index, bool isSelected,
           MatchingTimeSlot timeSlot, Function onTap) =>
       InkWell(
         onTap: () => Navigation.instance
@@ -51,7 +51,8 @@ class InviteTeamPage extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+                padding: EdgeInsets.only(
+                    left: UIHelper.size5, right: UIHelper.size10),
                 child: Column(
                   children: <Widget>[
                     Text(
@@ -102,6 +103,19 @@ class InviteTeamPage extends StatelessWidget {
         ),
       );
 
+  _handleSendInvite(
+      InviteRequest inviteRequest, InviteTeamViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.sendInvite(inviteRequest);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã gửi lời mời. Vui lòng chờ xác nhận',
+          isSuccess: true, onConfirmed: () => Navigation.instance.goBack());
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +140,10 @@ class InviteTeamPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: UIHelper.size10, left: UIHelper.padding, right: UIHelper.padding),
+                    padding: EdgeInsets.only(
+                        top: UIHelper.size10,
+                        left: UIHelper.padding,
+                        right: UIHelper.padding),
                     child: Form(
                       key: _formKey,
                       child: InputTextWidget(
@@ -153,7 +170,10 @@ class InviteTeamPage extends StatelessWidget {
                     color: Colors.white,
                     margin: EdgeInsets.only(top: UIHelper.size10),
                     padding: EdgeInsets.only(
-                        top: UIHelper.size10, bottom: UIHelper.size5, left: UIHelper.padding, right: UIHelper.padding),
+                        top: UIHelper.size10,
+                        bottom: UIHelper.size5,
+                        left: UIHelper.padding,
+                        right: UIHelper.padding),
                     child: Text(
                       'Chọn ngày, giờ, sân',
                       style: textStyleMediumTitle(),
@@ -177,7 +197,8 @@ class InviteTeamPage extends StatelessWidget {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: UIHelper.padding),
                                 child: TabBarView(
                                   children: _inviteTeamArgument
                                       .mappedTimeSlots.values
@@ -215,22 +236,25 @@ class InviteTeamPage extends StatelessWidget {
                             ),
                             ButtonWidget(
                               margin: EdgeInsets.symmetric(
-                                  vertical: UIHelper.size5, horizontal: UIHelper.padding),
+                                  vertical: UIHelper.size5,
+                                  horizontal: UIHelper.padding),
                               child: Text(
                                 'GỬI LỜI MỜI',
                                 style: textStyleButton(),
                               ),
                               onTap: () {
                                 if (validateAndSave()) {
-                                  model.sendInvite(InviteRequest(
-                                      title: _invite,
-                                      sendGroupId:
-                                          _inviteTeamArgument.fromTeamId,
-                                      receiveGroupId:
-                                          _inviteTeamArgument.toTeamId,
-                                      ratio: _ratio,
-                                      matchingTimeSlots:
-                                          model.selectedTimeSlots));
+                                  _handleSendInvite(
+                                      InviteRequest(
+                                          title: _invite,
+                                          sendGroupId:
+                                              _inviteTeamArgument.fromTeamId,
+                                          receiveGroupId:
+                                              _inviteTeamArgument.toTeamId,
+                                          ratio: _ratio,
+                                          matchingTimeSlots:
+                                              model.selectedTimeSlots),
+                                      model);
                                 }
                               },
                             ),

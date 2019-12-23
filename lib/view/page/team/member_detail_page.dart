@@ -6,7 +6,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
@@ -30,7 +30,9 @@ class MemberDetailPage extends StatelessWidget {
   final Member member;
   final _formKey = GlobalKey<FormState>();
 
-  bool validateAndSave() {
+  MemberDetailPage({Key key, this.member}) : super(key: key);
+
+  _validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
@@ -38,8 +40,6 @@ class MemberDetailPage extends StatelessWidget {
     }
     return false;
   }
-
-  MemberDetailPage({Key key, this.member}) : super(key: key);
 
   _writeReview(BuildContext context, {Function onSubmit}) => showGeneralDialog(
         barrierLabel: 'review_member',
@@ -65,7 +65,7 @@ class MemberDetailPage extends StatelessWidget {
       icon: Images.EDIT_PROFILE,
       confirmLabel: 'CẬP NHẬT',
       onConfirmed: () {
-        if (validateAndSave()) {
+        if (_validateAndSave()) {
           Navigation.instance.goBack();
           onSubmit(_position != null ? _position.join(',') : member.position,
               _number.isEmpty ? null : _number);
@@ -105,6 +105,29 @@ class MemberDetailPage extends StatelessWidget {
     );
   }
 
+  _handleSubmitReview(int userId, double rating, String comment,
+      MemberDetailViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.submitReview(userId, rating, comment);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleUpdateInfo(int teamId, String position, String number,
+      MemberDetailViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.updateInfo(teamId, position, number);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã cập nhật thông tin cá nhân',
+          isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var userId = Provider.of<User>(context).id;
@@ -136,7 +159,7 @@ class MemberDetailPage extends StatelessWidget {
                         context,
                         member,
                         onSubmit: (position, number) =>
-                            model.updateInfo(teamId, position, number),
+                            _handleUpdateInfo(teamId, position, number, model),
                       ),
                     )
                   : AppBarButtonWidget(
@@ -153,7 +176,7 @@ class MemberDetailPage extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Hero(
-                            tag: 'member - ${member.id}',
+                            tag: member.tag,
                             child: ImageWidget(
                               source: member.avatar,
                               placeHolder: Images.DEFAULT_AVATAR,
@@ -202,9 +225,12 @@ class MemberDetailPage extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           if (Provider.of<User>(context).id != member.id) {
-                            _writeReview(context,
-                                onSubmit: (rating, comment) => model
-                                    .submitReview(member.id, rating, comment));
+                            _writeReview(
+                              context,
+                              onSubmit: (rating, comment) =>
+                                  _handleSubmitReview(
+                                      member.id, rating, comment, model),
+                            );
                           }
                         },
                         child: Padding(

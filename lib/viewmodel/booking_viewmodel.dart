@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/model/field.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/router/date_util.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class BookingViewModel extends BaseViewModel {
@@ -14,9 +13,9 @@ class BookingViewModel extends BaseViewModel {
 
   BookingViewModel({@required Api api}) : _api = api;
 
-  setDate(int groundId, DateTime dateTime) {
+  setDate(DateTime dateTime) {
     this.currentDate = dateTime;
-    getFreeTimeSlot(groundId);
+    notifyListeners();
   }
 
   Future<void> getFreeTimeSlot(int groundId) async {
@@ -35,17 +34,9 @@ class BookingViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<void> booking(int teamId, int timeSlotId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> booking(int teamId, int timeSlotId) async {
     var resp = await _api.booking(
         teamId, timeSlotId, DateUtil.getDateTimeStamp(currentDate));
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đặt sân thành công',
-          isSuccess: true,
-          onConfirmed: () => Navigation.instance.goBack());
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+   return resp;
   }
 }

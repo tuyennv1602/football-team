@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_schedule.dart';
 import 'package:myfootball/model/match_user.dart';
 import 'package:myfootball/model/member.dart';
+import 'package:myfootball/model/response/dynamic_resp.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class MatchScheduleDetailViewModel extends BaseViewModel {
@@ -30,17 +30,12 @@ class MatchScheduleDetailViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<String> createCode(int teamId) async {
-    UIHelper.showProgressDialog;
+  Future<DynamicResponse> createCode(int teamId) async {
     var resp = await _api.createCode(matchSchedule.matchId, teamId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.matchSchedule.getMyTeam.code = resp.code;
       notifyListeners();
-      return resp.code;
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return null;
+    return resp;
   }
 }

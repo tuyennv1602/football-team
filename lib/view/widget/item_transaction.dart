@@ -56,7 +56,7 @@ class ItemTransactionWidget extends StatelessWidget {
                       showCreator
                           ? Expanded(
                               child: Text(
-                                'bởi: ${transaction.userName}',
+                                'bởi: ${transaction.userName ?? 'Đội bóng'}',
                                 style: textStyleRegular(color: Colors.grey),
                               ),
                             )

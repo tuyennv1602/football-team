@@ -8,14 +8,14 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/router/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:provider/provider.dart';
 

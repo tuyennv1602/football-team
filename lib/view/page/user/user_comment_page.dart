@@ -3,7 +3,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
@@ -38,6 +38,16 @@ class UserCommentPage extends StatelessWidget {
         ),
       );
 
+  _handleSubmitReview(int userId, double rating, String comment,
+      UserCommentViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.submitReview(userId, rating, comment);
+    UIHelper.hideProgressDialog;
+    if (!resp.isSuccess) {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
@@ -64,7 +74,7 @@ class UserCommentPage extends StatelessWidget {
                       onTap: () => _writeReview(
                         context,
                         onSubmit: (rating, comment) =>
-                            model.submitReview(userId, rating, comment),
+                            _handleSubmitReview(userId, rating, comment, model),
                       ),
                     )
                   : AppBarButtonWidget(),

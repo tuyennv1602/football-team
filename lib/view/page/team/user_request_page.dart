@@ -4,7 +4,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
@@ -25,7 +25,7 @@ import 'package:provider/provider.dart';
 class UserRequestPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  bool validateAndSave() {
+  _validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
@@ -59,7 +59,7 @@ class UserRequestPage extends StatelessWidget {
       icon: Images.EDIT_PROFILE,
       confirmLabel: 'CẬP NHẬT',
       onConfirmed: () {
-        if (validateAndSave()) {
+        if (_validateAndSave()) {
           Navigation.instance.goBack();
           onSubmit(_content,
               _position != null ? _position.join(',') : userRequest.position);
@@ -102,7 +102,8 @@ class UserRequestPage extends StatelessWidget {
     );
   }
 
-  _buildItemRequest(BuildContext context, UserRequestModel model, int index) {
+  _buildItemRequest(
+      BuildContext context, UserRequestViewModel model, int index) {
     UserRequest request = model.userRequests[index];
     return BorderItemWidget(
       onTap: () {
@@ -113,13 +114,16 @@ class UserRequestPage extends StatelessWidget {
           onEdit: () => _showEditForm(
             context,
             request,
-            (content, position) => model.updateRequest(
-                index, request.idRequest, request.idTeam, content, position),
+            (content, position) => _handleUpdate(
+                index,
+                UserRequest(
+                    idRequest: request.idRequest,
+                    idTeam: request.idTeam,
+                    content: content,
+                    position: position),
+                model),
           ),
-          onCancel: () => UIHelper.showConfirmDialog(
-            'Bạn có chắc chắn muốn xoá yêu cầu?',
-            onConfirmed: () => model.cancelRequest(index, request.idRequest),
-          ),
+          onCancel: () => _handleCancel(index, request.idRequest, model),
         );
       },
       child: Row(
@@ -189,6 +193,34 @@ class UserRequestPage extends StatelessWidget {
     );
   }
 
+  _handleUpdate(
+      int index, UserRequest userRequest, UserRequestViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.updateRequest(index, userRequest);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!', isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _handleCancel(int index, int requestId, UserRequestViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Bạn có chắc chắn muốn xoá yêu cầu?',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.cancelRequest(index, requestId);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog('Đã huỷ yêu cầu', isSuccess: true);
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,9 +240,9 @@ class UserRequestPage extends StatelessWidget {
           ),
           Expanded(
             child: BorderBackground(
-              child: BaseWidget<UserRequestModel>(
+              child: BaseWidget<UserRequestViewModel>(
                 onModelReady: (model) => model.getAllRequest(),
-                model: UserRequestModel(api: Provider.of(context)),
+                model: UserRequestViewModel(api: Provider.of(context)),
                 builder: (context, model, child) {
                   if (model.busy) return LoadingWidget();
                   if (model.userRequests == null ||

@@ -29,6 +29,7 @@ import 'package:myfootball/model/response/ticket_resp.dart';
 import 'package:myfootball/model/response/transaction_resp.dart';
 import 'package:myfootball/model/response/user_request_resp.dart';
 import 'package:myfootball/model/team.dart';
+import 'package:myfootball/model/user_request.dart';
 
 import 'api_config.dart';
 
@@ -167,15 +168,10 @@ class Api {
     }
   }
 
-  Future<BaseResponse> updateRequestMember(
-      int requestId, int teamId, String content, String position) async {
+  Future<BaseResponse> updateRequestMember(UserRequest request) async {
     try {
-      var response = await _api.postApi('request-member/update', body: {
-        "id": requestId,
-        "content": content,
-        'group_id': teamId,
-        'position': position
-      });
+      var response =
+          await _api.postApi('request-member/update', body: request.toJson());
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);

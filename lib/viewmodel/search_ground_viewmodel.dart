@@ -6,7 +6,6 @@ import 'package:myfootball/model/ground.dart';
 import 'package:myfootball/model/response/list_ground_resp.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/location_services.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class SearchGroundViewModel extends BaseViewModel {
@@ -26,10 +25,8 @@ class SearchGroundViewModel extends BaseViewModel {
   }
 
   Future<ListGroundResponse> getGroundsByLocation() async {
-    UIHelper.showProgressDialog;
     var resp = await _api.getGroundByLocation(
         myPosition.latitude, myPosition.longitude);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.grounds = resp.grounds;
       if (this.grounds.length > 0) {

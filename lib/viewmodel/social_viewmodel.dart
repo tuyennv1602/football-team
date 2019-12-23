@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/model/match_share.dart';
 import 'package:myfootball/model/news.dart';
+import 'package:myfootball/model/response/base_response.dart';
+import 'package:myfootball/model/response/match_share_resp.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/rss_services.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class SocialViewModel extends BaseViewModel {
@@ -49,33 +50,20 @@ class SocialViewModel extends BaseViewModel {
     return Future.value(resp.isSuccess);
   }
 
-  Future<void> joinMatchByCode(int shareId, String code) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> joinMatchByCode(int shareId, String code) async {
     var resp = await _api.joinMatchByCode(shareId, code);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog(
-          'Yêu cầu tham gia trận đấu đã được gửi. Vui lòng chờ xác nhận từ đội bóng',
-          isSuccess: true);
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
 
-  Future<void> getMatchSharesByCode(String code) async {
-    UIHelper.showProgressDialog;
+  Future<MatchShareResponse> getMatchSharesByCode(String code) async {
     var resp = await _api.getMatchSharesByCode(code);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
-      if (resp.matchShares == null) {
-        UIHelper.showSimpleDialog('Mã trận đấu không tồn tại');
-      } else {
+      if (resp.matchShares != null) {
         this.isMatchByCode = true;
         this.matchShares = resp.matchShares;
         notifyListeners();
       }
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

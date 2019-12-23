@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myfootball/model/response/base_response.dart';
+import 'package:myfootball/model/response/create_transaction_resp.dart';
 import 'package:myfootball/model/transaction.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/string_util.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class FinanceViewModel extends BaseViewModel {
@@ -29,20 +30,14 @@ class FinanceViewModel extends BaseViewModel {
 
   String get getCurrentMonth => DateFormat('MM/yyyy').format(currentDate);
 
-  Future<void> createFundNotify(
+  Future<BaseResponse> createFundNotify(
       String title, String price, DateTime expiredDate) async {
-    UIHelper.showProgressDialog;
     var resp = await _api.createFundNotify(
         teamId,
         title,
         StringUtil.getPriceFromString(price),
         DateUtil.getDateTimeStamp(expiredDate));
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Thông báo đã được tạo', isSuccess: true);
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
 
   Future<void> getTransactions(bool isRefresh) async {
@@ -61,22 +56,18 @@ class FinanceViewModel extends BaseViewModel {
       });
       income = StringUtil.formatCurrency(_income);
       outcome = StringUtil.formatCurrency(_outcome);
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }
 
-  Future<void> createExchange(String price, int type, String title) async {
-    UIHelper.showProgressDialog;
+  Future<CreateTransactionResponse> createExchange(
+      String price, int type, String title) async {
     var resp = await _api.createExchange(
         teamId, StringUtil.getPriceFromString(price), type, title);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.transactions.insert(0, resp.transaction);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

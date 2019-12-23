@@ -15,4 +15,6 @@ class Member extends User {
 
   List<String> get getPositions => position != null ? position.split(',') : [];
 
+  String get tag => 'member-$id';
+
 }

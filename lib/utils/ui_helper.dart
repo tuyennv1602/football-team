@@ -71,22 +71,25 @@ class UIHelper {
 
   static void showSimpleDialog(String message,
           {bool isSuccess = false, Function onConfirmed}) =>
-      showCustomizeDialog('simple_dialog',
-          dismissiable: false,
-          confirmLabel: 'XONG',
-          showCancel: false,
-          icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
-          gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
-          confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR, onConfirmed: () {
-        Navigator.of(_buildContext).pop();
-        if (onConfirmed != null) {
-          onConfirmed();
-        }
-      },
-          child: Text(
-            message,
-            style: textStyleAlert(),
-          ));
+      showCustomizeDialog(
+        'simple_dialog',
+        dismissiable: false,
+        confirmLabel: 'XONG',
+        showCancel: false,
+        icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
+        gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
+        confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR,
+        onConfirmed: (context) {
+          Navigator.of(context).pop();
+          if (onConfirmed != null) {
+            onConfirmed();
+          }
+        },
+        child: Text(
+          message,
+          style: textStyleAlert(),
+        ),
+      );
 
   static void showConfirmDialog(String message,
           {Widget child,
@@ -95,8 +98,8 @@ class UIHelper {
       showCustomizeDialog(
         'confirm_dialog',
         dismissiable: true,
-        onConfirmed: () {
-          Navigator.of(_buildContext).pop();
+        onConfirmed: (context) {
+          Navigator.of(context).pop();
           onConfirmed();
         },
         child: child ??
@@ -183,7 +186,7 @@ class UIHelper {
                             child: ButtonWidget(
                               onTap: () {
                                 if (onConfirmed != null) {
-                                  onConfirmed();
+                                  onConfirmed(context);
                                 }
                               },
                               width: screenWidth / 3,

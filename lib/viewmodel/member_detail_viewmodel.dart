@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/comment.dart';
 import 'package:myfootball/model/member.dart';
+import 'package:myfootball/model/response/base_response.dart';
+import 'package:myfootball/model/response/review_resp.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class MemberDetailViewModel extends BaseViewModel {
@@ -21,36 +22,29 @@ class MemberDetailViewModel extends BaseViewModel {
     var resp = await _api.getCommentByUserId(userId, page);
     if (resp.isSuccess) {
       this.comments = resp.comments;
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }
 
-  Future<double> submitReview(int userId, double rating, String comment) async {
-    UIHelper.showProgressDialog;
+  Future<ReviewResponse> submitReview(
+      int userId, double rating, String comment) async {
     var resp = await _api.reviewUser(userId, rating, comment);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.member.rating = resp.review.rating;
       this.comments.add(resp.review.comment);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return this.member.rating;
+    return resp;
   }
 
-  Future<void> updateInfo(int teamId, String position, String number) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> updateInfo(
+      int teamId, String position, String number) async {
     var resp = await _api.updateMember(teamId, position, number);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.member.position = position;
       this.member.number = number;
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

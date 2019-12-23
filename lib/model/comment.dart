@@ -1,4 +1,4 @@
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 
 class Comment {
   int id;
@@ -53,5 +53,4 @@ class Comment {
   }
 
   String get getCreateTime => DateUtil.getTimeAgo(createDate);
-
 }

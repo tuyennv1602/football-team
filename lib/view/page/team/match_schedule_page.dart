@@ -6,7 +6,7 @@ import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_team_page.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
@@ -31,7 +31,7 @@ class MatchSchedulePage extends StatelessWidget {
   Team team;
   final RefreshController _matchController = RefreshController();
 
-  bool validateAndSave() {
+  _validateAndSave() {
     final form = _formInvite.currentState;
     if (form.validate()) {
       form.save();
@@ -104,7 +104,7 @@ class MatchSchedulePage extends StatelessWidget {
         ),
       );
 
-  handleUpdateOpponentTeam(BuildContext context, int matchId,
+  _showUpdateOpponent(BuildContext context, int matchId,
       {Function onSubmit}) async {
     var result = await Navigation.instance.navigateTo(SEARCH_TEAM,
         arguments: SEARCH_TYPE.SELECT_OPPONENT_TEAM) as Team;
@@ -139,7 +139,7 @@ class MatchSchedulePage extends StatelessWidget {
         ],
       ),
       onConfirmed: () {
-        if (validateAndSave()) {
+        if (_validateAndSave()) {
           Navigation.instance.goBack();
           onSubmit(
             InviteRequest(
@@ -156,7 +156,19 @@ class MatchSchedulePage extends StatelessWidget {
     );
   }
 
-  Widget _buildItemSchedule(BuildContext context, bool isCaptain, int index,
+  _handleUpdateOpponent(
+      InviteRequest inviteRequest, MatchScheduleViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.sendInvite(inviteRequest);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      UIHelper.showSimpleDialog('Đã gửi lời mời!', isSuccess: true);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _buildItemSchedule(BuildContext context, bool isCaptain, int index,
       MatchScheduleViewModel model) {
     MatchSchedule matchSchedule = model.matchSchedules[index];
     return ItemMatchSchedule(
@@ -170,16 +182,12 @@ class MatchSchedulePage extends StatelessWidget {
             onDetail: () => Navigation.instance
                 .navigateTo(MATCH_SCHEDULE_DETAIL, arguments: matchSchedule),
             onRegister: (isJoined) => !isJoined
-                ? model.joinMatch(index, matchSchedule.matchId)
-                : UIHelper.showConfirmDialog(
-                    'Bạn có chắc muốn huỷ tham gia trận đấu này?',
-                    onConfirmed: () =>
-                        model.leaveMatch(index, matchSchedule.matchId),
-                  ),
-            onInvite: () => handleUpdateOpponentTeam(
+                ? _handleJoinMatch(index, matchSchedule.matchId, model)
+                : _handleLeaveMatch(index, matchSchedule.matchId, model),
+            onInvite: () => _showUpdateOpponent(
               context,
               matchSchedule.matchId,
-              onSubmit: (request) => model.sendInvite(request),
+              onSubmit: (request) => _handleUpdateOpponent(request, model),
             ),
           );
         } else {
@@ -189,13 +197,42 @@ class MatchSchedulePage extends StatelessWidget {
             onDetail: () => Navigation.instance
                 .navigateTo(MATCH_SCHEDULE_DETAIL, arguments: matchSchedule),
             onRegister: (isJoined) => !isJoined
-                ? model.joinMatch(index, matchSchedule.matchId)
-                : UIHelper.showConfirmDialog(
-                    'Bạn có chắc muốn huỷ tham gia trận đấu này?',
-                    onConfirmed: () =>
-                        model.leaveMatch(index, matchSchedule.matchId),
-                  ),
+                ? _handleJoinMatch(index, matchSchedule.matchId, model)
+                : _handleLeaveMatch(index, matchSchedule.matchId, model),
           );
+        }
+      },
+    );
+  }
+
+  _handleLeaveMatch(int index, int matchId, MatchScheduleViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Bạn có chắc muốn huỷ tham gia trận đấu này?',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.leaveMatch(index, matchId);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog('Đã huỷ đăng ký thi đấu!', isSuccess: true);
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
+
+  _handleJoinMatch(int index, int matchId, MatchScheduleViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Bạn có chắc muốn tham gia trận đấu này?',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.joinMatch(index, matchId);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog('Đăng ký thi đấu thành công!',
+              isSuccess: true);
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
         }
       },
     );

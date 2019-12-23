@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/comment.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/response/comments_resp.dart';
 import 'package:myfootball/model/response/team_resp.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class OtherTeamViewModel extends BaseViewModel {
@@ -35,17 +35,14 @@ class OtherTeamViewModel extends BaseViewModel {
     return resp;
   }
 
-  Future<void> submitReview(double rating, String comment) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> submitReview(double rating, String comment) async {
     var resp = await _api.reviewTeam(team.id, rating, comment);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.team.rating = resp.review.rating;
       this.comments.add(resp.review.comment);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 
   setLoading(bool isLoading) {

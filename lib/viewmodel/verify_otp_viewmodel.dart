@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:myfootball/model/response/base_response.dart';
+import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/firebase_services.dart';
-import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/utils/router_paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
@@ -35,27 +35,20 @@ class VerifyOTPViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> verifyOtp(
-      int userId, String phoneNumber, String verificationId) async {
-    if (otpCode.length != 6) return;
-    UIHelper.showProgressDialog;
-
+  Future<BaseResponse> verifyOtp(VerifyArgument argument) async {
+    if (otpCode.length != 6)
+      BaseResponse(
+          success: false,
+          errorMessage: 'Mã xác thực không đúng. Vui lòng thử lại');
     var token = await FirebaseServices.instance
-        .signInWithPhoneNumber(verificationId, otpCode);
+        .signInWithPhoneNumber(argument.verificationId, otpCode);
     if (token != null) {
-      var resp = await _api.activeUser(userId, phoneNumber, token);
-      UIHelper.hideProgressDialog;
-      if (resp.isSuccess) {
-        UIHelper.showSimpleDialog('Tài khoản đã được kích hoạt thành công!',
-            onConfirmed: () =>
-                Navigation.instance.navigateAndRemove(LOGIN),
-            isSuccess: true);
-      } else {
-        UIHelper.showSimpleDialog(resp.errorMessage);
-      }
+      var resp = await _api.activeUser(argument.userId, argument.phoneNumber, token);
+      return resp;
     } else {
-      UIHelper.hideProgressDialog;
-      UIHelper.showSimpleDialog('Mã xác thực không đúng. Vui lòng thử lại');
+      return BaseResponse(
+          success: false,
+          errorMessage: 'Mã xác thực không đúng. Vui lòng thử lại');
     }
   }
 

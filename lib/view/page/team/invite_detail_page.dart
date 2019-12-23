@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
+import 'package:myfootball/model/status.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
@@ -27,11 +28,8 @@ class InviteDetailPage extends StatelessWidget {
   InviteDetailPage({@required InviteRequest inviteRequest})
       : _inviteRequest = inviteRequest;
 
-  Widget _buildItemTimeSlot(
-      BuildContext context,
-      MatchingTimeSlot selectedTimeSlot,
-      MatchingTimeSlot timeSlot,
-      Function onTap) {
+  _buildItemTimeSlot(BuildContext context, MatchingTimeSlot selectedTimeSlot,
+      MatchingTimeSlot timeSlot, Function onTap) {
     bool isSelected = selectedTimeSlot != null &&
         selectedTimeSlot.timeSlotId == timeSlot.timeSlotId;
     return InkWell(
@@ -96,6 +94,80 @@ class InviteDetailPage extends StatelessWidget {
     );
   }
 
+  handleAcceptInvite(ConfirmInviteViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Xác nhận lời mời',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.acceptInviteRequest(_inviteRequest.id);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog(
+              'Thành công. Vui lòng kiểm tra lịch thi đấu',
+              isSuccess: true,
+              onConfirmed: () =>
+                  Navigation.instance.goBack(result: Status.DONE));
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
+
+  handleAcceptJoin(ConfirmInviteViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Xác nhận lời mời',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.acceptJoinMatch(_inviteRequest.id);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog(
+              'Thành công. Vui lòng kiểm tra lịch thi đấu',
+              isSuccess: true,
+              onConfirmed: () =>
+                  Navigation.instance.goBack(result: Status.DONE));
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
+
+  handleCancel(ConfirmInviteViewModel model) => UIHelper.showConfirmDialog('Bạn có chắc muốn huỷ lời mời',
+        onConfirmed: () async {
+      UIHelper.showProgressDialog;
+      var resp = await model.cancelInviteRequest(_inviteRequest.id);
+      UIHelper.hideProgressDialog;
+      if (resp.isSuccess) {
+        UIHelper.showSimpleDialog('Đã huỷ lời mời',
+            isSuccess: true,
+            onConfirmed: () =>
+                Navigation.instance.goBack(result: Status.ABORTED));
+      } else {
+        UIHelper.showSimpleDialog(resp.errorMessage);
+      }
+    });
+
+  handleReject(ConfirmInviteViewModel model){
+    UIHelper.showConfirmDialog(
+        'Bạn có chắc muốn từ chối lời mời',
+        onConfirmed: () async {
+          UIHelper.showProgressDialog;
+          var resp = await model.rejectInviteRequest(
+              _inviteRequest.id);
+          UIHelper.hideProgressDialog;
+          if (resp.isSuccess) {
+            UIHelper.showSimpleDialog('Đã từ chối lời mời',
+                isSuccess: true,
+                onConfirmed: () =>
+                    Navigation.instance.goBack(result: Status.ABORTED));
+          } else {
+            UIHelper.showSimpleDialog(resp.errorMessage);
+          }
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,8 +210,9 @@ class InviteDetailPage extends StatelessWidget {
                       ? Container(
                           width: double.infinity,
                           color: Colors.white,
-                          padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size10, horizontal: UIHelper.padding),
+                          padding: EdgeInsets.symmetric(
+                              vertical: UIHelper.size10,
+                              horizontal: UIHelper.padding),
                           child: Text(
                             'Chọn thời gian, sân thi đấu',
                             style: textStyleSemiBold(),
@@ -168,71 +241,72 @@ class InviteDetailPage extends StatelessWidget {
                                         _inviteRequest.matchInfo.groundName,
                                         iconColor: Colors.green,
                                         onTap: () => Navigation.instance
-                                            .navigateTo(GROUND_DETAIL,
+                                            .navigateTo(
+                                                GROUND_DETAIL,
                                                 arguments: _inviteRequest
                                                     .matchInfo.groundId),
                                       ),
                                     ],
                                   )
                                 : DefaultTabController(
-                                  length: _inviteRequest
-                                      .getMappedTimeSlot.length,
-                                  child: Column(
-                                    children: <Widget>[
-                                      TabBarWidget(
-                                        titles: _inviteRequest
-                                            .getMappedTimeSlot.keys
-                                            .toList()
-                                            .map((item) => DateFormat(
-                                                    'dd/MM')
-                                                .format(DateTime
-                                                    .fromMillisecondsSinceEpoch(
-                                                        item)))
-                                            .toList(),
-                                        isScrollable: true,
-                                        height: UIHelper.size35,
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: UIHelper.padding),                                              child: TabBarView(
-                                            children: _inviteRequest
-                                                .getMappedTimeSlot.values
-                                                .toList()
-                                                .map(
-                                                  (timeSlots) =>
-                                                      ListView.separated(
-                                                          physics:
-                                                              BouncingScrollPhysics(),
-                                                          padding: EdgeInsets
-                                                              .zero,
-                                                          itemBuilder: (c, index) => _buildItemTimeSlot(
-                                                              context,
-                                                              model
-                                                                  .selectedTimeSlot,
-                                                              timeSlots[
-                                                                  index],
-                                                              (isSelected,
-                                                                      timeSlot) =>
-                                                                  model.setSelectedTimeSlot(
-                                                                      !isSelected
-                                                                          ? null
-                                                                          : timeSlot)),
-                                                          separatorBuilder:
-                                                              (c, index) =>
-                                                                  LineWidget(
-                                                                    indent: 0,
-                                                                  ),
-                                                          itemCount: timeSlots
-                                                              .length),
-                                                )
-                                                .toList(),
+                                    length:
+                                        _inviteRequest.getMappedTimeSlot.length,
+                                    child: Column(
+                                      children: <Widget>[
+                                        TabBarWidget(
+                                          titles: _inviteRequest
+                                              .getMappedTimeSlot.keys
+                                              .toList()
+                                              .map((item) => DateFormat('dd/MM')
+                                                  .format(DateTime
+                                                      .fromMillisecondsSinceEpoch(
+                                                          item)))
+                                              .toList(),
+                                          isScrollable: true,
+                                          height: UIHelper.size35,
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: UIHelper.padding),
+                                            child: TabBarView(
+                                              children: _inviteRequest
+                                                  .getMappedTimeSlot.values
+                                                  .toList()
+                                                  .map(
+                                                    (timeSlots) =>
+                                                        ListView.separated(
+                                                            physics:
+                                                                BouncingScrollPhysics(),
+                                                            padding: EdgeInsets
+                                                                .zero,
+                                                            itemBuilder: (c, index) => _buildItemTimeSlot(
+                                                                context,
+                                                                model
+                                                                    .selectedTimeSlot,
+                                                                timeSlots[
+                                                                    index],
+                                                                (isSelected,
+                                                                        timeSlot) =>
+                                                                    model.setSelectedTimeSlot(
+                                                                        !isSelected
+                                                                            ? null
+                                                                            : timeSlot)),
+                                                            separatorBuilder:
+                                                                (c, index) =>
+                                                                    LineWidget(
+                                                                      indent: 0,
+                                                                    ),
+                                                            itemCount: timeSlots
+                                                                .length),
+                                                  )
+                                                  .toList(),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
@@ -244,11 +318,7 @@ class InviteDetailPage extends StatelessWidget {
                                       'HUỶ LỜI MỜI',
                                       style: textStyleButton(),
                                     ),
-                                    onTap: () => UIHelper.showConfirmDialog(
-                                        'Bạn có chắc muốn huỷ lời mời',
-                                        onConfirmed: () =>
-                                            model.cancelInviteRequest(
-                                                _inviteRequest.id)),
+                                    onTap: () => handleCancel(model),
                                     backgroundColor: Colors.grey,
                                   )
                                 : Row(
@@ -259,12 +329,7 @@ class InviteDetailPage extends StatelessWidget {
                                             'TỪ CHỐI',
                                             style: textStyleButton(),
                                           ),
-                                          onTap: () => UIHelper.showConfirmDialog(
-                                              'Bạn có chắc muốn từ chối lời mời',
-                                              onConfirmed: () {
-                                            model.rejectInviteRequest(
-                                                _inviteRequest.id);
-                                          }),
+                                          onTap: () => handleReject(model),
                                           backgroundColor: Colors.grey,
                                         ),
                                       ),
@@ -284,18 +349,10 @@ class InviteDetailPage extends StatelessWidget {
                                                 UIHelper.showSimpleDialog(
                                                     'Vui lòng chọn ngày, giờ, sân thi đấu');
                                               } else {
-                                                UIHelper.showConfirmDialog(
-                                                    'Xác nhận lời mời',
-                                                    onConfirmed: () => model
-                                                        .acceptInviteRequest(
-                                                            _inviteRequest.id));
+                                                handleAcceptInvite(model);
                                               }
                                             } else {
-                                              UIHelper.showConfirmDialog(
-                                                  'Xác nhận lời mời',
-                                                  onConfirmed: () =>
-                                                      model.acceptJoinMatch(
-                                                          _inviteRequest.id));
+                                              handleAcceptJoin(model);
                                             }
                                           },
                                         ),

@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/firebase_services.dart';
-import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/service/team_services.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class UpdateTeamViewModel extends BaseViewModel {
@@ -30,24 +29,19 @@ class UpdateTeamViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> updateTeam(Team team) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> updateTeam(Team team) async {
     if (image != null) {
       var _imageLink = await FirebaseServices.instance
           .uploadImage(image, 'team', 'id_${team.id}');
       if (_imageLink != null) {
-        // upload image success and update team info
         team.logo = _imageLink;
       }
     }
     team.dress = getColorValue(dressColor.toString());
     var resp = await _api.updateTeam(team);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       _teamServices.setTeam(team);
-      Navigation.instance.goBack();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

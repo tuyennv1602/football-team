@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_user.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class RequestJoinMatchViewModel extends BaseViewModel {
@@ -16,34 +16,25 @@ class RequestJoinMatchViewModel extends BaseViewModel {
     var resp = await _api.getRequestJoin(matchId, teamId);
     if (resp.isSuccess) {
       this.matchUsers = resp.matchUsers;
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
     setBusy(false);
   }
 
-  Future<bool> acceptRequest(int index, int matchUserId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> acceptRequest(int index, int matchUserId) async {
     var resp = await _api.acceptUserJoinRequest(matchUserId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.matchUsers.removeAt(index);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
-    return resp.isSuccess;
+    return resp;
   }
 
-  Future<void> rejectRequest(int index, int matchUserId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> rejectRequest(int index, int matchUserId) async {
     var resp = await _api.rejectUserJoinRequest(matchUserId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       this.matchUsers.removeAt(index);
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

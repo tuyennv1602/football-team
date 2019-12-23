@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 
 class MatchSchedule {
   String ratio;

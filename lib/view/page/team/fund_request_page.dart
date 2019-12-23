@@ -24,7 +24,7 @@ class FundRequestPage extends StatelessWidget {
 
   const FundRequestPage({Key key, this.fund}) : super(key: key);
 
-  Widget _buildItemRequest(int index, FundMember member, {Function onTap}) =>
+  _buildItemRequest(int index, FundMember member, {Function onTap}) =>
       BorderItemWidget(
         onTap: () => onTap(member),
         child: Row(
@@ -61,6 +61,20 @@ class FundRequestPage extends StatelessWidget {
           ],
         ),
       );
+
+  handleConfirmPaid(int index, FundMember member, FundRequestViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Xác nhận ${member.name} đã đóng quỹ?',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.acceptRequest(index, member.requestId);
+        UIHelper.hideProgressDialog;
+        if (!resp.isSuccess) {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +114,7 @@ class FundRequestPage extends StatelessWidget {
                                   onTap: (member) {
                                     if (team.hasManager(user.id) &&
                                         member.isActive) {
-                                      UIHelper.showConfirmDialog(
-                                        'Xác nhận ${member.name} đã đóng quỹ?',
-                                        onConfirmed: () => model.acceptRequest(
-                                            index, member.requestId),
-                                      );
+                                      handleConfirmPaid(index, member, model);
                                     }
                                   },
                                 ),

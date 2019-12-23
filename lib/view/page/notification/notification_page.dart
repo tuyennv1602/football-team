@@ -31,7 +31,7 @@ class NotificationState extends State<NotificationPage>
 
   RefreshController _notifyController = RefreshController();
 
-  Widget _buildItemNotification(
+   _buildItemNotification(
           BuildContext context, noti.Notification notification) =>
       BorderItemWidget(
         child: Column(

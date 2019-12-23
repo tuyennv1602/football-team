@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
-import 'package:myfootball/model/status.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/object_utils.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class ConfirmInviteViewModel extends BaseViewModel {
@@ -24,56 +22,24 @@ class ConfirmInviteViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> acceptInviteRequest(int inviteId) async {
-    UIHelper.showProgressDialog;
-    var resp = await _api.acceptInviteRequest(inviteId,
-        selectedTimeSlot.timeSlotId, selectedTimeSlot.playDate);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
-          isSuccess: true,
-          onConfirmed: () => Navigation.instance.goBack(result: Status.DONE));
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+  Future<BaseResponse> acceptInviteRequest(int inviteId) async {
+    var resp = await _api.acceptInviteRequest(
+        inviteId, selectedTimeSlot.timeSlotId, selectedTimeSlot.playDate);
+    return resp;
   }
 
-  Future<void> acceptJoinMatch(int inviteId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> acceptJoinMatch(int inviteId) async {
     var resp = await _api.acceptJoinMatch(inviteId);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Thành công. Vui lòng kiểm tra lịch thi đấu',
-          isSuccess: true,
-          onConfirmed: () => Navigation.instance.goBack(result: Status.DONE));
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
 
-  Future<void> rejectInviteRequest(int inviteId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> rejectInviteRequest(int inviteId) async {
     var resp = await _api.rejectInviteRequest(inviteId);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đã từ chối lời mời',
-          isSuccess: true,
-          onConfirmed: () => Navigation.instance.goBack(result: Status.ABORTED));
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
 
-  Future<void> cancelInviteRequest(int inviteId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> cancelInviteRequest(int inviteId) async {
     var resp = await _api.cancelInviteRequest(inviteId);
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      UIHelper.showSimpleDialog('Đã huỷ lời mời',
-          isSuccess: true,
-          onConfirmed: () => Navigation.instance.goBack(result: Status.ABORTED));
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
+    return resp;
   }
 }
