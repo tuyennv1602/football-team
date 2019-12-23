@@ -191,11 +191,13 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
   _buildHeaderWidget(BuildContext context, Team team) => Padding(
         padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ImageWidget(
-                source: team.logo,
-                placeHolder: Images.DEFAULT_LOGO,
-                size: UIHelper.size(90)),
+              source: team.logo,
+              placeHolder: Images.DEFAULT_LOGO,
+              size: UIHelper.size(90),
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: UIHelper.size15),
@@ -204,11 +206,15 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                   children: <Widget>[
                     Text(
                       'Điểm: ${team.point.toStringAsFixed(1)}',
-                      style: textStyleAlert(color: Colors.black87),
+                      style: textStyleMediumTitle(color: Colors.black87),
                     ),
                     Text(
                       'Xếp hạng: ${team.rank}',
-                      style: textStyleAlert(color: Colors.black87),
+                      style: textStyleMediumTitle(color: Colors.black87),
+                    ),
+                    Text(
+                      'Tín nhiệm: ${team.trustPoint}',
+                      style: textStyleMediumTitle(color: Colors.black87),
                     ),
                     InkWell(
                       onTap: () => Navigation.instance.navigateTo(TEAM_COMMENT),
@@ -217,7 +223,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                         children: <Widget>[
                           Text(
                             'Đánh giá: ',
-                            style: textStyleAlert(color: Colors.black87),
+                            style: textStyleMediumTitle(color: Colors.black87),
                           ),
                           RatingBarIndicator(
                             rating: team.rating,

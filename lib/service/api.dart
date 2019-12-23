@@ -776,14 +776,37 @@ class Api {
     }
   }
 
-  Future<MatchShareResponse> getUserJoinMatch(int page) async {
+  Future<MatchShareResponse> getPendingMatch(int page) async {
     try {
       FormData formData = new FormData.from({"page": page, "limit": 50});
       var resp =
-          await _api.getApi('match/share/user/request', queryParams: formData);
+          await _api.getApi('/match/pending-accept', queryParams: formData);
       return MatchShareResponse.success(resp.data);
     } on DioError catch (e) {
       return MatchShareResponse.error(e.message);
+    }
+  }
+
+  Future<MatchShareResponse> getAcceptedMatch(int page) async {
+    try {
+      FormData formData = new FormData.from({"page": page, "limit": 50});
+      var resp =
+      await _api.getApi('/match/before-kick-off', queryParams: formData);
+      return MatchShareResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MatchShareResponse.error(e.message);
+    }
+  }
+
+
+  Future<MatchHistoryResponse> getJoinedMatch(int page) async {
+    try {
+      FormData formData = new FormData.from({"page": page, "limit": 50});
+      var resp =
+      await _api.getApi('/match/non-organic', queryParams: formData);
+      return MatchHistoryResponse.success(1, resp.data);
+    } on DioError catch (e) {
+      return MatchHistoryResponse.error(e.message);
     }
   }
 

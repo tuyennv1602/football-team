@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
+import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/progress_dialog.dart';
 
@@ -79,8 +80,8 @@ class UIHelper {
         icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
         gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
         confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR,
-        onConfirmed: (context) {
-          Navigator.of(context).pop();
+        onConfirmed: () {
+          Navigation.instance.goBack();
           if (onConfirmed != null) {
             onConfirmed();
           }
@@ -98,8 +99,8 @@ class UIHelper {
       showCustomizeDialog(
         'confirm_dialog',
         dismissiable: true,
-        onConfirmed: (context) {
-          Navigator.of(context).pop();
+        onConfirmed: () {
+          Navigation.instance.goBack();
           onConfirmed();
         },
         child: child ??
@@ -168,7 +169,7 @@ class UIHelper {
                           showCancel
                               ? ButtonWidget(
                                   onTap: () {
-                                    Navigator.of(context).pop();
+                                    Navigation.instance.goBack();
                                   },
                                   width: screenWidth / 3,
                                   backgroundColor: Colors.grey,
@@ -186,7 +187,7 @@ class UIHelper {
                             child: ButtonWidget(
                               onTap: () {
                                 if (onConfirmed != null) {
-                                  onConfirmed(context);
+                                  onConfirmed();
                                 }
                               },
                               width: screenWidth / 3,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfootball/model/match_history.dart';
 import 'package:myfootball/model/match_share.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -8,21 +9,35 @@ class UserJoinMatchViewModel extends BaseViewModel {
   Api _api;
   List<MatchShare> waitRequests = [];
   List<MatchShare> acceptedRequest = [];
-  List<MatchShare> joined = [];
+  List<MatchHistory> joined = [];
 
   UserJoinMatchViewModel({@required Api api}) : _api = api;
 
-  Future<void> getUserJoinRequest(int page) async {
+  Future<void> getPendingRequests(int page) async {
     setBusy(true);
-    var resp = await _api.getUserJoinMatch(page);
-    if (resp.isSuccess && resp.matchShares != null) {
-      resp.matchShares.forEach((item) {
-        if (item.requestStatus == 4) {
-          waitRequests.add(item);
-        } else if (item.requestStatus == 1) {
-          acceptedRequest.add(item);
-        } else {}
-      });
+    var resp = await _api.getPendingMatch(page);
+    if (resp.isSuccess) {
+     this.waitRequests = resp.matchShares;
+    }
+    setBusy(false);
+  }
+
+
+  Future<void> getAcceptedRequest(int page) async {
+    setBusy(true);
+    var resp = await _api.getAcceptedMatch(page);
+    if (resp.isSuccess) {
+      this.acceptedRequest = resp.matchShares;
+    }
+    setBusy(false);
+  }
+
+
+  Future<void> getJoinedMatch(int page) async {
+    setBusy(true);
+    var resp = await _api.getJoinedMatch(page);
+    if (resp.isSuccess) {
+      this.joined = resp.matchHistories;
     }
     setBusy(false);
   }

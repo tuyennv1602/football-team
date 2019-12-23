@@ -67,7 +67,7 @@ class EditTeamPage extends StatelessWidget {
         ),
       );
 
-  handleUpdateTeam(Team team, UpdateTeamViewModel model) async {
+  _handleUpdateTeam(Team team, UpdateTeamViewModel model) async {
     UIHelper.showProgressDialog;
     var resp = await model.updateTeam(team);
     UIHelper.hideProgressDialog;
@@ -105,7 +105,7 @@ class EditTeamPage extends StatelessWidget {
                     child: BaseWidget<UpdateTeamViewModel>(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
+                            EdgeInsets.symmetric(horizontal: UIHelper.padding),
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -210,12 +210,12 @@ class EditTeamPage extends StatelessWidget {
                               if (validateAndSave()) {
                                 _team.name = _teamName;
                                 _team.bio = _bio;
-                                handleUpdateTeam(_team, model);
+                                _handleUpdateTeam(_team, model);
                               }
                             },
                             margin: EdgeInsets.symmetric(
-                                horizontal: UIHelper.size15,
-                                vertical: UIHelper.size10),
+                                horizontal: UIHelper.padding,
+                                vertical: UIHelper.size30),
                             child: Text(
                               'CẬP NHẬT',
                               style: textStyleButton(),

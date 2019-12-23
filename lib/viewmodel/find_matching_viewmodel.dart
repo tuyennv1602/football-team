@@ -7,7 +7,7 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class FindMatchingViewModel extends BaseViewModel {
   Api _api;
-  List<Matching> matchings;
+  List<Matching> matchings = [];
   Matching currentTeam;
 
   FindMatchingViewModel({@required Api api}) : _api = api;

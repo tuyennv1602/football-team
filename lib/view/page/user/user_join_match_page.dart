@@ -69,7 +69,11 @@ class UserJoinMatchPage extends StatelessWidget {
                       child: BaseWidget<UserJoinMatchViewModel>(
                         model:
                             UserJoinMatchViewModel(api: Provider.of(context)),
-                        onModelReady: (model) => model.getUserJoinRequest(1),
+                        onModelReady: (model) {
+                          model.getPendingRequests(1);
+                          model.getAcceptedRequest(1);
+                          model.getJoinedMatch(1);
+                        },
                         builder: (c, model, child) => TabBarView(
                           children: <Widget>[
                             model.busy
@@ -167,10 +171,9 @@ class UserJoinMatchPage extends StatelessWidget {
                                           return ItemMatchSchedule(
                                             matchSchedule: matchInfo,
                                             onTapSchedule: () =>
-                                                Navigation.instance
-                                                    .navigateTo(
-                                                        MATCH_SCHEDULE_DETAIL,
-                                                        arguments: matchInfo),
+                                                Navigation.instance.navigateTo(
+                                                    MATCH_SCHEDULE_DETAIL,
+                                                    arguments: matchInfo),
                                           );
                                         },
                                         separatorBuilder: (c, index) =>

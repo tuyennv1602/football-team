@@ -19,6 +19,7 @@ import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/multichoice_position.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/viewmodel/user_request_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -177,11 +178,10 @@ class UserRequestPage extends StatelessWidget {
                         'Ngày gửi: ${request.getCreateDate}',
                         style: textStyleRegularBody(color: Colors.grey),
                       ),
-                      Text(
-                        request.getStatus,
-                        style:
-                            textStyleRegularBody(color: request.getStatusColor),
-                      )
+                      StatusIndicator(
+                        status: request.getStatus,
+                        statusName: request.getStatusName,
+                      ),
                     ],
                   )
                 ],

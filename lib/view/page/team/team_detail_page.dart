@@ -74,7 +74,7 @@ class TeamDetailPage extends StatelessWidget {
                   model:
                       OtherTeamViewModel(api: Provider.of(context), team: team),
                   child: Hero(
-                    tag: 'team-${team.id}',
+                    tag: team.tag,
                     child: ImageWidget(
                       source: team.logo,
                       placeHolder: Images.DEFAULT_LOGO,
@@ -104,13 +104,18 @@ class TeamDetailPage extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        'Điểm: ${_team.point != null ? _team.point.toStringAsFixed(1) : 0}',
-                                        style: textStyleAlert(
+                                        'Điểm: ${team.point.toStringAsFixed(1)}',
+                                        style: textStyleMediumTitle(
                                             color: Colors.black87),
                                       ),
                                       Text(
-                                        'Xếp hạng: ${_team.rank ?? 0}',
-                                        style: textStyleAlert(
+                                        'Xếp hạng: ${team.rank}',
+                                        style: textStyleMediumTitle(
+                                            color: Colors.black87),
+                                      ),
+                                      Text(
+                                        'Tín nhiệm: ${team.trustPoint}',
+                                        style: textStyleMediumTitle(
                                             color: Colors.black87),
                                       ),
                                       Row(
@@ -119,7 +124,7 @@ class TeamDetailPage extends StatelessWidget {
                                         children: <Widget>[
                                           Text(
                                             'Đánh giá: ',
-                                            style: textStyleAlert(
+                                            style: textStyleMediumTitle(
                                                 color: Colors.black87),
                                           ),
                                           RatingBarIndicator(

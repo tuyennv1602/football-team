@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myfootball/model/status.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/date_util.dart';
@@ -46,12 +47,20 @@ class UserRequest {
 
   String get getCreateDate => DateUtil.getDateFromTimestamp(createDate);
 
-  String get getStatus {
+  String get getStatusName {
     if (status == Constants.REQUEST_WAITING) return 'Đang chờ';
     if (status == Constants.REQUEST_CANCEL) return 'Đã huỷ';
     if (status == Constants.REQUEST_ACCEPTED) return 'Đã chấp nhận';
     if (status == Constants.REQUEST_REJECTED) return 'Đã từ chối';
     return 'Không xác định';
+  }
+
+  Status get getStatus {
+    if (status == Constants.REQUEST_WAITING) return Status.PENDING;
+    if (status == Constants.REQUEST_CANCEL) return Status.ABORTED;
+    if (status == Constants.REQUEST_ACCEPTED) return Status.DONE;
+    if (status == Constants.REQUEST_REJECTED) return Status.FAILED;
+    return Status.ABORTED;
   }
 
   List<String> get getPositions => position != null ? position.split(',') : [];

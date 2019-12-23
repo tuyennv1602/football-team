@@ -68,7 +68,7 @@ class SearchTeamPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(right: UIHelper.padding),
               child: Hero(
-                tag: 'team-${team.id}',
+                tag: team.tag,
                 child: ImageWidget(
                   source: team.logo,
                   placeHolder: Images.DEFAULT_LOGO,
@@ -110,7 +110,7 @@ class SearchTeamPage extends StatelessWidget {
                                 Images.MEMBER,
                                 width: UIHelper.size15,
                                 height: UIHelper.size15,
-                                color: Colors.green,
+                                color: Colors.grey,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: UIHelper.size5),
@@ -130,7 +130,7 @@ class SearchTeamPage extends StatelessWidget {
                                 Images.RANK,
                                 width: UIHelper.size(13),
                                 height: UIHelper.size(13),
-                                color: Colors.deepPurpleAccent,
+                                color: Colors.grey,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: UIHelper.size5),
@@ -148,7 +148,7 @@ class SearchTeamPage extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.star,
-                                color: Colors.amber,
+                                color: Colors.grey,
                                 size: UIHelper.size20,
                               ),
                               Padding(

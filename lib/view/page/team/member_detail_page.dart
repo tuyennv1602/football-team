@@ -202,9 +202,21 @@ class MemberDetailPage extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.only(
                                         top: UIHelper.size5, bottom: 2),
-                                    child: Text(
-                                      member.email,
-                                      style: textStyleRegular(),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Text(
+                                            'Số trận: ${member.teamGame}',
+                                            style: textStyleMedium(),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            'Kinh nghiệm: ${member.getExp}',
+                                            style: textStyleMedium(),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   Row(

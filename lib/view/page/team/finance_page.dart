@@ -54,7 +54,7 @@ class FinancePage extends StatelessWidget {
 
   _createFundNotification(BuildContext context, {Function onSubmit}) {
     var _price;
-    var _expireDate;
+    var _expireDate = DateTime.now();
     var _title;
     return UIHelper.showCustomizeDialog(
       'create noti',

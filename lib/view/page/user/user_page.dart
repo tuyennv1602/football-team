@@ -32,6 +32,8 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
   final _formName = GlobalKey<FormState>();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   _validateAndSave() {
     final form = _formName.currentState;
     if (form.validate()) {
@@ -40,8 +42,6 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
     }
     return false;
   }
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _showChooseImage(BuildContext context, Function onImageReady) =>
       showModalBottomSheet(
@@ -114,16 +114,16 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
   }
 
   _handleLogout(UserViewModel model) => UIHelper.showConfirmDialog(
-      'Bạn có chắc chắn muốn đăng xuất?',
-      onConfirmed: () async {
-        UIHelper.showProgressDialog;
-        var resp = await model.logout();
-        UIHelper.hideProgressDialog;
-        if (resp) {
-          Navigation.instance.navigateAndRemove(LOGIN);
-        }
-      },
-    );
+        'Bạn có chắc chắn muốn đăng xuất?',
+        onConfirmed: () async {
+          UIHelper.showProgressDialog;
+          var resp = await model.logout();
+          UIHelper.hideProgressDialog;
+          if (resp) {
+            Navigation.instance.navigateAndRemove(LOGIN);
+          }
+        },
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +274,14 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                                         ),
                                       ),
                                       Text(
-                                        _user.email,
+                                        'Số trận: ${_user.totalGame}',
+                                        style: textStyleRegular(
+                                            color: Colors.white),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        'Kinh nghiệm: ${_user.getExp}',
                                         style: textStyleRegular(
                                             color: Colors.white),
                                         maxLines: 1,

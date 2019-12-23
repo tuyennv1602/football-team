@@ -23,7 +23,7 @@ class CreateTeamPage extends StatelessWidget {
   String _teamName;
   String _bio;
 
-  bool validateAndSave() {
+  _validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
@@ -65,7 +65,7 @@ class CreateTeamPage extends StatelessWidget {
         ),
       );
 
-  handleRegisterTeam(User user, CreateTeamViewModel model) async {
+  _handleRegisterTeam(User user, CreateTeamViewModel model) async {
     UIHelper.showProgressDialog;
     var resp = await model.createTeam(user, _teamName, _bio);
     UIHelper.hideProgressDialog;
@@ -102,7 +102,7 @@ class CreateTeamPage extends StatelessWidget {
                     child: BaseWidget<CreateTeamViewModel>(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
+                            EdgeInsets.symmetric(horizontal: UIHelper.padding),
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -218,14 +218,14 @@ class CreateTeamPage extends StatelessWidget {
                           ),
                           ButtonWidget(
                             onTap: () {
-                              if (validateAndSave()) {
-                                handleRegisterTeam(
+                              if (_validateAndSave()) {
+                                _handleRegisterTeam(
                                     Provider.of<User>(context), model);
                               }
                             },
                             margin: EdgeInsets.symmetric(
                                 horizontal: UIHelper.size10,
-                                vertical: UIHelper.size15),
+                                vertical: UIHelper.padding),
                             child: Text(
                               'ĐĂNG KÝ',
                               style: textStyleButton(),
