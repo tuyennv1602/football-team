@@ -3,7 +3,7 @@ import 'package:myfootball/model/transaction.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/border_item.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 class ItemTransactionWidget extends StatelessWidget {
   final Transaction transaction;

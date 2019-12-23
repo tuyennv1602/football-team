@@ -16,7 +16,7 @@ import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class ConversationPage extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 typedef void OnChangedText(String text);
 typedef void OnSubmitText(String text);

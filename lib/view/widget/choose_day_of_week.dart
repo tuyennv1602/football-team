@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/view/widget/custom_expansion_panel.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 class AppBarWidget extends StatelessWidget {
   final Widget leftContent;

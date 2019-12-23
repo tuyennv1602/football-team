@@ -14,7 +14,7 @@ import 'package:myfootball/view/widget/item_comment.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/review_dialog.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/ground_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';

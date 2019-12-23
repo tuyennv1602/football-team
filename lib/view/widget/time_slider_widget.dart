@@ -3,7 +3,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 typedef void OnSelectedTime(double start, double end, String dayOfWeeks);
 

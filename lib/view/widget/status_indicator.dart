@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/status.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 class StatusIndicator extends StatelessWidget {
   final Status status;

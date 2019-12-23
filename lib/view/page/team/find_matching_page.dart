@@ -23,8 +23,8 @@ import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/router_paths.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/find_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
 

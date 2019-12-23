@@ -48,7 +48,7 @@ import 'package:myfootball/view/page/team/ticket_page.dart';
 import 'package:myfootball/view/page/team/user_request_page.dart';
 import 'package:myfootball/view/page/user/user_comment_page.dart';
 import 'package:myfootball/view/page/user/user_join_match_page.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/router/router_paths.dart';
 import 'package:myfootball/view/router/slide_left_router.dart';
 
 import 'fade_in_router.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:myfootball/model/response/login_resp.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/api.dart';
-import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/router_paths.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 

@@ -15,7 +15,7 @@ import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/fund_request_viewmodel.dart';
 import 'package:provider/provider.dart';
 

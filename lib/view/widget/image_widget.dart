@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 class ImageWidget extends StatelessWidget {
   final String source;

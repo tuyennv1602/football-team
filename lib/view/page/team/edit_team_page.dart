@@ -13,7 +13,7 @@ import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text_widget.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/update_team_viewmodel.dart';
 import 'package:provider/provider.dart';
 

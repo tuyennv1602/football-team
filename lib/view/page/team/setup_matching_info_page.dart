@@ -12,8 +12,8 @@ import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/time_slider_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/router_paths.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/setup_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
 

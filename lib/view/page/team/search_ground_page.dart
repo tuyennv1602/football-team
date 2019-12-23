@@ -16,8 +16,8 @@ import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/search_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/router_paths.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/search_ground_viewmodel.dart';
 import 'package:provider/provider.dart';
 

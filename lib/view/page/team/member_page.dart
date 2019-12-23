@@ -12,8 +12,8 @@ import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/item_member.dart';
-import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/router_paths.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/member_viewmodel.dart';
 import 'package:provider/provider.dart';
 

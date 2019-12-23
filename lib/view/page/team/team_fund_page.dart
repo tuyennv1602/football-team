@@ -14,8 +14,8 @@ import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
-import 'package:myfootball/utils/router_paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/router/router_paths.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/team_fund_viewmodel.dart';
 import 'package:provider/provider.dart';
 

@@ -4,7 +4,7 @@ import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/firebase_services.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class VerifyOTPViewModel extends BaseViewModel {

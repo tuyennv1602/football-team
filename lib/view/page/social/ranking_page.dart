@@ -10,7 +10,7 @@ import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/ranking_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

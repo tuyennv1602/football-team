@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 class InputTextWidget extends StatelessWidget {
   final String initValue;
