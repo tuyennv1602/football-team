@@ -40,6 +40,7 @@ class RequestMemberPage extends StatelessWidget {
                 source: teamRequest.avatar,
                 placeHolder: Images.DEFAULT_AVATAR,
                 boxFit: BoxFit.cover,
+                radius: UIHelper.size(55) / 2,
               ),
             ),
             Expanded(

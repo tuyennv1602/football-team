@@ -20,7 +20,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> getFreeTimeSlot(int groundId) async {
     setBusy(true);
-    var resp = await _api.getFreeTimeSlots(
+    var resp = await _api.getFreeTimeSlot(
       groundId,
       DateFormat('dd/MM/yyyy').format(currentDate),
     );

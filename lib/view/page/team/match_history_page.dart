@@ -14,6 +14,7 @@ import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_score_widget.dart';
+import 'package:myfootball/view/widget/item_match_history.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
@@ -141,10 +142,10 @@ class MatchHistoryPage extends StatelessWidget {
   }
 
   _buildItemHistory(BuildContext context, int index, MatchHistory matchHistory,
+      bool isCaptain,
       {Function onSubmit, Function onConfirm}) {
-    bool isCaptain =
-        Provider.of<Team>(context).managerId == Provider.of<User>(context).id;
-    return BorderItemWidget(
+    return ItemMatchHistory(
+      matchHistory: matchHistory,
       onTap: () {
         if (isCaptain &&
             !matchHistory.isConfirmed &&
@@ -182,140 +183,6 @@ class MatchHistoryPage extends StatelessWidget {
               .navigateTo(MATCH_HISTORY_DETAIL, arguments: matchHistory);
         }
       },
-      padding: EdgeInsets.symmetric(
-          vertical: UIHelper.padding, horizontal: UIHelper.size10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: UIHelper.size35,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: UIHelper.size10),
-                  child: ImageWidget(
-                    source: matchHistory.getMyTeamLogo,
-                    placeHolder: Images.DEFAULT_LOGO,
-                    size: UIHelper.size35,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    matchHistory.getMyTeamName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyleMediumTitle(),
-                  ),
-                ),
-                Text(
-                  matchHistory.getMyTeamScore,
-                  style: textStyleBold(
-                      size: 20,
-                      color: matchHistory.isConfirmed
-                          ? Colors.black
-                          : Colors.grey),
-                )
-              ],
-            ),
-          ),
-          matchHistory.hasOpponentTeam
-              ? Container(
-                  height: UIHelper.size20,
-                  padding: EdgeInsets.only(left: UIHelper.size45),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'VS',
-                        style: textStyleMedium(size: 12, color: Colors.grey),
-                      ),
-                      Expanded(child: LineWidget())
-                    ],
-                  ),
-                )
-              : SizedBox(),
-          Container(
-            height: matchHistory.hasOpponentTeam ? UIHelper.size35 : 0,
-            child: matchHistory.hasOpponentTeam
-                ? Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: UIHelper.size10),
-                        child: ImageWidget(
-                          source: matchHistory.getOpponentLogo,
-                          placeHolder: Images.DEFAULT_LOGO,
-                          size: UIHelper.size35,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          matchHistory.getOpponentName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: textStyleMediumTitle(),
-                        ),
-                      ),
-                      Text(
-                        matchHistory.getOpponentTeamScore,
-                        style: textStyleBold(
-                            size: 20,
-                            color: matchHistory.isConfirmed
-                                ? Colors.black
-                                : Colors.grey),
-                      )
-                    ],
-                  )
-                : SizedBox(),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: UIHelper.padding),
-            child: LineWidget(indent: 0),
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  child: Row(
-                children: <Widget>[
-                  matchHistory.getMyTeamPoint != null
-                      ? Text(
-                          matchHistory.getMyTeamPoint.toStringAsFixed(2),
-                          style: textStyleMedium(
-                              size: 14,
-                              color: matchHistory.getMyTeamPoint > 0
-                                  ? GREEN_TEXT
-                                  : Colors.red),
-                        )
-                      : SizedBox(),
-                  matchHistory.getMyTeamPoint != null
-                      ? Padding(
-                          padding: EdgeInsets.only(left: 2),
-                          child: Image.asset(
-                            matchHistory.getMyTeamPoint > 0
-                                ? Images.UP
-                                : Images.DOWN,
-                            width: UIHelper.size(12),
-                            height: UIHelper.size(12),
-                            color: matchHistory.getMyTeamPoint > 0
-                                ? GREEN_TEXT
-                                : Colors.red,
-                          ),
-                        )
-                      : SizedBox(),
-                  matchHistory.countConfirmed > 0
-                      ? Text(
-                          ' +${matchHistory.getBonus}',
-                          style: textStyleMedium(
-                              size: 14, color: matchHistory.getRateColor),
-                        )
-                      : SizedBox(),
-                ],
-              )),
-              StatusIndicator(
-                statusName: matchHistory.getStatusName,
-                status: matchHistory.getStatus,
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 
@@ -349,6 +216,7 @@ class MatchHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _team = Provider.of<Team>(context);
+    var _userId = Provider.of<User>(context).id;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
@@ -388,6 +256,7 @@ class MatchHistoryPage extends StatelessWidget {
                                       context,
                                       index,
                                       model.matchHistories[index],
+                                      _team.hasManager(_userId),
                                       onSubmit: (firstScore, secondScore) =>
                                           _handleSubmit(index, firstScore,
                                               secondScore, model),

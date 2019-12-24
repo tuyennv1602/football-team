@@ -19,7 +19,7 @@ class BookingFixedViewModel extends BaseViewModel {
 
   Future<void> getFreeFixedTimeSlot(int groundId) async {
     setBusy(true);
-    var resp = await _api.getFreeFixedTimeSlots(groundId, dayOfWeek);
+    var resp = await _api.getFreeFixedTimeSlot(groundId, dayOfWeek);
     if (resp.isSuccess) {
       this.fields = resp.ground.fields;
     }

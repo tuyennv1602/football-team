@@ -144,8 +144,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             ItemOptionWidget(
               Images.COMMENT,
               'Thảo luận',
-              iconColor: Colors.green,
-              onTap: () => Navigation.instance.navigateTo(CONVERSATION),
+              iconColor: Colors.green
             ),
           ]
             ..addAll(_manager)

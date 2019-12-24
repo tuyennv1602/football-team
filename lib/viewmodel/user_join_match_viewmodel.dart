@@ -8,8 +8,8 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 class UserJoinMatchViewModel extends BaseViewModel {
   Api _api;
   List<MatchShare> waitRequests = [];
-  List<MatchShare> acceptedRequest = [];
-  List<MatchHistory> joined = [];
+  List<MatchShare> acceptedRequests = [];
+  List<MatchHistory> joinedMatches = [];
 
   UserJoinMatchViewModel({@required Api api}) : _api = api;
 
@@ -27,7 +27,7 @@ class UserJoinMatchViewModel extends BaseViewModel {
     setBusy(true);
     var resp = await _api.getAcceptedMatch(page);
     if (resp.isSuccess) {
-      this.acceptedRequest = resp.matchShares;
+      this.acceptedRequests = resp.matchShares;
     }
     setBusy(false);
   }
@@ -37,7 +37,7 @@ class UserJoinMatchViewModel extends BaseViewModel {
     setBusy(true);
     var resp = await _api.getJoinedMatch(page);
     if (resp.isSuccess) {
-      this.joined = resp.matchHistories;
+      this.joinedMatches = resp.matchHistories;
     }
     setBusy(false);
   }
@@ -50,7 +50,7 @@ class UserJoinMatchViewModel extends BaseViewModel {
       if (tab == 0) {
         waitRequests.removeAt(index);
       } else if (tab == 1) {
-        acceptedRequest.removeAt(index);
+        acceptedRequests.removeAt(index);
       }
       notifyListeners();
     } else {

@@ -125,6 +125,17 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
         },
       );
 
+  _handleChangePassword(String email, UserViewModel model) async {
+    UIHelper.showProgressDialog;
+    var resp = await model.forgotPassword(email);
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      Navigation.instance.navigateTo(CHANGE_PASSWORD, arguments: email);
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -167,11 +178,6 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                 Images.INFO,
                 'Thông tin ứng dụng',
                 iconColor: Colors.purple,
-              ),
-              ItemOptionWidget(
-                Images.PASSWORD,
-                'Đổi mật khẩu',
-                iconColor: Colors.red,
               ),
             ],
           ),
@@ -339,6 +345,12 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                       padding: EdgeInsets.only(top: UIHelper.size5),
                       children: <Widget>[
                         child,
+                        ItemOptionWidget(
+                          Images.PASSWORD,
+                          'Đổi mật khẩu',
+                          iconColor: Colors.red,
+                          onTap: () => _handleChangePassword(_user.email, model),
+                        ),
                         ItemOptionWidget(
                           Images.LOGOUT,
                           'Đăng xuất',

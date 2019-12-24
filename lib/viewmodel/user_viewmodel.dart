@@ -14,19 +14,19 @@ class UserViewModel extends BaseViewModel {
   LocalStorage _preferences;
   TeamServices _teamServices;
   AuthServices _authServices;
-  Api _api;
+  Api api;
 
-  UserViewModel({@required LocalStorage sharePreferences,
-    @required TeamServices teamServices,
-    @required Api api,
-    @required AuthServices authServices})
+  UserViewModel(
+      {@required LocalStorage sharePreferences,
+      @required TeamServices teamServices,
+      @required this.api,
+      @required AuthServices authServices})
       : _preferences = sharePreferences,
         _teamServices = teamServices,
-        _api = api,
         _authServices = authServices;
 
   Future<bool> logout() async {
-    var _logout = await _api.logout();
+    var _logout = await api.logout();
     var _token = await _preferences.clearToken();
     var _lastTeam = await _preferences.clearLastTeam();
     var resp = _token && _lastTeam && _logout.isSuccess;
@@ -40,7 +40,7 @@ class UserViewModel extends BaseViewModel {
     var link = await FirebaseServices.instance
         .uploadImage(image, 'user', 'id_${user.id}');
     if (link != null) {
-      var resp = await _api.updateProfile(link, user.name);
+      var resp = await api.updateProfile(link, user.name);
       if (resp.isSuccess) {
         user.avatar = link;
         _authServices.updateUser(user);
@@ -55,13 +55,18 @@ class UserViewModel extends BaseViewModel {
   }
 
   Future<BaseResponse> updateName(User user, String name) async {
-    var resp = await _api.updateProfile(user.avatar, name);
+    var resp = await api.updateProfile(user.avatar, name);
     if (resp.isSuccess) {
       user.name = name;
       _authServices.updateUser(user);
       _teamServices.getTeamDetail(null);
       notifyListeners();
     }
+    return resp;
+  }
+
+  Future<BaseResponse> forgotPassword(String email) async {
+    var resp = await api.forgotPassword(email);
     return resp;
   }
 }

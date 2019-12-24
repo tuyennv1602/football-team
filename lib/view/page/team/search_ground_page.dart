@@ -43,6 +43,46 @@ class _SearchGroundState extends State<SearchGroundPage> {
   final Completer<GoogleMapController> _controller = Completer();
   BitmapDescriptor _groundMarker;
 
+  @override
+  void initState() {
+    super.initState();
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(
+                size: Platform.isAndroid
+                    ? Size(UIHelper.size50, UIHelper.size50)
+                    : Size(UIHelper.size25, UIHelper.size25),
+                devicePixelRatio: 2),
+            Images.MARKER)
+        .then((value) {
+      _groundMarker = value;
+    });
+  }
+
+  _updateMyLocation(SearchGroundViewModel model) async {
+    await model.getMyLocation();
+    _animateToPosition(model.myPosition);
+    UIHelper.showProgressDialog;
+    var resp = await model.getGroundsByLocation();
+    UIHelper.hideProgressDialog;
+    if (resp.isSuccess) {
+      if (model.currentGround != null) {
+        _animateToPosition(
+            LatLng(model.currentGround.lat, model.currentGround.lng));
+      }
+    } else {
+      UIHelper.showSimpleDialog(resp.errorMessage);
+    }
+  }
+
+  _animateToPosition(LatLng target) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: target, zoom: 13),
+      ),
+    );
+  }
+
   _buildItemGround(BuildContext context, int index, Ground ground) =>
       BorderItemWidget(
         padding: EdgeInsets.zero,
@@ -55,7 +95,7 @@ class _SearchGroundState extends State<SearchGroundPage> {
           }
         },
         child: Hero(
-          tag: 'ground-${ground.id}',
+          tag: ground.tag,
           child: Stack(
             children: <Widget>[
               ClipRRect(
@@ -135,49 +175,50 @@ class _SearchGroundState extends State<SearchGroundPage> {
         ),
       );
 
-  @override
-  void initState() {
-    super.initState();
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(
-                size: Platform.isAndroid
-                    ? Size(UIHelper.size50, UIHelper.size50)
-                    : Size(UIHelper.size25, UIHelper.size25),
-                devicePixelRatio: 2),
-            Images.MARKER)
-        .then((value) {
-      _groundMarker = value;
-    });
-  }
-
-  _updateMyLocation(SearchGroundViewModel model) async {
-    await model.getMyLocation();
-    _animateToPosition(model.myPosition);
-    UIHelper.showProgressDialog;
-    var resp = await model.getGroundsByLocation();
-    UIHelper.hideProgressDialog;
-    if (resp.isSuccess) {
-      if (model.currentGround != null) {
-        _animateToPosition(
-            LatLng(model.currentGround.lat, model.currentGround.lng));
-      }
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
-    }
-  }
-
-  _animateToPosition(LatLng target) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: target, zoom: 13),
-      ),
-    );
-  }
+  _buildItemSearchGround(Ground ground) => InkWell(
+        onTap: () =>
+            Navigation.instance.navigateTo(GROUND_DETAIL, arguments: ground.id),
+        borderRadius: BorderRadius.circular(UIHelper.size5),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(UIHelper.size5)),
+          padding: EdgeInsets.all(UIHelper.size10),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      ground.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyleRegular(size: 16),
+                    ),
+                    Text(
+                      ground.address,
+                      maxLines: 1,
+                      style: textStyleRegularBody(color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+              Image.asset(
+                Images.NEXT,
+                width: UIHelper.size10,
+                height: UIHelper.size10,
+                color: LINE_COLOR,
+              )
+            ],
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
@@ -223,9 +264,29 @@ class _SearchGroundState extends State<SearchGroundPage> {
                     ),
                     SearchWidget(
                       hintText: 'Nhập tên sân bóng',
-                      isLoading: false,
-                      onChangedText: (text) {},
+                      isLoading: model.isSearching,
+                      keyword: model.key,
+                      onChangedText: (text) => model.searchGroundByKey(text),
                     ),
+                    model.searchResults.length > 0
+                        ? Positioned(
+                            top: UIHelper.size(69),
+                            left: 0,
+                            right: 0,
+                            bottom: UIHelper.size(200) + UIHelper.paddingBottom,
+                            child: ListView.separated(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.padding),
+                              itemBuilder: (c, index) => _buildItemSearchGround(
+                                  model.searchResults[index]),
+                              separatorBuilder: (c, index) => SizedBox(
+                                height: UIHelper.size5,
+                                width: UIHelper.screenWidth,
+                              ),
+                              itemCount: model.searchResults.length,
+                            ),
+                          )
+                        : SizedBox(),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(

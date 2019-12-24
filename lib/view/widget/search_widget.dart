@@ -58,10 +58,10 @@ class SearchWidget extends StatelessWidget {
                     () => onChangedText(text));
               },
               autocorrect: false,
-              style: textStyleRegular(),
+              style: textStyleRegular(size: 16),
               decoration: InputDecoration(
                   hintText: this.hintText,
-                  hintStyle: textStyleRegular(color: Colors.grey),
+                  hintStyle: textStyleRegular(size: 16, color: Colors.grey),
                   border: InputBorder.none,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: UIHelper.size(15))),

@@ -173,7 +173,7 @@ class MatchSchedulePage extends StatelessWidget {
     MatchSchedule matchSchedule = model.matchSchedules[index];
     return ItemMatchSchedule(
       matchSchedule: matchSchedule,
-      onTapSchedule: () {
+      onTap: () {
         if (isCaptain) {
           _showManagerOptions(
             context,

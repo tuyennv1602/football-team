@@ -62,6 +62,9 @@ class MatchHistoryDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
+    if(team == null){
+      team = matchHistory.getMyTeam;
+    }
     var _isLiked = matchHistory.userConfirmed;
     return Scaffold(
       body: Container(

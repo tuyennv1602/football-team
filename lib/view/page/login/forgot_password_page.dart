@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
   String _password;
   String _code;
 
-  bool validateAndSave() {
+  validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
@@ -33,7 +33,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
     return false;
   }
 
-  handleGetCode(ForgotPasswordViewModel model) async {
+  _handleGetCode(ForgotPasswordViewModel model) async {
     UIHelper.showProgressDialog;
     var resp = await model.forgotPassword(_email);
     UIHelper.hideProgressDialog;
@@ -44,7 +44,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
     }
   }
 
-  handleChangePassword(ForgotPasswordViewModel model) async {
+  _handleChangePassword(ForgotPasswordViewModel model) async {
     UIHelper.showProgressDialog;
     var resp = await model.changePassword(_email, _password, _code);
     UIHelper.hideProgressDialog;
@@ -195,9 +195,9 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                             onTap: () {
                               if (validateAndSave()) {
                                 if (model.isChangePassword) {
-                                  handleChangePassword(model);
+                                  _handleChangePassword(model);
                                 } else {
-                                  handleGetCode(model);
+                                  _handleGetCode(model);
                                 }
                               }
                             },

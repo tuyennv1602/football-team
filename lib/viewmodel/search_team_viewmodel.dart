@@ -15,7 +15,7 @@ class SearchTeamViewModel extends BaseViewModel {
 
   Future<SearchTeamResponse> searchTeamByKey(String key) async {
     this.key = key;
-    _setLoading((true));
+    _setLoading(true);
     var resp = await _api.searchTeamByKey(key);
     if (resp.isSuccess) {
       teams = resp.teams;

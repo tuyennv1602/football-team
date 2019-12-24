@@ -73,7 +73,7 @@ class MatchSchedule {
     return data;
   }
 
-  bool get isSender => teamId == sendTeam.id;
+  bool get isSender => teamId == null || teamId == sendTeam.id;
 
   String get getShortPlayTime =>
       '${DateUtil.getTimeStringFromDouble(startTime)} ${DateFormat('dd/MM').format(DateTime.fromMillisecondsSinceEpoch(playDate))}';

@@ -144,7 +144,7 @@ class Api {
     }
   }
 
-  Future<TeamRequestResponse> getTeamRequest(int teamId) async {
+  Future<TeamRequestResponse> getJoinTeamRequest(int teamId) async {
     try {
       FormData formData = new FormData.from({
         "groupId": teamId,
@@ -245,7 +245,7 @@ class Api {
     }
   }
 
-  Future<NotificationResponse> getNotifications() async {
+  Future<NotificationResponse> getUserNotification() async {
     try {
       var resp = await _api.getApi("user/notification");
       return NotificationResponse.success(resp.data);
@@ -315,7 +315,7 @@ class Api {
     }
   }
 
-  Future<GroundResponse> getFreeTimeSlots(int groundId, String playDate) async {
+  Future<GroundResponse> getFreeTimeSlot(int groundId, String playDate) async {
     try {
       FormData formData = new FormData.from({
         "playDate": playDate,
@@ -328,7 +328,7 @@ class Api {
     }
   }
 
-  Future<GroundResponse> getFreeFixedTimeSlots(
+  Future<GroundResponse> getFreeFixedTimeSlot(
       int groundId, int dayOfWeek) async {
     try {
       FormData formData = new FormData.from({
@@ -397,7 +397,7 @@ class Api {
     }
   }
 
-  Future<InviteRequestResponse> getInviteRequests(int teamId) async {
+  Future<InviteRequestResponse> getInviteRequest(int teamId) async {
     try {
       FormData formData = new FormData.from({
         "page": 1,
@@ -522,7 +522,7 @@ class Api {
     }
   }
 
-  Future<MatchScheduleResponse> getMatchSchedules(int teamId, int page) async {
+  Future<MatchScheduleResponse> getMatchSchedule(int teamId, int page) async {
     try {
       FormData formData =
           new FormData.from({"groupId": teamId, "page": page, "limit": 50});
@@ -560,7 +560,7 @@ class Api {
     }
   }
 
-  Future<TicketResponse> getTickets(int teamId) async {
+  Future<TicketResponse> getTicket(int teamId) async {
     try {
       var resp = await _api.getApi('ticket/group/$teamId');
       return TicketResponse.success(resp.data);
@@ -582,7 +582,7 @@ class Api {
     }
   }
 
-  Future<MatchHistoryResponse> getHistories(int teamId, int page) async {
+  Future<MatchHistoryResponse> getMatchHistory(int teamId, int page) async {
     try {
       FormData formData =
           new FormData.from({"groupId": teamId, "page": page, "limit": 50});
@@ -613,7 +613,7 @@ class Api {
     }
   }
 
-  Future<FundResponse> getFundsByTeam(int teamId) async {
+  Future<FundResponse> getFundByTeam(int teamId) async {
     try {
       var resp = await _api.getApi('group/$teamId/notice-wallet');
       return FundResponse.success(resp.data);
@@ -660,7 +660,7 @@ class Api {
     }
   }
 
-  Future<FundRequestResponse> getFundStatusByNoticeId(
+  Future<FundRequestResponse> getFundRequestByNotice(
       int teamId, int noticeId) async {
     try {
       var resp = await _api.getApi('group/$teamId/notice-wallet/$noticeId');
@@ -688,17 +688,6 @@ class Api {
       return CreateTransactionResponse.success(resp.data);
     } on DioError catch (e) {
       return CreateTransactionResponse.error(e.message);
-    }
-  }
-
-  Future<TransactionResponse> getUserTransaction(int page) async {
-    try {
-      FormData formData = new FormData.from({"page": page, "limit": 50});
-      var resp =
-          await _api.getApi('user/wallet/history', queryParams: formData);
-      return TransactionResponse.success(resp.data);
-    } on DioError catch (e) {
-      return TransactionResponse.error(e.message);
     }
   }
 
@@ -756,7 +745,16 @@ class Api {
     }
   }
 
-  Future<MatchShareResponse> getMatchShares(int page) async {
+  Future<BaseResponse> deleteCode(int matchId, int teamId) async {
+    try {
+      var resp = await _api.deleteApi('match/$matchId/group/$teamId/code');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<MatchShareResponse> getMatchShare(int page) async {
     try {
       FormData formData = new FormData.from({"page": page, "limit": 50});
       var resp = await _api.getApi('match/share', queryParams: formData);
@@ -791,20 +789,18 @@ class Api {
     try {
       FormData formData = new FormData.from({"page": page, "limit": 50});
       var resp =
-      await _api.getApi('/match/before-kick-off', queryParams: formData);
+          await _api.getApi('/match/before-kick-off', queryParams: formData);
       return MatchShareResponse.success(resp.data);
     } on DioError catch (e) {
       return MatchShareResponse.error(e.message);
     }
   }
 
-
   Future<MatchHistoryResponse> getJoinedMatch(int page) async {
     try {
       FormData formData = new FormData.from({"page": page, "limit": 50});
-      var resp =
-      await _api.getApi('/match/non-organic', queryParams: formData);
-      return MatchHistoryResponse.success(1, resp.data);
+      var resp = await _api.getApi('/match/non-organic', queryParams: formData);
+      return MatchHistoryResponse.success(null, resp.data);
     } on DioError catch (e) {
       return MatchHistoryResponse.error(e.message);
     }
@@ -847,7 +843,7 @@ class Api {
     }
   }
 
-  Future<MatchShareResponse> getMatchSharesByCode(String code) async {
+  Future<MatchShareResponse> getMatchShareByCode(String code) async {
     try {
       var resp = await _api.getApi('match/code?code=$code');
       return MatchShareResponse.success(resp.data);
@@ -867,12 +863,26 @@ class Api {
     }
   }
 
-  Future<FixedTimeResponse> getFixedTimes(int teamId) async {
+  Future<FixedTimeResponse> getFixedTime(int teamId) async {
     try {
       var resp = await _api.getApi('ground/fixed/group/$teamId');
       return FixedTimeResponse.success(resp.data);
     } on DioError catch (e) {
       return FixedTimeResponse.error(e.message);
+    }
+  }
+
+  Future<ListGroundResponse> searchGroundByKey(String key) async {
+    try {
+      var resp = await _api.getApi(
+        'ground/search',
+        queryParams: FormData.from(
+          {"offset": 0, 'limit': 5, 'textSearch': key},
+        ),
+      );
+      return ListGroundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return ListGroundResponse.error(e.message);
     }
   }
 }

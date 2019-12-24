@@ -17,7 +17,7 @@ class MatchScheduleViewModel extends BaseViewModel {
   Future<MatchScheduleResponse> getMatchSchedules(
       int page, bool isRefresh) async {
     setBusy(!isRefresh);
-    var resp = await _api.getMatchSchedules(teamId, page);
+    var resp = await _api.getMatchSchedule(teamId, page);
     if (resp.isSuccess) {
       this.matchSchedules = resp.matchSchedules;
     }

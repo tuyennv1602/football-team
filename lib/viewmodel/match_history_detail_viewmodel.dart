@@ -14,7 +14,7 @@ class MatchHistoryDetailViewModel extends BaseViewModel {
   MatchHistoryDetailViewModel({@required Api api, @required this.matchHistory})
       : _api = api;
 
-  Future<MemberResponse> getMyTeamMembers(int teamId) async {
+  Future<void> getMyTeamMembers(int teamId) async {
     setBusy(true);
     var resp = await _api.getJoinedMember(matchHistory.matchId, teamId);
     if (resp.isSuccess) {
@@ -24,7 +24,7 @@ class MatchHistoryDetailViewModel extends BaseViewModel {
     return resp;
   }
 
-  Future<MemberResponse> getOpponentTeamMembers(int teamId) async {
+  Future<void> getOpponentTeamMembers(int teamId) async {
     setBusy(true);
     var resp = await _api.getJoinedMember(matchHistory.matchId, teamId);
     if (resp.isSuccess) {

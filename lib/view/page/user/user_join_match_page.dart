@@ -9,6 +9,7 @@ import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
+import 'package:myfootball/view/widget/item_match_history.dart';
 import 'package:myfootball/view/widget/item_match_schedule.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/tabbar_widget.dart';
@@ -90,7 +91,7 @@ class UserJoinMatchPage extends StatelessWidget {
                                               .waitRequests[index].matchInfo;
                                           return ItemMatchSchedule(
                                             matchSchedule: matchInfo,
-                                            onTapSchedule: () =>
+                                            onTap: () =>
                                                 _showWaitingOptions(
                                               context,
                                               onDetail: () => Navigation
@@ -117,7 +118,7 @@ class UserJoinMatchPage extends StatelessWidget {
                                         itemCount: model.waitRequests.length),
                             model.busy
                                 ? LoadingWidget()
-                                : model.acceptedRequest.length == 0
+                                : model.acceptedRequests.length == 0
                                     ? EmptyWidget(
                                         message: 'Chưa có trận đấu nào')
                                     : ListView.separated(
@@ -126,10 +127,11 @@ class UserJoinMatchPage extends StatelessWidget {
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (c, index) {
                                           var matchInfo = model
-                                              .acceptedRequest[index].matchInfo;
+                                              .acceptedRequests[index]
+                                              .matchInfo;
                                           return ItemMatchSchedule(
                                             matchSchedule: matchInfo,
-                                            onTapSchedule: () =>
+                                            onTap: () =>
                                                 _showWaitingOptions(
                                               context,
                                               onDetail: () => Navigation
@@ -145,7 +147,7 @@ class UserJoinMatchPage extends StatelessWidget {
                                                         1,
                                                         index,
                                                         model
-                                                            .acceptedRequest[
+                                                            .acceptedRequests[
                                                                 index]
                                                             .matchUserId),
                                               ),
@@ -155,10 +157,10 @@ class UserJoinMatchPage extends StatelessWidget {
                                         separatorBuilder: (c, index) =>
                                             UIHelper.verticalIndicator,
                                         itemCount:
-                                            model.acceptedRequest.length),
+                                            model.acceptedRequests.length),
                             model.busy
                                 ? LoadingWidget()
-                                : model.joined.length == 0
+                                : model.joinedMatches.length == 0
                                     ? EmptyWidget(
                                         message: 'Chưa có trận đấu nào')
                                     : ListView.separated(
@@ -166,19 +168,19 @@ class UserJoinMatchPage extends StatelessWidget {
                                             vertical: UIHelper.padding),
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (c, index) {
-                                          var matchInfo =
-                                              model.joined[index].matchInfo;
-                                          return ItemMatchSchedule(
-                                            matchSchedule: matchInfo,
-                                            onTapSchedule: () =>
-                                                Navigation.instance.navigateTo(
-                                                    MATCH_SCHEDULE_DETAIL,
-                                                    arguments: matchInfo),
+                                          var match =
+                                              model.joinedMatches[index];
+                                          return ItemMatchHistory(
+                                            matchHistory: match,
+                                            onTap: () => Navigation.instance
+                                                .navigateTo(
+                                                    MATCH_HISTORY_DETAIL,
+                                                    arguments: match),
                                           );
                                         },
                                         separatorBuilder: (c, index) =>
                                             UIHelper.verticalIndicator,
-                                        itemCount: model.joined.length),
+                                        itemCount: model.joinedMatches.length),
                           ],
                         ),
                       ),

@@ -40,7 +40,7 @@ class GroundDetailPage extends StatelessWidget {
         ),
       );
 
-  handleSubmitReview(
+  _handleSubmitReview(
       double rating, String comment, GroundDetailViewModel model) async {
     UIHelper.showProgressDialog;
     var resp = await model.submitReview(rating, comment);
@@ -178,7 +178,7 @@ class GroundDetailPage extends StatelessWidget {
                               onTap: () => _writeReview(
                                 context,
                                 onSubmit: (rating, comment) =>
-                                    handleSubmitReview(rating, comment, model),
+                                    _handleSubmitReview(rating, comment, model),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.all(UIHelper.padding),

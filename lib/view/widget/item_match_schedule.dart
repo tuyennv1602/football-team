@@ -12,17 +12,17 @@ import 'line.dart';
 
 class ItemMatchSchedule extends StatelessWidget {
   final MatchSchedule matchSchedule;
-  final Function onTapSchedule;
+  final Function onTap;
 
   ItemMatchSchedule(
-      {Key key, @required this.matchSchedule, @required this.onTapSchedule})
+      {Key key, @required this.matchSchedule, @required this.onTap})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BorderItemWidget(
       padding: EdgeInsets.zero,
-      onTap: onTapSchedule,
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

@@ -13,7 +13,7 @@ class TeamFundViewModel extends BaseViewModel {
 
   Future<void> getFunds(int teamId) async {
     setBusy(true);
-    var resp = await _api.getFundsByTeam(teamId);
+    var resp = await _api.getFundByTeam(teamId);
     if (resp.isSuccess) {
       this.funds = resp.funds;
     }

@@ -13,6 +13,7 @@ import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
+import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/item_member.dart';
@@ -66,6 +67,37 @@ class MatchScheduleDetailPage extends StatelessWidget {
     }
   }
 
+  _showCodeOption(BuildContext context,
+          {Function onShare, Function onDelete}) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: ['Tuỳ chọn', 'Chia sẻ', 'Xoá mã trận đấu', 'Huỷ'],
+          onClickOption: (index) {
+            if (index == 1) {
+              onShare();
+            }
+            if (index == 2) {
+              onDelete();
+            }
+          },
+        ),
+      );
+
+  _handleDeleteCode(int teamId, MatchScheduleDetailViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Bạn có chắc muốn xoá mã trận đấu',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.deleteCode(teamId);
+        UIHelper.hideProgressDialog;
+        if (!resp.isSuccess) {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var team = Provider.of<Team>(context);
@@ -105,7 +137,17 @@ class MatchScheduleDetailPage extends StatelessWidget {
                             'Chưa có mã tham gia trận đấu');
                       }
                     } else {
-                      Share.share(model.matchSchedule.getShareCode);
+                      if (team != null && team.hasManager(userId)) {
+                        _showCodeOption(
+                          context,
+                          onShare: () =>
+                              Share.share(model.matchSchedule.getShareCode),
+                          onDelete: () => _handleDeleteCode(
+                              matchSchedule.getMyTeam.id, model),
+                        );
+                      } else {
+                        Share.share(model.matchSchedule.getShareCode);
+                      }
                     }
                   },
                 ),

@@ -18,7 +18,6 @@ import 'package:myfootball/view/page/team/add_address_page.dart';
 import 'package:myfootball/view/page/team/booking_fixed_page.dart';
 import 'package:myfootball/view/page/team/booking_manage_page.dart';
 import 'package:myfootball/view/page/team/booking_page.dart';
-import 'package:myfootball/view/page/team/conversation_page.dart';
 import 'package:myfootball/view/page/team/create_team_page.dart';
 import 'package:myfootball/view/page/team/edit_team_page.dart';
 import 'package:myfootball/view/page/team/finance_page.dart';
@@ -46,6 +45,7 @@ import 'package:myfootball/view/page/team/setup_team_page.dart';
 import 'package:myfootball/view/page/team/team_fund_page.dart';
 import 'package:myfootball/view/page/team/ticket_page.dart';
 import 'package:myfootball/view/page/team/user_request_page.dart';
+import 'package:myfootball/view/page/user/change_password_page.dart';
 import 'package:myfootball/view/page/user/user_comment_page.dart';
 import 'package:myfootball/view/page/user/user_join_match_page.dart';
 import 'package:myfootball/view/router/router_paths.dart';
@@ -146,8 +146,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case REQUEST_JOIN_MATCH:
       var matchId = settings.arguments as int;
       return SlideLeftRoute(widget: RequestJoinMatchPage(matchId: matchId));
-    case CONVERSATION:
-      return SlideLeftRoute(widget: ConversationPage());
     case BOOKING_MANAGE:
       return SlideLeftRoute(widget: BookingManagePage());
     case BOOKING_FIXED:
@@ -155,6 +153,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: BookingFixedPage(ground: ground));
     case FIXED_TIME:
       return SlideLeftRoute(widget: FixedTimeRequestPage());
+    case CHANGE_PASSWORD:
+      var email = settings.arguments as String;
+      return SlideLeftRoute(widget: ChangePasswordPage(email: email));
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(

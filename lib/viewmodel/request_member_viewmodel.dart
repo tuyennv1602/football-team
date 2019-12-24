@@ -18,7 +18,7 @@ class RequestMemberViewModel extends BaseViewModel {
 
   Future<TeamRequestResponse> getTeamRequests(int teamId) async {
     setBusy(true);
-    var resp = await _api.getTeamRequest(teamId);
+    var resp = await _api.getJoinTeamRequest(teamId);
     if (resp.isSuccess) {
       teamRequests = resp.teamRequests;
     }

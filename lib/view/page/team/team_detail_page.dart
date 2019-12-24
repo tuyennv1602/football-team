@@ -104,17 +104,17 @@ class TeamDetailPage extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        'Điểm: ${team.point.toStringAsFixed(1)}',
+                                        'Điểm: ${_team.point != null ? _team.point.toStringAsFixed(1) : ''}',
                                         style: textStyleMediumTitle(
                                             color: Colors.black87),
                                       ),
                                       Text(
-                                        'Xếp hạng: ${team.rank}',
+                                        'Xếp hạng: ${_team.rank ?? ''}',
                                         style: textStyleMediumTitle(
                                             color: Colors.black87),
                                       ),
                                       Text(
-                                        'Tín nhiệm: ${team.trustPoint}',
+                                        'Tín nhiệm: ${_team.trustPoint ?? ''}',
                                         style: textStyleMediumTitle(
                                             color: Colors.black87),
                                       ),

@@ -121,4 +121,6 @@ class Ground {
 
   String get getDistance =>
       distance == null ? 'NaN' : '${(distance / 1000).toStringAsFixed(1)} km';
+
+  String get tag => 'ground-$id';
 }
