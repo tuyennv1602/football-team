@@ -224,12 +224,21 @@ class Api {
     }
   }
 
-  Future<SearchTeamResponse> searchTeamByKey(String key) async {
+  Future<SearchTeamResponse> searchTeamByKey(String key, int page) async {
     try {
-      FormData formData = new FormData.from({
-        "text_search": key,
-      });
+      FormData formData =
+          new FormData.from({"text_search": key, "page": page, "limit": 50});
       var resp = await _api.getApi("group/search", queryParams: formData);
+      return SearchTeamResponse.success(resp.data);
+    } on DioError catch (e) {
+      return SearchTeamResponse.error(e.message);
+    }
+  }
+
+  Future<SearchTeamResponse> getAllTeam(int page) async {
+    try {
+      FormData formData = new FormData.from({"page": page, "limit": 50});
+      var resp = await _api.getApi("group/find-all", queryParams: formData);
       return SearchTeamResponse.success(resp.data);
     } on DioError catch (e) {
       return SearchTeamResponse.error(e.message);
@@ -613,9 +622,12 @@ class Api {
     }
   }
 
-  Future<FundResponse> getFundByTeam(int teamId) async {
+  Future<FundResponse> getFundByTeam(int teamId, int page) async {
     try {
-      var resp = await _api.getApi('group/$teamId/notice-wallet');
+      var resp = await _api.getApi('group/$teamId/notice-wallet', queryParams: FormData.from({
+        "page": page,
+        "limit": 50
+      }));
       return FundResponse.success(resp.data);
     } on DioError catch (e) {
       return FundResponse.error(e.message);
@@ -877,7 +889,7 @@ class Api {
       var resp = await _api.getApi(
         'ground/search',
         queryParams: FormData.from(
-          {"offset": 0, 'limit': 5, 'textSearch': key},
+          {"page": 1, 'limit': 5, 'text_search': key},
         ),
       );
       return ListGroundResponse.success(resp.data);

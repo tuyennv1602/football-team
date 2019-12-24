@@ -55,7 +55,7 @@ class SearchWidget extends StatelessWidget {
               onChanged: (text) {
                 if (_debounce?.isActive ?? false) _debounce.cancel();
                 _debounce = Timer(const Duration(milliseconds: 300),
-                    () => onChangedText(text));
+                    () => onChangedText(text.trim()));
               },
               autocorrect: false,
               style: textStyleRegular(size: 16),

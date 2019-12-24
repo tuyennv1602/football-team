@@ -9,7 +9,7 @@ import 'package:myfootball/service/location_services.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class SearchGroundViewModel extends BaseViewModel {
-  Api api;
+  Api _api;
   LatLng myPosition = LatLng(21.026099, 105.833273);
   List<Ground> grounds = [];
   Ground currentGround;
@@ -17,7 +17,7 @@ class SearchGroundViewModel extends BaseViewModel {
   String key = '';
   bool isSearching = false;
 
-  SearchGroundViewModel({@required this.api});
+  SearchGroundViewModel({@required Api api}) : _api = api;
 
   Future<void> getMyLocation() async {
     var position = await LocationServices().getCurrentLocation();
@@ -28,7 +28,7 @@ class SearchGroundViewModel extends BaseViewModel {
   }
 
   Future<ListGroundResponse> getGroundsByLocation() async {
-    var resp = await api.getGroundByLocation(
+    var resp = await _api.getGroundByLocation(
         myPosition.latitude, myPosition.longitude);
     if (resp.isSuccess) {
       this.grounds = resp.grounds;
@@ -73,7 +73,7 @@ class SearchGroundViewModel extends BaseViewModel {
       this.key = key;
       this.isSearching = true;
       notifyListeners();
-      var resp = await api.searchGroundByKey(key);
+      var resp = await _api.searchGroundByKey(key);
       this.isSearching = false;
       if (resp.isSuccess) {
         this.searchResults = resp.grounds;

@@ -13,6 +13,7 @@ import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/multichoice_position.dart';
 import 'package:myfootball/view/widget/search_widget.dart';
 import 'package:myfootball/view/router/router_paths.dart';
@@ -283,7 +284,7 @@ class SearchTeamPage extends StatelessWidget {
             child: BorderBackground(
               child: BaseWidget<SearchTeamViewModel>(
                 model: SearchTeamViewModel(api: Provider.of(context)),
-                onModelReady: (model) => model.searchTeamByKey(''),
+                onModelReady: (model) => model.getAllTeam(false),
                 child: UIHelper.homeButtonSpace,
                 builder: (context, model, child) => Column(
                   children: <Widget>[
@@ -293,28 +294,28 @@ class SearchTeamPage extends StatelessWidget {
                       isLoading: model.isLoading,
                       onChangedText: (text) => model.searchTeamByKey(text),
                     ),
-                    model.teams == null
-                        ? SizedBox()
-                        : Expanded(
-                            child: model.teams.length == 0
-                                ? EmptyWidget(message: 'Không tìm thấy kết quả')
-                                : ListView.separated(
-                                    physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: UIHelper.padding),
-                                    itemCount: model.teams.length,
-                                    separatorBuilder: (c, index) =>
-                                        UIHelper.verticalIndicator,
-                                    itemBuilder: (c, index) => _buildItemTeam(
-                                      context,
-                                      model.teams[index],
-                                      onSubmitRequest: (teamId, content,
-                                              position) =>
-                                          _handleCreateRequest(
-                                              teamId, content, position, model),
-                                    ),
+                    Expanded(
+                      child: model.busy
+                          ? LoadingWidget()
+                          : model.teams.length == 0
+                              ? EmptyWidget(message: 'Không tìm thấy kết quả')
+                              : ListView.separated(
+                                  physics: BouncingScrollPhysics(),
+                                  padding: EdgeInsets.only(
+                                      bottom: UIHelper.padding),
+                                  itemCount: model.teams.length,
+                                  separatorBuilder: (c, index) =>
+                                      UIHelper.verticalIndicator,
+                                  itemBuilder: (c, index) => _buildItemTeam(
+                                    context,
+                                    model.teams[index],
+                                    onSubmitRequest: (teamId, content,
+                                            position) =>
+                                        _handleCreateRequest(
+                                            teamId, content, position, model),
                                   ),
-                          ),
+                                ),
+                    ),
                     child
                   ],
                 ),

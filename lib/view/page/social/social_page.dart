@@ -246,7 +246,6 @@ class SocialPage extends StatelessWidget {
         ),
       );
 
-
   _showInputCode({Function onSubmit}) {
     var _code;
     UIHelper.showCustomizeDialog(
@@ -341,7 +340,12 @@ class SocialPage extends StatelessWidget {
                       child: model.isLoadingNews
                           ? LoadingWidget(type: LOADING_TYPE.WAVE)
                           : model.news == null
-                              ? EmptyWidget(message: 'Có lỗi xảy ra')
+                              ? Center(
+                                  child: Text(
+                                    'Có lỗi xảy ra. Vui lòng thử lại sau',
+                                    style: textStyleMediumTitle(color: Colors.grey),
+                                  ),
+                                )
                               : SmartRefresher(
                                   controller: _newsController,
                                   enablePullDown: true,

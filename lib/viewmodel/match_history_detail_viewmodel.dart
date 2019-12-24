@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_history.dart';
 import 'package:myfootball/model/member.dart';
-import 'package:myfootball/model/response/member_resp.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
