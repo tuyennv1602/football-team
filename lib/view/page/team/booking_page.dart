@@ -181,7 +181,7 @@ class BookingPage extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                         Hero(
-                          tag: 'ground-${_ground.id}',
+                          tag: _ground.tag,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(UIHelper.size5),
                             child: Container(
