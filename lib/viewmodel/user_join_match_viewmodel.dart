@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/model/match_history.dart';
 import 'package:myfootball/model/match_share.dart';
+import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
@@ -10,42 +11,48 @@ class UserJoinMatchViewModel extends BaseViewModel {
   List<MatchShare> waitRequests = [];
   List<MatchShare> acceptedRequests = [];
   List<MatchHistory> joinedMatches = [];
+  bool isLoadingRequest = true;
+  bool isLoadingAccepted = true;
+  bool isLoadingJoined = true;
 
   UserJoinMatchViewModel({@required Api api}) : _api = api;
 
   Future<void> getPendingRequests(int page) async {
-    setBusy(true);
+    isLoadingRequest = true;
+    notifyListeners();
     var resp = await _api.getPendingMatch(page);
     if (resp.isSuccess) {
-     this.waitRequests = resp.matchShares;
+      this.waitRequests = resp.matchShares;
     }
-    setBusy(false);
+    isLoadingRequest = false;
+    notifyListeners();
   }
 
-
   Future<void> getAcceptedRequest(int page) async {
-    setBusy(true);
+    isLoadingAccepted = true;
+    notifyListeners();
     var resp = await _api.getAcceptedMatch(page);
     if (resp.isSuccess) {
       this.acceptedRequests = resp.matchShares;
     }
-    setBusy(false);
+    isLoadingAccepted = false;
+    notifyListeners();
   }
 
-
   Future<void> getJoinedMatch(int page) async {
-    setBusy(true);
+    isLoadingJoined = true;
+    notifyListeners();
     var resp = await _api.getJoinedMatch(page);
     if (resp.isSuccess) {
       this.joinedMatches = resp.matchHistories;
     }
-    setBusy(false);
+    isLoadingJoined = false;
+    notifyListeners();
   }
 
-  Future<void> cancelJoinRequest(int tab, int index, int matchUserId) async {
-    UIHelper.showProgressDialog;
+  Future<BaseResponse> cancelJoinRequest(
+      int tab, int index, int matchUserId) async {
     var resp = await _api.cancelUserJoinRequest(matchUserId);
-    UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       if (tab == 0) {
         waitRequests.removeAt(index);
@@ -53,8 +60,7 @@ class UserJoinMatchViewModel extends BaseViewModel {
         acceptedRequests.removeAt(index);
       }
       notifyListeners();
-    } else {
-      UIHelper.showSimpleDialog(resp.errorMessage);
     }
+    return resp;
   }
 }

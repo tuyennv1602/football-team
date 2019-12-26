@@ -4,6 +4,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
+import 'package:myfootball/view/ui_helper.dart' as prefix0;
 import 'package:myfootball/view/widget/app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
@@ -37,6 +38,24 @@ class UserJoinMatchPage extends StatelessWidget {
           },
         ),
       );
+
+  _handleCancel(
+      int tab, int index, int matchUserId, UserJoinMatchViewModel model) {
+    UIHelper.showConfirmDialog(
+      'Bạn có chắc chắn muốn huỷ yêu cầu tham gia trận đấu',
+      onConfirmed: () async {
+        UIHelper.showProgressDialog;
+        var resp = await model.cancelJoinRequest(tab, index, matchUserId);
+        UIHelper.hideProgressDialog;
+        if (resp.isSuccess) {
+          UIHelper.showSimpleDialog('Đã huỷ tham gia trận đấu',
+              isSuccess: true);
+        } else {
+          UIHelper.showSimpleDialog(resp.errorMessage);
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +96,7 @@ class UserJoinMatchPage extends StatelessWidget {
                         },
                         builder: (c, model, child) => TabBarView(
                           children: <Widget>[
-                            model.busy
+                            model.isLoadingRequest
                                 ? LoadingWidget()
                                 : model.waitRequests.length == 0
                                     ? EmptyWidget(
@@ -91,32 +110,26 @@ class UserJoinMatchPage extends StatelessWidget {
                                               .waitRequests[index].matchInfo;
                                           return ItemMatchSchedule(
                                             matchSchedule: matchInfo,
-                                            onTap: () =>
-                                                _showWaitingOptions(
+                                            onTap: () => _showWaitingOptions(
                                               context,
                                               onDetail: () => Navigation
                                                   .instance
                                                   .navigateTo(
                                                       MATCH_SCHEDULE_DETAIL,
                                                       arguments: matchInfo),
-                                              onCancel: () =>
-                                                  UIHelper.showConfirmDialog(
-                                                'Bạn có chắc chắn muốn huỷ yêu cầu tham gia trận đấu',
-                                                onConfirmed: () =>
-                                                    model.cancelJoinRequest(
-                                                        0,
-                                                        index,
-                                                        model
-                                                            .waitRequests[index]
-                                                            .matchUserId),
-                                              ),
+                                              onCancel: () => _handleCancel(
+                                                  0,
+                                                  index,
+                                                  model.waitRequests[index]
+                                                      .matchUserId,
+                                                  model),
                                             ),
                                           );
                                         },
                                         separatorBuilder: (c, index) =>
                                             UIHelper.verticalIndicator,
                                         itemCount: model.waitRequests.length),
-                            model.busy
+                            model.isLoadingAccepted
                                 ? LoadingWidget()
                                 : model.acceptedRequests.length == 0
                                     ? EmptyWidget(
@@ -131,26 +144,19 @@ class UserJoinMatchPage extends StatelessWidget {
                                               .matchInfo;
                                           return ItemMatchSchedule(
                                             matchSchedule: matchInfo,
-                                            onTap: () =>
-                                                _showWaitingOptions(
+                                            onTap: () => _showWaitingOptions(
                                               context,
                                               onDetail: () => Navigation
                                                   .instance
                                                   .navigateTo(
                                                       MATCH_SCHEDULE_DETAIL,
                                                       arguments: matchInfo),
-                                              onCancel: () =>
-                                                  UIHelper.showConfirmDialog(
-                                                'Bạn có chắc chắn muốn huỷ tham gia trận đấu?',
-                                                onConfirmed: () =>
-                                                    model.cancelJoinRequest(
-                                                        1,
-                                                        index,
-                                                        model
-                                                            .acceptedRequests[
-                                                                index]
-                                                            .matchUserId),
-                                              ),
+                                              onCancel: () => _handleCancel(
+                                                  1,
+                                                  index,
+                                                  model.acceptedRequests[index]
+                                                      .matchUserId,
+                                                  model),
                                             ),
                                           );
                                         },
@@ -158,7 +164,7 @@ class UserJoinMatchPage extends StatelessWidget {
                                             UIHelper.verticalIndicator,
                                         itemCount:
                                             model.acceptedRequests.length),
-                            model.busy
+                            model.isLoadingJoined
                                 ? LoadingWidget()
                                 : model.joinedMatches.length == 0
                                     ? EmptyWidget(

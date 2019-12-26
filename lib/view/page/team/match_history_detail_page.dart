@@ -61,10 +61,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var team = Provider.of<Team>(context);
-    if(team == null){
-      team = matchHistory.getMyTeam;
-    }
+    var team = matchHistory.getMyTeam;
     var _isLiked = matchHistory.userConfirmed;
     return Scaffold(
       body: Container(
@@ -111,10 +108,10 @@ class MatchHistoryDetailPage extends StatelessWidget {
                           size: UIHelper.size30,
                           isLiked: _isLiked,
                           likeBuilder: (bool isLiked) => Icon(
-                              Icons.check_circle,
-                              color: isLiked ? PRIMARY : Colors.grey,
-                              size: UIHelper.size30,
-                            ),
+                            Icons.check_circle,
+                            color: isLiked ? PRIMARY : Colors.grey,
+                            size: UIHelper.size30,
+                          ),
                           onTap: (isLiked) {
                             if (isLiked) {
                               return _model.cancelConfirmScore().then((resp) {
