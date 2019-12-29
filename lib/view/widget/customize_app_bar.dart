@@ -7,7 +7,6 @@ class AppBarWidget extends StatelessWidget {
   final Widget leftContent;
   final Widget centerContent;
   final Widget rightContent;
-  final bool showBorder;
   final Color backgroundColor;
   final double _kAppbarHeight = UIHelper.size(55);
 
@@ -16,8 +15,7 @@ class AppBarWidget extends StatelessWidget {
       this.leftContent,
       this.rightContent,
       @required this.centerContent,
-      this.backgroundColor,
-      this.showBorder = false})
+      this.backgroundColor})
       : assert(centerContent != null),
         super(key: key);
 
@@ -30,24 +28,19 @@ class AppBarWidget extends StatelessWidget {
           padding: EdgeInsets.only(top: UIHelper.paddingTop),
           decoration: BoxDecoration(
             color: backgroundColor ?? PRIMARY,
-            border: showBorder
-                ? Border(
-                    bottom: BorderSide(width: 0.5, color: LINE_COLOR),
-                  )
-                : null,
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xFF02DC37), PRIMARY],
+              colors: GREEN_BUTTON,
             ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              leftContent ?? AppBarButtonWidget(),
+              leftContent ?? AppBarButton(),
               Expanded(child: centerContent),
-              rightContent ?? AppBarButtonWidget()
+              rightContent ?? AppBarButton()
             ],
           ),
         ),

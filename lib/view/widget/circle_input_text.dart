@@ -4,35 +4,31 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class InputTextWidget extends StatelessWidget {
+class CircleInputText extends StatelessWidget {
   final String initValue;
   final Function(String) validator;
+  final bool obscureText;
   final TextInputType inputType;
   final TextInputAction inputAction;
   final String errorText;
   final String labelText;
   final Function(String) onSaved;
   final TextStyle textStyle;
-  final TextStyle hintTextStyle;
   final int maxLines;
-  final int maxLength;
   final List<TextInputFormatter> formatter;
-  final Color focusedColor;
 
-  InputTextWidget(
+  CircleInputText(
       {Key key,
       this.initValue,
       this.validator,
+      this.obscureText = false,
       this.inputType,
       this.inputAction,
       this.errorText,
       this.labelText,
       this.onSaved,
       this.maxLines = 1,
-      this.maxLength = 200,
-      this.hintTextStyle,
       this.formatter,
-      this.focusedColor = PRIMARY,
       this.textStyle})
       : super(key: key);
 
@@ -40,12 +36,12 @@ class InputTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       autocorrect: false,
-      cursorColor: focusedColor,
+      cursorColor: PRIMARY,
       cursorWidth: 1,
       maxLines: maxLines,
-      maxLength: maxLength,
       initialValue: initValue,
       validator: validator,
+      obscureText: obscureText,
       keyboardType: inputType ?? TextInputType.text,
       textInputAction: inputAction ?? TextInputAction.done,
       onSaved: onSaved,
@@ -53,21 +49,25 @@ class InputTextWidget extends StatelessWidget {
       inputFormatters: formatter,
       decoration: InputDecoration(
         helperText: '',
-        contentPadding: EdgeInsets.symmetric(vertical: UIHelper.size5),
         alignLabelWithHint: maxLines > 1,
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(width: 0.5, color: Colors.grey)),
-        errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(width: 0.5, color: Colors.red)),
-        focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(width: 1.2, color: focusedColor)),
-        focusedErrorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(width: 1.2, color: focusedColor)),
-        labelText: labelText,
+        contentPadding: EdgeInsets.symmetric(vertical: UIHelper.size(14), horizontal: UIHelper.size25),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 0.5, color: Colors.grey),
+            borderRadius: BorderRadius.circular(UIHelper.size(24))),
+        errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 0.5, color: Colors.red),
+            borderRadius: BorderRadius.circular(UIHelper.size(24))),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: PRIMARY),
+            borderRadius: BorderRadius.circular(UIHelper.size(24))),
+        focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: PRIMARY),
+            borderRadius: BorderRadius.circular(UIHelper.size(24))),
         errorText: errorText,
+        labelText: labelText,
         counter: SizedBox(),
         errorStyle: textStyleItalic(size: 12, color: Colors.red),
-        labelStyle: hintTextStyle ?? textStyleInput(color: Colors.grey),
+        labelStyle: textStyleInput(color: Colors.grey),
       ),
     );
   }

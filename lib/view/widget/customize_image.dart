@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class ImageWidget extends StatelessWidget {
+class CustomImage extends StatelessWidget {
   final String source;
   final double size;
   final double radius;
   final String placeHolder;
   final BoxFit boxFit;
 
-  ImageWidget(
+  CustomImage(
       {Key key,
       @required this.source,
       @required this.placeHolder,

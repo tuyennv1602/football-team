@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/custom_expansion_panel.dart';
+import 'package:myfootball/view/widget/customize_expansion_panel.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/string_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 
-class ChooseTransactionWidget extends StatefulWidget {
+class ChooseRatioWidget extends StatefulWidget {
   final OnSelectedType onSelectedType;
+  final Color primaryColor;
 
-  ChooseTransactionWidget({@required this.onSelectedType});
+  ChooseRatioWidget(
+      {@required this.onSelectedType, this.primaryColor = Colors.black});
 
   @override
-  State<StatefulWidget> createState() => _ChooseTransactionTypeState();
+  State<StatefulWidget> createState() => _ChooseRatioTypeState();
 }
 
-class _ChooseTransactionTypeState extends State<ChooseTransactionWidget> {
+class _ChooseRatioTypeState extends State<ChooseRatioWidget> {
   bool _isExpanded = false;
-  int _selectedType = Constants.TRANSACTION_OUT;
+  int _selectedType = Constants.RATIO_50_50;
 
   @override
   void initState() {
@@ -38,35 +40,35 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionWidget> {
           padding: EdgeInsets.symmetric(
               horizontal: UIHelper.size50, vertical: UIHelper.size(7)),
           child: Text(
-            StringUtil.getTransactionName(type),
-            style: textStyleRegular(color: Colors.white),
+            StringUtil.getRatioName(type),
+            style: textStyleRegular(color: widget.primaryColor),
           ),
         ),
       );
 
   @override
   Widget build(BuildContext context) {
-    return CustomExpansionPanelList(
+    return CustomizeExpansionPanelList(
       expansionCallback: (index, isExpanded) {
         setState(() {
           _isExpanded = !isExpanded;
         });
       },
-      focusedColor: Colors.white,
+      focusedColor: widget.primaryColor,
       children: <ExpansionPanel>[
         ExpansionPanel(
           headerBuilder: (c, isExpanded) {
             return Row(
               children: <Widget>[
                 Text(
-                  'Loại giao dịch',
-                  style: textStyleRegularBody(color: Colors.white),
+                  'Tỉ lệ kèo (thắng - thua)',
+                  style: textStyleRegular(color: widget.primaryColor),
                 ),
                 Expanded(
                   child: Text(
-                    StringUtil.getTransactionName(_selectedType),
+                    StringUtil.getRatioName(_selectedType),
                     textAlign: TextAlign.right,
-                    style: textStyleSemiBold(color: Colors.white, size: 18),
+                    style: textStyleSemiBold(color: widget.primaryColor),
                   ),
                 ),
                 SizedBox(width: UIHelper.size10, height: 5),
@@ -81,8 +83,11 @@ class _ChooseTransactionTypeState extends State<ChooseTransactionWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  _buildItemType(Constants.TRANSACTION_OUT),
-                  _buildItemType(Constants.TRANSACTION_IN),
+                  _buildItemType(Constants.RATIO_50_50),
+                  _buildItemType(Constants.RATIO_40_60),
+                  _buildItemType(Constants.RATIO_30_70),
+                  _buildItemType(Constants.RATIO_20_80),
+                  _buildItemType(Constants.RATIO_0_100),
                 ],
               ),
             ),

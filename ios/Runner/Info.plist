@@ -63,13 +63,30 @@
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-           <string>com.googleusercontent.apps.201065002899-jiudas2i7n8jntu5a3qe0te7beh0vih2</string>
-        </array>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.201065002899-jiudas2i7n8jntu5a3qe0te7beh0vih2</string>
+            </array>
         </dict>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb571177647051465</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>571177647051465</string>
+    <key>FacebookDisplayName</key>
+    <string>Football Team</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
     </array>
 </dict>
 </plist>

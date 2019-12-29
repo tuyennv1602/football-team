@@ -6,7 +6,7 @@ const double _kButtonHeight = 46;
 
 class ButtonWidget extends StatelessWidget {
   final Widget child;
-  final Color backgroundColor;
+  final List<Color> backgroundColor;
   final EdgeInsets margin;
   final Function onTap;
   final double width;
@@ -34,18 +34,25 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         width: width,
         height: height,
-        alignment: Alignment.center,
         margin: this.margin ?? EdgeInsets.zero,
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius:
-                  borderRadius ?? BorderRadius.circular(UIHelper.size10)),
-          elevation: elevation,
-          color: backgroundColor ?? PRIMARY,
-          onPressed: onTap,
-          child: Align(
-            alignment: alignment,
-            child: this.child,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius ?? BorderRadius.circular(height / 2),
+          gradient: LinearGradient(
+            colors: this.backgroundColor ?? GREEN_BUTTON,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Material(
+          child: InkWell(
+            splashColor: Color(0x1AFCFCFC),
+            highlightColor: Colors.transparent,
+            onTap: onTap,
+            borderRadius: borderRadius ?? BorderRadius.circular(height / 2),
+            child: Align(
+              alignment: alignment,
+              child: this.child,
+            ),
           ),
         ),
       );
