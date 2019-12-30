@@ -10,13 +10,13 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/choose_day_of_week.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/router/date_util.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/booking_fixed_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +63,7 @@ class BookingFixedPage extends StatelessWidget {
   }
 
   Widget _buildTicket(BuildContext context, TimeSlot timeSlot, Function onTap) {
-    return BorderItemWidget(
+    return BorderItem(
       margin: EdgeInsets.zero,
       onTap: onTap,
       child: Container(
@@ -147,13 +147,13 @@ class BookingFixedPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Đặt sân cố định',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -250,7 +250,7 @@ class BookingFixedPage extends StatelessWidget {
                         height: UIHelper.padding,
                         width: UIHelper.screenWidth,
                       ),
-                      ChooseDayOfWeekWidget(
+                      ChooseDayOfWeek(
                           onSelectedType: (type) =>
                               model.setDayOfWeek(_ground.id, type)),
                       Padding(

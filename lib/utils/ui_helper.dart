@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/router/navigation.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/progress_dialog.dart';
 
 class UIHelper {
@@ -71,22 +72,25 @@ class UIHelper {
 
   static void showSimpleDialog(String message,
           {bool isSuccess = false, Function onConfirmed}) =>
-      showCustomizeDialog('simple_dialog',
-          dismissiable: false,
-          confirmLabel: 'XONG',
-          showCancel: false,
-          icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
-          gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
-          confirmColor: isSuccess ? GREEN_SUCCESS : RED_ERROR, onConfirmed: () {
-        Navigator.of(_buildContext).pop();
-        if (onConfirmed != null) {
-          onConfirmed();
-        }
-      },
-          child: Text(
-            message,
-            style: textStyleAlert(),
-          ));
+      showCustomizeDialog(
+        'simple_dialog',
+        dismissiable: false,
+        confirmLabel: 'XONG',
+        showCancel: false,
+        icon: isSuccess ? Images.SUCCESS : Images.CANCEL,
+        gradientColors: isSuccess ? GREEN_GRADIENT : RED_GRADIENT,
+        confirmColor: isSuccess ? GREEN_BUTTON : RED_BUTTON,
+        onConfirmed: () {
+          Navigation.instance.goBack();
+          if (onConfirmed != null) {
+            onConfirmed();
+          }
+        },
+        child: Text(
+          message,
+          style: textStyleAlert(),
+        ),
+      );
 
   static void showConfirmDialog(String message,
           {Widget child,
@@ -96,7 +100,7 @@ class UIHelper {
         'confirm_dialog',
         dismissiable: true,
         onConfirmed: () {
-          Navigator.of(_buildContext).pop();
+          Navigation.instance.goBack();
           onConfirmed();
         },
         child: child ??
@@ -111,7 +115,7 @@ class UIHelper {
           bool showCancel = true,
           bool dismissiable = true,
           String confirmLabel = 'ĐỒNG Ý',
-          Color confirmColor,
+          List<Color> confirmColor,
           List<Color> gradientColors,
           String icon = Images.QUESTION,
           Function onConfirmed}) =>
@@ -163,12 +167,12 @@ class UIHelper {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           showCancel
-                              ? ButtonWidget(
+                              ? CustomizeButton(
                                   onTap: () {
-                                    Navigator.of(context).pop();
+                                    Navigation.instance.goBack();
                                   },
                                   width: screenWidth / 3,
-                                  backgroundColor: Colors.grey,
+                                  backgroundColor: GREY_BUTTON,
                                   height: size40,
                                   borderRadius:
                                       BorderRadius.circular(UIHelper.size40),
@@ -180,14 +184,14 @@ class UIHelper {
                               : SizedBox(),
                           Padding(
                             padding: EdgeInsets.all(UIHelper.padding),
-                            child: ButtonWidget(
+                            child: CustomizeButton(
                               onTap: () {
                                 if (onConfirmed != null) {
                                   onConfirmed();
                                 }
                               },
                               width: screenWidth / 3,
-                              backgroundColor: confirmColor ?? GREEN_SUCCESS,
+                              backgroundColor: confirmColor ?? GREEN_BUTTON,
                               height: size40,
                               borderRadius:
                                   BorderRadius.circular(UIHelper.size40),

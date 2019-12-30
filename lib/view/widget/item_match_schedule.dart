@@ -7,7 +7,7 @@ import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 import 'clipper_right_widget.dart';
-import 'image_widget.dart';
+import 'customize_image.dart';
 import 'line.dart';
 
 class ItemMatchSchedule extends StatelessWidget {
@@ -20,7 +20,7 @@ class ItemMatchSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BorderItemWidget(
+    return BorderItem(
       padding: EdgeInsets.zero,
       onTap: onTapSchedule,
       child: Column(
@@ -33,7 +33,7 @@ class ItemMatchSchedule extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                  child: ImageWidget(
+                  child: CustomizeImage(
                     source: matchSchedule.getMyTeamLogo,
                     placeHolder: Images.DEFAULT_LOGO,
                     size: UIHelper.size35,
@@ -75,7 +75,7 @@ class ItemMatchSchedule extends StatelessWidget {
                       Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: UIHelper.size10),
-                        child: ImageWidget(
+                        child: CustomizeImage(
                           source: matchSchedule.getOpponentLogo,
                           placeHolder: Images.DEFAULT_LOGO,
                           size: UIHelper.size35,

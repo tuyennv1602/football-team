@@ -1,10 +1,10 @@
-class Headers {
+class Header {
   String accessToken;
   String deviceId;
 
-  Headers({this.accessToken, this.deviceId});
+  Header({this.accessToken, this.deviceId});
 
-  Headers.fromJson(Map<String, dynamic> json) {
+  Header.fromJson(Map<String, dynamic> json) {
     accessToken = json['Authorization'];
   }
 

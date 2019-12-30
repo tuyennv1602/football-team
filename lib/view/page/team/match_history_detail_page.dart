@@ -9,22 +9,23 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
-import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/match_history_detail_viewmodel.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class MatchHistoryDetailPage extends StatelessWidget {
   final MatchHistory matchHistory;
   MatchHistoryDetailViewModel _model;
@@ -33,7 +34,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
       : matchHistory = matchHistory,
         super(key: key);
 
-  Widget _buildTeamMembers(BuildContext context, List<Member> members) {
+   _buildTeamMembers(BuildContext context, List<Member> members) {
     if (members == null) return LoadingWidget();
     return members.length == 0
         ? EmptyWidget(message: 'Chưa có thành viên nào')
@@ -59,7 +60,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var team = Provider.of<Team>(context);
+    var team = matchHistory.getMyTeam;
     var _isLiked = matchHistory.userConfirmed;
     return Scaffold(
       body: Container(
@@ -72,13 +73,13 @@ class MatchHistoryDetailPage extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            AppBarWidget(
+            CustomizeAppBar(
               centerContent: Text(
                 'Kết quả trận đấu',
                 textAlign: TextAlign.center,
                 style: textStyleTitle(),
               ),
-              leftContent: AppBarButtonWidget(
+              leftContent: AppBarButton(
                 imageName: Images.BACK,
                 onTap: () => Navigation.instance.goBack(),
               ),
@@ -181,7 +182,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                       ),
                                     )
                                   : SizedBox(),
-                              ItemOptionWidget(
+                              ItemOption(
                                 Images.STADIUM,
                                 matchHistory.groundName,
                                 iconColor: Colors.green,
@@ -206,7 +207,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                         length: 2,
                                         child: Column(
                                           children: <Widget>[
-                                            TabBarWidget(
+                                            CustomizeTabBar(
                                               titles: [
                                                 team.name,
                                                 matchHistory.getOpponentName
@@ -238,13 +239,13 @@ class MatchHistoryDetailPage extends StatelessWidget {
                   Container(
                     height: UIHelper.size(90),
                     margin: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-                    child: BorderItemWidget(
+                    child: BorderItem(
                       padding: EdgeInsets.zero,
                       margin: EdgeInsets.zero,
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: ImageWidget(
+                            child: CustomizeImage(
                               source: team.logo,
                               placeHolder: Images.DEFAULT_LOGO,
                             ),
@@ -313,7 +314,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                                 matchHistory.getOpponentTeam),
                                     child: Hero(
                                       tag: matchHistory.getOpponentTeam.id,
-                                      child: ImageWidget(
+                                      child: CustomizeImage(
                                         source: matchHistory.getOpponentLogo,
                                         placeHolder: Images.DEFAULT_LOGO,
                                       ),

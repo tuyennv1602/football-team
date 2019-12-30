@@ -5,7 +5,7 @@ import 'package:myfootball/service/api.dart';
 import 'package:myfootball/service/auth_services.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/service/team_services.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
-import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 bool _isShowing = false;

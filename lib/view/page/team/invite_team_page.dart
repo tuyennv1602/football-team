@@ -9,15 +9,15 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
-import 'package:myfootball/view/widget/choose_ratio_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/choose_ratio.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/line.dart';
-import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/router/date_util.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/invite_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -109,13 +109,13 @@ class InviteTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Mời đối tác',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -129,7 +129,7 @@ class InviteTeamPage extends StatelessWidget {
                     padding: EdgeInsets.only(top: UIHelper.size10, left: UIHelper.padding, right: UIHelper.padding),
                     child: Form(
                       key: _formKey,
-                      child: InputTextWidget(
+                      child: InputText(
                         validator: (value) {
                           if (value.isEmpty) return 'Vui lòng nhập lời mời';
                           return null;
@@ -144,7 +144,7 @@ class InviteTeamPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-                    child: ChooseRatioWidget(
+                    child: ChooseRatio(
                       onSelectedType: (type) => _ratio = type,
                     ),
                   ),
@@ -166,7 +166,7 @@ class InviteTeamPage extends StatelessWidget {
                         length: _inviteTeamArgument.mappedTimeSlots.length,
                         child: Column(
                           children: <Widget>[
-                            TabBarWidget(
+                            CustomizeTabBar(
                               titles: _inviteTeamArgument.mappedTimeSlots.keys
                                   .toList()
                                   .map((item) => DateFormat('dd/MM')
@@ -213,7 +213,7 @@ class InviteTeamPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            ButtonWidget(
+                            CustomizeButton(
                               margin: EdgeInsets.symmetric(
                                   vertical: UIHelper.size5, horizontal: UIHelper.padding),
                               child: Text(

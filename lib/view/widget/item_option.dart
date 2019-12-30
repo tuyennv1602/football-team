@@ -4,7 +4,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class ItemOptionWidget extends StatelessWidget {
+class ItemOption extends StatelessWidget {
   final String image;
   final String title;
   final Function onTap;
@@ -14,7 +14,7 @@ class ItemOptionWidget extends StatelessWidget {
   final Color iconColor;
   final Widget rightContent;
 
-  ItemOptionWidget(this.image, this.title,
+  ItemOption(this.image, this.title,
       {Key key,
       this.onTap,
       this.titleStyle,

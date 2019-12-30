@@ -77,5 +77,7 @@ class Images {
   static const String SEND = '$FOLDER/ic_send.png';
   static const String PEN = '$FOLDER/ic_pen.png';
   static const String TICKET = '$FOLDER/ic_ticket.png';
+  static const String VERIFIED = '$FOLDER/ic_verified.png';
+  static const String JEWISH = '$FOLDER/ic_jewish.png';
 
 }

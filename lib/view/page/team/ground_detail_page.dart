@@ -6,10 +6,10 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/expandable_text_widget.dart';
+import 'package:myfootball/view/widget/expandable_text.dart';
 import 'package:myfootball/view/widget/item_comment.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
@@ -107,13 +107,13 @@ class GroundDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              AppBarWidget(
+              CustomizeAppBar(
                 centerContent: Text(
                   '',
                   textAlign: TextAlign.center,
                   style: textStyleTitle(),
                 ),
-                leftContent: AppBarButtonWidget(
+                leftContent: AppBarButton(
                   imageName: Images.BACK,
                   backgroundColor: BLACK_TRANSPARENT,
                   padding: UIHelper.size10,
@@ -122,14 +122,14 @@ class GroundDetailPage extends StatelessWidget {
                 rightContent: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    AppBarButtonWidget(
+                    AppBarButton(
                       imageName: Images.DIRECTION,
                       backgroundColor: BLACK_TRANSPARENT,
                       padding: UIHelper.size10,
                       onTap: () => launch(
                           'https://www.google.com/maps/dir/?api=1&origin=20.986166,105.825647&destination=${ground.lat},${ground.lng}'),
                     ),
-                    AppBarButtonWidget(
+                    AppBarButton(
                       imageName: Images.CALL,
                       backgroundColor: BLACK_TRANSPARENT,
                       padding: UIHelper.size10,
@@ -158,7 +158,7 @@ class GroundDetailPage extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: UIHelper.size15),
-                              child: ExpandableTextWidget(
+                              child: ExpandableText(
                                 ground.rule,
                                 textStyle: textStyleRegularBody(),
                               ),

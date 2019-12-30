@@ -5,7 +5,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
@@ -48,18 +48,18 @@ class UserCommentPage extends StatelessWidget {
         onModelReady: (model) => model.getComments(userId),
         builder: (c, model, child) => Column(
           children: <Widget>[
-            AppBarWidget(
+            CustomizeAppBar(
               centerContent: Text(
                 'Đánh giá & nhận xét',
                 textAlign: TextAlign.center,
                 style: textStyleTitle(),
               ),
-              leftContent: AppBarButtonWidget(
+              leftContent: AppBarButton(
                 imageName: Images.BACK,
                 onTap: () => Navigation.instance.goBack(),
               ),
               rightContent: userId != user.id
-                  ? AppBarButtonWidget(
+                  ? AppBarButton(
                       imageName: Images.EDIT_PROFILE,
                       onTap: () => _writeReview(
                         context,
@@ -67,7 +67,7 @@ class UserCommentPage extends StatelessWidget {
                             model.submitReview(userId, rating, comment),
                       ),
                     )
-                  : AppBarButtonWidget(),
+                  : AppBarButton(),
             ),
             Expanded(
               child: BorderBackground(

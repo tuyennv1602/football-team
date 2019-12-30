@@ -13,7 +13,7 @@ class FixedTimeViewModel extends BaseViewModel {
 
   Future<void> getAllRequests(int teamId) async {
     setBusy(true);
-    var resp = await _api.getFixedTimes(teamId);
+    var resp = await _api.getFixedTime(teamId);
     if (resp.isSuccess) {
       this.times = resp.requests;
     } else {

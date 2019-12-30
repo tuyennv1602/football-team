@@ -6,7 +6,9 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/utils/ui_helper.dart';
-import 'image_widget.dart';
+import 'package:myfootball/view/widget/hexagonal_clipper.dart';
+import 'package:myfootball/view/widget/line.dart';
+import 'customize_image.dart';
 
 class ItemMember extends StatelessWidget {
   final Member member;
@@ -26,7 +28,7 @@ class ItemMember extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BorderItemWidget(
+    return BorderItem(
       onTap: onTap,
       padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,
@@ -37,7 +39,7 @@ class ItemMember extends StatelessWidget {
                   top: 0,
                   left: 0,
                   child: Container(
-                    width: UIHelper.size25,
+                    width: UIHelper.size30,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: isManager ? Colors.red : Colors.blue,
@@ -62,8 +64,8 @@ class ItemMember extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       child: Hero(
-                        tag: 'member - ${member.id}',
-                        child: ImageWidget(
+                        tag: member.tag,
+                        child: CustomizeImage(
                           source: member.avatar,
                           placeHolder: Images.DEFAULT_AVATAR,
                           radius: UIHelper.size(55) / 2,
@@ -73,11 +75,15 @@ class ItemMember extends StatelessWidget {
                     ),
                     member.number != null
                         ? Positioned(
-                            bottom: 3,
+                            bottom: 2,
                             right: 0,
                             child: Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: UIHelper.size5),
+                                horizontal: UIHelper.size5,
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: UIHelper.size25
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.green,
                                 borderRadius:
@@ -91,6 +97,7 @@ class ItemMember extends StatelessWidget {
                               ),
                               child: Text(
                                 member.number,
+                                textAlign: TextAlign.center,
                                 style: textStyleSemiBold(
                                     size: 14, color: Colors.white),
                               ),
@@ -99,50 +106,44 @@ class ItemMember extends StatelessWidget {
                         : SizedBox()
                   ],
                 ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        member.name,
-                        style: textStyleSemiBold(size: 15),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: UIHelper.size5),
-                        child: RatingBarIndicator(
-                          rating: member.getRating,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.only(right: 2),
-                          itemSize: UIHelper.size15,
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  member.name,
+                  style: textStyleSemiBold(),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Container(
-                  height: UIHelper.size10,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(UIHelper.padding),
-                      bottomLeft: Radius.circular(UIHelper.padding),
-                    ),
-                    child: Row(
-                      children: member.getPositions
-                          .map<Widget>(
-                            (pos) => Expanded(
-                              child: Container(
-                                color: getPositionColor(pos),
-                              ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: UIHelper.size10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Exp: ',
+                              style: textStyleRegularBody(color: Colors.grey),
                             ),
-                          )
-                          .toList(),
+                            Text(
+                              member.getExp,
+                              style: textStyleMedium(size: 15),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Trận: ',
+                              style: textStyleRegularBody(color: Colors.grey),
+                            ),
+                            Text(
+                              member.teamGame.toString(),
+                              style: textStyleMedium(size: 15),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ),

@@ -6,16 +6,17 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/input_text.dart';
+import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/multichoice_position.dart';
-import 'package:myfootball/view/widget/search_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/input_search.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/search_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -43,18 +44,16 @@ class SearchTeamPage extends StatelessWidget {
     return false;
   }
 
-  Widget _buildItemTeam(BuildContext context, Team team,
-          {Function onSubmitRequest}) =>
-      BorderItemWidget(
+  _buildItemTeam(BuildContext context, Team team, {Function onSubmitRequest}) =>
+      BorderItem(
         onTap: () {
           if (type == SEARCH_TYPE.COMPARE_TEAM) {
-            Navigation.instance
-                .navigateTo(COMPARE_TEAM, arguments: team);
+            Navigation.instance.navigateTo(COMPARE_TEAM, arguments: team);
           } else if (type == SEARCH_TYPE.REQUEST_MEMBER) {
             _showOptions(
               context,
-              onDetail: () => Navigation.instance
-                  .navigateTo(TEAM_DETAIL, arguments: team),
+              onDetail: () =>
+                  Navigation.instance.navigateTo(TEAM_DETAIL, arguments: team),
               onRequest: () =>
                   _showRequestForm(context, team, onSubmit: onSubmitRequest),
             );
@@ -71,7 +70,7 @@ class SearchTeamPage extends StatelessWidget {
               padding: EdgeInsets.only(right: UIHelper.padding),
               child: Hero(
                 tag: 'team-${team.id}',
-                child: ImageWidget(
+                child: CustomizeImage(
                   source: team.logo,
                   placeHolder: Images.DEFAULT_LOGO,
                 ),
@@ -206,7 +205,7 @@ class SearchTeamPage extends StatelessWidget {
         children: <Widget>[
           Form(
             key: _formKey,
-            child: InputTextWidget(
+            child: InputText(
               validator: (value) {
                 if (value.isEmpty) return 'Vui lòng nhập nội dung';
                 return null;
@@ -253,59 +252,58 @@ class SearchTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Tìm kiếm đội bóng',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
             rightContent: type == SEARCH_TYPE.REQUEST_MEMBER
-                ? AppBarButtonWidget(
+                ? AppBarButton(
                     imageName: Images.STACK,
-                    onTap: () =>
-                        Navigation.instance.navigateTo(USER_REQUESTS))
-                : AppBarButtonWidget(),
+                    onTap: () => Navigation.instance.navigateTo(USER_REQUESTS))
+                : AppBarButton(),
           ),
           Expanded(
             child: BorderBackground(
               child: BaseWidget<SearchTeamViewModel>(
                 model: SearchTeamViewModel(api: Provider.of(context)),
-                onModelReady: (model) => model.searchTeamByKey(''),
+                onModelReady: (model) => model.getAllTeam(false),
                 child: UIHelper.homeButtonSpace,
                 builder: (context, model, child) => Column(
                   children: <Widget>[
-                    SearchWidget(
+                    InputSearch(
                       keyword: model.key,
                       hintText: 'Nhập tên đội bóng',
                       isLoading: model.isLoading,
                       onChangedText: (text) => model.searchTeamByKey(text),
                     ),
-                    model.teams == null
-                        ? SizedBox()
-                        : Expanded(
-                            child: model.teams.length == 0
-                                ? EmptyWidget(message: 'Không tìm thấy kết quả')
-                                : ListView.separated(
-                                    physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: UIHelper.padding),
-                                    itemCount: model.teams.length,
-                                    separatorBuilder: (c, index) =>
-                                        UIHelper.verticalIndicator,
-                                    itemBuilder: (c, index) => _buildItemTeam(
-                                      context,
-                                      model.teams[index],
-                                      onSubmitRequest:
-                                          (teamId, content, position) =>
-                                              model.createRequest(
-                                                  teamId, content, position),
-                                    ),
+                    Expanded(
+                      child: model.busy
+                          ? LoadingWidget()
+                          : model.teams.length == 0
+                              ? EmptyWidget(message: 'Không tìm thấy kết quả')
+                              : ListView.separated(
+                                  physics: BouncingScrollPhysics(),
+                                  padding:
+                                      EdgeInsets.only(bottom: UIHelper.padding),
+                                  itemCount: model.teams.length,
+                                  separatorBuilder: (c, index) =>
+                                      UIHelper.verticalIndicator,
+                                  itemBuilder: (c, index) => _buildItemTeam(
+                                    context,
+                                    model.teams[index],
+                                    onSubmitRequest:
+                                        (teamId, content, position) =>
+                                            model.createRequest(
+                                                teamId, content, position),
                                   ),
-                          ),
+                                ),
+                    ),
                     child
                   ],
                 ),

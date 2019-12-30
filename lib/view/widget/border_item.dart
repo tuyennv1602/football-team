@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class BorderItemWidget extends StatelessWidget {
+class BorderItem extends StatelessWidget {
   final Widget child;
   final BorderRadius borderRadius;
   final EdgeInsets margin;
@@ -11,7 +11,7 @@ class BorderItemWidget extends StatelessWidget {
   final double blurRadius;
   final Function onTap;
 
-  const BorderItemWidget(
+  const BorderItem(
       {Key key,
       this.borderRadius,
       this.margin,

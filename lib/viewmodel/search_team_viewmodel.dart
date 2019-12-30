@@ -7,27 +7,43 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class SearchTeamViewModel extends BaseViewModel {
   Api _api;
-  List<Team> teams;
-  String key;
+  List<Team> teams = [];
+  List<Team> allTeams = [];
+  String key = '';
   bool isLoading = false;
+
 
   SearchTeamViewModel({@required Api api}) : _api = api;
 
-  Future<SearchTeamResponse> searchTeamByKey(String key) async {
-    this.key = key;
-    _setLoading((true));
-    var resp = await _api.searchTeamByKey(key);
+  Future<void> getAllTeam(bool isRefresh) async {
+    setBusy(!isRefresh);
+    var resp = await _api.getAllTeam(1);
     if (resp.isSuccess) {
-      teams = resp.teams;
+      this.allTeams = resp.teams;
+      this.teams = resp.teams;
     }
-    _setLoading(false);
-    return resp;
+    setBusy(false);
   }
 
-  void _setLoading(bool isLoading) {
-    this.isLoading = isLoading;
-    notifyListeners();
+  Future<void> searchTeamByKey(String key) async {
+    if (key.isEmpty) {
+      this.key = '';
+      this.teams = this.allTeams;
+      isLoading = false;
+      notifyListeners();
+    } else {
+      this.key = key;
+      this.isLoading = true;
+      notifyListeners();
+      var resp = await _api.searchTeamByKey(key, 1);
+      if (resp.isSuccess) {
+        teams = resp.teams;
+      }
+      this.isLoading = false;
+      notifyListeners();
+    }
   }
+
 
   Future<void> createRequest(
       int teamId, String content, List<String> positions) async {

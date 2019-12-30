@@ -8,16 +8,19 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_team_page.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/backdrop.dart';
 import 'package:myfootball/view/widget/border_background.dart';
+import 'package:myfootball/view/widget/item_achievement.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/item_option.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/widget/oval_bottom_clipper.dart';
+import 'package:myfootball/view/widget/team_header.dart';
 import 'package:myfootball/viewmodel/team_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -96,25 +99,25 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
     bool isManager = team.hasManager(userId);
     if (isManager) {
       _manager.addAll([
-        ItemOptionWidget(
+        ItemOption(
           Images.FIND_MATCH,
           'Tìm đối tác',
           iconColor: Colors.red,
           onTap: () => Navigation.instance.navigateTo(FIND_MATCHING),
         ),
-        ItemOptionWidget(
+        ItemOption(
           Images.INVITE,
           'Lời mời ghép đối',
           iconColor: Colors.purple,
           onTap: () => Navigation.instance.navigateTo(INVITE_REQUESTS),
         ),
-        ItemOptionWidget(
+        ItemOption(
           Images.BOOKING,
           'Quản lý đặt sân',
           iconColor: Colors.green,
           onTap: () => Navigation.instance.navigateTo(BOOKING_MANAGE),
         ),
-        ItemOptionWidget(
+        ItemOption(
           Images.MEMBER_MANAGE,
           'Yêu cầu gia nhập đội bóng',
           iconColor: Colors.teal,
@@ -126,23 +129,22 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
       children: _children
         ..addAll(
           [
-            ItemOptionWidget(Images.MEMBER, 'Thành viên',
+            ItemOption(Images.MEMBER, 'Thành viên',
                 iconColor: Colors.green,
                 onTap: () => Navigation.instance.navigateTo(MEMBERS)),
-            ItemOptionWidget(
+            ItemOption(
               Images.SCHEDULE,
               'Lịch thi đấu',
               iconColor: Colors.deepOrange,
-              onTap: () =>
-                  Navigation.instance.navigateTo(MATCH_SCHEDULE),
+              onTap: () => Navigation.instance.navigateTo(MATCH_SCHEDULE),
             ),
-            ItemOptionWidget(
+            ItemOption(
               Images.MATCH_HISTORY,
               'Lịch sử thi đấu',
               iconColor: Colors.blue,
               onTap: () => Navigation.instance.navigateTo(MATCH_HISTORY),
             ),
-            ItemOptionWidget(
+            ItemOption(
               Images.COMMENT,
               'Thảo luận',
               iconColor: Colors.green,
@@ -151,30 +153,29 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
           ]
             ..addAll(_manager)
             ..addAll([
-              ItemOptionWidget(
+              ItemOption(
                 Images.TRANSACTION_HISTORY,
                 'Quỹ đội bóng',
                 iconColor: Colors.amber,
                 onTap: () => Navigation.instance.navigateTo(FINANCE),
               ),
-              ItemOptionWidget(
+              ItemOption(
                 Images.CONNECT,
                 'Mời bạn bè vào đội',
                 iconColor: Colors.blueAccent,
               ),
             ])
             ..add(isManager
-                ? ItemOptionWidget(
+                ? ItemOption(
                     Images.SETTING,
                     'Thiết lập đội bóng',
                     iconColor: Colors.orange,
-                    onTap: () =>
-                        Navigation.instance.navigateTo(SETUP_TEAM),
+                    onTap: () => Navigation.instance.navigateTo(SETUP_TEAM),
                   )
                 : SizedBox())
             ..add(
               team.managerId != userId
-                  ? ItemOptionWidget(
+                  ? ItemOption(
                       Images.LEAVE_TEAM,
                       'Rời đội bóng',
                       iconColor: Colors.blueGrey,
@@ -189,70 +190,6 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
         ),
     );
   }
-
-  _buildHeaderWidget(BuildContext context, Team team) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
-        child: Row(
-          children: <Widget>[
-            ImageWidget(
-                source: team.logo,
-                placeHolder: Images.DEFAULT_LOGO,
-                size: UIHelper.size(90)),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: UIHelper.size15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Điểm: ${team.point.toStringAsFixed(1)}',
-                      style: textStyleAlert(color: Colors.black87),
-                    ),
-                    Text(
-                      'Xếp hạng: ${team.rank}',
-                      style: textStyleAlert(color: Colors.black87),
-                    ),
-                    InkWell(
-                      onTap: () =>
-                          Navigation.instance.navigateTo(TEAM_COMMENT),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Đánh giá: ',
-                            style: textStyleAlert(color: Colors.black87),
-                          ),
-                          RatingBarIndicator(
-                            rating: team.rating,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.only(left: 2),
-                            itemSize: UIHelper.size20,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: UIHelper.size15,
-                      color: LINE_COLOR,
-                    ),
-                    Align(
-                      child: Text(
-                        '\" ${team.bio} \"',
-                        textAlign: TextAlign.center,
-                        style: textStyleItalic(size: 14, color: Colors.grey),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
 
   _buildSelectTeam(BuildContext context, List<Team> teams,
           Future onChangeTeam(Team team)) =>
@@ -271,7 +208,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     horizontal: UIHelper.size15, vertical: UIHelper.size10),
                 child: Row(
                   children: <Widget>[
-                    ImageWidget(
+                    CustomizeImage(
                       source: _team.logo,
                       placeHolder: Images.DEFAULT_LOGO,
                       size: UIHelper.size35,
@@ -314,7 +251,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             children: <Widget>[
               _hasGroup
                   ? SizedBox()
-                  : AppBarWidget(
+                  : CustomizeAppBar(
                       centerContent: Text(
                         'Đội bóng',
                         textAlign: TextAlign.center,
@@ -340,11 +277,10 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                               frontLayer: Container(
                                 color: Colors.white,
                                 child: ListView(
-                                  padding:
-                                      EdgeInsets.only(top: UIHelper.size15),
+                                  padding: EdgeInsets.zero,
                                   physics: BouncingScrollPhysics(),
                                   children: <Widget>[
-                                    _buildHeaderWidget(context, _team),
+                                    TeamHeader(team: _team),
                                     _buildTeamOptions(
                                       context,
                                       _team,
@@ -371,12 +307,12 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   style: textStyleTitle(),
                                 ),
                               ),
-                              frontTrailing: AppBarButtonWidget(
+                              frontTrailing: AppBarButton(
                                 imageName: Images.SEARCH,
                                 iconColor: Colors.white,
-                                onTap: () => Navigation.instance
-                                    .navigateTo(SEARCH_TEAM,
-                                        arguments: SEARCH_TYPE.TEAM_DETAIL),
+                                onTap: () => Navigation.instance.navigateTo(
+                                    SEARCH_TEAM,
+                                    arguments: SEARCH_TYPE.TEAM_DETAIL),
                               ),
                               frontHeading: Container(
                                 width: double.infinity,
@@ -402,7 +338,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                                   ],
                                 ),
                                 child: Container(
-                                  height: UIHelper.size(8),
+                                  height: UIHelper.size5,
                                   width: UIHelper.size50,
                                   decoration: BoxDecoration(
                                     color: Colors.white70,

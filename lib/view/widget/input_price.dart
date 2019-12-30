@@ -11,7 +11,7 @@ typedef void OnChangedText(String text);
 typedef void OnSubmitText(String text);
 
 // ignore: must_be_immutable
-class InputPriceWidget extends StatelessWidget {
+class InputPrice extends StatelessWidget {
   final String keyword;
   final OnChangedText onChangedText;
   final String hint;
@@ -19,7 +19,7 @@ class InputPriceWidget extends StatelessWidget {
   final TextStyle hintTextStyle;
   Timer _debounce;
 
-  InputPriceWidget(
+  InputPrice(
       {Key key,
       this.keyword = '',
       this.hint,

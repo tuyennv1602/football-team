@@ -11,13 +11,13 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/select_date.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/booking_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +64,7 @@ class BookingPage extends StatelessWidget {
   }
 
   _buildTicket(BuildContext context, TimeSlot timeSlot, Function onTap) {
-    return BorderItemWidget(
+    return BorderItem(
       margin: EdgeInsets.zero,
       onTap: onTap,
       child: Container(
@@ -147,13 +147,13 @@ class BookingPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Đặt sân bóng',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),

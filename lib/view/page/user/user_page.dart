@@ -10,10 +10,10 @@ import 'package:myfootball/view/page/team/search_team_page.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_option.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +68,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
       icon: Images.PEN,
       child: Form(
         key: _formName,
-        child: InputTextWidget(
+        child: InputText(
           validator: (value) {
             if (value.isEmpty) return 'Vui lòng nhập tên của bạn';
             return null;
@@ -100,223 +100,221 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
       key: _scaffoldKey,
       backgroundColor: PRIMARY,
       body: BaseWidget<UserViewModel>(
-          model: UserViewModel(
-              sharePreferences: Provider.of(context),
-              teamServices: Provider.of(context),
-              api: Provider.of(context),
-              authServices: Provider.of(context)),
-          child: Column(
+        model: UserViewModel(
+            sharePreferences: Provider.of(context),
+            teamServices: Provider.of(context),
+            api: Provider.of(context),
+            authServices: Provider.of(context)),
+        child: Column(
+          children: <Widget>[
+            ItemOption(
+              Images.MEMBER_MANAGE,
+              'Tham gia trận đấu',
+              iconColor: Colors.teal,
+              onTap: () => Navigation.instance.navigateTo(USER_JOIN_MATCH),
+            ),
+            ItemOption(
+              Images.ADD_REQUEST,
+              'Tham gia đội bóng',
+              iconColor: Colors.cyan,
+              onTap: () => Navigation.instance.navigateTo(SEARCH_TEAM,
+                  arguments: SEARCH_TYPE.REQUEST_MEMBER),
+            ),
+            ItemOption(
+              Images.ADD_TEAM,
+              'Thành lập đội bóng',
+              iconColor: Colors.orange,
+              onTap: () => Navigation.instance.navigateTo(CREATE_TEAM),
+            ),
+            ItemOption(
+              Images.SHARE,
+              'Chia sẻ ứng dụng',
+              iconColor: Colors.blue,
+            ),
+            ItemOption(
+              Images.INFO,
+              'Thông tin ứng dụng',
+              iconColor: Colors.purple,
+            ),
+          ],
+        ),
+        builder: (c, model, child) {
+          var _user = Provider.of<User>(context);
+          return Stack(
             children: <Widget>[
-              ItemOptionWidget(
-                Images.MEMBER_MANAGE,
-                'Yêu cầu tham gia trận đấu',
-                iconColor: Colors.teal,
-                onTap: () =>
-                    Navigation.instance.navigateTo(USER_JOIN_MATCH),
-              ),
-              ItemOptionWidget(
-                Images.ADD_REQUEST,
-                'Tham gia đội bóng',
-                iconColor: Colors.cyan,
-                onTap: () => Navigation.instance.navigateTo(SEARCH_TEAM,
-                    arguments: SEARCH_TYPE.REQUEST_MEMBER),
-              ),
-              ItemOptionWidget(
-                Images.ADD_TEAM,
-                'Thành lập đội bóng',
-                iconColor: Colors.orange,
-                onTap: () => Navigation.instance.navigateTo(CREATE_TEAM),
-              ),
-              ItemOptionWidget(
-                Images.SHARE,
-                'Chia sẻ ứng dụng',
-                iconColor: Colors.blue,
-              ),
-              ItemOptionWidget(
-                Images.INFO,
-                'Thông tin ứng dụng',
-                iconColor: Colors.purple,
-              ),
-              ItemOptionWidget(
-                Images.PASSWORD,
-                'Đổi mật khẩu',
-                iconColor: Colors.red,
-              ),
-            ],
-          ),
-          builder: (c, model, child) {
-            var _user = Provider.of<User>(context);
-            return Stack(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: UIHelper.size(200) + UIHelper.paddingTop,
-                  padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/user_cover.jpg'),
-                      fit: BoxFit.cover,
-                    ),
+              Container(
+                width: double.infinity,
+                height: UIHelper.size(200) + UIHelper.paddingTop,
+                padding: EdgeInsets.symmetric(horizontal: UIHelper.size15),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/user_cover.jpg'),
+                    fit: BoxFit.cover,
                   ),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: UIHelper.size10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Stack(
-                                children: <Widget>[
-                                  ImageWidget(
-                                    source: _user.avatar,
-                                    placeHolder: Images.DEFAULT_AVATAR,
-                                    size: UIHelper.size(100),
-                                    radius: UIHelper.size(50),
-                                    boxFit: BoxFit.cover,
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: InkWell(
-                                      onTap: () => _showChooseImage(
-                                        context,
-                                        (image) =>
-                                            model.updateAvatar(_user, image),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: UIHelper.size10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Stack(
+                              children: <Widget>[
+                                CustomizeImage(
+                                  source: _user.avatar,
+                                  placeHolder: Images.DEFAULT_AVATAR,
+                                  size: UIHelper.size(100),
+                                  radius: UIHelper.size(50),
+                                  boxFit: BoxFit.cover,
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: InkWell(
+                                    onTap: () => _showChooseImage(
+                                      context,
+                                      (image) =>
+                                          model.updateAvatar(_user, image),
+                                    ),
+                                    child: Container(
+                                      width: UIHelper.size35,
+                                      height: UIHelper.size35,
+                                      padding: EdgeInsets.all(UIHelper.size(7)),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(
+                                            UIHelper.size35 / 2),
+                                        border: Border.all(
+                                            color: Colors.white, width: 1.5),
                                       ),
-                                      child: Container(
-                                        width: UIHelper.size35,
-                                        height: UIHelper.size35,
-                                        padding:
-                                            EdgeInsets.all(UIHelper.size(7)),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius: BorderRadius.circular(
-                                              UIHelper.size35 / 2),
-                                          border: Border.all(
-                                              color: Colors.white, width: 1.5),
+                                      child: Image.asset(Images.CAMERA,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: UIHelper.size20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () => _showInputName(
+                                        _user.name,
+                                        onSubmit: (name) =>
+                                            model.updateName(_user, name),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: UIHelper.size5),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Text(
+                                                _user.name,
+                                                maxLines: 2,
+                                                style: textStyleSemiBold(
+                                                    size: 20,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            Image.asset(
+                                              Images.PEN,
+                                              width: UIHelper.size15,
+                                              height: UIHelper.size15,
+                                              color: Colors.white,
+                                            )
+                                          ],
                                         ),
-                                        child: Image.asset(Images.CAMERA,
-                                            color: Colors.white),
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.only(left: UIHelper.size20),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () => _showInputName(
-                                          _user.name,
-                                          onSubmit: (name) =>
-                                              model.updateName(_user, name),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size5),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Text(
-                                                  _user.name,
-                                                  maxLines: 2,
-                                                  style: textStyleSemiBold(
-                                                      size: 20,
-                                                      color: Colors.white),
-                                                ),
+                                    Text(
+                                      _user.email,
+                                      style:
+                                          textStyleRegular(color: Colors.white),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    InkWell(
+                                      onTap: () => Navigation.instance
+                                          .navigateTo(USER_COMMENT,
+                                              arguments: _user.id),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: UIHelper.size5),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Text(
+                                                'Đánh giá',
+                                                style: textStyleRegular(
+                                                    color: Colors.white),
                                               ),
-                                              Image.asset(
-                                                Images.PEN,
-                                                width: UIHelper.size15,
-                                                height: UIHelper.size15,
-                                                color: Colors.white,
-                                              )
-                                            ],
-                                          ),
+                                            ),
+                                            RatingBarIndicator(
+                                              rating: _user.rating,
+                                              itemCount: 5,
+                                              itemPadding:
+                                                  EdgeInsets.only(right: 2),
+                                              itemSize: UIHelper.size20,
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Text(
-                                        _user.email,
-                                        style: textStyleRegular(
-                                            color: Colors.white),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      InkWell(
-                                        onTap: () => Navigation.instance
-                                            .navigateTo(USER_COMMENT,
-                                                arguments: _user.id),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size5),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Text(
-                                                  'Đánh giá',
-                                                  style: textStyleRegular(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              RatingBarIndicator(
-                                                rating: _user.rating,
-                                                itemCount: 5,
-                                                itemPadding:
-                                                    EdgeInsets.only(right: 2),
-                                                itemSize: UIHelper.size20,
-                                                itemBuilder: (context, index) =>
-                                                    Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    top: UIHelper.size(180) + UIHelper.paddingTop),
+                child: BorderBackground(
+                  child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.only(top: UIHelper.size5),
+                    children: <Widget>[
+                      child,
+                      ItemOption(
+                        Images.PASSWORD,
+                        'Đổi mật khẩu',
+                        iconColor: Colors.red,
+                        onTap: () => model.forgotPassword(_user.email),
+                      ),
+                      ItemOption(
+                        Images.LOGOUT,
+                        'Đăng xuất',
+                        iconColor: Colors.grey,
+                        onTap: () => UIHelper.showConfirmDialog(
+                          'Bạn có chắc chắn muốn đăng xuất?',
+                          onConfirmed: () => model.logout(),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: UIHelper.size(180) + UIHelper.paddingTop),
-                  child: BorderBackground(
-                    child: ListView(
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(top: UIHelper.size5),
-                      children: <Widget>[
-                        child,
-                        ItemOptionWidget(
-                          Images.LOGOUT,
-                          'Đăng xuất',
-                          iconColor: Colors.grey,
-                          onTap: () => UIHelper.showConfirmDialog(
-                            'Bạn có chắc chắn muốn đăng xuất?',
-                            onConfirmed: () => model.logout(),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

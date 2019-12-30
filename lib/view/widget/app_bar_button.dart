@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class AppBarButtonWidget extends StatelessWidget {
+class AppBarButton extends StatelessWidget {
   final String imageName;
   final Function onTap;
   final double padding;
@@ -9,7 +9,7 @@ class AppBarButtonWidget extends StatelessWidget {
   final Color iconColor;
   final Color backgroundColor;
 
-  AppBarButtonWidget(
+  AppBarButton(
       {Key key,
       this.imageName,
       this.onTap,

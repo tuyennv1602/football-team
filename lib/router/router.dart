@@ -45,14 +45,13 @@ import 'package:myfootball/view/page/team/setup_matching_info_page.dart';
 import 'package:myfootball/view/page/team/setup_team_page.dart';
 import 'package:myfootball/view/page/team/team_fund_page.dart';
 import 'package:myfootball/view/page/team/ticket_page.dart';
-import 'package:myfootball/view/page/team/user_request_page.dart';
-import 'package:myfootball/view/page/user/input_money_page.dart';
-import 'package:myfootball/view/page/user/transaction_history_page.dart';
+import 'package:myfootball/view/page/user/user_request_page.dart';
+import 'package:myfootball/view/page/user/change_password_page.dart';
 import 'package:myfootball/view/page/user/user_comment_page.dart';
 import 'package:myfootball/view/page/user/user_join_match_page.dart';
 import 'package:myfootball/router/fade_in_router.dart';
 import 'package:myfootball/router/slide_left_router.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -73,10 +72,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case REQUEST_MEMBER:
       return SlideLeftRoute(widget: RequestMemberPage());
     case MEMBERS:
-      var team = settings.arguments as Team;
-      if (team != null) {
-        return SlideLeftRoute(widget: MemberPage(team: team));
-      }
       return SlideLeftRoute(widget: MemberPage());
     case FIND_MATCHING:
       return SlideLeftRoute(widget: FindMatchingPage());
@@ -112,8 +107,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case TEAM_DETAIL:
       var team = settings.arguments as Team;
       return SlideLeftRoute(widget: TeamDetailPage(team: team));
-    case INPUT_MONEY:
-      return SlideLeftRoute(widget: InputMoneyPage());
     case MATCH_SCHEDULE:
       return SlideLeftRoute(widget: MatchSchedulePage());
     case MATCH_HISTORY:
@@ -130,8 +123,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: TicketPage());
     case INVITE_REQUESTS:
       return SlideLeftRoute(widget: InviteRequestPage());
-    case USER_TRANSACTION_HISTORY:
-      return SlideLeftRoute(widget: TransactionHistoryPage());
     case FUND_REQUEST:
       var fund = settings.arguments as Fund;
       return SlideLeftRoute(widget: FundRequestPage(fund: fund));
@@ -160,9 +151,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return SlideLeftRoute(widget: BookingFixedPage(ground: ground));
     case FIXED_TIME:
       return SlideLeftRoute(widget: FixedTimeRequestPage());
+    case CHANGE_PASSWORD:
+      var email = settings.arguments as String;
+      return SlideLeftRoute(widget: ChangePasswordPage(email: email));
     default:
       return MaterialPageRoute(
         builder: (context) => Scaffold(
+          backgroundColor: Colors.green,
           body: Center(
             child: Text('No path for ${settings.name}'),
           ),

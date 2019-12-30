@@ -16,7 +16,6 @@ class Team {
   double wallet;
   List<Member> members;
   double rating;
-  bool rated;
   double point;
   int rank;
   int isSearching;
@@ -24,6 +23,8 @@ class Team {
   int mp;
   int win;
   String code;
+  bool isVerified;
+  int trustPoint;
 
   Team(
       {this.id,
@@ -34,7 +35,7 @@ class Team {
       this.bio,
       this.rating,
       this.rank,
-      this.rated});
+      this.isVerified});
 
   Team.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -50,7 +51,7 @@ class Team {
     if (json['rating'] != null) {
       rating = double.parse(json['rating'].toString());
     }
-    rated = json['rated'];
+    isVerified = json['is_verify'];
     countMember = json['count_member'];
     countRequest = json['count_request'];
     if (json['wallet'] != null) {
@@ -72,6 +73,7 @@ class Team {
     mp = json['number_match'];
     win = json['number_match_win'];
     code = json['request_code'];
+    trustPoint = json['trust_point'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,7 +90,6 @@ class Team {
     data['count_request'] = this.countRequest;
     data['wallet'] = this.wallet;
     data['rating'] = this.rating;
-    data['rated'] = this.rated;
     if (this.members != null) {
       data['users'] = this.members.map((v) => v.toJson()).toList();
     }
@@ -110,4 +111,14 @@ class Team {
   }
 
   bool hasManager(int userId) => userId == managerId || userId == captainId;
+
+  String get tag => 'team-$id';
+
+  String get getRank => rank != null ? rank.toString() : '';
+
+  String get getPoint => point != null ? point.toStringAsFixed(2) : '';
+
+  String get getRating => rating != null ? rating.toStringAsFixed(1) : '';
+
+  String get getTrustPoint => trustPoint != null ? trustPoint.toString() : '';
 }

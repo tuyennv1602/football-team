@@ -1,6 +1,6 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:webfeed/webfeed.dart';
 

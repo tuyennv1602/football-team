@@ -4,26 +4,30 @@ import 'package:myfootball/utils/ui_helper.dart';
 
 class EmptyWidget extends StatelessWidget {
   final String _message;
+  final double size;
 
-  EmptyWidget({@required String message}) : _message = message;
+  EmptyWidget({@required String message, this.size = 80}) : _message = message;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(
-          'assets/images/ic_empty.gif',
-          width: UIHelper.size(150),
-          height: UIHelper.size(150),
-        ),
-        Text(
-          _message,
-          style: textStyleMediumTitle(color: Colors.grey),
-        ),
-        SizedBox(height: UIHelper.size50)
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: UIHelper.size50),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset(
+            'assets/images/ic_empty.gif',
+            width: UIHelper.size(size),
+            height: UIHelper.size(size),
+            fit: BoxFit.cover,
+          ),
+          Text(
+            _message,
+            style: textStyleRegular(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }

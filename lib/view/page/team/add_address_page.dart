@@ -8,9 +8,9 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/utils/constants.dart';
@@ -160,18 +160,18 @@ class AddAddressPage extends StatelessWidget {
           bool isSelectedAll = model.wards.length == model.selectedWards.length;
           return Column(
             children: <Widget>[
-              AppBarWidget(
+              CustomizeAppBar(
                 centerContent: Text(
                   'Thêm khu vực',
                   textAlign: TextAlign.center,
                   style: textStyleTitle(),
                 ),
-                leftContent: AppBarButtonWidget(
+                leftContent: AppBarButton(
                   imageName: Images.BACK,
                   onTap: () => Navigation.instance.goBack(),
                 ),
                 rightContent: model.step == Constants.SELECT_WARD
-                    ? AppBarButtonWidget(
+                    ? AppBarButton(
                         imageName: isSelectedAll ? Images.CLEAR : Images.CHECK,
                         onTap: () {
                           if (isSelectedAll) {
@@ -192,12 +192,12 @@ class AddAddressPage extends StatelessWidget {
                           children: <Widget>[
                             Expanded(child: _child),
                             model.step == Constants.SELECT_WARD
-                                ? ButtonWidget(
+                                ? CustomizeButton(
                                 margin: EdgeInsets.symmetric(horizontal: UIHelper.padding, vertical: UIHelper.size5),
                                     backgroundColor:
                                         model.selectedWards.length > 0
-                                            ? PRIMARY
-                                            : Colors.grey,
+                                            ? GREEN_BUTTON
+                                            : GREY_BUTTON,
                                     child: Text(
                                       'HOÀN THÀNH (${model.selectedWards.length})',
                                       style: textStyleButton(),

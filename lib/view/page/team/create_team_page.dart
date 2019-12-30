@@ -6,12 +6,12 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/create_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +50,7 @@ class CreateTeamPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemColor(BuildContext context, Color color) => Padding(
+   _buildItemColor(BuildContext context, Color color) => Padding(
         padding: EdgeInsets.all(UIHelper.size5),
         child: Container(
           height: UIHelper.size40,
@@ -70,8 +70,8 @@ class CreateTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
-            leftContent: AppBarButtonWidget(
+          CustomizeAppBar(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
@@ -89,13 +89,13 @@ class CreateTeamPage extends StatelessWidget {
                     child: BaseWidget<CreateTeamViewModel>(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
+                            EdgeInsets.symmetric(horizontal: UIHelper.padding),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              InputTextWidget(
+                              InputText(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập tên đội bóng';
@@ -108,7 +108,7 @@ class CreateTeamPage extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                                child: InputTextWidget(
+                                child: InputText(
                                   validator: (value) {
                                     if (value.isEmpty)
                                       return 'Vui lòng nhập giới thiệu';
@@ -140,7 +140,7 @@ class CreateTeamPage extends StatelessWidget {
                             height: UIHelper.size(100),
                             width: UIHelper.size(100),
                             margin:
-                                EdgeInsets.symmetric(vertical: UIHelper.size10),
+                                EdgeInsets.symmetric(vertical: UIHelper.padding),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: LINE_COLOR,
@@ -201,7 +201,7 @@ class CreateTeamPage extends StatelessWidget {
                               itemCount: DRESS_COLORS.length,
                             ),
                           ),
-                          ButtonWidget(
+                          CustomizeButton(
                             onTap: () {
                               if (validateAndSave()) {
                                 model.createTeam(Provider.of<User>(context),
@@ -209,7 +209,7 @@ class CreateTeamPage extends StatelessWidget {
                               }
                             },
                             margin: EdgeInsets.symmetric(
-                                horizontal: UIHelper.size10,
+                                horizontal: UIHelper.padding,
                                 vertical: UIHelper.size15),
                             child: Text(
                               'ĐĂNG KÝ',

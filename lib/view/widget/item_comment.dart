@@ -3,8 +3,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/model/comment.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/expandable_text_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/expandable_text.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 class ItemComment extends StatelessWidget {
@@ -20,7 +20,7 @@ class ItemComment extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ImageWidget(
+          CustomizeImage(
             source: comment.userAvatar,
             placeHolder: Images.DEFAULT_AVATAR,
             size: UIHelper.size40,
@@ -60,7 +60,7 @@ class ItemComment extends StatelessWidget {
                     comment.getCreateTime,
                     style: textStyleRegularBody(color: Colors.grey),
                   ),
-                  ExpandableTextWidget(
+                  ExpandableText(
                     comment.comment,
                   )
                 ],

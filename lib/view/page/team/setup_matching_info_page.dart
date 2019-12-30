@@ -7,12 +7,12 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/line.dart';
-import 'package:myfootball/view/widget/time_slider_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/time_slider.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/setup_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +61,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    TimeSliderWidget(
+                    TimeSlider(
                       onSelectedTime: (start, end, dayOfWeek) {
                         Navigator.of(context).pop();
                         onAddTime(start, end, dayOfWeek);
@@ -88,13 +88,13 @@ class SetupMatchingInfoPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Thiết lập ghép đối',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
@@ -219,7 +219,7 @@ class SetupMatchingInfoPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      ButtonWidget(
+                      CustomizeButton(
                         child: Text(
                           'LƯU LẠI',
                           style: textStyleButton(),

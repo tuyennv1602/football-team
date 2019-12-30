@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-import 'button_widget.dart';
+import 'customize_button.dart';
 
 typedef void OnClickOption(int index);
 
@@ -30,25 +30,25 @@ class BottomSheetWidget extends StatelessWidget {
             child: Center(
               child: Text(
                 value,
-                style: textStyleSemiBold(color: Colors.black, size: 17),
+                style: textStyleSemiBold(color: Colors.black, size: 18),
               ),
             ),
           ),
         );
       } else if (index == length - 1) {
         children.add(
-          ButtonWidget(
+          CustomizeButton(
             height: _kButtonHeight,
             elevation: 0,
             borderRadius: BorderRadius.circular(0),
             alignment: Alignment.centerLeft,
-            backgroundColor: Colors.white,
+            backgroundColor: [Colors.white, Colors.white],
             child: Padding(
-              padding: EdgeInsets.only(left: UIHelper.size10),
+              padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
               child: Text(
                 value,
                 textAlign: TextAlign.left,
-                style: textStyleSemiBold(color: Colors.red),
+                style: textStyleSemiBold(size: 17, color: Colors.red),
               ),
             ),
             onTap: () => Navigator.of(context).pop(),
@@ -56,17 +56,17 @@ class BottomSheetWidget extends StatelessWidget {
         );
       } else {
         children.add(
-          ButtonWidget(
+          CustomizeButton(
             height: _kButtonHeight,
             elevation: 0,
             alignment: Alignment.centerLeft,
-            backgroundColor: Colors.white,
+            backgroundColor: [Colors.white, Colors.white],
             borderRadius: BorderRadius.circular(0),
             child: Padding(
-              padding: EdgeInsets.only(left: UIHelper.size10),
+              padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
               child: Text(
                 value,
-                style: textStyleAlert(size: 16, color: Colors.black),
+                style: textStyleMediumTitle(color: Colors.black),
               ),
             ),
             onTap: () {

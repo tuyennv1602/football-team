@@ -6,20 +6,20 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_ground_page.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/booking_manager_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class BookingManagePage extends StatelessWidget {
-  _buildItemGround(Ground ground) => BorderItemWidget(
+  _buildItemGround(Ground ground) => BorderItem(
         padding: EdgeInsets.zero,
         onTap: () =>
             Navigation.instance.navigateTo(BOOKING, arguments: ground),
@@ -74,13 +74,13 @@ class BookingManagePage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Quản lý đặt sân',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
@@ -90,20 +90,20 @@ class BookingManagePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ItemOptionWidget(
+                  ItemOption(
                     Images.TICKET,
                     'Vé đặt sân',
                     iconColor: Colors.redAccent,
                     onTap: () => Navigation.instance.navigateTo(TICKETS),
                   ),
-                  ItemOptionWidget(
+                  ItemOption(
                     Images.BOOKING,
                     'Đặt sân bóng',
                     iconColor: Colors.green,
                     onTap: () =>
                         Navigation.instance.navigateTo(SEARCH_GROUND, arguments: BOOKING_TYPE.NORMAL),
                   ),
-                  ItemOptionWidget(
+                  ItemOption(
                     Images.HISTORY,
                     'Sân cố định',
                     iconColor: Colors.blue,

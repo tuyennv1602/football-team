@@ -7,12 +7,12 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/utils/ui_helper.dart';
@@ -25,11 +25,11 @@ class FundRequestPage extends StatelessWidget {
   const FundRequestPage({Key key, this.fund}) : super(key: key);
 
   Widget _buildItemRequest(int index, FundMember member, {Function onTap}) =>
-      BorderItemWidget(
+      BorderItem(
         onTap: () => onTap(member),
         child: Row(
           children: <Widget>[
-            ImageWidget(
+            CustomizeImage(
               source: member.avatar,
               placeHolder: Images.DEFAULT_AVATAR,
               size: UIHelper.size40,
@@ -70,13 +70,13 @@ class FundRequestPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               fund.title,
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),

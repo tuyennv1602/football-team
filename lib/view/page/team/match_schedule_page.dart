@@ -10,16 +10,16 @@ import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_team_page.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/choose_ratio_widget.dart';
+import 'package:myfootball/view/widget/choose_ratio.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_match_schedule.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/match_schedule_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -104,10 +104,11 @@ class MatchSchedulePage extends StatelessWidget {
         ),
       );
 
-  handleUpdateOpponentTeam(BuildContext context, int matchId,
+  _handleUpdateOpponentTeam(BuildContext context, int matchId,
       {Function onSubmit}) async {
     var result = await Navigation.instance.navigateTo(SEARCH_TEAM,
         arguments: SEARCH_TYPE.SELECT_OPPONENT_TEAM) as Team;
+    if (result == null) return;
     var _invite;
     var _ratio;
     UIHelper.showCustomizeDialog(
@@ -117,7 +118,7 @@ class MatchSchedulePage extends StatelessWidget {
         children: <Widget>[
           Form(
             key: _formInvite,
-            child: InputTextWidget(
+            child: InputText(
               validator: (value) {
                 if (value.isEmpty) return 'Vui lòng nhập lời mời';
                 return null;
@@ -132,7 +133,7 @@ class MatchSchedulePage extends StatelessWidget {
               hintTextStyle: textStyleInput(color: Colors.white),
             ),
           ),
-          ChooseRatioWidget(
+          ChooseRatio(
             onSelectedType: (type) => _ratio = type,
             primaryColor: Colors.white,
           ),
@@ -156,7 +157,7 @@ class MatchSchedulePage extends StatelessWidget {
     );
   }
 
-  Widget _buildItemSchedule(BuildContext context, bool isCaptain, int index,
+  _buildItemSchedule(BuildContext context, bool isCaptain, int index,
       MatchScheduleViewModel model) {
     MatchSchedule matchSchedule = model.matchSchedules[index];
     return ItemMatchSchedule(
@@ -176,7 +177,7 @@ class MatchSchedulePage extends StatelessWidget {
                     onConfirmed: () =>
                         model.leaveMatch(index, matchSchedule.matchId),
                   ),
-            onInvite: () => handleUpdateOpponentTeam(
+            onInvite: () => _handleUpdateOpponentTeam(
               context,
               matchSchedule.matchId,
               onSubmit: (request) => model.sendInvite(request),
@@ -209,13 +210,13 @@ class MatchSchedulePage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Lịch thi đấu',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
@@ -9,10 +9,10 @@ typedef void OnSelectedTime(double start, double end, String dayOfWeeks);
 
 final List<String> _kDayOfWeeks = ['1', '2', '3', '4', '5', '6', '7'];
 
-class TimeSliderWidget extends StatefulWidget {
+class TimeSlider extends StatefulWidget {
   final OnSelectedTime onSelectedTime;
 
-  const TimeSliderWidget({Key key, @required this.onSelectedTime})
+  const TimeSlider({Key key, @required this.onSelectedTime})
       : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class TimeSliderWidget extends StatefulWidget {
   }
 }
 
-class TimeSliderState extends State<TimeSliderWidget> {
+class TimeSliderState extends State<TimeSlider> {
   RangeValues _values = RangeValues(4, 24);
   List<String> _selectedDay = [];
 
@@ -142,7 +142,7 @@ class TimeSliderState extends State<TimeSliderWidget> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size20),
-          child: ButtonWidget(
+          child: CustomizeButton(
               child: Text(
                 'THÊM',
                 style: textStyleButton(),

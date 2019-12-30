@@ -6,8 +6,8 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/light_input_text.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/circle_input_text.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
@@ -136,13 +136,13 @@ class _RegisterState extends State<RegisterPage> {
                               children: <Widget>[
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                                  child: LightInputTextWidget(
+                                  child: CircleInputText(
                                     labelText: 'Tên đầy đủ',
                                     validator: Validator.validName,
                                     onSaved: (value) => _name = value.trim(),
                                   ),
                                 ),
-                                LightInputTextWidget(
+                                CircleInputText(
                                   labelText: 'Số điện thoại',
                                   validator: Validator.validPhoneNumber,
                                   inputType: TextInputType.phone,
@@ -158,14 +158,14 @@ class _RegisterState extends State<RegisterPage> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
-                                  child: LightInputTextWidget(
+                                  child: CircleInputText(
                                     labelText: 'Email',
                                     validator: Validator.validEmail,
                                     inputType: TextInputType.emailAddress,
                                     onSaved: (value) => _email = value.trim(),
                                   ),
                                 ),
-                                LightInputTextWidget(
+                                CircleInputText(
                                   labelText: 'Mật khẩu',
                                   obscureText: true,
                                   validator: Validator.validPassword,
@@ -175,7 +175,7 @@ class _RegisterState extends State<RegisterPage> {
                                   model: RegisterViewModel(
                                       api: Provider.of(context)),
                                   builder: (context, model, child) =>
-                                      ButtonWidget(
+                                      CustomizeButton(
                                     margin: EdgeInsets.only(
                                         top: UIHelper.size40,
                                         bottom: UIHelper.paddingBottom +

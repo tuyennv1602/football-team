@@ -9,17 +9,17 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/choose_transaction_type.dart';
+import 'package:myfootball/view/widget/choose_transaction.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/input_price_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/input_price.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_transaction.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
 import 'package:myfootball/view/widget/select_date.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/finance_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +69,7 @@ class FinancePage extends StatelessWidget {
           Padding(
             padding:
                 EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size10),
-            child: InputPriceWidget(
+            child: InputPrice(
                 textStyle: textStyleSemiBold(size: 18, color: Colors.white),
                 hint: '0đ',
                 hintTextStyle: textStyleSemiBold(size: 18, color: Colors.white),
@@ -89,7 +89,7 @@ class FinancePage extends StatelessWidget {
           ),
           Form(
             key: _formNotifyKey,
-            child: InputTextWidget(
+            child: InputText(
               validator: (value) {
                 if (value.isEmpty) return 'Vui lòng nhập tiêu đề';
                 return null;
@@ -131,7 +131,7 @@ class FinancePage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(top: UIHelper.size5),
-            child: InputPriceWidget(
+            child: InputPrice(
                 textStyle: textStyleSemiBold(size: 18, color: Colors.white),
                 hint: '0đ',
                 hintTextStyle: textStyleSemiBold(size: 18, color: Colors.white),
@@ -140,12 +140,11 @@ class FinancePage extends StatelessWidget {
           Padding(
             padding:
                 EdgeInsets.only(top: UIHelper.size5, bottom: UIHelper.size20),
-            child: ChooseTransactionWidget(
-                onSelectedType: (type) => _type = type),
+            child: ChooseTransaction(onSelectedType: (type) => _type = type),
           ),
           Form(
             key: _formTransactionKey,
-            child: InputTextWidget(
+            child: InputText(
               validator: (value) {
                 if (value.isEmpty) return 'Vui lòng nhập nội dung';
                 return null;
@@ -294,7 +293,7 @@ class FinancePage extends StatelessWidget {
                 ],
               ),
             ),
-            AppBarWidget(
+            CustomizeAppBar(
               centerContent: InkWell(
                 onTap: () async {
                   var date = await showMonthPicker(
@@ -303,19 +302,18 @@ class FinancePage extends StatelessWidget {
                     model.changeMonth(date);
                   }
                 },
-                child: Center(
-                  child: Text(
-                    'Th ${model.getCurrentMonth}',
-                    style: textStyleTitle(),
-                  ),
+                child: Text(
+                  'Th ${model.getCurrentMonth}',
+                  textAlign: TextAlign.center,
+                  style: textStyleTitle(),
                 ),
               ),
-              leftContent: AppBarButtonWidget(
+              leftContent: AppBarButton(
                 imageName: Images.BACK,
                 onTap: () => Navigation.instance.goBack(),
               ),
               backgroundColor: Colors.transparent,
-              rightContent: AppBarButtonWidget(
+              rightContent: AppBarButton(
                 imageName: Images.BUDGET,
                 onTap: () => Navigation.instance.navigateTo(TEAM_FUND),
               ),
@@ -344,7 +342,7 @@ class FinancePage extends StatelessWidget {
                                           vertical: UIHelper.padding),
                                       physics: BouncingScrollPhysics(),
                                       itemBuilder: (c, index) =>
-                                          ItemTransactionWidget(
+                                          ItemTransaction(
                                             transaction:
                                                 model.transactions[index],
                                           ),

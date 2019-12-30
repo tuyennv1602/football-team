@@ -4,16 +4,18 @@ import 'package:myfootball/model/member.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
+import 'package:myfootball/resource/fonts.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/bottom_sheet.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_comment.dart';
 import 'package:myfootball/view/widget/item_position.dart';
 import 'package:myfootball/view/widget/line.dart';
@@ -76,7 +78,7 @@ class MemberDetailPage extends StatelessWidget {
         children: <Widget>[
           Form(
             key: _formKey,
-            child: InputTextWidget(
+            child: InputText(
               onSaved: (value) => _number = value,
               maxLines: 1,
               initValue: member.number,
@@ -105,44 +107,90 @@ class MemberDetailPage extends StatelessWidget {
     );
   }
 
+  _showManagerOptions(BuildContext context,
+          {Function onCall, Function onAddCaptain, Function onRemove}) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (c) => BottomSheetWidget(
+          options: [
+            'Tuỳ chọn',
+            'Gọi điện',
+            'Thêm quyền đội trưởng',
+            'Xoá khỏi đội',
+            'Huỷ'
+          ],
+          onClickOption: (index) {
+            if (index == 1) {
+              onCall();
+            }
+            if (index == 2) {
+              onAddCaptain();
+            }
+            if (index == 3) {
+              onRemove();
+            }
+          },
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     var userId = Provider.of<User>(context).id;
-    var teamId = Provider.of<Team>(context).id;
+    var team = Provider.of<Team>(context);
+    var isManager = userId == team.managerId;
     return Scaffold(
       backgroundColor: PRIMARY,
       body: BaseWidget<MemberDetailViewModel>(
-        model: MemberDetailViewModel(api: Provider.of(context)),
+        model: MemberDetailViewModel(
+            api: Provider.of(context),
+            team: team,
+            teamServices: Provider.of(context)),
         onModelReady: (model) {
           model.initMember(member);
           model.getCommentsByUser(member.id, 1);
         },
         builder: (c, model, child) => Column(
           children: <Widget>[
-            AppBarWidget(
+            CustomizeAppBar(
               centerContent: Text(
-                'Thông tin cá nhân',
+                'Thông tin thành viên',
                 textAlign: TextAlign.center,
                 style: textStyleTitle(),
               ),
-              leftContent: AppBarButtonWidget(
+              leftContent: AppBarButton(
                 imageName: Images.BACK,
                 onTap: () => Navigator.of(context).pop(),
               ),
               rightContent: userId == member.id
-                  ? AppBarButtonWidget(
+                  ? AppBarButton(
                       imageName: Images.EDIT_PROFILE,
                       onTap: () => _showEditForm(
                         context,
                         member,
                         onSubmit: (position, number) =>
-                            model.updateInfo(teamId, position, number),
+                            model.updateInfo(position, number),
                       ),
                     )
-                  : AppBarButtonWidget(
-                      imageName: Images.CALL,
-                      onTap: () => launch('tel://${member.phone}'),
-                    ),
+                  : isManager
+                      ? AppBarButton(
+                          imageName: Images.MORE,
+                          onTap: () => _showManagerOptions(
+                            context,
+                            onCall: () => launch('tel://${member.phone}'),
+                            onAddCaptain: () => UIHelper.showConfirmDialog(
+                              'Bạn có chắc chắn muốn thêm quyền đội trưởng cho ${member.name}?',
+                              onConfirmed: () => model.addCaptain(member.id),
+                            ),
+                            onRemove: () => UIHelper.showConfirmDialog(
+                              'Bạn có chắc chắn muốn xoá ${member.name} khỏi đội bóng?',
+                              onConfirmed: () => model.kickMember(member.id),
+                            ),
+                          ),
+                        )
+                      : AppBarButton(
+                          imageName: Images.CALL,
+                          onTap: () => launch('tel://${member.phone}'),
+                        ),
             ),
             Expanded(
               child: BorderBackground(
@@ -153,8 +201,8 @@ class MemberDetailPage extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Hero(
-                            tag: 'member - ${member.id}',
-                            child: ImageWidget(
+                            tag: member.tag,
+                            child: CustomizeImage(
                               source: member.avatar,
                               placeHolder: Images.DEFAULT_AVATAR,
                               size: UIHelper.size(80),
@@ -170,29 +218,78 @@ class MemberDetailPage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    member.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: textStyleSemiBold(size: 18),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        member.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: textStyleSemiBold(size: 20),
+                                      ),
+                                    ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                        top: UIHelper.size5, bottom: 2),
-                                    child: Text(
-                                      member.email,
-                                      style: textStyleRegular(),
+                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                    child: Row(
+                                      children: member.getPositions
+                                          .map<Widget>(
+                                            (pos) => ItemPosition(
+                                              position: pos,
+                                            ),
+                                          )
+                                          .toList(),
                                     ),
                                   ),
                                   Row(
-                                    children: member.getPositions
-                                        .map<Widget>(
-                                          (pos) => ItemPosition(
-                                            position: pos,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: 'Exp: ',
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: UIHelper.size(17),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: member.getExp,
+                                                style: TextStyle(
+                                                    fontFamily: MEDIUM,
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        UIHelper.size(18)),
+                                              ),
+                                            ],
                                           ),
-                                        )
-                                        .toList(),
-                                  ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: 'Trận: ',
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: UIHelper.size(17),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: member.teamGame.toString(),
+                                                style: TextStyle(
+                                                    fontFamily: MEDIUM,
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        UIHelper.size(18)),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
@@ -209,7 +306,7 @@ class MemberDetailPage extends StatelessWidget {
                         },
                         child: Padding(
                           padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.padding),
+                              EdgeInsets.symmetric(vertical: UIHelper.size15),
                           child: Row(
                             children: <Widget>[
                               Expanded(

@@ -6,15 +6,24 @@ import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
 class MatchHistoryViewModel extends BaseViewModel {
   Api _api;
-  List<MatchHistory> matchHistories;
+  List<MatchHistory> matchHistories = [];
+  int page = 1;
+  bool canLoadMore = false;
 
   MatchHistoryViewModel({@required Api api}) : _api = api;
 
-  Future<void> getHistories(int teamId, int page, bool isRefresh) async {
-    setBusy(!isRefresh);
-    var resp = await _api.getHistories(teamId, page);
+  Future<void> getHistories(int teamId, bool isRefresh) async {
+    if (isRefresh) {
+      page = 1;
+      matchHistories.clear();
+    } else {
+      setBusy(page == 1);
+    }
+    var resp = await _api.getMatchHistory(teamId, page);
     if (resp.isSuccess) {
-      this.matchHistories = resp.matchHistories;
+      this.matchHistories.addAll(resp.matchHistories);
+      this.canLoadMore = resp.matchHistories.length == 10;
+      page++;
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

@@ -29,6 +29,7 @@ import 'package:myfootball/model/response/ticket_resp.dart';
 import 'package:myfootball/model/response/transaction_resp.dart';
 import 'package:myfootball/model/response/user_request_resp.dart';
 import 'package:myfootball/model/team.dart';
+import 'package:myfootball/model/user_request.dart';
 
 import 'api_config.dart';
 
@@ -37,11 +38,10 @@ class Api {
 
   Future<LoginResponse> loginEmail(String email, String password) async {
     try {
-      var response = await _api.getApi('user/login',
-          queryParams: FormData.from({
-            'email': email,
-            'password': password,
-          }));
+      var response = await _api.getApi('user/login', queryParams: {
+        'email': email,
+        'password': password,
+      });
       return LoginResponse.success(response.data);
     } on DioError catch (e) {
       return LoginResponse.error(e.message);
@@ -143,13 +143,12 @@ class Api {
     }
   }
 
-  Future<TeamRequestResponse> getTeamRequest(int teamId) async {
+  Future<TeamRequestResponse> getJoinTeamRequest(int teamId) async {
     try {
-      FormData formData = new FormData.from({
+      var resp =
+          await _api.getApi('request-member/find-by-group-id', queryParams: {
         "groupId": teamId,
       });
-      var resp = await _api.getApi('request-member/find-by-group-id',
-          queryParams: formData);
       return TeamRequestResponse.success(resp.data);
     } on DioError catch (e) {
       return TeamRequestResponse.error(e.message);
@@ -167,15 +166,10 @@ class Api {
     }
   }
 
-  Future<BaseResponse> updateRequestMember(
-      int requestId, int teamId, String content, String position) async {
+  Future<BaseResponse> updateRequestMember(UserRequest request) async {
     try {
-      var response = await _api.postApi('request-member/update', body: {
-        "id": requestId,
-        "content": content,
-        'group_id': teamId,
-        'position': position
-      });
+      var response =
+          await _api.postApi('request-member/update', body: request.toJson());
       return BaseResponse.success(response.data);
     } on DioError catch (e) {
       return BaseResponse.error(e.message);
@@ -228,12 +222,20 @@ class Api {
     }
   }
 
-  Future<SearchTeamResponse> searchTeamByKey(String key) async {
+  Future<SearchTeamResponse> searchTeamByKey(String key, int page) async {
     try {
-      FormData formData = new FormData.from({
-        "text_search": key,
-      });
-      var resp = await _api.getApi("group/search", queryParams: formData);
+      var resp = await _api.getApi("group/search",
+          queryParams: {"text_search": key, "page": page, "limit": 50});
+      return SearchTeamResponse.success(resp.data);
+    } on DioError catch (e) {
+      return SearchTeamResponse.error(e.message);
+    }
+  }
+
+  Future<SearchTeamResponse> getAllTeam(int page) async {
+    try {
+      var resp = await _api
+          .getApi("group/find-all", queryParams: {"page": page, "limit": 50});
       return SearchTeamResponse.success(resp.data);
     } on DioError catch (e) {
       return SearchTeamResponse.error(e.message);
@@ -249,7 +251,7 @@ class Api {
     }
   }
 
-  Future<NotificationResponse> getNotifications() async {
+  Future<NotificationResponse> getUserNotification() async {
     try {
       var resp = await _api.getApi("user/notification");
       return NotificationResponse.success(resp.data);
@@ -319,27 +321,23 @@ class Api {
     }
   }
 
-  Future<GroundResponse> getFreeTimeSlots(int groundId, String playDate) async {
+  Future<GroundResponse> getFreeTimeSlot(int groundId, String playDate) async {
     try {
-      FormData formData = new FormData.from({
+      var resp = await _api.getApi("ground/$groundId/detail", queryParams: {
         "playDate": playDate,
       });
-      var resp =
-          await _api.getApi("ground/$groundId/detail", queryParams: formData);
       return GroundResponse.success(resp.data);
     } on DioError catch (e) {
       return GroundResponse.error(e.message);
     }
   }
 
-  Future<GroundResponse> getFreeFixedTimeSlots(
+  Future<GroundResponse> getFreeFixedTimeSlot(
       int groundId, int dayOfWeek) async {
     try {
-      FormData formData = new FormData.from({
+      var resp = await _api.getApi("ground/$groundId/time-slot", queryParams: {
         "day_of_week": dayOfWeek,
       });
-      var resp = await _api.getApi("ground/$groundId/time-slot",
-          queryParams: formData);
       return GroundResponse.success(resp.data);
     } on DioError catch (e) {
       return GroundResponse.error(e.message);
@@ -401,14 +399,12 @@ class Api {
     }
   }
 
-  Future<InviteRequestResponse> getInviteRequests(int teamId) async {
+  Future<InviteRequestResponse> getInviteRequest(int teamId) async {
     try {
-      FormData formData = new FormData.from({
+      var resp = await _api.getApi('match/request/group/$teamId', queryParams: {
         "page": 1,
         "limit": 50,
       });
-      var resp = await _api.getApi('match/request/group/$teamId',
-          queryParams: formData);
       return InviteRequestResponse.success(teamId, resp.data);
     } on DioError catch (e) {
       return InviteRequestResponse.error(e.message);
@@ -488,11 +484,10 @@ class Api {
 
   Future<CommentResponse> getCommentByTeamId(int teamId, int page) async {
     try {
-      FormData formData = new FormData.from({
+      var resp = await _api.getApi('rate/group/$teamId', queryParams: {
         "page": page,
         "size": 50,
       });
-      var resp = await _api.getApi('rate/group/$teamId', queryParams: formData);
       return CommentResponse.success(resp.data);
     } on DioError catch (e) {
       return CommentResponse.error(e.message);
@@ -501,12 +496,10 @@ class Api {
 
   Future<CommentResponse> getCommentByGroundId(int groundId, int page) async {
     try {
-      FormData formData = new FormData.from({
+      var resp = await _api.getApi('rate/ground/$groundId', queryParams: {
         "page": page,
         "size": 50,
       });
-      var resp =
-          await _api.getApi('rate/ground/$groundId', queryParams: formData);
       return CommentResponse.success(resp.data);
     } on DioError catch (e) {
       return CommentResponse.error(e.message);
@@ -515,22 +508,20 @@ class Api {
 
   Future<CommentResponse> getCommentByUserId(int userId, int page) async {
     try {
-      FormData formData = new FormData.from({
+      var resp = await _api.getApi('rate/user/$userId', queryParams: {
         "page": page,
         "size": 50,
       });
-      var resp = await _api.getApi('rate/user/$userId', queryParams: formData);
       return CommentResponse.success(resp.data);
     } on DioError catch (e) {
       return CommentResponse.error(e.message);
     }
   }
 
-  Future<MatchScheduleResponse> getMatchSchedules(int teamId, int page) async {
+  Future<MatchScheduleResponse> getMatchSchedule(int teamId, int page) async {
     try {
-      FormData formData =
-          new FormData.from({"groupId": teamId, "page": page, "limit": 50});
-      var resp = await _api.getApi('match', queryParams: formData);
+      var resp = await _api.getApi('match',
+          queryParams: {"groupId": teamId, "page": page, "limit": 50});
       return MatchScheduleResponse.success(teamId, resp.data);
     } on DioError catch (e) {
       return MatchScheduleResponse.error(e.message);
@@ -564,7 +555,7 @@ class Api {
     }
   }
 
-  Future<TicketResponse> getTickets(int teamId) async {
+  Future<TicketResponse> getTicket(int teamId) async {
     try {
       var resp = await _api.getApi('ticket/group/$teamId');
       return TicketResponse.success(resp.data);
@@ -586,11 +577,10 @@ class Api {
     }
   }
 
-  Future<MatchHistoryResponse> getHistories(int teamId, int page) async {
+  Future<MatchHistoryResponse> getMatchHistory(int teamId, int page) async {
     try {
-      FormData formData =
-          new FormData.from({"groupId": teamId, "page": page, "limit": 50});
-      var resp = await _api.getApi('match/history', queryParams: formData);
+      var resp = await _api.getApi('match/history',
+          queryParams: {"groupId": teamId, "page": page, "limit": 10});
       return MatchHistoryResponse.success(teamId, resp.data);
     } on DioError catch (e) {
       return MatchHistoryResponse.error(e.message);
@@ -617,9 +607,10 @@ class Api {
     }
   }
 
-  Future<FundResponse> getFundsByTeam(int teamId) async {
+  Future<FundResponse> getFundByTeam(int teamId, int page) async {
     try {
-      var resp = await _api.getApi('group/$teamId/notice-wallet');
+      var resp = await _api.getApi('group/$teamId/notice-wallet',
+          queryParams: {"page": page, "limit": 10});
       return FundResponse.success(resp.data);
     } on DioError catch (e) {
       return FundResponse.error(e.message);
@@ -664,7 +655,7 @@ class Api {
     }
   }
 
-  Future<FundRequestResponse> getFundStatusByNoticeId(
+  Future<FundRequestResponse> getFundRequestByNotice(
       int teamId, int noticeId) async {
     try {
       var resp = await _api.getApi('group/$teamId/notice-wallet/$noticeId');
@@ -692,17 +683,6 @@ class Api {
       return CreateTransactionResponse.success(resp.data);
     } on DioError catch (e) {
       return CreateTransactionResponse.error(e.message);
-    }
-  }
-
-  Future<TransactionResponse> getUserTransaction(int page) async {
-    try {
-      FormData formData = new FormData.from({"page": page, "limit": 50});
-      var resp =
-          await _api.getApi('user/wallet/history', queryParams: formData);
-      return TransactionResponse.success(resp.data);
-    } on DioError catch (e) {
-      return TransactionResponse.error(e.message);
     }
   }
 
@@ -760,10 +740,19 @@ class Api {
     }
   }
 
-  Future<MatchShareResponse> getMatchShares(int page) async {
+  Future<BaseResponse> deleteCode(int matchId, int teamId) async {
     try {
-      FormData formData = new FormData.from({"page": page, "limit": 50});
-      var resp = await _api.getApi('match/share', queryParams: formData);
+      var resp = await _api.deleteApi('match/$matchId/group/$teamId/code');
+      return BaseResponse.success(resp.data);
+    } on DioError catch (e) {
+      return BaseResponse.error(e.message);
+    }
+  }
+
+  Future<MatchShareResponse> getMatchShare(int page) async {
+    try {
+      var resp = await _api
+          .getApi('match/share', queryParams: {"page": page, "limit": 50});
       return MatchShareResponse.success(resp.data);
     } on DioError catch (e) {
       return MatchShareResponse.error(e.message);
@@ -780,14 +769,33 @@ class Api {
     }
   }
 
-  Future<MatchShareResponse> getUserJoinMatch(int page) async {
+  Future<MatchShareResponse> getPendingMatch(int page) async {
     try {
-      FormData formData = new FormData.from({"page": page, "limit": 50});
-      var resp =
-          await _api.getApi('match/share/user/request', queryParams: formData);
+      var resp = await _api.getApi('/match/pending-accept',
+          queryParams: {"page": page, "limit": 50});
       return MatchShareResponse.success(resp.data);
     } on DioError catch (e) {
       return MatchShareResponse.error(e.message);
+    }
+  }
+
+  Future<MatchShareResponse> getAcceptedMatch(int page) async {
+    try {
+      var resp = await _api.getApi('/match/before-kick-off',
+          queryParams: {"page": page, "limit": 50});
+      return MatchShareResponse.success(resp.data);
+    } on DioError catch (e) {
+      return MatchShareResponse.error(e.message);
+    }
+  }
+
+  Future<MatchHistoryResponse> getJoinedMatch(int page) async {
+    try {
+      var resp = await _api.getApi('/match/non-organic',
+          queryParams: {"page": page, "limit": 50});
+      return MatchHistoryResponse.success(null, resp.data);
+    } on DioError catch (e) {
+      return MatchHistoryResponse.error(e.message);
     }
   }
 
@@ -828,7 +836,7 @@ class Api {
     }
   }
 
-  Future<MatchShareResponse> getMatchSharesByCode(String code) async {
+  Future<MatchShareResponse> getMatchShareByCode(String code) async {
     try {
       var resp = await _api.getApi('match/code?code=$code');
       return MatchShareResponse.success(resp.data);
@@ -848,7 +856,7 @@ class Api {
     }
   }
 
-  Future<FixedTimeResponse> getFixedTimes(int teamId) async {
+  Future<FixedTimeResponse> getFixedTime(int teamId) async {
     try {
       var resp = await _api.getApi('ground/fixed/group/$teamId');
       return FixedTimeResponse.success(resp.data);
@@ -856,4 +864,15 @@ class Api {
       return FixedTimeResponse.error(e.message);
     }
   }
+
+  Future<ListGroundResponse> searchGroundByKey(String key) async {
+    try {
+      var resp = await _api.getApi('ground/search',
+          queryParams: {"page": 1, 'limit': 5, 'text_search': key});
+      return ListGroundResponse.success(resp.data);
+    } on DioError catch (e) {
+      return ListGroundResponse.error(e.message);
+    }
+  }
+
 }

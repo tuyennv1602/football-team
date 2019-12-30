@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
 
-class ExpandableTextWidget extends StatefulWidget {
+class ExpandableText extends StatefulWidget {
   final String text;
   final TextStyle textStyle;
   final numberLine;
 
-  ExpandableTextWidget(this.text, {this.textStyle, this.numberLine = 2});
+  ExpandableText(this.text, {this.textStyle, this.numberLine = 2});
 
   @override
   _ExpandableTextState createState() => new _ExpandableTextState();
 }
 
-class _ExpandableTextState extends State<ExpandableTextWidget>
-    with TickerProviderStateMixin<ExpandableTextWidget> {
+class _ExpandableTextState extends State<ExpandableText>
+    with TickerProviderStateMixin<ExpandableText> {
   bool isExpanded = false;
 
   @override

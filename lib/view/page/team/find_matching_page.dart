@@ -12,18 +12,18 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/clipper_left_widget.dart';
 import 'package:myfootball/view/widget/clipper_right_widget.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/router/date_util.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/utils/date_util.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/find_matching_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +61,7 @@ class FindMatchingPage extends StatelessWidget {
               '- Sử dụng chức năng tìm kiếm để tìm kiếm thủ công đối tác mà bạn muốn ghép',
               style: textStyleRegular(),
             ),
-            ButtonWidget(
+            CustomizeButton(
                 child: Text(
                   'THIẾT LẬP GHÉP ĐỐI',
                   style: textStyleButton(),
@@ -282,7 +282,7 @@ class FindMatchingPage extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: UIHelper.size5),
-                                child: TabBarWidget(
+                                child: CustomizeTabBar(
                                   titles: team2.getMappedTimeSlot.keys
                                       .toList()
                                       .map((item) => DateFormat('dd/MM')
@@ -322,9 +322,9 @@ class FindMatchingPage extends StatelessWidget {
               model.findMatching(team);
             }
           },
-          child: AppBarWidget(
+          child: CustomizeAppBar(
             centerContent: SizedBox(),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -348,7 +348,7 @@ class FindMatchingPage extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: <Widget>[
-                                  ImageWidget(
+                                  CustomizeImage(
                                     source: team.logo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                     size: UIHelper.size(70),
@@ -390,7 +390,7 @@ class FindMatchingPage extends StatelessWidget {
                                                           .currentTeam.logo)),
                                           child: Hero(
                                             tag: model.currentTeam.groupId,
-                                            child: ImageWidget(
+                                            child: CustomizeImage(
                                               source: model.currentTeam.logo,
                                               placeHolder: Images.DEFAULT_LOGO,
                                               size: UIHelper.size(70),
@@ -459,7 +459,7 @@ class FindMatchingPage extends StatelessWidget {
                                               loop: false,
                                             ),
                                           ),
-                                          ButtonWidget(
+                                          CustomizeButton(
                                             child: Text(
                                               'MỜI GHÉP ĐỐI',
                                               style: textStyleButton(),

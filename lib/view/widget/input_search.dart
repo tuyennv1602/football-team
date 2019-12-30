@@ -10,7 +10,7 @@ typedef void OnChangedText(String text);
 typedef void OnSubmitText(String text);
 
 // ignore: must_be_immutable
-class SearchWidget extends StatelessWidget {
+class InputSearch extends StatelessWidget {
   final String keyword;
   final OnChangedText onChangedText;
   final Color backgroundColor;
@@ -19,7 +19,7 @@ class SearchWidget extends StatelessWidget {
   final bool isLoading;
   Timer _debounce;
 
-  SearchWidget(
+  InputSearch(
       {Key key,
       this.keyword = '',
       this.onChangedText,

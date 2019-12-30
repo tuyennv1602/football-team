@@ -3,14 +3,14 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class AppBarWidget extends StatelessWidget {
+class CustomizeAppBar extends StatelessWidget {
   final Widget leftContent;
   final Widget centerContent;
   final Widget rightContent;
   final Color backgroundColor;
   final double _kAppbarHeight = UIHelper.size(55);
 
-  AppBarWidget(
+  CustomizeAppBar(
       {Key key,
       this.leftContent,
       this.rightContent,

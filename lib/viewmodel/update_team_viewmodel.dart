@@ -45,7 +45,8 @@ class UpdateTeamViewModel extends BaseViewModel {
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       _teamServices.setTeam(team);
-      Navigation.instance.goBack();
+      UIHelper.showSimpleDialog('Cập nhật thành công!',
+          isSuccess: true, onConfirmed: () => Navigation.instance.goBack());
     } else {
       UIHelper.showSimpleDialog(resp.errorMessage);
     }

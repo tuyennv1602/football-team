@@ -7,16 +7,16 @@ import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 
-class ChooseTransactionWidget extends StatefulWidget {
+class ChooseTransaction extends StatefulWidget {
   final OnSelectedType onSelectedType;
 
-  ChooseTransactionWidget({@required this.onSelectedType});
+  ChooseTransaction({@required this.onSelectedType});
 
   @override
   State<StatefulWidget> createState() => _ChooseTransactionTypeState();
 }
 
-class _ChooseTransactionTypeState extends State<ChooseTransactionWidget> {
+class _ChooseTransactionTypeState extends State<ChooseTransaction> {
   bool _isExpanded = false;
   int _selectedType = Constants.TRANSACTION_OUT;
 

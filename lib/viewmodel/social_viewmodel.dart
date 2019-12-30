@@ -40,7 +40,7 @@ class SocialViewModel extends BaseViewModel {
 
   Future<bool> getMatchShares(int page) async {
     this.isMatchByCode = false;
-    var resp = await _api.getMatchShares(page);
+    var resp = await _api.getMatchShare(page);
     if (resp.isSuccess && resp.matchShares != null) {
       this.matchShares = resp.matchShares;
     }
@@ -64,7 +64,7 @@ class SocialViewModel extends BaseViewModel {
 
   Future<void> getMatchSharesByCode(String code) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.getMatchSharesByCode(code);
+    var resp = await _api.getMatchShareByCode(code);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       if (resp.matchShares == null) {

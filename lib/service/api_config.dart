@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:myfootball/model/headers.dart';
+import 'package:myfootball/model/header.dart';
 
 import '../http.dart';
 
@@ -17,14 +17,14 @@ class ApiConfig {
     return _instance;
   }
 
-  static Headers header;
+  static Header header;
 
-  static setHeader(Headers header) {
+  static setHeader(Header header) {
     ApiConfig.header = header;
   }
 
   Future<Response<dynamic>> getApi(String endPoint,
-      {FormData queryParams}) async {
+      {Map<String, dynamic> queryParams}) async {
     return await dio.get(endPoint,
         queryParameters: queryParams,
         options: Options(headers: header.toJson()));
@@ -40,8 +40,10 @@ class ApiConfig {
         data: body, options: Options(headers: header.toJson()));
   }
 
-  Future<Response<dynamic>> deleteApi(String endPoint, {FormData queryParams}) async {
+  Future<Response<dynamic>> deleteApi(String endPoint,
+      { Map<String, dynamic> queryParams}) async {
     return await dio.delete(endPoint,
-        queryParameters: queryParams, options: Options(headers: header.toJson()));
+        queryParameters: queryParams,
+        options: Options(headers: header.toJson()));
   }
 }

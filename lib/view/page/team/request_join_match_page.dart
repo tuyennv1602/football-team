@@ -7,15 +7,15 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/request_join_match_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +56,7 @@ class RequestJoinMatchPage extends StatelessWidget {
 
   _buildItemRequest(BuildContext context, MatchUser matchUser,
           {Function onAccept, Function onReject, Function onDetail}) =>
-      BorderItemWidget(
+      BorderItem(
         onTap: () => _showRequestOptions(context,
             onAccept: () => onAccept(matchUser),
             onReject: () => onReject(matchUser.matchUserId),
@@ -64,7 +64,7 @@ class RequestJoinMatchPage extends StatelessWidget {
                 .navigateTo(USER_COMMENT, arguments: matchUser.id)),
         child: Row(
           children: <Widget>[
-            ImageWidget(
+            CustomizeImage(
               source: matchUser.avatar,
               placeHolder: Images.DEFAULT_AVATAR,
               boxFit: BoxFit.cover,
@@ -131,13 +131,13 @@ class RequestJoinMatchPage extends StatelessWidget {
         backgroundColor: PRIMARY,
         body: Column(
           children: <Widget>[
-            AppBarWidget(
+            CustomizeAppBar(
               centerContent: Text(
                 'Yêu cầu tham gia trận đấu',
                 textAlign: TextAlign.center,
                 style: textStyleTitle(),
               ),
-              leftContent: AppBarButtonWidget(
+              leftContent: AppBarButton(
                 imageName: Images.BACK,
                 onTap: () =>
                     Navigation.instance.goBack(result: acceptedUsers),

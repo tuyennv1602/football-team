@@ -5,8 +5,8 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-import 'button_widget.dart';
-import 'input_text_widget.dart';
+import 'customize_button.dart';
+import 'input_text.dart';
 
 typedef void OnSubmitReview(double rate, String comment);
 
@@ -95,7 +95,7 @@ class ReviewDialog extends StatelessWidget {
                                     padding: EdgeInsets.only(top: UIHelper.size10),
                                     child: Form(
                                       key: _formKey,
-                                      child: InputTextWidget(
+                                      child: InputText(
                                         onSaved: (value) => comment = value,
                                         maxLines: 3,
                                         maxLength: 500,
@@ -123,12 +123,12 @@ class ReviewDialog extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        ButtonWidget(
+                        CustomizeButton(
                           onTap: () {
                             Navigator.of(context).pop();
                           },
                           width: UIHelper.screenWidth / 3,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: GREY_BUTTON,
                           height: UIHelper.size40,
                           borderRadius: BorderRadius.circular(UIHelper.size40),
                           child: Text(
@@ -136,13 +136,13 @@ class ReviewDialog extends StatelessWidget {
                             style: textStyleButton(),
                           ),
                         ),
-                        ButtonWidget(
+                        CustomizeButton(
                           onTap: () {
                             Navigator.of(context).pop();
                             _onSubmitReview();
                           },
                           width: UIHelper.screenWidth / 3,
-                          backgroundColor: GREEN_SUCCESS,
+                          backgroundColor: GREEN_BUTTON,
                           margin: EdgeInsets.only(left: UIHelper.size10),
                           height: UIHelper.size40,
                           borderRadius: BorderRadius.circular(UIHelper.size40),

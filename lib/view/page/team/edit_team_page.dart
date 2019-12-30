@@ -7,12 +7,12 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/update_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class EditTeamPage extends StatelessWidget {
     return false;
   }
 
-  void _showChooseImage(BuildContext context, Function onImageReady) =>
+  _showChooseImage(BuildContext context, Function onImageReady) =>
       showModalBottomSheet(
         context: context,
         builder: (c) => BottomSheetWidget(
@@ -53,7 +53,7 @@ class EditTeamPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemColor(BuildContext context, Color color) => Padding(
+  _buildItemColor(BuildContext context, Color color) => Padding(
         padding: EdgeInsets.all(UIHelper.size5),
         child: Container(
           height: UIHelper.size40,
@@ -74,8 +74,8 @@ class EditTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
-            leftContent: AppBarButtonWidget(
+          CustomizeAppBar(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -93,13 +93,13 @@ class EditTeamPage extends StatelessWidget {
                     child: BaseWidget<UpdateTeamViewModel>(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: UIHelper.size15),
+                            EdgeInsets.symmetric(horizontal: UIHelper.padding),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              InputTextWidget(
+                              InputText(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập tên đội bóng';
@@ -111,7 +111,7 @@ class EditTeamPage extends StatelessWidget {
                                 labelText: 'Tên đội bóng',
                                 onSaved: (value) => _teamName = value,
                               ),
-                              InputTextWidget(
+                              InputText(
                                 validator: (value) {
                                   if (value.isEmpty)
                                     return 'Vui lòng nhập giới thiệu';
@@ -143,8 +143,8 @@ class EditTeamPage extends StatelessWidget {
                           Container(
                             height: UIHelper.size(100),
                             width: UIHelper.size(100),
-                            margin:
-                                EdgeInsets.symmetric(vertical: UIHelper.size15),
+                            margin: EdgeInsets.symmetric(
+                                vertical: UIHelper.padding),
                             decoration: BoxDecoration(
                                 border: Border.all(color: LINE_COLOR, width: 1),
                                 borderRadius:
@@ -153,7 +153,7 @@ class EditTeamPage extends StatelessWidget {
                               onTap: () => _showChooseImage(
                                   context, (image) => model.setImage(image)),
                               child: model.image == null
-                                  ? ImageWidget(
+                                  ? CustomizeImage(
                                       source: _team.logo,
                                       placeHolder: Images.DEFAULT_LOGO)
                                   : Image.file(model.image, fit: BoxFit.cover),
@@ -193,7 +193,7 @@ class EditTeamPage extends StatelessWidget {
                               itemCount: DRESS_COLORS.length,
                             ),
                           ),
-                          ButtonWidget(
+                          CustomizeButton(
                             onTap: () {
                               if (validateAndSave()) {
                                 _team.name = _teamName;
@@ -201,7 +201,9 @@ class EditTeamPage extends StatelessWidget {
                                 model.updateTeam(_team);
                               }
                             },
-                            margin: EdgeInsets.symmetric(horizontal: UIHelper.size15, vertical: UIHelper.size10),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: UIHelper.padding,
+                                vertical: UIHelper.size30),
                             child: Text(
                               'CẬP NHẬT',
                               style: textStyleButton(),

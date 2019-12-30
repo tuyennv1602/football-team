@@ -12,11 +12,11 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
-import 'package:myfootball/view/widget/search_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/input_search.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/search_ground_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -43,20 +43,19 @@ class _SearchGroundState extends State<SearchGroundPage> {
   final Completer<GoogleMapController> _controller = Completer();
   BitmapDescriptor _groundMarker;
 
-  Widget _buildItemGround(BuildContext context, int index, Ground ground) =>
-      BorderItemWidget(
+  _buildItemGround(BuildContext context, int index, Ground ground) =>
+      BorderItem(
         padding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
         onTap: () {
           if (widget.type == BOOKING_TYPE.NORMAL) {
             Navigation.instance.navigateTo(BOOKING, arguments: ground);
           } else {
-            Navigation.instance
-                .navigateTo(BOOKING_FIXED, arguments: ground);
+            Navigation.instance.navigateTo(BOOKING_FIXED, arguments: ground);
           }
         },
         child: Hero(
-          tag: 'ground-${ground.id}',
+          tag: ground.tag,
           child: Stack(
             children: <Widget>[
               ClipRRect(
@@ -170,19 +169,59 @@ class _SearchGroundState extends State<SearchGroundPage> {
     );
   }
 
+  _buildItemSearchGround(Ground ground) => InkWell(
+        onTap: () =>
+            Navigation.instance.navigateTo(GROUND_DETAIL, arguments: ground.id),
+        borderRadius: BorderRadius.circular(UIHelper.size5),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(UIHelper.size5)),
+          padding: EdgeInsets.all(UIHelper.size10),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      ground.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyleRegular(size: 16),
+                    ),
+                    Text(
+                      ground.address,
+                      maxLines: 1,
+                      style: textStyleRegularBody(color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+              Image.asset(
+                Images.NEXT,
+                width: UIHelper.size10,
+                height: UIHelper.size10,
+                color: LINE_COLOR,
+              )
+            ],
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Tìm kiếm sân bóng',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -216,11 +255,32 @@ class _SearchGroundState extends State<SearchGroundPage> {
                           )
                           .toSet(),
                     ),
-                    SearchWidget(
+                    InputSearch(
                       hintText: 'Nhập tên sân bóng',
-                      isLoading: false,
-                      onChangedText: (text) {},
+                      isLoading: model.isSearching,
+                      keyword: model.key,
+                      onChangedText: (text) => model.searchGroundByKey(text),
                     ),
+                    model.searchResults.length > 0
+                        ? Positioned(
+                            top: UIHelper.size(69),
+                            left: 0,
+                            right: 0,
+                            bottom: UIHelper.size(200) + UIHelper.paddingBottom,
+                            child: ListView.separated(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.padding),
+                              itemBuilder: (c, index) => _buildItemSearchGround(
+                                model.searchResults[index],
+                              ),
+                              separatorBuilder: (c, index) => SizedBox(
+                                height: UIHelper.size5,
+                                width: UIHelper.screenWidth,
+                              ),
+                              itemCount: model.searchResults.length,
+                            ),
+                          )
+                        : SizedBox(),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(

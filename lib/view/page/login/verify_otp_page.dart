@@ -7,9 +7,9 @@ import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/count_down_timer.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/verify_otp_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class VerifyOTPPage extends StatelessWidget {
 
   VerifyOTPPage({Key key, @required this.verifyArgument}) : super(key: key);
 
-  Widget _buildItemCode(String code) => Container(
+  _buildItemCode(String code) => Container(
         height: UIHelper.size40,
         width: UIHelper.size35,
         margin: EdgeInsets.symmetric(horizontal: UIHelper.size(8)),
@@ -36,10 +36,10 @@ class VerifyOTPPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildItemNumber(String title, {Function onTap}) => ButtonWidget(
+  _buildItemNumber(String title, {Function onTap}) => CustomizeButton(
         onTap: onTap,
         elevation: 2,
-        backgroundColor: Colors.white,
+        backgroundColor: GREY_BUTTON,
         child: Text(
           title,
           style: textStyleSemiBold(size: 24),
@@ -179,11 +179,11 @@ class VerifyOTPPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: Center(
-                            child: ButtonWidget(
+                            child: CustomizeButton(
                               child: Row(
                                 children: <Widget>[
                                   SizedBox(
-                                    width: UIHelper.size50,
+                                    width: UIHelper.size(60),
                                     height: 40,
                                   ),
                                   Expanded(
@@ -196,7 +196,7 @@ class VerifyOTPPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: UIHelper.size50,
+                                    width: UIHelper.size(60),
                                     height: 50,
                                     child: model.isExpired
                                         ? SizedBox()
@@ -259,9 +259,9 @@ class VerifyOTPPage extends StatelessWidget {
                               SizedBox(),
                               _buildItemNumber('0',
                                   onTap: () => model.setCode('0')),
-                              ButtonWidget(
+                              CustomizeButton(
                                 onTap: () => model.deleteCode(),
-                                backgroundColor: Colors.white,
+                                backgroundColor: GREY_BUTTON,
                                 elevation: 2,
                                 child: Image.asset(
                                   Images.DELETE,

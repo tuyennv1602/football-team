@@ -28,6 +28,7 @@ parseJson(String text) {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   timeago.setLocaleMessages('vi', ViMessage());
   _firebaseMessaging.requestNotificationPermissions();
   var token = await LocalStorage().getToken();

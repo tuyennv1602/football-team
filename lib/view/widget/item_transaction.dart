@@ -5,16 +5,16 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
-class ItemTransactionWidget extends StatelessWidget {
+class ItemTransaction extends StatelessWidget {
   final Transaction transaction;
   final bool showCreator;
 
-  ItemTransactionWidget({Key key, this.transaction, this.showCreator = true})
+  ItemTransaction({Key key, this.transaction, this.showCreator = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BorderItemWidget(
+    return BorderItem(
       child: Row(
         children: <Widget>[
           Container(

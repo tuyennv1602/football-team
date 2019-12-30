@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color PRIMARY = Color(0xFF03be31);
+const Color PRIMARY = Color(0xFF02AC2C);
 const Color WHITE_OPACITY = Color(0xCCF9F9F9);
 const Color LINE_COLOR = Color(0xFFE0E0E0);
 const Color GREY_BACKGROUND = Color(0xFFFCFCFC);
@@ -33,10 +33,14 @@ const List<Color> BLACK_GRADIENT = [
   Color(0x00000000),
 ];
 
-const List<Color> GREEN_GRADIENT = [
-  Color(0xFF01A028),
-  Color(0xFF057C21),
-];
+const List<Color> GREEN_GRADIENT = [Color(0xFF01A028), Color(0xFF057C21)];
+const List<Color> GREEN_BUTTON = [Color(0xFF02DC37), PRIMARY];
+const List<Color> GREY_BUTTON = [Color(0xFFD7D7D7), Color(0xFFA6A6A6)];
+const List<Color> RED_BUTTON = [Color(0xFFE53935), Color(0xFFE11A15)];
+const List<Color> PURPLE_GRADIENT = [Colors.deepPurpleAccent, Colors.deepPurpleAccent];
+const List<Color> YELLOW_GRADIENT = [Colors.yellow, Colors.amber];
+const List<Color> ORANGE_GRADIENT = [Colors.deepOrangeAccent, Colors.deepOrange];
+const List<Color> PINK_GRADIENT = [Colors.pinkAccent, Colors.pink];
 
 const List<Color> LIGHT_GREEN_GRADIENT = [
   Color(0xFF02DC37),
@@ -45,10 +49,7 @@ const List<Color> LIGHT_GREEN_GRADIENT = [
   Color(0xFF02DC37),
 ];
 
-const List<Color> RED_GRADIENT = [
-  Color(0xFFC01D04),
-  Color(0xFF831605),
-];
+const List<Color> RED_GRADIENT = [Color(0xFFE53935), Color(0xFFE11A15)];
 
 const List<Color> DRESS_COLORS = [
   Color(0xFFF6D2D1),

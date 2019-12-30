@@ -13,7 +13,7 @@ class TicketViewModel extends BaseViewModel {
 
   Future<TicketResponse> getTickets(int teamId) async {
     setBusy(true);
-    var resp = await _api.getTickets(teamId);
+    var resp = await _api.getTicket(teamId);
     if (resp.isSuccess) {
       this.tickets = resp.tickets;
     }

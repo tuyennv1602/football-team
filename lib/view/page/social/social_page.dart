@@ -10,17 +10,16 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
-import 'package:myfootball/view/widget/input_text_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
-import 'package:myfootball/view/widget/top_ranking.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/social_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +47,7 @@ class SocialPage extends StatelessWidget {
         style: textStyleSemiBold(size: 18),
       );
 
-  _buildItemNews(BuildContext context, News news) => BorderItemWidget(
+  _buildItemNews(BuildContext context, News news) => BorderItem(
         onTap: () => launch(news.getLink),
         margin: EdgeInsets.zero,
         padding: EdgeInsets.zero,
@@ -123,7 +122,7 @@ class SocialPage extends StatelessWidget {
 
   _buildItemRecruit(BuildContext context, MatchShare match,
           {Function onJoin, Function onDetail}) =>
-      BorderItemWidget(
+      BorderItem(
         margin: EdgeInsets.zero,
         padding: EdgeInsets.all(UIHelper.size10),
         onTap: () => onDetail(match.matchInfo),
@@ -134,7 +133,7 @@ class SocialPage extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  ImageWidget(
+                  CustomizeImage(
                     source: match.matchInfo.getMyTeamLogo,
                     placeHolder: Images.DEFAULT_LOGO,
                     size: UIHelper.size45,
@@ -248,25 +247,6 @@ class SocialPage extends StatelessWidget {
         ),
       );
 
-  _buildRanking(BuildContext context, List<Team> teams) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: UIHelper.padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildCateTitle('Bảng xếp hạng'),
-            Container(
-              margin: EdgeInsets.only(bottom: UIHelper.size20),
-              padding: EdgeInsets.only(top: UIHelper.size10),
-              child: TopRankingWidget(
-                firstTeam: teams.length > 0 ? teams[0] : null,
-                secondTeam: teams.length > 1 ? teams[1] : null,
-                thirdTeam: teams.length > 2 ? teams[2] : null,
-              ),
-            ),
-          ],
-        ),
-      );
-
   _showInputCode({Function onSubmit}) {
     var _code;
     UIHelper.showCustomizeDialog(
@@ -274,7 +254,7 @@ class SocialPage extends StatelessWidget {
       icon: Images.INVITE,
       child: Form(
         key: _formCode,
-        child: InputTextWidget(
+        child: InputText(
           validator: (value) {
             if (value.isEmpty) return 'Vui lòng nhập mã trận đấu';
             return null;
@@ -304,7 +284,7 @@ class SocialPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Cộng đồng',
               textAlign: TextAlign.center,
@@ -325,8 +305,6 @@ class SocialPage extends StatelessWidget {
                   physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   children: <Widget>[
-//                    _buildRanking(context, model.teams),
-//                    LineWidget(indent: 0),
                     Padding(
                       padding: EdgeInsets.only(
                           left: UIHelper.padding, right: UIHelper.padding),
@@ -405,12 +383,7 @@ class SocialPage extends StatelessWidget {
                       child: model.isLoadingMatch
                           ? LoadingWidget(type: LOADING_TYPE.WAVE)
                           : model.matchShares.length == 0
-                              ? Align(
-                                  alignment: Alignment.center,
-                                  child: Text('Chưa có tin nào',
-                                      style: textStyleMediumTitle(
-                                          color: Colors.grey)),
-                                )
+                              ? EmptyWidget(message: 'Không có tin nào!')
                               : SmartRefresher(
                                   controller: _recruitController,
                                   enablePullDown: true,

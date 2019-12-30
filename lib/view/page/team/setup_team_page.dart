@@ -6,10 +6,10 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/item_option.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/setup_team_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -23,13 +23,13 @@ class SetupTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Thiết lập đội bóng',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -40,7 +40,7 @@ class SetupTeamPage extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 physics: ClampingScrollPhysics(),
                 children: <Widget>[
-                  ItemOptionWidget(
+                  ItemOption(
                     Images.EDIT_TEAM,
                     'Chỉnh sửa thông tin',
                     iconColor: Colors.green,
@@ -53,7 +53,7 @@ class SetupTeamPage extends StatelessWidget {
                     onModelReady: (model) {
                       model.initActive(_team.isSearching);
                     },
-                    builder: (c, model, child) => ItemOptionWidget(
+                    builder: (c, model, child) => ItemOption(
                       Images.RECEIVE_INVITE,
                       'Nhận yêu cầu ghép đối',
                       iconColor: Colors.lightBlue,
@@ -80,7 +80,7 @@ class SetupTeamPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ItemOptionWidget(
+                  ItemOption(
                     Images.FIND_MATCH,
                     'Thiết lập thông tin ghép đối',
                     iconColor: Colors.red,

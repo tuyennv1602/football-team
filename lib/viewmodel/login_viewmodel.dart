@@ -4,17 +4,19 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:myfootball/model/device_info.dart';
-import 'package:myfootball/model/headers.dart';
+import 'package:myfootball/model/header.dart';
 import 'package:myfootball/model/response/base_response.dart';
 import 'package:myfootball/model/verify_arg.dart';
 import 'package:myfootball/service/auth_services.dart';
 import 'package:myfootball/service/api_config.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LoginViewModel extends BaseViewModel {
   final AuthServices _authServices;
@@ -26,7 +28,7 @@ class LoginViewModel extends BaseViewModel {
   Future<void> setupDeviceInfo() async {
     var resp = await getDeviceInfo();
     this.deviceInfo = resp;
-    ApiConfig.setHeader(Headers(deviceId: deviceInfo.deviceId));
+    ApiConfig.setHeader(Header(deviceId: deviceInfo.deviceId));
   }
 
   Future<void> loginEmail(String email, String password) async {
@@ -124,5 +126,38 @@ class LoginViewModel extends BaseViewModel {
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
+  Future<void> loginFacebook() async {
+    final result = await FacebookLogin().logIn(['email']);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        print(result.accessToken.token);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('canceled');
+        break;
+      case FacebookLoginStatus.error:
+        UIHelper.showSimpleDialog(result.errorMessage);
+        break;
+    }
+  }
+
+  Future<void> loginGoogle() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    try {
+      UIHelper.showProgressDialog;
+      var account = await _googleSignIn.signIn();
+      var token = (await account.authentication).accessToken;
+      UIHelper.hideProgressDialog;
+      print(token);
+    } catch (error) {
+      UIHelper.showSimpleDialog(error.toString());
+    }
   }
 }

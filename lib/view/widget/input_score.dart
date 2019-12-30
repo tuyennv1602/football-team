@@ -10,13 +10,13 @@ typedef void OnChangedText(String text);
 typedef void OnSubmitText(String text);
 
 // ignore: must_be_immutable
-class InputScoreWidget extends StatelessWidget {
+class InputScore extends StatelessWidget {
   final String keyword;
   final OnChangedText onChangedText;
   final String hint;
   Timer _debounce;
 
-  InputScoreWidget(
+  InputScore(
       {Key key,
       this.keyword = '',
       this.hint = '0',

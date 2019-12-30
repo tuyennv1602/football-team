@@ -5,8 +5,8 @@ import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/light_input_text.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/circle_input_text.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
 import 'package:myfootball/viewmodel/forgotpassword_viewmodel.dart';
@@ -119,7 +119,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                               style: textStyleBold(color: PRIMARY),
                             ),
                           ),
-                          LightInputTextWidget(
+                          CircleInputText(
                             labelText: 'Email',
                             validator: Validator.validEmail,
                             inputType: TextInputType.emailAddress,
@@ -131,7 +131,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                     Padding(
                                       padding: EdgeInsets.symmetric(
                                           vertical: UIHelper.size10),
-                                      child: LightInputTextWidget(
+                                      child: CircleInputText(
                                         labelText: 'Mật khẩu mới',
                                         obscureText: true,
                                         validator: Validator.validPassword,
@@ -139,7 +139,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                                             _password = value.trim(),
                                       ),
                                     ),
-                                    LightInputTextWidget(
+                                    CircleInputText(
                                       labelText: 'Mã xác thực',
                                       validator: Validator.validCode,
                                       onSaved: (value) => _code = value.trim(),
@@ -155,7 +155,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                               style: textStyleItalic(color: Colors.black87),
                             ),
                           ),
-                          ButtonWidget(
+                          CustomizeButton(
                             child: Text(
                               model.isChangePassword
                                   ? 'ĐỔI MẬT KHẨU'

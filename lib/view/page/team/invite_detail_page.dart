@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myfootball/model/invite_request.dart';
 import 'package:myfootball/model/matching_time_slot.dart';
+import 'package:myfootball/model/team.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/button_widget.dart';
-import 'package:myfootball/view/widget/expandable_text_widget.dart';
+import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/expandable_text.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/line.dart';
-import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/confirm_invite_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -27,11 +29,8 @@ class InviteDetailPage extends StatelessWidget {
   InviteDetailPage({@required InviteRequest inviteRequest})
       : _inviteRequest = inviteRequest;
 
-  Widget _buildItemTimeSlot(
-      BuildContext context,
-      MatchingTimeSlot selectedTimeSlot,
-      MatchingTimeSlot timeSlot,
-      Function onTap) {
+  _buildItemTimeSlot(BuildContext context, MatchingTimeSlot selectedTimeSlot,
+      MatchingTimeSlot timeSlot, Function onTap) {
     bool isSelected = selectedTimeSlot != null &&
         selectedTimeSlot.timeSlotId == timeSlot.timeSlotId;
     return InkWell(
@@ -102,13 +101,13 @@ class InviteDetailPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Chi tiết lời mời',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
             ),
@@ -118,7 +117,51 @@ class InviteDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ItemOptionWidget(
+                  InkWell(
+                    onTap: () => Navigation.instance.navigateTo(
+                      TEAM_DETAIL,
+                      arguments: Team(
+                          id: _inviteRequest.getId,
+                          name: _inviteRequest.getName,
+                          logo: _inviteRequest.getLogo),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: UIHelper.padding,
+                          left: UIHelper.padding,
+                          right: UIHelper.padding,
+                          bottom: UIHelper.size5),
+                      child: Row(
+                        children: <Widget>[
+                          Hero(
+                            tag: 'team-${_inviteRequest.getId}',
+                            child: CustomizeImage(
+                              source: _inviteRequest.getLogo,
+                              placeHolder: Images.DEFAULT_LOGO,
+                              size: UIHelper.size35,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: UIHelper.padding),
+                              child: Text(
+                                _inviteRequest.getName,
+                                style: textStyleSemiBold(size: 18),
+                              ),
+                            ),
+                          ),
+                          Image.asset(
+                            Images.NEXT,
+                            width: UIHelper.size10,
+                            height: UIHelper.size10,
+                            color: LINE_COLOR,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  ItemOption(
                     Images.INVITE,
                     'Lời mời',
                     rightContent: SizedBox(),
@@ -126,9 +169,9 @@ class InviteDetailPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: UIHelper.size(60)),
-                    child: ExpandableTextWidget(_inviteRequest.title),
+                    child: ExpandableText(_inviteRequest.title),
                   ),
-                  ItemOptionWidget(
+                  ItemOption(
                     Images.RATIO,
                     'Tỉ lệ kèo: ${_inviteRequest.getRatio}',
                     rightContent: SizedBox(),
@@ -138,8 +181,9 @@ class InviteDetailPage extends StatelessWidget {
                       ? Container(
                           width: double.infinity,
                           color: Colors.white,
-                          padding:
-                              EdgeInsets.symmetric(vertical: UIHelper.size10, horizontal: UIHelper.padding),
+                          padding: EdgeInsets.symmetric(
+                              vertical: UIHelper.size10,
+                              horizontal: UIHelper.padding),
                           child: Text(
                             'Chọn thời gian, sân thi đấu',
                             style: textStyleSemiBold(),
@@ -157,89 +201,90 @@ class InviteDetailPage extends StatelessWidget {
                             child: _inviteRequest.matchId != null
                                 ? Column(
                                     children: <Widget>[
-                                      ItemOptionWidget(
+                                      ItemOption(
                                         Images.CLOCK,
                                         'Thời gian: ${_inviteRequest.matchInfo.getFullPlayTime}',
                                         rightContent: SizedBox(),
                                         iconColor: Colors.deepPurpleAccent,
                                       ),
-                                      ItemOptionWidget(
+                                      ItemOption(
                                         Images.STADIUM,
                                         _inviteRequest.matchInfo.groundName,
                                         iconColor: Colors.green,
                                         onTap: () => Navigation.instance
-                                            .navigateTo(GROUND_DETAIL,
+                                            .navigateTo(
+                                                GROUND_DETAIL,
                                                 arguments: _inviteRequest
                                                     .matchInfo.groundId),
                                       ),
                                     ],
                                   )
                                 : DefaultTabController(
-                                  length: _inviteRequest
-                                      .getMappedTimeSlot.length,
-                                  child: Column(
-                                    children: <Widget>[
-                                      TabBarWidget(
-                                        titles: _inviteRequest
-                                            .getMappedTimeSlot.keys
-                                            .toList()
-                                            .map((item) => DateFormat(
-                                                    'dd/MM')
-                                                .format(DateTime
-                                                    .fromMillisecondsSinceEpoch(
-                                                        item)))
-                                            .toList(),
-                                        isScrollable: true,
-                                        height: UIHelper.size35,
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: UIHelper.padding),                                              child: TabBarView(
-                                            children: _inviteRequest
-                                                .getMappedTimeSlot.values
-                                                .toList()
-                                                .map(
-                                                  (timeSlots) =>
-                                                      ListView.separated(
-                                                          physics:
-                                                              BouncingScrollPhysics(),
-                                                          padding: EdgeInsets
-                                                              .zero,
-                                                          itemBuilder: (c, index) => _buildItemTimeSlot(
-                                                              context,
-                                                              model
-                                                                  .selectedTimeSlot,
-                                                              timeSlots[
-                                                                  index],
-                                                              (isSelected,
-                                                                      timeSlot) =>
-                                                                  model.setSelectedTimeSlot(
-                                                                      !isSelected
-                                                                          ? null
-                                                                          : timeSlot)),
-                                                          separatorBuilder:
-                                                              (c, index) =>
-                                                                  LineWidget(
-                                                                    indent: 0,
-                                                                  ),
-                                                          itemCount: timeSlots
-                                                              .length),
-                                                )
-                                                .toList(),
+                                    length:
+                                        _inviteRequest.getMappedTimeSlot.length,
+                                    child: Column(
+                                      children: <Widget>[
+                                        CustomizeTabBar(
+                                          titles: _inviteRequest
+                                              .getMappedTimeSlot.keys
+                                              .toList()
+                                              .map((item) => DateFormat('dd/MM')
+                                                  .format(DateTime
+                                                      .fromMillisecondsSinceEpoch(
+                                                          item)))
+                                              .toList(),
+                                          isScrollable: true,
+                                          height: UIHelper.size35,
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: UIHelper.padding),
+                                            child: TabBarView(
+                                              children: _inviteRequest
+                                                  .getMappedTimeSlot.values
+                                                  .toList()
+                                                  .map(
+                                                    (timeSlots) =>
+                                                        ListView.separated(
+                                                            physics:
+                                                                BouncingScrollPhysics(),
+                                                            padding: EdgeInsets
+                                                                .zero,
+                                                            itemBuilder: (c, index) => _buildItemTimeSlot(
+                                                                context,
+                                                                model
+                                                                    .selectedTimeSlot,
+                                                                timeSlots[
+                                                                    index],
+                                                                (isSelected,
+                                                                        timeSlot) =>
+                                                                    model.setSelectedTimeSlot(
+                                                                        !isSelected
+                                                                            ? null
+                                                                            : timeSlot)),
+                                                            separatorBuilder:
+                                                                (c, index) =>
+                                                                    LineWidget(
+                                                                      indent: 0,
+                                                                    ),
+                                                            itemCount: timeSlots
+                                                                .length),
+                                                  )
+                                                  .toList(),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: UIHelper.padding,
                                 vertical: UIHelper.size10),
                             child: _inviteRequest.isMine
-                                ? ButtonWidget(
+                                ? CustomizeButton(
                                     child: Text(
                                       'HUỶ LỜI MỜI',
                                       style: textStyleButton(),
@@ -249,12 +294,12 @@ class InviteDetailPage extends StatelessWidget {
                                         onConfirmed: () =>
                                             model.cancelInviteRequest(
                                                 _inviteRequest.id)),
-                                    backgroundColor: Colors.grey,
+                                    backgroundColor: GREY_BUTTON,
                                   )
                                 : Row(
                                     children: <Widget>[
                                       Expanded(
-                                        child: ButtonWidget(
+                                        child: CustomizeButton(
                                           child: Text(
                                             'TỪ CHỐI',
                                             style: textStyleButton(),
@@ -265,13 +310,13 @@ class InviteDetailPage extends StatelessWidget {
                                             model.rejectInviteRequest(
                                                 _inviteRequest.id);
                                           }),
-                                          backgroundColor: Colors.grey,
+                                          backgroundColor: GREY_BUTTON,
                                         ),
                                       ),
                                       SizedBox(
                                           width: UIHelper.size10, height: 10),
                                       Expanded(
-                                        child: ButtonWidget(
+                                        child: CustomizeButton(
                                           child: Text(
                                             'ĐỒNG Ý',
                                             style: textStyleButton(),

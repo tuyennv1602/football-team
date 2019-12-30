@@ -7,18 +7,18 @@ import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 
-class ChooseRatioWidget extends StatefulWidget {
+class ChooseRatio extends StatefulWidget {
   final OnSelectedType onSelectedType;
   final Color primaryColor;
 
-  ChooseRatioWidget(
+  ChooseRatio(
       {@required this.onSelectedType, this.primaryColor = Colors.black});
 
   @override
   State<StatefulWidget> createState() => _ChooseRatioTypeState();
 }
 
-class _ChooseRatioTypeState extends State<ChooseRatioWidget> {
+class _ChooseRatioTypeState extends State<ChooseRatio> {
   bool _isExpanded = false;
   int _selectedType = Constants.RATIO_50_50;
 

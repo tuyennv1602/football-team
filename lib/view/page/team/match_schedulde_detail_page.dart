@@ -10,15 +10,15 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/image_widget.dart';
+import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/match_schedule_detail_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -73,17 +73,17 @@ class MatchScheduleDetailPage extends StatelessWidget {
                   colors: [PRIMARY, Color(0xFFE5F230)])),
           child: Column(
             children: <Widget>[
-              AppBarWidget(
+              CustomizeAppBar(
                 centerContent: Text(
                   'Thông tin trận đấu',
                   textAlign: TextAlign.center,
                   style: textStyleTitle(),
                 ),
-                leftContent: AppBarButtonWidget(
+                leftContent: AppBarButton(
                   imageName: Images.BACK,
                   onTap: () => Navigation.instance.goBack(),
                 ),
-                rightContent: AppBarButtonWidget(
+                rightContent: AppBarButton(
                   imageName: Images.SHARE_2,
                   onTap: () async {
                     if (matchSchedule.getMyTeam.code == null) {
@@ -114,7 +114,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                           padding: EdgeInsets.only(top: UIHelper.size50),
                           child: Column(
                             children: <Widget>[
-                              ItemOptionWidget(
+                              ItemOption(
                                 Images.STADIUM,
                                 matchSchedule.groundName,
                                 iconColor: Colors.green,
@@ -125,7 +125,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                               team != null &&
                                       team.hasManager(userId) &&
                                       matchSchedule.getMyTeam.code != null
-                                  ? ItemOptionWidget(
+                                  ? ItemOption(
                                       Images.MEMBER_MANAGE,
                                       'Yêu cầu tham gia trận đấu',
                                       iconColor: Colors.teal,
@@ -165,7 +165,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                     Container(
                       height: UIHelper.size(90),
                       margin: EdgeInsets.symmetric(horizontal: UIHelper.size20),
-                      child: BorderItemWidget(
+                      child: BorderItem(
                         padding: EdgeInsets.zero,
                         margin: EdgeInsets.zero,
                         child: Row(
@@ -177,7 +177,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                         arguments: matchSchedule.getMyTeam),
                                 child: Hero(
                                   tag: 'team-${matchSchedule.getMyTeam.id}',
-                                  child: ImageWidget(
+                                  child: CustomizeImage(
                                     source: matchSchedule.getMyTeamLogo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                   ),
@@ -228,7 +228,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                       child: Hero(
                                         tag:
                                             'team-${matchSchedule.getOpponentTeam.id}',
-                                        child: ImageWidget(
+                                        child: CustomizeImage(
                                           source: matchSchedule.getOpponentLogo,
                                           placeHolder: Images.DEFAULT_LOGO,
                                         ),

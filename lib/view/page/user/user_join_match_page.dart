@@ -4,15 +4,16 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/app_bar.dart';
+import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
+import 'package:myfootball/view/widget/item_match_history.dart';
 import 'package:myfootball/view/widget/item_match_schedule.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/view/widget/tabbar_widget.dart';
-import 'package:myfootball/utils/router_paths.dart';
+import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/user_join_match_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -43,13 +44,13 @@ class UserJoinMatchPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          AppBarWidget(
+          CustomizeAppBar(
             centerContent: Text(
               'Tham gia trận đấu',
               textAlign: TextAlign.center,
               style: textStyleTitle(),
             ),
-            leftContent: AppBarButtonWidget(
+            leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
             ),
@@ -60,7 +61,7 @@ class UserJoinMatchPage extends StatelessWidget {
                 length: 3,
                 child: Column(
                   children: <Widget>[
-                    TabBarWidget(
+                    CustomizeTabBar(
                       titles: TABS,
                       height: UIHelper.size45,
                       isScrollable: true,
@@ -69,10 +70,14 @@ class UserJoinMatchPage extends StatelessWidget {
                       child: BaseWidget<UserJoinMatchViewModel>(
                         model:
                             UserJoinMatchViewModel(api: Provider.of(context)),
-                        onModelReady: (model) => model.getUserJoinRequest(1),
+                        onModelReady: (model) {
+                          model.getPendingRequests(1);
+                          model.getAcceptedRequest(1);
+                          model.getJoinedMatch(1);
+                        },
                         builder: (c, model, child) => TabBarView(
                           children: <Widget>[
-                            model.busy
+                            model.isLoadingRequest
                                 ? LoadingWidget()
                                 : model.waitRequests.length == 0
                                     ? EmptyWidget(
@@ -82,10 +87,10 @@ class UserJoinMatchPage extends StatelessWidget {
                                             vertical: UIHelper.padding),
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (c, index) {
-                                          var matchInfo = model
-                                              .waitRequests[index].matchInfo;
+                                          var request =
+                                              model.waitRequests[index];
                                           return ItemMatchSchedule(
-                                            matchSchedule: matchInfo,
+                                            matchSchedule: request.matchInfo,
                                             onTapSchedule: () =>
                                                 _showWaitingOptions(
                                               context,
@@ -93,7 +98,8 @@ class UserJoinMatchPage extends StatelessWidget {
                                                   .instance
                                                   .navigateTo(
                                                       MATCH_SCHEDULE_DETAIL,
-                                                      arguments: matchInfo),
+                                                      arguments:
+                                                          request.matchInfo),
                                               onCancel: () =>
                                                   UIHelper.showConfirmDialog(
                                                 'Bạn có chắc chắn muốn huỷ yêu cầu tham gia trận đấu',
@@ -101,9 +107,7 @@ class UserJoinMatchPage extends StatelessWidget {
                                                     model.cancelJoinRequest(
                                                         0,
                                                         index,
-                                                        model
-                                                            .waitRequests[index]
-                                                            .matchUserId),
+                                                        request.matchUserId),
                                               ),
                                             ),
                                           );
@@ -111,9 +115,9 @@ class UserJoinMatchPage extends StatelessWidget {
                                         separatorBuilder: (c, index) =>
                                             UIHelper.verticalIndicator,
                                         itemCount: model.waitRequests.length),
-                            model.busy
+                            model.isLoadingAccepted
                                 ? LoadingWidget()
-                                : model.acceptedRequest.length == 0
+                                : model.acceptedRequests.length == 0
                                     ? EmptyWidget(
                                         message: 'Chưa có trận đấu nào')
                                     : ListView.separated(
@@ -121,10 +125,10 @@ class UserJoinMatchPage extends StatelessWidget {
                                             vertical: UIHelper.padding),
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (c, index) {
-                                          var matchInfo = model
-                                              .acceptedRequest[index].matchInfo;
+                                          var request =
+                                              model.acceptedRequests[index];
                                           return ItemMatchSchedule(
-                                            matchSchedule: matchInfo,
+                                            matchSchedule: request.matchInfo,
                                             onTapSchedule: () =>
                                                 _showWaitingOptions(
                                               context,
@@ -132,7 +136,8 @@ class UserJoinMatchPage extends StatelessWidget {
                                                   .instance
                                                   .navigateTo(
                                                       MATCH_SCHEDULE_DETAIL,
-                                                      arguments: matchInfo),
+                                                      arguments:
+                                                          request.matchInfo),
                                               onCancel: () =>
                                                   UIHelper.showConfirmDialog(
                                                 'Bạn có chắc chắn muốn huỷ tham gia trận đấu?',
@@ -140,10 +145,7 @@ class UserJoinMatchPage extends StatelessWidget {
                                                     model.cancelJoinRequest(
                                                         1,
                                                         index,
-                                                        model
-                                                            .acceptedRequest[
-                                                                index]
-                                                            .matchUserId),
+                                                        request.matchUserId),
                                               ),
                                             ),
                                           );
@@ -151,10 +153,10 @@ class UserJoinMatchPage extends StatelessWidget {
                                         separatorBuilder: (c, index) =>
                                             UIHelper.verticalIndicator,
                                         itemCount:
-                                            model.acceptedRequest.length),
-                            model.busy
+                                            model.acceptedRequests.length),
+                            model.isLoadingJoined
                                 ? LoadingWidget()
-                                : model.joined.length == 0
+                                : model.joinedMatches.length == 0
                                     ? EmptyWidget(
                                         message: 'Chưa có trận đấu nào')
                                     : ListView.separated(
@@ -162,20 +164,19 @@ class UserJoinMatchPage extends StatelessWidget {
                                             vertical: UIHelper.padding),
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (c, index) {
-                                          var matchInfo =
-                                              model.joined[index].matchInfo;
-                                          return ItemMatchSchedule(
-                                            matchSchedule: matchInfo,
-                                            onTapSchedule: () =>
-                                                Navigation.instance
-                                                    .navigateTo(
-                                                        MATCH_SCHEDULE_DETAIL,
-                                                        arguments: matchInfo),
+                                          var match =
+                                              model.joinedMatches[index];
+                                          return ItemMatchHistory(
+                                            matchHistory: match,
+                                            onTap: () => Navigation.instance
+                                                .navigateTo(
+                                                    MATCH_HISTORY_DETAIL,
+                                                    arguments: match),
                                           );
                                         },
                                         separatorBuilder: (c, index) =>
                                             UIHelper.verticalIndicator,
-                                        itemCount: model.joined.length),
+                                        itemCount: model.joinedMatches.length),
                           ],
                         ),
                       ),

@@ -161,7 +161,7 @@ class _BackAppBar extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF02DC37), PRIMARY],
+          colors: GREEN_BUTTON,
         ),
       ),
     );
@@ -320,7 +320,7 @@ class BackdropState extends State<Backdrop>
             topLeft: Radius.circular(UIHelper.radius),
             topRight: Radius.circular(UIHelper.radius),
           ),
-          clipBehavior: Clip.antiAlias,
+          clipBehavior: Clip.hardEdge,
         ),
       ),
       if (widget.frontHeading != null)

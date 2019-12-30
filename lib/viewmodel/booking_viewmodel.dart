@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:myfootball/model/field.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 import 'package:myfootball/viewmodel/base_viewmodel.dart';
 
@@ -21,7 +21,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> getFreeTimeSlot(int groundId) async {
     setBusy(true);
-    var resp = await _api.getFreeTimeSlots(
+    var resp = await _api.getFreeTimeSlot(
       groundId,
       DateFormat('dd/MM/yyyy').format(currentDate),
     );

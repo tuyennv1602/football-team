@@ -23,17 +23,15 @@ class UserRequestModel extends BaseViewModel {
     return resp;
   }
 
-  Future<void> updateRequest(int index, int requestId, int teamId,
-      String content, String positions) async {
+  Future<void> updateRequest(int index, UserRequest request) async {
     UIHelper.showProgressDialog;
-    var resp = await _api.updateRequestMember(
-        requestId, teamId, content, positions);
+    var resp = await _api.updateRequestMember(request);
     UIHelper.hideProgressDialog;
     if (resp.isSuccess) {
       var _userRequest = userRequests[index];
       _userRequest.status = Constants.REQUEST_WAITING;
-      _userRequest.content = content;
-      _userRequest.position = positions;
+      _userRequest.content = request.content;
+      _userRequest.position = request.position;
       userRequests[index] = _userRequest;
       notifyListeners();
       UIHelper.showSimpleDialog('Đã cập nhật yêu cầu!', isSuccess: true);

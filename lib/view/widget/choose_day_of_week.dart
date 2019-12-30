@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/custom_expansion_panel.dart';
-import 'package:myfootball/router/date_util.dart';
+import 'package:myfootball/view/widget/customize_expansion_panel.dart';
+import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/utils/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 
-class ChooseDayOfWeekWidget extends StatefulWidget {
+class ChooseDayOfWeek extends StatefulWidget {
   final OnSelectedType onSelectedType;
   final Color primaryColor;
 
-  ChooseDayOfWeekWidget(
+  ChooseDayOfWeek(
       {@required this.onSelectedType, this.primaryColor = Colors.black});
 
   @override
   State<StatefulWidget> createState() => _ChooseRatioTypeState();
 }
 
-class _ChooseRatioTypeState extends State<ChooseDayOfWeekWidget> {
+class _ChooseRatioTypeState extends State<ChooseDayOfWeek> {
   bool _isExpanded = false;
   int _selectedType = 1;
 
@@ -47,7 +47,7 @@ class _ChooseRatioTypeState extends State<ChooseDayOfWeekWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomExpansionPanelList(
+    return CustomizeExpansionPanelList(
       expansionCallback: (index, isExpanded) {
         setState(() {
           _isExpanded = !isExpanded;

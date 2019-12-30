@@ -14,6 +14,10 @@ class SearchGroundViewModel extends BaseViewModel {
   LatLng myPosition = LatLng(21.026099, 105.833273);
   List<Ground> grounds = [];
   Ground currentGround;
+  List<Ground> searchResults = [];
+  String key = '';
+  bool isSearching = false;
+
 
   SearchGroundViewModel({@required Api api}) : _api = api;
 
@@ -61,5 +65,24 @@ class SearchGroundViewModel extends BaseViewModel {
   changeCurrentGround(Ground ground) {
     this.currentGround = ground;
     notifyListeners();
+  }
+
+  Future<void> searchGroundByKey(String key) async {
+    if (key.isEmpty) {
+      this.key = '';
+      this.searchResults = [];
+      this.isSearching = false;
+      notifyListeners();
+    } else {
+      this.key = key;
+      this.isSearching = true;
+      notifyListeners();
+      var resp = await _api.searchGroundByKey(key);
+      this.isSearching = false;
+      if (resp.isSuccess) {
+        this.searchResults = resp.grounds;
+      }
+      notifyListeners();
+    }
   }
 }

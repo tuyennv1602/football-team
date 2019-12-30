@@ -10,6 +10,8 @@ class User {
   List<Team> teams;
   double wallet;
   double rating;
+  double exp;
+  int totalGame;
 
   User(
       {this.id,
@@ -18,7 +20,9 @@ class User {
       this.avatar,
       this.email,
       this.phone,
-      this.wallet});
+      this.wallet,
+      this.exp,
+      this.totalGame});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -38,6 +42,8 @@ class User {
     if (json['rating'] != null) {
       rating = double.parse(json['rating'].toString());
     }
+    exp = json['exp'];
+    totalGame = json['number_play'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,5 +69,9 @@ class User {
     return teams;
   }
 
-  double get getRating => rating != null ? rating : 0;
+  double get getRating => rating ?? 0;
+
+  String get getExp => exp != null && exp > 0 ? exp.toStringAsFixed(1) : '0';
+
+  String get tag => 'user-$id';
 }
