@@ -15,9 +15,9 @@ import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/item_position.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/resource/colors.dart';
-import 'package:myfootball/viewmodel/request_member_viewmodel.dart';
+import 'package:myfootball/viewmodel/request_member_vm.dart';
 import 'package:provider/provider.dart';
 
 class RequestMemberPage extends StatelessWidget {

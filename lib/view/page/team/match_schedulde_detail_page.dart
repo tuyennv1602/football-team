@@ -19,8 +19,8 @@ import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/match_schedule_detail_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/match_schedule_detail_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 

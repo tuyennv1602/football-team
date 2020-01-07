@@ -13,8 +13,8 @@ import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/time_slider.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/setup_matching_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/setup_matching_vm.dart';
 import 'package:provider/provider.dart';
 
 class SetupMatchingInfoPage extends StatelessWidget {

@@ -14,8 +14,8 @@ import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/user_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/user_vm.dart';
 import 'package:provider/provider.dart';
 
 class UserPage extends StatefulWidget {
@@ -38,8 +38,6 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
     }
     return false;
   }
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _showChooseImage(BuildContext context, Function onImageReady) =>
       showModalBottomSheet(
@@ -97,7 +95,6 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: PRIMARY,
       body: BaseWidget<UserViewModel>(
         model: UserViewModel(

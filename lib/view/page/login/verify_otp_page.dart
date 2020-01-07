@@ -10,8 +10,8 @@ import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/count_down_timer.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/verify_otp_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/verify_otp_vm.dart';
 import 'package:provider/provider.dart';
 
 class VerifyOTPPage extends StatelessWidget {

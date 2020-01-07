@@ -5,7 +5,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/expandable_text.dart';
 import 'package:myfootball/view/widget/customize_image.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 class ItemComment extends StatelessWidget {
   final Comment comment;
@@ -13,10 +13,9 @@ class ItemComment extends StatelessWidget {
   const ItemComment({Key key, this.comment}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: UIHelper.size20, vertical: UIHelper.padding),
+          horizontal: UIHelper.size10, vertical: UIHelper.padding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -70,5 +69,4 @@ class ItemComment extends StatelessWidget {
         ],
       ),
     );
-  }
 }

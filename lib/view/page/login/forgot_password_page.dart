@@ -7,9 +7,9 @@ import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/circle_input_text.dart';
 import 'package:myfootball/view/widget/customize_button.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
-import 'package:myfootball/viewmodel/forgotpassword_viewmodel.dart';
+import 'package:myfootball/viewmodel/forgotpassword_vm.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {

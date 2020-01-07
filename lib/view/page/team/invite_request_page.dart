@@ -18,8 +18,8 @@ import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/view/widget/customize_tabbar.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/invite_request_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/invite_request_vm.dart';
 import 'package:provider/provider.dart';
 
 import '../base_widget.dart';

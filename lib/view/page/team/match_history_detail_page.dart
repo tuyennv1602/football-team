@@ -20,8 +20,8 @@ import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/view/widget/customize_tabbar.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/match_history_detail_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/match_history_detail_vm.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 

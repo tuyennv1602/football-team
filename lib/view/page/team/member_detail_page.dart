@@ -22,8 +22,8 @@ import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/multichoice_position.dart';
 import 'package:myfootball/view/widget/review_dialog.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/member_detail_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/member_detail_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -277,7 +277,8 @@ class MemberDetailPage extends StatelessWidget {
                                                 ),
                                               ),
                                               TextSpan(
-                                                text: member.teamGame.toString(),
+                                                text:
+                                                    member.teamGame.toString(),
                                                 style: TextStyle(
                                                     fontFamily: MEDIUM,
                                                     color: Colors.black,
@@ -331,18 +332,19 @@ class MemberDetailPage extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                          child: model.busy
-                              ? LoadingWidget()
-                              : model.comments.length == 0
-                                  ? EmptyWidget(
-                                      message: 'Chưa có đánh giá & nhận xét')
-                                  : ListView.separated(
-                                      padding: EdgeInsets.zero,
-                                      itemBuilder: (c, index) => ItemComment(
-                                          comment: model.comments[index]),
-                                      separatorBuilder: (c, index) =>
-                                          LineWidget(),
-                                      itemCount: model.comments.length))
+                        child: model.busy
+                            ? LoadingWidget()
+                            : model.comments.length == 0
+                                ? EmptyWidget(
+                                    message: 'Chưa có đánh giá & nhận xét')
+                                : ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    itemBuilder: (c, index) => ItemComment(
+                                        comment: model.comments[index]),
+                                    separatorBuilder: (c, index) =>
+                                        LineWidget(),
+                                    itemCount: model.comments.length),
+                      )
                     ],
                   ),
                 ),

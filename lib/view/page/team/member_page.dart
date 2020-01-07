@@ -10,7 +10,7 @@ import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
-import 'package:myfootball/utils/ui_helper.dart';
 
 const double _kButtonHeight = 46;
 

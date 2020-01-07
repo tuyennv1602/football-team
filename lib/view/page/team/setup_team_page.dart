@@ -10,8 +10,8 @@ import 'package:myfootball/view/widget/customize_app_bar.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/setup_team_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/setup_team_vm.dart';
 import 'package:provider/provider.dart';
 
 class SetupTeamPage extends StatelessWidget {

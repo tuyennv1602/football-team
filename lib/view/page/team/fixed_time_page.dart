@@ -20,8 +20,8 @@ import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/fixed_time_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/fixed_time_vm.dart';
 import 'package:provider/provider.dart';
 
 class FixedTimeRequestPage extends StatelessWidget {

@@ -18,8 +18,8 @@ import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/customize_tabbar.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/invite_team_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/invite_team_vm.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable

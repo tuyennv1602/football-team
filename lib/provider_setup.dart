@@ -25,10 +25,10 @@ List<SingleChildCloneableWidget> independentServices = [
 // These are classes/object that depend on previously registered services
 List<SingleChildCloneableWidget> dependentServices = [
   ProxyProvider2<Api, LocalStorage, AuthServices>(
-      builder: (context, api, sharePref, authenticationService) =>
+      update: (context, api, sharePref, authenticationService) =>
           AuthServices(api: api, sharePreferences: sharePref)),
   ProxyProvider2<Api, LocalStorage, TeamServices>(
-      builder: (context, api, sharePref, teamServices) =>
+      update: (context, api, sharePref, teamServices) =>
           TeamServices(api: api, sharePreferences: sharePref))
 ];
 
@@ -39,11 +39,11 @@ List<SingleChildCloneableWidget> dependentServices = [
 // You could also just add it to the BaseModel
 List<SingleChildCloneableWidget> uiConsumableProviders = [
   StreamProvider<User>(
-    builder: (context) =>
+    create: (context) =>
         Provider.of<AuthServices>(context, listen: false).user,
   ),
   StreamProvider<Team>(
-    builder: (context) =>
+    create: (context) =>
         Provider.of<TeamServices>(context, listen: false).team,
   )
 ];

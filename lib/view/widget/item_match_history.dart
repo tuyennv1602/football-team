@@ -4,7 +4,7 @@ import 'package:myfootball/model/match_history.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/line.dart';

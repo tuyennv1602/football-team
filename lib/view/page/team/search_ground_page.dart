@@ -17,8 +17,8 @@ import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/input_search.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/search_ground_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/search_ground_vm.dart';
 import 'package:provider/provider.dart';
 
 enum BOOKING_TYPE { NORMAL, FIXED }

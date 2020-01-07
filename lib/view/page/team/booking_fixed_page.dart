@@ -17,8 +17,8 @@ import 'package:myfootball/view/widget/choose_day_of_week.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/booking_fixed_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/booking_fixed_vm.dart';
 import 'package:provider/provider.dart';
 
 class BookingFixedPage extends StatelessWidget {

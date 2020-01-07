@@ -14,8 +14,8 @@ import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/utils/constants.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/add_address_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/add_address_vm.dart';
 import 'package:provider/provider.dart';
 
 class AddAddressPage extends StatelessWidget {

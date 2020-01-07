@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 import 'customize_button.dart';
 

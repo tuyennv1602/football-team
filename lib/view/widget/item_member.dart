@@ -5,7 +5,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/border_item.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/view/widget/hexagonal_clipper.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'customize_image.dart';

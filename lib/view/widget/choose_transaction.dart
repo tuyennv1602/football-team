@@ -3,7 +3,7 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/customize_expansion_panel.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/utils/string_util.dart';
-import 'package:myfootball/utils/ui_helper.dart';
+import 'package:myfootball/view/ui_helper.dart';
 
 typedef void OnSelectedType(int type);
 

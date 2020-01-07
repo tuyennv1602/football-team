@@ -41,14 +41,6 @@ const List<Color> PURPLE_GRADIENT = [Colors.deepPurpleAccent, Colors.deepPurpleA
 const List<Color> YELLOW_GRADIENT = [Colors.yellow, Colors.amber];
 const List<Color> ORANGE_GRADIENT = [Colors.deepOrangeAccent, Colors.deepOrange];
 const List<Color> PINK_GRADIENT = [Colors.pinkAccent, Colors.pink];
-
-const List<Color> LIGHT_GREEN_GRADIENT = [
-  Color(0xFF02DC37),
-  Color(0xFF04B22F),
-  Color(0xFF04B22F),
-  Color(0xFF02DC37),
-];
-
 const List<Color> RED_GRADIENT = [Color(0xFFE53935), Color(0xFFE11A15)];
 
 const List<Color> DRESS_COLORS = [

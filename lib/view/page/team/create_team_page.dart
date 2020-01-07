@@ -12,8 +12,8 @@ import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/customize_button.dart';
 import 'package:myfootball/view/widget/input_text.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/create_team_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/create_team_vm.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable

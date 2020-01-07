@@ -17,8 +17,8 @@ import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/customize_tabbar.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/confirm_invite_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/confirm_invite_vm.dart';
 import 'package:provider/provider.dart';
 
 import '../base_widget.dart';

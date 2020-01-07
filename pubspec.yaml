@@ -51,7 +51,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: 'assets/images/ic_logo_copy.jpg'
+  image_path: 'assets/images/ground.jpg'
 
 flutter:
 

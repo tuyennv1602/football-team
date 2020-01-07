@@ -14,8 +14,8 @@ import 'package:myfootball/view/widget/item_match_schedule.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/customize_tabbar.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/user_join_match_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/user_join_match_vm.dart';
 import 'package:provider/provider.dart';
 
 class UserJoinMatchPage extends StatelessWidget {

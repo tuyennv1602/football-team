@@ -21,8 +21,8 @@ import 'package:myfootball/view/widget/loadmore_loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/match_history_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/match_history_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

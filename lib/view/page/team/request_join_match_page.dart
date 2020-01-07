@@ -16,8 +16,8 @@ import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/customize_image.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/router/paths.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/request_join_match_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/request_join_match_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 

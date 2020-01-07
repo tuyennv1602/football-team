@@ -12,8 +12,8 @@ import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/expandable_text.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
-import 'package:myfootball/utils/ui_helper.dart';
-import 'package:myfootball/viewmodel/notification_viewmodel.dart';
+import 'package:myfootball/view/ui_helper.dart';
+import 'package:myfootball/viewmodel/notification_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
