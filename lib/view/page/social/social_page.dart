@@ -10,11 +10,11 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
@@ -133,7 +133,7 @@ class SocialPage extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  CustomizeImage(
+                  ImageWidget(
                     source: match.matchInfo.getMyTeamLogo,
                     placeHolder: Images.DEFAULT_LOGO,
                     size: UIHelper.size45,
@@ -284,7 +284,7 @@ class SocialPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Cộng đồng',
               textAlign: TextAlign.center,

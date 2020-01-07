@@ -3,12 +3,12 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/ui_helper.dart';
 
-class CustomizeTabBar extends StatelessWidget {
+class TabBarWidget extends StatelessWidget {
   final List<String> titles;
   final bool isScrollable;
   final double height;
 
-  CustomizeTabBar(
+  TabBarWidget(
       {Key key, @required this.titles, this.isScrollable = false, this.height})
       : assert(titles != null),
         super(key: key);

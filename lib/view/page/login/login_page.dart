@@ -7,7 +7,7 @@ import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/circle_input_text.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
@@ -125,7 +125,7 @@ class _LoginState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      CustomizeButton(
+                      ButtonWidget(
                         margin: EdgeInsets.symmetric(vertical: UIHelper.size30),
                         child: Text(
                           'ĐĂNG NHẬP',

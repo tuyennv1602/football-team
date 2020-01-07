@@ -3,7 +3,7 @@ import 'package:myfootball/resource/colors.dart';
 
 const double _kButtonHeight = 46;
 
-class CustomizeButton extends StatelessWidget {
+class ButtonWidget extends StatelessWidget {
   final Widget child;
   final List<Color> backgroundColor;
   final EdgeInsets margin;
@@ -14,7 +14,7 @@ class CustomizeButton extends StatelessWidget {
   final BorderRadius borderRadius;
   final Alignment alignment;
 
-  CustomizeButton(
+  ButtonWidget(
       {Key key,
       @required this.child,
       @required this.onTap,

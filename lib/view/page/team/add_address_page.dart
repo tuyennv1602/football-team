@@ -8,9 +8,9 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/utils/constants.dart';
@@ -160,7 +160,7 @@ class AddAddressPage extends StatelessWidget {
           bool isSelectedAll = model.wards.length == model.selectedWards.length;
           return Column(
             children: <Widget>[
-              CustomizeAppBar(
+              AppBarWidget(
                 centerContent: Text(
                   'Thêm khu vực',
                   textAlign: TextAlign.center,
@@ -192,7 +192,7 @@ class AddAddressPage extends StatelessWidget {
                           children: <Widget>[
                             Expanded(child: _child),
                             model.step == Constants.SELECT_WARD
-                                ? CustomizeButton(
+                                ? ButtonWidget(
                                 margin: EdgeInsets.symmetric(horizontal: UIHelper.padding, vertical: UIHelper.size5),
                                     backgroundColor:
                                         model.selectedWards.length > 0

@@ -10,11 +10,11 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_comment.dart';
 import 'package:myfootball/view/widget/item_position.dart';
@@ -151,7 +151,7 @@ class MemberDetailPage extends StatelessWidget {
         },
         builder: (c, model, child) => Column(
           children: <Widget>[
-            CustomizeAppBar(
+            AppBarWidget(
               centerContent: Text(
                 'Thông tin thành viên',
                 textAlign: TextAlign.center,
@@ -202,7 +202,7 @@ class MemberDetailPage extends StatelessWidget {
                         children: <Widget>[
                           Hero(
                             tag: member.tag,
-                            child: CustomizeImage(
+                            child: ImageWidget(
                               source: member.avatar,
                               placeHolder: Images.DEFAULT_AVATAR,
                               size: UIHelper.size(80),

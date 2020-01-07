@@ -6,7 +6,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/router/paths.dart';
@@ -22,7 +22,7 @@ class MemberPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Tất cả thành viên',
               textAlign: TextAlign.center,

@@ -7,7 +7,7 @@ import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/count_down_timer.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -36,7 +36,7 @@ class VerifyOTPPage extends StatelessWidget {
         ),
       );
 
-  _buildItemNumber(String title, {Function onTap}) => CustomizeButton(
+  _buildItemNumber(String title, {Function onTap}) => ButtonWidget(
         onTap: onTap,
         elevation: 2,
         backgroundColor: GREY_BUTTON,
@@ -179,7 +179,7 @@ class VerifyOTPPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: Center(
-                            child: CustomizeButton(
+                            child: ButtonWidget(
                               child: Row(
                                 children: <Widget>[
                                   SizedBox(
@@ -259,7 +259,7 @@ class VerifyOTPPage extends StatelessWidget {
                               SizedBox(),
                               _buildItemNumber('0',
                                   onTap: () => model.setCode('0')),
-                              CustomizeButton(
+                              ButtonWidget(
                                 onTap: () => model.deleteCode(),
                                 backgroundColor: GREY_BUTTON,
                                 elevation: 2,

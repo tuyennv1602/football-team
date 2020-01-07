@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/view/ui_helper.dart';
 
@@ -142,7 +142,7 @@ class TimeSliderState extends State<TimeSlider> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: UIHelper.size20),
-          child: CustomizeButton(
+          child: ButtonWidget(
               child: Text(
                 'THÊM',
                 style: textStyleButton(),

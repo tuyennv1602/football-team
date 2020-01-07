@@ -4,7 +4,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
@@ -12,7 +12,7 @@ import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/item_match_history.dart';
 import 'package:myfootball/view/widget/item_match_schedule.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/view/widget/tabbar_widget.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/user_join_match_vm.dart';
@@ -44,7 +44,7 @@ class UserJoinMatchPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Tham gia trận đấu',
               textAlign: TextAlign.center,
@@ -61,7 +61,7 @@ class UserJoinMatchPage extends StatelessWidget {
                 length: 3,
                 child: Column(
                   children: <Widget>[
-                    CustomizeTabBar(
+                    TabBarWidget(
                       titles: TABS,
                       height: UIHelper.size45,
                       isScrollable: true,

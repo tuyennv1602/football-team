@@ -7,12 +7,12 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -29,7 +29,7 @@ class FundRequestPage extends StatelessWidget {
         onTap: () => onTap(member),
         child: Row(
           children: <Widget>[
-            CustomizeImage(
+            ImageWidget(
               source: member.avatar,
               placeHolder: Images.DEFAULT_AVATAR,
               size: UIHelper.size40,
@@ -70,7 +70,7 @@ class FundRequestPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               fund.title,
               textAlign: TextAlign.center,

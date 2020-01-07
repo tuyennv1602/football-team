@@ -6,7 +6,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/view/widget/border_item.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
 
@@ -29,7 +29,7 @@ class ItemMatchHistory extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right: UIHelper.size10),
-                  child:  CustomizeImage(
+                  child:  ImageWidget(
                     source: matchHistory.getMyTeamLogo,
                     placeHolder: Images.DEFAULT_LOGO,
                     size: UIHelper.size35,
@@ -76,7 +76,7 @@ class ItemMatchHistory extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right: UIHelper.size10),
-                  child: CustomizeImage(
+                  child: ImageWidget(
                     source: matchHistory.getOpponentLogo,
                     placeHolder: Images.DEFAULT_LOGO,
                     size: UIHelper.size35,

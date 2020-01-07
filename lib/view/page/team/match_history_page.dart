@@ -7,12 +7,12 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_score.dart';
 import 'package:myfootball/view/widget/item_match_history.dart';
 import 'package:myfootball/view/widget/line.dart';
@@ -80,7 +80,7 @@ class MatchHistoryPage extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: <Widget>[
-                    CustomizeImage(
+                    ImageWidget(
                       source: matchHistory.getMyTeamLogo,
                       placeHolder: Images.DEFAULT_LOGO,
                       size: UIHelper.size35,
@@ -111,7 +111,7 @@ class MatchHistoryPage extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: <Widget>[
-                      CustomizeImage(
+                      ImageWidget(
                         source: matchHistory.getOpponentLogo,
                         placeHolder: Images.DEFAULT_LOGO,
                         size: UIHelper.size35,
@@ -195,7 +195,7 @@ class MatchHistoryPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Lịch sử thi đấu',
               textAlign: TextAlign.center,

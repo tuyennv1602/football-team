@@ -7,13 +7,13 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -64,7 +64,7 @@ class RequestJoinMatchPage extends StatelessWidget {
                 .navigateTo(USER_COMMENT, arguments: matchUser.id)),
         child: Row(
           children: <Widget>[
-            CustomizeImage(
+            ImageWidget(
               source: matchUser.avatar,
               placeHolder: Images.DEFAULT_AVATAR,
               boxFit: BoxFit.cover,
@@ -131,7 +131,7 @@ class RequestJoinMatchPage extends StatelessWidget {
         backgroundColor: PRIMARY,
         body: Column(
           children: <Widget>[
-            CustomizeAppBar(
+            AppBarWidget(
               centerContent: Text(
                 'Yêu cầu tham gia trận đấu',
                 textAlign: TextAlign.center,

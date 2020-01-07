@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
-import 'package:myfootball/view/widget/customize_expansion_panel.dart';
+import 'package:myfootball/view/widget/expansion_panel_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/view/ui_helper.dart';
 
@@ -47,7 +47,7 @@ class _ChooseRatioTypeState extends State<ChooseDayOfWeek> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomizeExpansionPanelList(
+    return ExpansionPanelWidget(
       expansionCallback: (index, isExpanded) {
         setState(() {
           _isExpanded = !isExpanded;

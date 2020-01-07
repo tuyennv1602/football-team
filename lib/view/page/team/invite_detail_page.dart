@@ -8,14 +8,14 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/expandable_text.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/line.dart';
-import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/view/widget/tabbar_widget.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/confirm_invite_vm.dart';
@@ -101,7 +101,7 @@ class InviteDetailPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Chi tiết lời mời',
               textAlign: TextAlign.center,
@@ -135,7 +135,7 @@ class InviteDetailPage extends StatelessWidget {
                         children: <Widget>[
                           Hero(
                             tag: 'team-${_inviteRequest.getId}',
-                            child: CustomizeImage(
+                            child: ImageWidget(
                               source: _inviteRequest.getLogo,
                               placeHolder: Images.DEFAULT_LOGO,
                               size: UIHelper.size35,
@@ -224,7 +224,7 @@ class InviteDetailPage extends StatelessWidget {
                                         _inviteRequest.getMappedTimeSlot.length,
                                     child: Column(
                                       children: <Widget>[
-                                        CustomizeTabBar(
+                                        TabBarWidget(
                                           titles: _inviteRequest
                                               .getMappedTimeSlot.keys
                                               .toList()
@@ -284,7 +284,7 @@ class InviteDetailPage extends StatelessWidget {
                                 horizontal: UIHelper.padding,
                                 vertical: UIHelper.size10),
                             child: _inviteRequest.isMine
-                                ? CustomizeButton(
+                                ? ButtonWidget(
                                     child: Text(
                                       'HUỶ LỜI MỜI',
                                       style: textStyleButton(),
@@ -299,7 +299,7 @@ class InviteDetailPage extends StatelessWidget {
                                 : Row(
                                     children: <Widget>[
                                       Expanded(
-                                        child: CustomizeButton(
+                                        child: ButtonWidget(
                                           child: Text(
                                             'TỪ CHỐI',
                                             style: textStyleButton(),
@@ -316,7 +316,7 @@ class InviteDetailPage extends StatelessWidget {
                                       SizedBox(
                                           width: UIHelper.size10, height: 10),
                                       Expanded(
-                                        child: CustomizeButton(
+                                        child: ButtonWidget(
                                           child: Text(
                                             'ĐỒNG Ý',
                                             style: textStyleButton(),

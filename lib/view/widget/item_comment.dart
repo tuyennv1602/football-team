@@ -4,7 +4,7 @@ import 'package:myfootball/model/comment.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/expandable_text.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/ui_helper.dart';
 
 class ItemComment extends StatelessWidget {
@@ -19,7 +19,7 @@ class ItemComment extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CustomizeImage(
+          ImageWidget(
             source: comment.userAvatar,
             placeHolder: Images.DEFAULT_AVATAR,
             size: UIHelper.size40,

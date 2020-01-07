@@ -6,11 +6,11 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/create_team_vm.dart';
@@ -70,7 +70,7 @@ class CreateTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigator.of(context).pop(),
@@ -201,7 +201,7 @@ class CreateTeamPage extends StatelessWidget {
                               itemCount: DRESS_COLORS.length,
                             ),
                           ),
-                          CustomizeButton(
+                          ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {
                                 model.createTeam(Provider.of<User>(context),

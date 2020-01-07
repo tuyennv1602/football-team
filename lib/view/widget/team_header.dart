@@ -6,7 +6,7 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/view/widget/line.dart';
 
-import 'customize_image.dart';
+import 'image_widget.dart';
 import 'item_achievement.dart';
 
 class TeamHeader extends StatelessWidget {
@@ -28,13 +28,13 @@ class TeamHeader extends StatelessWidget {
               child: anim
                   ? Hero(
                       tag: team.tag,
-                      child: CustomizeImage(
+                      child: ImageWidget(
                         source: team.logo,
                         placeHolder: Images.DEFAULT_LOGO,
                         size: UIHelper.size(80),
                       ),
                     )
-                  : CustomizeImage(
+                  : ImageWidget(
                       source: team.logo,
                       placeHolder: Images.DEFAULT_LOGO,
                       size: UIHelper.size(80),

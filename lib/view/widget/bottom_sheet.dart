@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/ui_helper.dart';
 
-import 'customize_button.dart';
+import 'button_widget.dart';
 
 typedef void OnClickOption(int index);
 
@@ -37,7 +37,7 @@ class BottomSheetWidget extends StatelessWidget {
         );
       } else if (index == length - 1) {
         children.add(
-          CustomizeButton(
+          ButtonWidget(
             height: _kButtonHeight,
             elevation: 0,
             borderRadius: BorderRadius.circular(0),
@@ -56,7 +56,7 @@ class BottomSheetWidget extends StatelessWidget {
         );
       } else {
         children.add(
-          CustomizeButton(
+          ButtonWidget(
             height: _kButtonHeight,
             elevation: 0,
             alignment: Alignment.centerLeft,

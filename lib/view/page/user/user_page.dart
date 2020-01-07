@@ -10,7 +10,7 @@ import 'package:myfootball/view/page/team/search_team_page.dart';
 import 'package:flutter/material.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/router/paths.dart';
@@ -159,7 +159,7 @@ class UserState extends State<UserPage> with AutomaticKeepAliveClientMixin {
                           children: <Widget>[
                             Stack(
                               children: <Widget>[
-                                CustomizeImage(
+                                ImageWidget(
                                   source: _user.avatar,
                                   placeHolder: Images.DEFAULT_AVATAR,
                                   size: UIHelper.size(100),

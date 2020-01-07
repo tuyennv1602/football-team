@@ -7,11 +7,11 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/update_team_vm.dart';
@@ -74,7 +74,7 @@ class EditTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),
@@ -153,7 +153,7 @@ class EditTeamPage extends StatelessWidget {
                               onTap: () => _showChooseImage(
                                   context, (image) => model.setImage(image)),
                               child: model.image == null
-                                  ? CustomizeImage(
+                                  ? ImageWidget(
                                       source: _team.logo,
                                       placeHolder: Images.DEFAULT_LOGO)
                                   : Image.file(model.image, fit: BoxFit.cover),
@@ -193,7 +193,7 @@ class EditTeamPage extends StatelessWidget {
                               itemCount: DRESS_COLORS.length,
                             ),
                           ),
-                          CustomizeButton(
+                          ButtonWidget(
                             onTap: () {
                               if (validateAndSave()) {
                                 _team.name = _teamName;

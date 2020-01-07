@@ -12,16 +12,16 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/clipper_left_widget.dart';
 import 'package:myfootball/view/widget/clipper_right_widget.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
-import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/view/widget/tabbar_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -61,7 +61,7 @@ class FindMatchingPage extends StatelessWidget {
               '- Sử dụng chức năng tìm kiếm để tìm kiếm thủ công đối tác mà bạn muốn ghép',
               style: textStyleRegular(),
             ),
-            CustomizeButton(
+            ButtonWidget(
                 child: Text(
                   'THIẾT LẬP GHÉP ĐỐI',
                   style: textStyleButton(),
@@ -282,7 +282,7 @@ class FindMatchingPage extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: UIHelper.size5),
-                                child: CustomizeTabBar(
+                                child: TabBarWidget(
                                   titles: team2.getMappedTimeSlot.keys
                                       .toList()
                                       .map((item) => DateFormat('dd/MM')
@@ -322,7 +322,7 @@ class FindMatchingPage extends StatelessWidget {
               model.findMatching(team);
             }
           },
-          child: CustomizeAppBar(
+          child: AppBarWidget(
             centerContent: SizedBox(),
             leftContent: AppBarButton(
               imageName: Images.BACK,
@@ -348,7 +348,7 @@ class FindMatchingPage extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: <Widget>[
-                                  CustomizeImage(
+                                  ImageWidget(
                                     source: team.logo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                     size: UIHelper.size(70),
@@ -390,7 +390,7 @@ class FindMatchingPage extends StatelessWidget {
                                                           .currentTeam.logo)),
                                           child: Hero(
                                             tag: model.currentTeam.groupId,
-                                            child: CustomizeImage(
+                                            child: ImageWidget(
                                               source: model.currentTeam.logo,
                                               placeHolder: Images.DEFAULT_LOGO,
                                               size: UIHelper.size(70),
@@ -459,7 +459,7 @@ class FindMatchingPage extends StatelessWidget {
                                               loop: false,
                                             ),
                                           ),
-                                          CustomizeButton(
+                                          ButtonWidget(
                                             child: Text(
                                               'MỜI GHÉP ĐỐI',
                                               style: textStyleButton(),

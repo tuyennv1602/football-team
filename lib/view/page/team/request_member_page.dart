@@ -6,12 +6,12 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/item_position.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/router/paths.dart';
@@ -36,7 +36,7 @@ class RequestMemberPage extends StatelessWidget {
           children: <Widget>[
             Hero(
               tag: 'member - ${teamRequest.userId}',
-              child: CustomizeImage(
+              child: ImageWidget(
                 source: teamRequest.avatar,
                 placeHolder: Images.DEFAULT_AVATAR,
                 boxFit: BoxFit.cover,
@@ -105,7 +105,7 @@ class RequestMemberPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             leftContent: AppBarButton(
               imageName: Images.BACK,
               onTap: () => Navigation.instance.goBack(),

@@ -9,7 +9,7 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/choose_transaction.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
@@ -293,7 +293,7 @@ class FinancePage extends StatelessWidget {
                 ],
               ),
             ),
-            CustomizeAppBar(
+            AppBarWidget(
               centerContent: InkWell(
                 onTap: () async {
                   var date = await showMonthPicker(

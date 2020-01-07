@@ -7,15 +7,15 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
 import 'package:myfootball/view/widget/expandable_text.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
-import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/view/widget/tabbar_widget.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -55,7 +55,7 @@ class InviteRequestPage extends StatelessWidget {
         },
         child: Row(
           children: <Widget>[
-            CustomizeImage(
+            ImageWidget(
               source: inviteRequest.getLogo,
               placeHolder: Images.DEFAULT_LOGO,
             ),
@@ -101,7 +101,7 @@ class InviteRequestPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Lời mời ghép đối',
               textAlign: TextAlign.center,
@@ -125,7 +125,7 @@ class InviteRequestPage extends StatelessWidget {
                         length: 2,
                         child: Column(
                           children: <Widget>[
-                            CustomizeTabBar(
+                            TabBarWidget(
                               titles: TABS,
                               height: UIHelper.size45,
                             ),

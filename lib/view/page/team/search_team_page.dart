@@ -6,12 +6,12 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/bottom_sheet.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/multichoice_position.dart';
@@ -70,7 +70,7 @@ class SearchTeamPage extends StatelessWidget {
               padding: EdgeInsets.only(right: UIHelper.padding),
               child: Hero(
                 tag: 'team-${team.id}',
-                child: CustomizeImage(
+                child: ImageWidget(
                   source: team.logo,
                   placeHolder: Images.DEFAULT_LOGO,
                 ),
@@ -252,7 +252,7 @@ class SearchTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Tìm kiếm đội bóng',
               textAlign: TextAlign.center,

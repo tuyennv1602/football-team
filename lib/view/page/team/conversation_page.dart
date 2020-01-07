@@ -9,10 +9,10 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/utils/date_util.dart';
@@ -56,7 +56,7 @@ class _ConversationState extends State<ConversationPage> {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Thảo luận',
               textAlign: TextAlign.center,
@@ -103,7 +103,7 @@ class _ConversationState extends State<ConversationPage> {
                       scrollToBottom: false,
                       shouldShowLoadEarlier: false,
                       onLoadEarlier: () {},
-                      avatarBuilder: (user) => CustomizeImage(
+                      avatarBuilder: (user) => ImageWidget(
                           source: user.avatar,
                           placeHolder: Images.DEFAULT_AVATAR,
                           size: UIHelper.size30,

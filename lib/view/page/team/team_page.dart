@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/model/user.dart';
 import 'package:myfootball/resource/colors.dart';
@@ -8,18 +7,16 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/page/team/search_team_page.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/backdrop.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/item_achievement.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/item_option.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
-import 'package:myfootball/view/widget/oval_bottom_clipper.dart';
 import 'package:myfootball/view/widget/team_header.dart';
 import 'package:myfootball/viewmodel/team_vm.dart';
 import 'package:provider/provider.dart';
@@ -208,7 +205,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
                     horizontal: UIHelper.size15, vertical: UIHelper.size10),
                 child: Row(
                   children: <Widget>[
-                    CustomizeImage(
+                    ImageWidget(
                       source: _team.logo,
                       placeHolder: Images.DEFAULT_LOGO,
                       size: UIHelper.size35,
@@ -251,7 +248,7 @@ class _TeamState extends State<TeamPage> with AutomaticKeepAliveClientMixin {
             children: <Widget>[
               _hasGroup
                   ? SizedBox()
-                  : CustomizeAppBar(
+                  : AppBarWidget(
                       centerContent: Text(
                         'Đội bóng',
                         textAlign: TextAlign.center,

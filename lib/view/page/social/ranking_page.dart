@@ -6,9 +6,9 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/line.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/refresh_loading.dart';
@@ -39,7 +39,7 @@ class RankingPage extends StatelessWidget {
                 child: team.logo != null
                     ? Hero(
                         tag: team.tag,
-                        child: CustomizeImage(
+                        child: ImageWidget(
                           source: team.logo,
                           placeHolder: Images.DEFAULT_LOGO,
                           size: UIHelper.size25,
@@ -129,7 +129,7 @@ class RankingPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text('Bảng xếp hạng',
                 textAlign: TextAlign.center, style: textStyleTitle()),
           ),

@@ -10,11 +10,11 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/loading.dart';
@@ -73,7 +73,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                   colors: [PRIMARY, Color(0xFFE5F230)])),
           child: Column(
             children: <Widget>[
-              CustomizeAppBar(
+              AppBarWidget(
                 centerContent: Text(
                   'Thông tin trận đấu',
                   textAlign: TextAlign.center,
@@ -177,7 +177,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                         arguments: matchSchedule.getMyTeam),
                                 child: Hero(
                                   tag: 'team-${matchSchedule.getMyTeam.id}',
-                                  child: CustomizeImage(
+                                  child: ImageWidget(
                                     source: matchSchedule.getMyTeamLogo,
                                     placeHolder: Images.DEFAULT_LOGO,
                                   ),
@@ -228,7 +228,7 @@ class MatchScheduleDetailPage extends StatelessWidget {
                                       child: Hero(
                                         tag:
                                             'team-${matchSchedule.getOpponentTeam.id}',
-                                        child: CustomizeImage(
+                                        child: ImageWidget(
                                           source: matchSchedule.getOpponentLogo,
                                           placeHolder: Images.DEFAULT_LOGO,
                                         ),

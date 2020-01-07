@@ -4,8 +4,8 @@ import 'package:myfootball/resource/colors.dart';
 const double _kPanelHeaderCollapsedHeight = 35;
 const double _kPanelHeaderExpandedHeight = 35;
 
-class CustomizeExpansionPanelList extends StatelessWidget {
-  const CustomizeExpansionPanelList(
+class ExpansionPanelWidget extends StatelessWidget {
+  const ExpansionPanelWidget(
       {Key key,
       this.children: const <ExpansionPanel>[],
       this.expansionCallback,

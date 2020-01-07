@@ -9,16 +9,16 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/widget/empty_widget.dart';
-import 'package:myfootball/view/widget/customize_image.dart';
+import 'package:myfootball/view/widget/image_widget.dart';
 import 'package:myfootball/view/widget/item_member.dart';
 import 'package:myfootball/view/widget/item_option.dart';
 import 'package:myfootball/view/widget/loading.dart';
 import 'package:myfootball/view/widget/status_indicator.dart';
-import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/view/widget/tabbar_widget.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/viewmodel/match_history_detail_vm.dart';
@@ -73,7 +73,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            CustomizeAppBar(
+            AppBarWidget(
               centerContent: Text(
                 'Kết quả trận đấu',
                 textAlign: TextAlign.center,
@@ -207,7 +207,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                         length: 2,
                                         child: Column(
                                           children: <Widget>[
-                                            CustomizeTabBar(
+                                            TabBarWidget(
                                               titles: [
                                                 team.name,
                                                 matchHistory.getOpponentName
@@ -245,7 +245,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: CustomizeImage(
+                            child: ImageWidget(
                               source: team.logo,
                               placeHolder: Images.DEFAULT_LOGO,
                             ),
@@ -314,7 +314,7 @@ class MatchHistoryDetailPage extends StatelessWidget {
                                                 matchHistory.getOpponentTeam),
                                     child: Hero(
                                       tag: matchHistory.getOpponentTeam.id,
-                                      child: CustomizeImage(
+                                      child: ImageWidget(
                                         source: matchHistory.getOpponentLogo,
                                         placeHolder: Images.DEFAULT_LOGO,
                                       ),

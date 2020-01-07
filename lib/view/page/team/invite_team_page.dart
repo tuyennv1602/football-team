@@ -9,13 +9,13 @@ import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/choose_ratio.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/line.dart';
-import 'package:myfootball/view/widget/customize_tabbar.dart';
+import 'package:myfootball/view/widget/tabbar_widget.dart';
 import 'package:myfootball/utils/date_util.dart';
 import 'package:myfootball/router/paths.dart';
 import 'package:myfootball/view/ui_helper.dart';
@@ -109,7 +109,7 @@ class InviteTeamPage extends StatelessWidget {
       backgroundColor: PRIMARY,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Mời đối tác',
               textAlign: TextAlign.center,
@@ -166,7 +166,7 @@ class InviteTeamPage extends StatelessWidget {
                         length: _inviteTeamArgument.mappedTimeSlots.length,
                         child: Column(
                           children: <Widget>[
-                            CustomizeTabBar(
+                            TabBarWidget(
                               titles: _inviteTeamArgument.mappedTimeSlots.keys
                                   .toList()
                                   .map((item) => DateFormat('dd/MM')
@@ -213,7 +213,7 @@ class InviteTeamPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            CustomizeButton(
+                            ButtonWidget(
                               margin: EdgeInsets.symmetric(
                                   vertical: UIHelper.size5, horizontal: UIHelper.padding),
                               child: Text(

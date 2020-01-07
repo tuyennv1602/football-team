@@ -7,7 +7,7 @@ import 'package:myfootball/resource/stringres.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/page/base_widget.dart';
 import 'package:myfootball/view/widget/circle_input_text.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/utils/constants.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
@@ -175,7 +175,7 @@ class _RegisterState extends State<RegisterPage> {
                                   model: RegisterViewModel(
                                       api: Provider.of(context)),
                                   builder: (context, model, child) =>
-                                      CustomizeButton(
+                                      ButtonWidget(
                                     margin: EdgeInsets.only(
                                         top: UIHelper.size40,
                                         bottom: UIHelper.paddingBottom +

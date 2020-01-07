@@ -8,7 +8,7 @@ import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/view/widget/hexagonal_clipper.dart';
 import 'package:myfootball/view/widget/line.dart';
-import 'customize_image.dart';
+import 'image_widget.dart';
 
 class ItemMember extends StatelessWidget {
   final Member member;
@@ -65,7 +65,7 @@ class ItemMember extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: UIHelper.size10),
                       child: Hero(
                         tag: member.tag,
-                        child: CustomizeImage(
+                        child: ImageWidget(
                           source: member.avatar,
                           placeHolder: Images.DEFAULT_AVATAR,
                           radius: UIHelper.size(55) / 2,

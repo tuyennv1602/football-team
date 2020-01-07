@@ -3,7 +3,7 @@ import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/router/navigation.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/progress_dialog.dart';
 
 class UIHelper {
@@ -167,7 +167,7 @@ class UIHelper {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           showCancel
-                              ? CustomizeButton(
+                              ? ButtonWidget(
                                   onTap: () {
                                     Navigation.instance.goBack();
                                   },
@@ -184,7 +184,7 @@ class UIHelper {
                               : SizedBox(),
                           Padding(
                             padding: EdgeInsets.all(UIHelper.padding),
-                            child: CustomizeButton(
+                            child: ButtonWidget(
                               onTap: () {
                                 if (onConfirmed != null) {
                                   onConfirmed();

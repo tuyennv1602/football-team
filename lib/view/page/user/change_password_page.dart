@@ -6,10 +6,10 @@ import 'package:myfootball/router/navigation.dart';
 import 'package:myfootball/view/ui_helper.dart';
 import 'package:myfootball/utils/validator.dart';
 import 'package:myfootball/view/page/base_widget.dart';
-import 'package:myfootball/view/widget/customize_app_bar.dart';
+import 'package:myfootball/view/widget/app_bar_widget.dart';
 import 'package:myfootball/view/widget/app_bar_button.dart';
 import 'package:myfootball/view/widget/border_background.dart';
-import 'package:myfootball/view/widget/customize_button.dart';
+import 'package:myfootball/view/widget/button_widget.dart';
 import 'package:myfootball/view/widget/input_text.dart';
 import 'package:myfootball/view/widget/circle_input_text.dart';
 import 'package:myfootball/viewmodel/forgotpassword_vm.dart';
@@ -40,7 +40,7 @@ class ChangePasswordPage extends StatelessWidget {
       resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
-          CustomizeAppBar(
+          AppBarWidget(
             centerContent: Text(
               'Đổi mật khẩu',
               textAlign: TextAlign.center,
@@ -88,7 +88,7 @@ class ChangePasswordPage extends StatelessWidget {
                           BaseWidget<ForgotPasswordViewModel>(
                             model: ForgotPasswordViewModel(
                                 api: Provider.of(context)),
-                            builder: (c, model, child) => CustomizeButton(
+                            builder: (c, model, child) => ButtonWidget(
                               child: Text(
                                 'ĐỔI MẬT KHẨU',
                                 style: textStyleButton(),

@@ -5,7 +5,7 @@ import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/ui_helper.dart';
 
-import 'customize_button.dart';
+import 'button_widget.dart';
 import 'input_text.dart';
 
 typedef void OnSubmitReview(double rate, String comment);
@@ -123,7 +123,7 @@ class ReviewDialog extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        CustomizeButton(
+                        ButtonWidget(
                           onTap: () {
                             Navigator.of(context).pop();
                           },
@@ -136,7 +136,7 @@ class ReviewDialog extends StatelessWidget {
                             style: textStyleButton(),
                           ),
                         ),
-                        CustomizeButton(
+                        ButtonWidget(
                           onTap: () {
                             Navigator.of(context).pop();
                             _onSubmitReview();
