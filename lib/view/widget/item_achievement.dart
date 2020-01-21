@@ -26,19 +26,21 @@ class ItemAchievement extends StatelessWidget {
         ),
         child: Stack(
           children: <Widget>[
-            Positioned(
-              bottom: 3,
-              right: 3,
-              child: Opacity(
-                opacity: 0.2,
-                child: Image.asset(
-                  icon,
-                  width: UIHelper.size35,
-                  height: UIHelper.size35,
-                  color: GREY_BACKGROUND,
-                ),
-              ),
-            ),
+            icon != null
+                ? Positioned(
+                    bottom: 3,
+                    right: 3,
+                    child: Opacity(
+                      opacity: 0.2,
+                      child: Image.asset(
+                        icon,
+                        width: UIHelper.size35,
+                        height: UIHelper.size35,
+                        color: GREY_BACKGROUND,
+                      ),
+                    ),
+                  )
+                : null,
             Padding(
               padding: EdgeInsets.all(UIHelper.size5),
               child: Column(
