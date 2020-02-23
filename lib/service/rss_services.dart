@@ -9,7 +9,7 @@ class RssServices {
           .get('https://thethao.thanhnien.vn/rss/bong-da-viet-nam.rss');
       var rss = RssFeed.parse(response.data);
       return rss.items;
-    } on DioError catch (e) {
+    } on DioError catch (_) {
       return null;
     }
   }

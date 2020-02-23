@@ -51,7 +51,7 @@ class FirebaseServices {
           return tokenResult.token;
         }
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
      return null;
     }
     return null;

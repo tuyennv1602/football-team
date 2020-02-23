@@ -10,6 +10,7 @@ import 'input_text.dart';
 
 typedef void OnSubmitReview(double rate, String comment);
 
+// ignore: must_be_immutable
 class ReviewDialog extends StatelessWidget {
   static final _formKey = GlobalKey<FormState>();
   String comment;

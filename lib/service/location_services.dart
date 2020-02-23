@@ -8,7 +8,7 @@ class LocationServices {
     try {
       return await Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       Map<PermissionGroup, PermissionStatus> permissions =
           await PermissionHandler().requestPermissions([
         PermissionGroup.location,

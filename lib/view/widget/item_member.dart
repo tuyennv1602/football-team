@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myfootball/model/member.dart';
 import 'package:myfootball/resource/colors.dart';
 import 'package:myfootball/resource/images.dart';
 import 'package:myfootball/resource/styles.dart';
 import 'package:myfootball/view/widget/border_item.dart';
 import 'package:myfootball/view/ui_helper.dart';
-import 'package:myfootball/view/widget/hexagonal_clipper.dart';
-import 'package:myfootball/view/widget/line.dart';
 import 'image_widget.dart';
 
 class ItemMember extends StatelessWidget {

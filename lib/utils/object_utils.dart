@@ -32,16 +32,6 @@ class ObjectUtil {
     }
     return result;
   }
-
-  static _mapCollectionToStringMap<T>(IEnumerable<IGrouping<String, T>> item) {
-    var result = <String, List<T>>{};
-    for (var group in item.asIterable()) {
-      result[group.key] = <T>[];
-      for (var child in group.asIterable()) {
-        result[group.key].add(child);
-      }
-    }
-    return result;
-  }
+  
 
 }

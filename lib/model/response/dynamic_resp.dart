@@ -1,7 +1,5 @@
 import 'package:myfootball/model/response/base_response.dart';
 
-import '../transaction.dart';
-
 class DynamicResponse extends BaseResponse {
   dynamic data;
 

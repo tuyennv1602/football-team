@@ -5,25 +5,26 @@ import 'package:myfootball/service/local_storage.dart';
 import 'package:myfootball/service/sqlite_services.dart';
 import 'package:myfootball/service/team_services.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 import 'model/team.dart';
 
 // Define all provider in app
-List<SingleChildCloneableWidget> providers = [
+List<SingleChildWidget> providers = [
   ...independentServices,
   ...dependentServices,
   ...uiConsumableProviders
 ];
 
 // These are classes/objects that do not depend on any other services to execute their logic
-List<SingleChildCloneableWidget> independentServices = [
+List<SingleChildWidget> independentServices = [
   Provider.value(value: Api()),
   Provider.value(value: LocalStorage()),
   Provider.value(value: SQLiteServices()),
 ];
 
 // These are classes/object that depend on previously registered services
-List<SingleChildCloneableWidget> dependentServices = [
+List<SingleChildWidget> dependentServices = [
   ProxyProvider2<Api, LocalStorage, AuthServices>(
       update: (context, api, sharePref, authenticationService) =>
           AuthServices(api: api, sharePreferences: sharePref)),
@@ -37,7 +38,7 @@ List<SingleChildCloneableWidget> dependentServices = [
 // if not all your models just to get the data out. In our case the user information.
 // If we don't provide it here then all the models will have a user property on it.
 // You could also just add it to the BaseModel
-List<SingleChildCloneableWidget> uiConsumableProviders = [
+List<SingleChildWidget> uiConsumableProviders = [
   StreamProvider<User>(
     create: (context) =>
         Provider.of<AuthServices>(context, listen: false).user,

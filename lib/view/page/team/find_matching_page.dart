@@ -67,8 +67,7 @@ class FindMatchingPage extends StatelessWidget {
                   style: textStyleButton(),
                 ),
                 margin: EdgeInsets.only(top: UIHelper.size(60)),
-                onTap: () =>
-                    Navigation.instance.navigateTo(SETUP_MATCHING))
+                onTap: () => Navigation.instance.navigateTo(SETUP_MATCHING))
           ],
         ),
       );
@@ -98,7 +97,8 @@ class FindMatchingPage extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: UIHelper.size5, right: UIHelper.size10),
+                padding: EdgeInsets.only(
+                    left: UIHelper.size5, right: UIHelper.size10),
                 child: Column(
                   children: <Widget>[
                     Text(
@@ -285,8 +285,8 @@ class FindMatchingPage extends StatelessWidget {
                                 child: TabBarWidget(
                                   titles: team2.getMappedTimeSlot.keys
                                       .toList()
-                                      .map((item) => DateFormat('dd/MM')
-                                          .format(DateUtil.getDateMatching(item)))
+                                      .map((item) => DateFormat('dd/MM').format(
+                                          DateUtil.getDateMatching(item)))
                                       .toList(),
                                   isScrollable: true,
                                   height: UIHelper.size35,
@@ -315,8 +315,7 @@ class FindMatchingPage extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: BaseWidget<FindMatchingViewModel>(
-          model: FindMatchingViewModel(
-              api: Provider.of(context), teamServices: Provider.of(context)),
+          model: FindMatchingViewModel(api: Provider.of(context)),
           onModelReady: (model) {
             if (team.groupMatchingInfo.length > 0) {
               model.findMatching(team);
@@ -373,15 +372,14 @@ class FindMatchingPage extends StatelessWidget {
                                 children: <Widget>[
                                   model.currentTeam != null
                                       ? InkWell(
-                                          onTap: () => Navigation
-                                              .instance
+                                          onTap: () => Navigation.instance
                                               .navigateTo(TEAM_DETAIL,
                                                   arguments: Team(
-                                                      id: model
-                                                          .currentTeam.groupId,
-                                                      name:
+                                                      id:
                                                           model.currentTeam
-                                                              .groupName,
+                                                              .groupId,
+                                                      name: model.currentTeam
+                                                          .groupName,
                                                       rank: model
                                                           .currentTeam.rank,
                                                       rating: model
@@ -465,11 +463,10 @@ class FindMatchingPage extends StatelessWidget {
                                               style: textStyleButton(),
                                             ),
                                             margin: EdgeInsets.symmetric(
-                                              vertical: UIHelper.size10,
+                                                vertical: UIHelper.size10,
                                                 horizontal: UIHelper.size25),
-                                            onTap: () => Navigation
-                                                .instance
-                                                .navigateTo(
+                                            onTap: () =>
+                                                Navigation.instance.navigateTo(
                                               INVITE_TEAM,
                                               arguments: InviteTeamArgument(
                                                   fromTeamId: team.id,

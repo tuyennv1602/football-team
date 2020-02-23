@@ -144,16 +144,11 @@ class LoginViewModel extends BaseViewModel {
   }
 
   Future<void> loginGoogle() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    );
+    GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
     try {
       UIHelper.showProgressDialog;
       var account = await _googleSignIn.signIn();
-      var token = (await account.authentication).accessToken;
+      var token = (await account.authentication).idToken;
       UIHelper.hideProgressDialog;
       print(token);
     } catch (error) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myfootball/model/response/search_team_resp.dart';
 import 'package:myfootball/model/team.dart';
 import 'package:myfootball/service/api.dart';
 import 'package:myfootball/view/ui_helper.dart';
